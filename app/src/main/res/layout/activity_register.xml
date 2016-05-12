@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xksqapp_register_student"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.njdp.njdp_drivers.register">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/register_top"
+        android:background="#03601F">
+        <TextView
+            android:id="@+id/register_title"
+            style="@style/Pages_Title"
+            android:text="农机手注册"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        style="@style/Register_Div"
+        android:id="@+id/regiser_div"
+        android:orientation="vertical"
+        android:layout_below="@+id/register_top">
+
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_name"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_person_outline_grey600_24dp"
+            android:hint="姓名"
+            android:inputType="textPhonetic"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_telephone"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_phone_android_grey600_24dp"
+            android:hint="手机号"
+            android:maxLength="11"
+            android:inputType="phone"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_machine_id"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_directions_car_grey600_24dp"
+            android:hint="农机编号"
+            android:maxLength="16"
+            android:inputType="number"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_license_plate"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_directions_car_grey600_24dp"
+            android:hint="农机牌照"
+            android:maxLength="11"
+            android:inputType="text"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:id="@+id/user_verification_code"
+            >
+            <EditText
+                style="@style/Register_VertifyInput_style"
+                android:id="@+id/verification_code"
+                android:textCursorDrawable="@drawable/login_cursor"
+                android:background="@drawable/login_edit_changecolor"
+                android:drawableLeft="@drawable/ic_vpn_key_grey600_24dp"
+                android:hint="验证码"
+                android:maxLength="6"
+                android:inputType="number"
+                />
+            <View
+                style="@style/Register_Vertical_style"
+                android:layout_toStartOf="@+id/register_get_verification_code"
+                android:layout_toLeftOf="@+id/register_get_verification_code"
+                android:id="@+id/line" />
+            <Button
+                style="@style/Register_Button_Vertify"
+                android:id="@+id/register_get_verification_code"
+                android:text="获取验证码" />
+        </RelativeLayout>
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            style="@style/Register_style"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_lock_outline_grey600_24dp"
+            android:id="@+id/user_password"
+            android:hint="密码(6~16位的字母,数字或下划线)"
+            android:maxLength="16"
+            android:inputType="text"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:id="@+id/register_bottom"
+        android:layout_alignParentBottom="true">
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:background="#728ea3" />
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/register_next"
+            android:text="下一步"
+            android:textSize="18dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            bootstrap:bootstrapBrand="success"
+            bootstrap:bootstrapSize="xl"
+            bootstrap:buttonMode="regular"
+            bootstrap:showOutline="false"
+            bootstrap:roundedCorners="true"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="area">
+        <item>默认距离</item>
+        <item>50公里</item>
+        <item>80公里</item>
+        <item>100公里</item>
+        <item>全部</item>
+    </string-array>
+    <string-array name="machine_number">
+        <item>请选择农机数量</item>
+        <item>1台</item>
+        <item>2台</item>
+        <item>3台</item>
+        <item>4台</item>
+        <item>5台</item>
+        <item>6台</item>
+        <item>7台</item>
+        <item>8台</item>
+        <item>9台</item>
+        <item>10台</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="machine_type">
+        <item>请选择农机服务类型</item>
+        <item>收获</item>
+        <item>耕地</item>
+        <item>种植</item>
+    </string-array>
+    <string-array name="crop_type">
+        <item>小麦</item>
+        <item>玉米</item>
+        <item>大豆</item>
+    </string-array>
+    <string-array name="workTime">
+        <item>请选择作业时长,默认16小时</item>
+        <item>1小时</item>
+        <item>2小时</item>
+        <item>3小时</item>
+        <item>4小时</item>
+        <item>5小时</item>
+        <item>6小时</item>
+        <item>7小时</item>
+        <item>8小时</item>
+        <item>9小时</item>
+        <item>10小时</item>
+        <item>11小时</item>
+        <item>12小时</item>
+        <item>13小时</item>
+        <item>14小时</item>
+        <item>15小时</item>
+        <item>16小时</item>
+    </string-array>
+    <string-array name="mainItem">
+        <item>我要发布</item>
+        <item>智能调度</item>
+        <item>需求查询</item>
+        <item>服务对象</item>
+        <item>历史作业</item>
+        <item>维修点</item>
+        <item>加油站</item>
+        <item>个人信息</item>
+    </string-array>
+</resources>

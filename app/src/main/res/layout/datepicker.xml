@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/calendarDatePicker_top"
+        >
+        <TextView
+            style="@style/Pages_Title"
+            android:text="选择日期"
+            />
+        <ImageButton
+            android:id="@+id/getBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+        <ImageButton
+            android:id="@+id/getHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_help_white_36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <com.squareup.timessquare.CalendarPickerView
+        android:id="@+id/calendarDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendarDatePicker_top"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay" />
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hintButton"
+        android:text="请选择作业起止日期"
+        android:layout_marginTop="@dimen/margin5"
+        android:layout_marginBottom= "@dimen/margin10"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:clickable="false"
+        bootstrap:bootstrapBrand="primary"
+        bootstrap:bootstrapSize="lg"
+        bootstrap:buttonMode="regular"
+        bootstrap:showOutline="false"
+        bootstrap:roundedCorners="true" />
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_1" android:icon="@drawable/ic_release_1"
+        android:title="@string/item_1" />
+    <item android:id="@+id/item_2" android:icon="@drawable/ic_intell_arrange_1"
+        android:title="@string/item_2" />
+    <item android:id="@+id/item_3" android:icon="@drawable/ic_require_1"
+        android:title="@string/item_3" />
+    <item android:id="@+id/item_4" android:icon="@drawable/ic_server_object_1"
+        android:title="@string/item_4"/>
+    <item android:id="@+id/item_5" android:icon="@drawable/ic_job_history"
+        android:title="@string/item_5" />
+    <item android:id="@+id/item_6" android:icon="@drawable/ic_repair_station_1"
+        android:title="@string/item_6"/>
+    <item android:id="@+id/item_7" android:icon="@drawable/ic_oil_station_1"
+        android:title="@string/item_7"/>
+    <item android:id="@+id/item_8" android:icon="@drawable/ic_personal_info_1"
+        android:title="@string/item_9"/>
+
+</menu>

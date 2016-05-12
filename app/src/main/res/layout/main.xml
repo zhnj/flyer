@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/simple_route_guide"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#2e3242"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/bnav_rg_sg_turn_icon"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/bnav_rg_sg_turn_icon" >
+
+            <LinearLayout
+                android:id="@+id/bnavi_rg_after_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_after_meters_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="0米"
+                        android:textColor="@color/nsdk_rg_main_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_main_info"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_after_label_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nsdk_string_hw_after"
+                        android:textColor="@color/nsdk_rg_main_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_main_info"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_go_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/nsdk_rg_text_margin"
+                        android:paddingTop="8dp"
+                        android:text="@string/nsdk_string_rg_come_in"
+                        android:textColor="@color/nsdk_rg_second_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_second_info"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_go_where_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:text="上地信息路"
+                        android:textColor="@color/nsdk_rg_main_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_main_info"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bnav_rg_sg_along_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_along_word"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/nsdk_rg_text_margin"
+                        android:text="@string/nsdk_string_rg_along"
+                        android:textColor="@color/nsdk_rg_second_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_second_info" />
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_cur_road_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:text="@string/nsdk_string_rg_sg_cur_road_word"
+                        android:textColor="@color/nsdk_rg_main_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_main_info"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_drive_word"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/nsdk_rg_text_margin"
+                        android:text="@string/nsdk_string_rg_driver"
+                        android:textColor="@color/nsdk_rg_second_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_second_info" />
+
+                    <TextView
+                        android:id="@+id/bnav_rg_sg_cur_road_remain_dist_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:text="12.5公里"
+                        android:textColor="@color/nsdk_rg_main_info"
+                        android:textSize="@dimen/nsdk_text_size_rg_main_info"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+    
+    <TextView android:id="@+id/cur_road_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:visibility="gone" />
+    
+    <RelativeLayout
+        android:id="@+id/bnav_rg_enlarge_road_map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/bnav_rg_enlarge_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <View
+            android:id="@+id/bnav_rg_enlarge_image_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#59000000"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:id="@+id/bnav_rg_enlarge_info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical" >
+
+            <ProgressBar
+                android:id="@+id/bnav_rg_enlarge_progress"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="5dp"
+                android:progress="50"
+                android:progressDrawable="@drawable/nsdk_drawable_rg_enlargeroadmap_progressbar" />
+
+            <TextView
+                android:id="@+id/bnav_rg_enlarge_remain_dist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:text="100米"
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/bnav_rg_enlarge_next_road"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:ellipsize="end"
+                android:maxWidth="234dp"
+                android:singleLine="true"
+                android:text="上地信息路"
+                android:textColor="#ffffff"
+                android:textSize="24sp" />
+        </RelativeLayout>
+        
+        <AbsoluteLayout
+            android:id="@+id/bnav_rg_enlarge_carpos_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageView
+                android:id="@+id/bnav_rg_enlarge_carpos_image"
+                android:layout_width="42dp"
+                android:layout_height="44dp"
+                android:layout_x="0px"
+                android:layout_y="0px"
+                android:src="@drawable/nsdk_drawable_rg_vector_map_car"
+                android:visibility="invisible" />
+        </AbsoluteLayout>
+    </RelativeLayout>
+    
+    
+    <LinearLayout
+        android:id="@+id/remain_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/bnav_rg_cp_total_dist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="13公里 "
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/bnav_rg_cp_arrive_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="凌晨00:49到达"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+    <TextView android:id="@+id/hud_log_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="请连接到百度导航"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+        
+    <EditText android:id="@+id/server_ip_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:hint="请输入服务器地址"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+        
+        <Button android:id="@+id/connect_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="连接"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+        
+        <Button android:id="@+id/close_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="断开"
+            android:textColor="#000000"
+            android:textSize="18sp" />        
+    </LinearLayout>
+    
+</LinearLayout>

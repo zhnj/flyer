@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circleImageView="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    tools:context="com.njdp.njdp_drivers.register_image">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/register_image_top"
+        android:background="#03601F">
+        <TextView
+            android:id="@+id/register_title"
+            style="@style/Pages_Title"
+            android:text="农机手注册"
+            />
+        <ImageButton
+            android:id="@+id/getback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/register_image_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#03601F"
+        android:layout_below="@+id/register_image_top"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <com.njdp.njdp_drivers.CircleMenu.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/turnplate_center"
+            android:id="@+id/user_image"
+            circleImageView:civ_border_width="2dp"
+            circleImageView:civ_border_color="#ffffff"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/set_user_image"
+            android:text="点击设置头像"
+            android:textSize="22dp"
+            android:textColor="@android:color/white"
+            android:gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <Button
+        style="@style/Register_Button_Finish"
+        android:id="@+id/btn_registerFinish"
+        android:background="@drawable/rounded_green_button"
+        android:layout_below="@+id/register_image_div"
+        android:text="完成注册"/>
+
+    <RelativeLayout
+        style="@style/Register_Bottom"
+        android:id="@+id/regiser_image_bottom">
+        <TextView
+          style="@style/Register_Bottom_Text"
+          android:id="@+id/regiser_termsOfService"/>
+    </RelativeLayout>
+</RelativeLayout>

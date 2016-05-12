@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/main_bg"
+    tools:context="com.njdp.njdp_drivers.items.item_intelligent_resolution">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:id="@+id/intelligent_arrange_top"
+      android:layout_marginTop="@dimen/margin20"
+      android:background="@drawable/main_title">
+    <TextView
+        style="@style/Pages_Title"
+        android:text="智能调度"
+        />
+    <ImageButton
+        android:id="@+id/getback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_chevron_left_white_48dp"
+        />
+    <ImageButton
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_menu_white_48dp"
+        android:layout_alignParentRight="true"
+        />
+    </RelativeLayout>
+    <ExpandableListView
+        android:layout_marginTop="@dimen/margin30"
+        android:id="@+id/intelligent_arrange_div_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/arrange_button"
+        android:layout_below="@+id/intelligent_arrange_top"
+        android:groupIndicator="@drawable/arrow_drop1">
+    </ExpandableListView>
+    <Button
+        android:id="@+id/arrange_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_marginBottom="@dimen/margin10"
+        android:background="@drawable/btn_bg"
+        android:text="智能调配"
+        android:textSize="@dimen/font20"
+        android:textColor="@color/primaryClolor"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

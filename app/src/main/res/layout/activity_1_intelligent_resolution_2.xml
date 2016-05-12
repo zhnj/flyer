@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.njdp.njdp_drivers.items.item_intelligent_resolution_2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/intelligent_arrange_top"
+        android:background="@color/colorDefault">
+        <TextView
+            style="@style/Pages_Title"
+            android:text="智能调度"
+            />
+        <ImageButton
+            android:id="@+id/getback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_menu_white_48dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <ExpandableListView
+        android:layout_marginTop="@dimen/margin10"
+        android:id="@+id/intelligent_deploy_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ExpandableListView>
+
+</LinearLayout>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.njdp.njdp_drivers" >
+
+    <!-- 联网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 读写外部存储设备权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <!-- GET_TASKS过时了 -->
+
+
+    <!-- 拨打电话权限 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <!-- 来电消音 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application
+        android:name=".db.AppController"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".login"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".register"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".register_TermsofService"
+            android:label="@string/title_activity_register__termsof_service"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".get_password"
+            android:label="@string/title_activity_get_password"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".get_password2"
+            android:label="@string/title_activity_get_password2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mainpages"
+            android:label="@string/title_activity_mainpages"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".slidingMenu"
+            android:label="@string/title_activity_sliding_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <Fragment
+            android:name=".items.item_release_machine"
+            android:label="@string/title_activity_item_release_machine"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_intelligent_resolution"
+            android:label="@string/title_activity_1_intelligent_resolution"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_intelligent_resolution_1"
+            android:label="@string/title_activity_1_intelligent_resolution_1"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_intelligent_resolution_2"
+            android:label="@string/title_activity_1_intelligent_resolution_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_intelligent_resolution_3"
+            android:label="@string/title_activity_1_intelligent_resolution_3"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_query_requirement"
+            android:label="@string/title_activity_item_query_requirement"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_repair_station"
+            android:label="@string/title_activity_2_repair_station"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_personalInformation"
+            android:label="@string/title_activity_5_personal_information"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment android:name=".items.item_service_object" />
+
+        <activity
+            android:name=".register_image"
+            android:label="@string/title_activity_register_image"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 照片选择 -->
+        <activity
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <!-- 地图配置 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" />
+            </intent-filter>
+        </service>
+        <!-- 地图密钥 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="9Q2nk7finsWtuoMsoNcYTFRkUWfBzRWS" />
+
+        <activity
+            android:name=".items.BNDGuideActivity"
+            android:label="@string/title_activity_bndguide"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <Fragment
+            android:name=".items.item_job_history" >
+        </Fragment>
+        <Fragment
+            android:name=".items.item_query_requirement_1"
+            android:label="@string/title_activity_item_query_requirement_1"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </Fragment>
+        <Fragment
+            android:name=".items.item_intelligent_resolution_4"
+            android:label="@string/title_activity_item__intelligent_resolution_4"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </Fragment>
+    </application>
+
+</manifest>

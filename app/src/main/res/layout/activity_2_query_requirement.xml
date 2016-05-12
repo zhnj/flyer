@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@drawable/main_bg"
+    tools:context="com.njdp.njdp_drivers.items.item_query_requirement">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin20"
+        android:id="@+id/requirement_arrange_top"
+        android:background="@drawable/main_title">
+        <TextView
+            style="@style/Pages_Title"
+            android:text="需求查询" />
+        <ImageButton
+            android:id="@+id/getback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_menu_white_48dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/bootstrap_gray">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin5"
+            android:text="请选择查询条件，并点击查询按钮，查找周围的农田信息"
+            android:textSize="16dp"
+            android:textColor="#FFFFFF"/>
+        <ImageButton
+            android:id="@+id/clear_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_clear_white_18dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/requirement_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding10">
+        <Spinner
+            android:id="@+id/area"
+            android:background="@android:color/transparent"
+            style="@style/spinner_style_require"></Spinner>
+        <Spinner
+            android:id="@+id/type"
+            android:background="@android:color/transparent"
+            style="@style/spinner_style_require"></Spinner>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ck_crop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding5"
+            android:paddingBottom="@dimen/padding5"
+            android:paddingRight="@dimen/padding10"
+            android:paddingLeft="@dimen/padding10">
+            <TextView
+                style="@style/release_t_cropType"
+                android:layout_marginRight="@dimen/margin5"
+                android:text="选择收割类型"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="小麦"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                style="@style/release_check1"
+                android:id="@+id/selectWheat"/>
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="玉米"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                android:id="@+id/selectCorn"
+                style="@style/release_check1" />
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="谷子"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                android:id="@+id/selectSoybean"
+                style="@style/release_check1"/>
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="水稻"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                android:id="@+id/selectRice"
+                style="@style/release_check1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ck_arableLand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding5"
+            android:paddingBottom="@dimen/padding5"
+            android:paddingRight="@dimen/padding10"
+            android:paddingLeft="@dimen/padding10">
+            <TextView
+                style="@style/release_t_cropType"
+                android:layout_marginRight="@dimen/margin50"
+                android:text="选择耕地类型"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="深松"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                style="@style/release_check2"
+                android:id="@+id/selectSS"/>
+            <TextView
+                style="@style/release_t_cropType"
+                android:text="平地"
+                android:textColor="#FFFFFF"/>
+            <CheckBox
+                android:id="@+id/selectPD"
+                style="@style/release_check2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/jobDate"
+            android:layout_marginTop="@dimen/margin10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding5"
+            android:background="@drawable/date_picker_background">
+            <TextView
+                android:id="@+id/startDate"
+                style="@style/requirement_date"
+                android:text="开始日期：2015/11/20"
+                android:textSize="@dimen/font14"
+                android:textColor="@color/whiteFont"
+                android:background="@android:color/transparent" />
+            <TextView
+                android:id="@+id/endDate"
+                style="@style/requirement_date"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:text="结束日期：2015/11/20"
+                android:textSize="@dimen/font14"
+                android:textColor="@color/whiteFont"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/query"
+            android:layout_width="@dimen/btn_query"
+            android:layout_height="@dimen/margin40"
+            android:background="@drawable/rounded_white_button"
+            android:layout_marginTop="@dimen/margin50"
+            android:text="查询"
+            android:textColor="#0E274A"
+            android:textSize="@dimen/font22"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+</LinearLayout>
+
+
+<!--<LinearLayout-->
+<!--android:id="@+id/intelligent_arrange_div"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_below="@+id/intelligent_arrange_top"-->
+<!--android:orientation="horizontal">-->
+
+<!--<Spinner-->
+    <!--android:id="@+id/area"-->
+    <!--style="@style/spinner_style_area"></Spinner>-->
+<!--<Spinner-->
+    <!--android:id="@+id/type"-->
+    <!--style="@style/spinner_style_type"></Spinner>-->
+
+<!--<LinearLayout-->
+    <!--android:id="@+id/jobDate"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_gravity="center_vertical">-->
+    <!--<TextView-->
+        <!--android:id="@+id/startDate"-->
+        <!--style="@style/intelligentResolution_StartDate"-->
+        <!--android:text="@string/jobSart"-->
+        <!--android:textColor="@android:color/background_dark"-->
+        <!--android:background="@android:color/transparent" />-->
+    <!--<TextView-->
+        <!--android:id="@+id/endDate"-->
+        <!--style="@style/intelligentResolution_StartDate"-->
+        <!--android:text="@string/jobEnd"-->
+        <!--android:textColor="@android:color/background_dark"-->
+        <!--android:background="@android:color/transparent"/>-->
+<!--</LinearLayout>-->
+<!--</LinearLayout>-->
+<!--<ImageButton-->
+<!--android:id="@+id/my_location"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:background="@drawable/ic_my_location_grey600_36dp"-->
+<!--android:layout_alignParentBottom="true"-->
+<!--android:layout_alignParentLeft="true"-->
+<!--android:layout_marginBottom="@dimen/margin10"-->
+<!--android:layout_marginLeft="@dimen/margin20"/>-->

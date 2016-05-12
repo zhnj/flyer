@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.njdp.njdp_drivers"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.basgeekball:awesome-validation:1.1'
+    //表单验证
+    compile 'com.squareup:android-times-square:1.6.5@aar'
+    //日期选择组件
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
+    //卡片式布局
+    compile files('libs/volley-library-1.0.19.jar')
+    compile files('libs/gson-2.6.2.jar')
+    compile files('libs/ormlite-core-4.49-SNAPSHOT.jar')
+    compile files('libs/ormlite-android-4.49-SNAPSHOT.jar')
+    compile project(':AndroidBootstrap')
+    compile project(':MultiImageSelector')
+    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+        exclude module: 'httpclient'
+    }
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    //    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    //    compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.zhy:okhttputils:2.4.1'
+    compile files('libs/BaiduHUDSDK_2.0.jar')
+    compile files('libs/baidumapapi_base_v3_7_1.jar')
+    compile files('libs/baidumapapi_cloud_v3_7_1.jar')
+    compile files('libs/baidumapapi_map_v3_7_1.jar')
+    compile files('libs/baidumapapi_radar_v3_7_1.jar')
+    compile files('libs/baidumapapi_search_v3_7_1.jar')
+    compile files('libs/baidumapapi_util_v3_7_1.jar')
+    compile files('libs/BaiduNaviSDK_3.1.1.jar')
+    compile files('libs/lbsCoreSDK.jar')
+    compile files('libs/locSDK_6.23.jar')
+}
