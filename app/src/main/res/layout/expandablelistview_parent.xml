@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/padding10"
+    android:paddingLeft="@dimen/padding5"
     android:paddingBottom="@dimen/padding5"
     android:paddingRight="@dimen/padding5"
     android:paddingTop="@dimen/padding10">
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
-            android:textSize="18dp"
-            android:layout_marginLeft="30dp"/>
+            android:textSize="@dimen/font18"
+            android:layout_marginLeft="@dimen/margin30"/>
         <TextView
             android:id="@+id/site"
             android:text="河北省保定市徐水大庄乡"
@@ -29,16 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
-            android:textSize="16dp"
-            android:layout_marginLeft="@dimen/margin5"/>
-        <TextView
-            android:text="100亩"
-            android:id="@+id/field_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/whiteFont"
-            android:textSize="18dp"
+            android:textSize="@dimen/font16"
             android:layout_marginLeft="@dimen/margin5"/>
     </LinearLayout>
     <LinearLayout

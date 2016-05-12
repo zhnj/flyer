@@ -110,8 +110,8 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             selectedFieldInfoPost.clear();
             allFieldInfoPost.clear();
         }catch (Exception e) {}
-        selectedFieldInfoPost.addAll(mainMenu.fieldInfoPosts);
         allFieldInfoPost.addAll(mainMenu.fieldInfoPosts);
+        setSelectedFieldInfoPost();
 
 
         ///////////////////////////////////////测试mainMenu.selectedFieldInfo是否有数据////////////
@@ -206,12 +206,12 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 final FieldInfoPost fieldInfoPost;
                 final String farmId;
                 //获取对应序列的农田信息
-                if (mainMenu.selectedFieldInfo.size() >= 1) {
-                    fieldInfoPost = allFieldInfoPost.get(groupPosition);
-                    farmId = fieldInfoPost.getFarm_id();
-                    Log.e(TAG, "序号" + farmId);
+                if (selectedFieldInfoPost.size() >= 1) {
+                    fieldInfoPost = selectedFieldInfoPost.get(groupPosition);
+                    Log.e(TAG, "序号1:" + fieldInfoPost.getFarm_id());
                     fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
-                    Log.e(TAG, "序号" + fieldInfo.getFarm_id());
+                    farmId=fieldInfo.getFarm_id();
+                    Log.e(TAG, "序号2:" + farmId);
 
                     if (convertView == null) {
                         convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
@@ -223,8 +223,8 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     try {
                         TextView tv2 = (TextView) convertView.findViewById(R.id.site);
                         tv2.setText(fieldInfo.getCropLand_site());
-                        TextView tv3 = (TextView) convertView.findViewById(R.id.field_number);
-                        tv3.setText(fieldInfo.getArea_num() + "亩");
+//                        TextView tv3 = (TextView) convertView.findViewById(R.id.field_number);
+//                        tv3.setText(fieldInfo.getArea_num() + "亩");
                     } catch (Exception e) {
                         Log.e(TAG, "Error" + e.toString());
                     }
@@ -561,6 +561,24 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             Log.e("数组测试", String.valueOf(s_deploy_5.length));
             for (int i = 0; i < s_deploy_5.length; i++) {
                 mainMenu.deploy_5.add(fieldInfoDao.getFieldInfoByFieldId(s_deploy_5[i].toString()));
+            }
+        }
+    }
+
+    private void setSelectedFieldInfoPost()//默认所有的村庄路径全选存入selectedFieldInfoPost
+    {
+        int length1=mainMenu.selectedFieldInfo.size();
+        for(int i=0;i<length1;i++)
+        {
+            String farmId=mainMenu.selectedFieldInfo.get(i).getFarm_id();
+            int length2 = allFieldInfoPost.size();
+            for (int j = 0; i < length2; j++) {
+                FieldInfoPost fieldInfoPost1 = allFieldInfoPost.get(j);
+                if (fieldInfoPost1.getFarm_id().equals(farmId)) {
+                    selectedFieldInfoPost.add(fieldInfoPost1);
+                    int lp = selectedFieldInfoPost.size();
+                    Log.e(TAG, "全部路线总数：" + lp + "：+l");
+                }
             }
         }
     }
