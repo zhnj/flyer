@@ -120,7 +120,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
             Log.e(TAG, e.toString());
         }
 
-        parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_1_intelligent_resolution, null);
+        parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_3_job_history, null);
         dateView = mainMenu.getLayoutInflater().inflate(R.layout.datepicker, null);
         dateInit();
         initDatePicker();

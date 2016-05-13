@@ -37,15 +37,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/margin20"
-        android:padding="@dimen/padding10">
+        android:padding="@dimen/padding5">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/whiteFont"
-            android:textSize="@dimen/font16"
+            android:textSize="@dimen/font14"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/margin5"
-            android:text="请选择要去的地点"/>
+            android:text="请选择要去的地点:"/>
         <Spinner
             android:id="@+id/site"
             android:layout_weight="1"

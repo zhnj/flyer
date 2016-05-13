@@ -78,7 +78,7 @@
             android:background="@drawable/rounded_white_button"
             android:layout_below="@+id/register_image_div"
             android:text="确定"
-            android:layout_marginTop="@dimen/margin30"
+            android:layout_marginTop="@dimen/margin40"
             android:textColor="@color/primaryClolor"/>
     </LinearLayout>
 </LinearLayout>

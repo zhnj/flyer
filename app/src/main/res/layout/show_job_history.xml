@@ -12,32 +12,36 @@
         <TextView
             android:id="@+id/job_id"
             android:text="1"
-            android:textColor="@color/Black"
-            android:textSize="18dp"
+            android:textColor="@color/whiteFont"
+            android:textSize="@dimen/font18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/job_site"
             android:text="河北省保定市石庄村"
             android:textSize="15dp"
+            android:textColor="@color/whiteFont"
             android:layout_marginLeft="@dimen/margin5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="作业面积："
             android:layout_marginLeft="@dimen/margin10"/>
         <TextView
             android:id="@+id/job_fields"
             android:text="50"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:text="亩"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -49,12 +53,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="电话："/>
         <TextView
             android:id="@+id/job_telephone"
             android:text="15575571212"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -67,22 +73,26 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="作业时段："/>
         <TextView
             android:id="@+id/job_startDate"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="2016年6月5号"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="--"/>
         <TextView
             android:id="@+id/job_endDate"
-            android:textSize="15dp"
+            android:textSize="@dimen/font16"
+            android:textColor="@color/whiteFont"
             android:text="2016年6月6日"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

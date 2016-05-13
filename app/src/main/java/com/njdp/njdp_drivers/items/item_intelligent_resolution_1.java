@@ -572,7 +572,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         {
             String farmId=mainMenu.selectedFieldInfo.get(i).getFarm_id();
             int length2 = allFieldInfoPost.size();
-            for (int j = 0; i < length2; j++) {
+            for (int j = 0; j< length2; j++) {
                 FieldInfoPost fieldInfoPost1 = allFieldInfoPost.get(j);
                 if (fieldInfoPost1.getFarm_id().equals(farmId)) {
                     selectedFieldInfoPost.add(fieldInfoPost1);
