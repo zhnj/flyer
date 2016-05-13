@@ -134,7 +134,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         menu=mainMenu.drawer;
 
         format = new SimpleDateFormat("yyyy-MM-dd");
-        format2 = new SimpleDateFormat("yyyy年MM月dd日");
+        format2 = new SimpleDateFormat("yyyy/M/d");
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
             Log.e(TAG, machine_id);
@@ -161,7 +161,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
 
             @Override
             public int getChildrenCount(int groupPosition) {
-                return 6;
+                return 5;
             }
 
             @Override
@@ -195,10 +195,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                     {
                         Log.e(TAG,e.toString());
                     }
-                    return "起止日期："+format2.format(date1)+"---"+format2.format(date2);
-                }else if(childPosition==5)
-                {
-                    return "联系方式："+fieldInfo1.getUser_name();
+                    return "起止日期："+format2.format(date1)+"--"+format2.format(date2);
                 }else
                 {
                     return  null;
