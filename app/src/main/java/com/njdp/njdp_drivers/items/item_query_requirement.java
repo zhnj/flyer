@@ -257,6 +257,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 datePickerPop.dismiss();
                 break;
             case R.id.getHelp:
+                /////
                 commonUtil.error_hint("请选择作业起止日期！");
                 break;
             default:
