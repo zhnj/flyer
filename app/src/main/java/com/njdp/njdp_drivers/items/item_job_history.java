@@ -1,10 +1,8 @@
 package com.njdp.njdp_drivers.items;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -13,11 +11,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -50,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bean.FieldInfo;
 import bean.JobHistory;
 
 public class item_job_history extends Fragment implements View.OnClickListener{
@@ -327,10 +321,10 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         Calendar calendar = Calendar.getInstance();
         calendar.add(calendar.MONTH, 1);
         Date defaultStartDate=calendar.getTime();
-        t_endDate.setText("结束：" + format.format(defaultStartDate));
+        t_endDate.setText(getResources().getString(R.string.jobStart1)+ format.format(defaultStartDate));
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         Date defaultEndDate=calendar.getTime();
-        t_startDate.setText("开始：" + format.format(defaultEndDate));//显示默认的起止年月日
+        t_startDate.setText(getResources().getString(R.string.jobEnd1)+ format.format(defaultEndDate));//显示默认的起止年月日
         start_date=format2.format(defaultStartDate);
         end_date=format2.format(defaultEndDate);
     }
@@ -366,8 +360,8 @@ public class item_job_history extends Fragment implements View.OnClickListener{
             if(date==first_date)
             {
                 String first_dateTime = format.format(date);
-                t_startDate.setText(getResources().getString(R.string.jobSart) + first_dateTime);
-                t_endDate.setText(getResources().getString(R.string.jobEnd) + first_dateTime);
+                t_startDate.setText(getResources().getString(R.string.jobStart1) + first_dateTime);
+                t_endDate.setText(getResources().getString(R.string.jobEnd1) + first_dateTime);
                 start_date = format2.format(date);
                 end_date=format2.format(date);
                 start_date+=" 00:00:00";
@@ -390,8 +384,8 @@ public class item_job_history extends Fragment implements View.OnClickListener{
             int size = (calendarPickerView.getSelectedDates()).size();
             if (size >= 2) {
                 dates.addAll(calendarPickerView.getSelectedDates());
-                t_startDate.setText(getResources().getString(R.string.jobSart) + format.format(dates.get(0)));
-                t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(dates.get(size - 1)));
+                t_startDate.setText(getResources().getString(R.string.jobStart1) + format.format(dates.get(0)));
+                t_endDate.setText(getResources().getString(R.string.jobEnd1) + format.format(dates.get(size - 1)));
                 start_date = format2.format(dates.get(0));
                 Calendar getDate= Calendar.getInstance();
                 getDate.setTime(dates.get(size - 1));//结束日期加一天

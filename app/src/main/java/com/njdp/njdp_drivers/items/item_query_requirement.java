@@ -2,8 +2,6 @@ package com.njdp.njdp_drivers.items;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Point;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -28,25 +25,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.TextureMapView;
-import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
-import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter;
 import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
@@ -72,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 
 import bean.FieldInfo;
-import bean.FieldInfoPost;
 
 public class item_query_requirement  extends Fragment implements View.OnClickListener {
 
@@ -708,7 +688,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
             if(date==first_date)
             {
                 String first_dateTime = format.format(date);
-                t_startDate.setText(getResources().getString(R.string.jobSart) + first_dateTime);
+                t_startDate.setText(getResources().getString(R.string.jobStart) + first_dateTime);
                 t_endDate.setText(getResources().getString(R.string.jobEnd) + first_dateTime);
                 startTime = format2.format(date);
                 endTime = format2.format(date);
@@ -730,7 +710,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
             int size = (calendarPickerView.getSelectedDates()).size();
             if (size >= 2) {
                 dates.addAll(calendarPickerView.getSelectedDates());
-                t_startDate.setText(getResources().getString(R.string.jobSart) + format.format(dates.get(0)));
+                t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(dates.get(0)));
                 t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(dates.get(size - 1)));
                 startTime = format2.format(dates.get(0));
                 endTime = format2.format(dates.get(size - 1));

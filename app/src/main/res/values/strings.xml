@@ -41,8 +41,14 @@
     <string name="connect_error">连接服务器错误</string>
     <string name="net_error">网络连接错误</string>
 
-    <string name="jobSart">作业开始日期：</string>
-    <string name="jobEnd">作业结束日期：</string>
+    <string name="jobStart">开始日期：</string>
+    <string name="jobEnd">结束日期：</string>
+    <string name="jobStart1">开始：</string>
+    <string name="jobEnd1">结束：</string>
+    <string name="jobStart2">作业开始：</string>
+    <string name="jobEnd2">作业结束：</string>
+    <string name="jobStart3">作业开始日期：</string>
+    <string name="jobEnd3">作业结束日期：</string>
 
     <string name="item_1">我的发布</string>
     <string name="item_2">智能调度</string>

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -35,7 +34,6 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -46,23 +44,17 @@ import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
-import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter;
 import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_up_white_1;
-import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
-import com.njdp.njdp_drivers.db.SavedFieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.login;
-import com.njdp.njdp_drivers.mainpages;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.squareup.timessquare.CalendarPickerView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,12 +67,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import bean.BasicDeployRes;
 import bean.FieldInfo;
 import bean.FieldInfoPost;
-import okhttp3.Call;
 
 
 public class item_intelligent_resolution extends Fragment implements View.OnClickListener {
@@ -881,8 +870,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         Date defaultStartDate=calendar.getTime();
         calendar.add(calendar.DATE, 1);
         Date defaultEndDate=calendar.getTime();
-        t_startDate.setText("开始日期：" + format.format(defaultStartDate));
-        t_endDate.setText("结束日期：" + format.format(defaultEndDate));//显示默认的起止年月日
+        t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(defaultStartDate));
+        t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(defaultEndDate));//显示默认的起止年月日
         startTime=format2.format(defaultStartDate);
         endTime=format2.format(defaultEndDate);
     }
@@ -1090,7 +1079,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             if(date==first_date)
             {
                 String first_dateTime = format.format(date);
-                t_startDate.setText(getResources().getString(R.string.jobSart) + first_dateTime);
+                t_startDate.setText(getResources().getString(R.string.jobStart) + first_dateTime);
                 t_endDate.setText(getResources().getString(R.string.jobEnd) + first_dateTime);
                 startTime = format2.format(date);
                 endTime = format2.format(date);
@@ -1113,7 +1102,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             int size = (calendarPickerView.getSelectedDates()).size();
             if (size >= 2) {
                 dates.addAll(calendarPickerView.getSelectedDates());
-                t_startDate.setText(getResources().getString(R.string.jobSart) + format.format(dates.get(0)));
+                t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(dates.get(0)));
                 t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(dates.get(size - 1)));
                 startTime = format2.format(dates.get(0));
                 endTime = format2.format(dates.get(size - 1));

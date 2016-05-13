@@ -81,7 +81,7 @@
                 style="@style/release_t_cropType"
                 android:layout_marginRight="@dimen/margin5"
                 android:text="选择收割类型"
-                android:textSize="@dimen/font18"
+                android:textSize="@dimen/font16"
                 android:textColor="#FFFFFF"/>
             <TextView
                 style="@style/release_t_cropType"
@@ -125,7 +125,7 @@
             <TextView
                 style="@style/release_t_cropType"
                 android:layout_marginRight="@dimen/margin50"
-                android:textSize="@dimen/font18"
+                android:textSize="@dimen/font16"
                 android:text="选择耕地类型"
                 android:textColor="#FFFFFF"/>
             <TextView
