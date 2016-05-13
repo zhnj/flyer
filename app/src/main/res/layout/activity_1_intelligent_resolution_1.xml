@@ -33,13 +33,16 @@
         />
     </RelativeLayout>
     <ExpandableListView
-        android:layout_marginTop="@dimen/margin30"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_marginLeft="@dimen/margin5"
+        android:layout_marginRight="@dimen/margin5"
         android:id="@+id/intelligent_arrange_div_expand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/arrange_button"
         android:layout_below="@+id/intelligent_arrange_top"
-        android:groupIndicator="@drawable/arrow_drop3">
+        android:groupIndicator="@drawable/arrow_drop3"
+        android:background="@drawable/expan_bg">
     </ExpandableListView>
     <Button
         android:id="@+id/arrange_button"
