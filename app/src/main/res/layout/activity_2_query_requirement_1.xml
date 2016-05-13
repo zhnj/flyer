@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
     android:background="@drawable/main_bg"
     tools:context="com.njdp.njdp_drivers.items.item_query_requirement_1">
 
@@ -13,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/margin15"
+        android:layout_marginTop="@dimen/margin20"
         android:id="@+id/requirement_arrange_top"
         android:background="@drawable/main_title">
         <TextView
@@ -31,19 +30,34 @@
             android:background="@drawable/ic_menu_white_48dp"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
-    <com.baidu.mapapi.map.TextureMapView
-        android:id="@+id/bmapView"
+    <RelativeLayout
+        android:id="@+id/requirement_arrange_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/requirement_arrange_top"
-        android:clickable="true" />
-    <ImageButton
-        android:id="@+id/my_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_my_location_grey600_36dp"
+        android:layout_above="@+id/infos">
+        <com.baidu.mapapi.map.TextureMapView
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+        <ImageButton
+            android:id="@+id/my_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_my_location_grey600_36dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="@dimen/margin10"
+            android:layout_marginLeft="@dimen/margin20"/>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/infos"
+        android:text="共找到13块田，点击查看"
+        android:layout_width="match_parent"
+        android:textColor="@color/whiteFont"
+        android:background="@drawable/main_title"
+        android:layout_height="@dimen/height40"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/margin10"
-        android:layout_marginLeft="@dimen/margin20"/>
+        />
 </RelativeLayout>

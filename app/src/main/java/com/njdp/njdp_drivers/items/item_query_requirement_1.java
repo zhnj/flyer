@@ -18,7 +18,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -59,7 +65,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +82,10 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private SessionManager sessionManager;
     private CommonUtil commonUtil;
     private NetUtil netUtil;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter adapter;
+    private SimpleDateFormat format;
+    private SimpleDateFormat format2;
     private String token;
     private String machine_id;
     private ProgressDialog pDialog;
@@ -117,6 +129,8 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
 
+        format = new SimpleDateFormat("yyyy-MM-dd");
+        format2 = new SimpleDateFormat("yyyy年MM月dd日");
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
             Log.e(TAG, machine_id);
@@ -132,7 +146,138 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_0_release_machine, null);
-        infoView = mainMenu.getLayoutInflater().inflate(R.layout.release_popup, null);//需要改动
+        infoView = mainMenu.getLayoutInflater().inflate(R.layout.require_pop, null);//需要改动
+        expandableListView=(ExpandableListView)infoView.findViewById(R.id.infos);
+        expandableListView.setOnClickListener(this);
+        adapter=new BaseExpandableListAdapter() {
+            @Override
+            public int getGroupCount() {
+                return mainMenu.selectedFieldInfo.size();
+            }
+
+            @Override
+            public int getChildrenCount(int groupPosition) {
+                return 6;
+            }
+
+            @Override
+            public Object getGroup(int groupPosition) {
+                return mainMenu.selectedFieldInfo.get(groupPosition);
+            }
+
+            @Override
+            public Object getChild(int groupPosition, int childPosition) {
+                FieldInfo fieldInfo1= mainMenu.selectedFieldInfo.get(groupPosition);
+                if(childPosition==0)
+                {
+                    return "农田面积："+fieldInfo1.getArea_num()+"亩";
+                } else if(childPosition==1)
+                {
+                    return "作物类型："+fieldInfo1.getCrops_kind();
+                } else if(childPosition==2)
+                {
+                    return "单价："+fieldInfo1.getUnit_price()+"元/亩";
+                } else if(childPosition==3)
+                {
+                    return "地块类型："+fieldInfo1.getBlock_type();
+                }else if(childPosition==4)
+                {
+                    Date date1=new Date();
+                    Date date2=new Date();
+                    try {
+                        date1 = format.parse(fieldInfo1.getStart_time());
+                        date2 = format.parse(fieldInfo1.getEnd_time());
+                    }catch (Exception e)
+                    {
+                        Log.e(TAG,e.toString());
+                    }
+                    return "起止日期："+format2.format(date1)+"---"+format2.format(date2);
+                }else if(childPosition==5)
+                {
+                    return "联系方式："+fieldInfo1.getUser_name();
+                }else
+                {
+                    return  null;
+                }
+            }
+
+            @Override
+            public long getGroupId(int groupPosition) {
+                return groupPosition;
+            }
+
+            @Override
+            public long getChildId(int groupPosition, int childPosition) {
+                return childPosition;
+            }
+
+            @Override
+            public boolean hasStableIds() {
+                return true;
+            }
+
+            @Override
+            public View getGroupView(final int groupPosition,final boolean isExpanded, View convertView, ViewGroup parent) {
+
+                final FieldInfo fieldInfo;
+                final FieldInfoPost fieldInfoPost;
+                final String farmId;
+                //获取对应序列的农田信息
+                if (mainMenu.selectedFieldInfo.size() >= 1) {
+                    fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
+                    farmId = fieldInfo.getFarm_id();
+                    Log.e(TAG, "序号:" + farmId);
+
+                    if (convertView == null) {
+                        convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
+                    }
+                    CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
+                    LinearLayout textLayout = (LinearLayout) convertView.findViewById(R.id.expandParent_text);
+                    TextView tv1 = (TextView) convertView.findViewById(R.id.id);
+                    tv1.setText(String.valueOf(groupPosition + 1));
+                    try {
+                        TextView tv2 = (TextView) convertView.findViewById(R.id.site);
+                        tv2.setText(fieldInfo.getCropLand_site());
+//                        TextView tv3 = (TextView) convertView.findViewById(R.id.field_number);
+//                        tv3.setText(fieldInfo.getArea_num() + "亩");
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error" + e.toString());
+                    }
+
+                    textLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (isExpanded) {
+                                expandableListView.collapseGroup(groupPosition);
+                            } else {
+                                expandableListView.expandGroup(groupPosition);
+                            }
+                        }
+                    });
+                }else {
+                    commonUtil.error_hint("未获取到农田信息，请返回上一个界面重新选择！");
+                }
+                return convertView;
+            }
+
+            @Override
+            public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_child, null);
+                }
+                TextView tv=(TextView)convertView.findViewById(R.id.text);
+                tv.setText(String.valueOf(getChild(groupPosition, childPosition)));
+                Log.e(TAG,String.valueOf(getChild(groupPosition, childPosition)));
+                return convertView;
+            }
+
+            @Override
+            public boolean isChildSelectable(int groupPosition, int childPosition) {
+
+                return true;
+            }
+        };
+        expandableListView.setAdapter(adapter);
         initBtnPopup();
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
@@ -185,7 +330,9 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                 break;
             case R.id.my_location:
                 gps_MachineLocation(machine_id);
-//                btn_popup.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                break;
+            case R.id.infos:
+                btn_popup.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
         }
     }

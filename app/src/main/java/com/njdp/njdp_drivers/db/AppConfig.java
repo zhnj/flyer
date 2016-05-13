@@ -25,7 +25,7 @@ public class AppConfig {
 
     public static String URL_UPLOADDEPLOY= URL_IP+"app/deployChoice";//选择方案上传
 
-    public static String URL_SEARCHFIELD= URL_IP+"farmMachine/searchFarmlands";//农田查询
+    public static String URL_SEARCHFIELD= URL_IP+"app/farmMachine/searchFarmlands";//农田查询
 
     public static String URL_SERVEROBJECT= URL_IP+"app/measuredFarmlandArea/store";//服务对象
 

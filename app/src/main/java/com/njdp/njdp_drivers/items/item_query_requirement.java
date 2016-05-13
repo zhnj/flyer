@@ -487,10 +487,11 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     params.put("token", token);
                     params.put("Search_range", sl_area);//需要按照实际范围变动
                     params.put("crops_kind", s_machine_cropType);
-                    params.put("deploy_startdate", startTime);
-                    params.put("deploy_finishdate", endTime);
+                    params.put("start_date", startTime);
+                    params.put("end_date", endTime);
                     params.put("Machine_longitude", GPS_longitude);
                     params.put("Machine_Latitude", GPS_latitude);
+                    Log.e(TAG,gson.toJson(params));
 
                     return netUtil.checkParams(params);
                 }
@@ -524,21 +525,23 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     ///////////////////////////农田信息，包括经纬度/////////////////////////////////
 
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
-                    JSONArray s_post=jObj.getJSONArray("machine_farm_d");
-                    JSONArray s_info=jObj.getJSONArray("farms");
-                    Log.e(TAG, String.valueOf(s_post.length()));
+//                    JSONArray s_post=jObj.getJSONArray("machine_farm_d");
+                    JSONArray s_info=jObj.getJSONArray("result");
+//                    Log.e(TAG, String.valueOf(s_post.length()));
                     Log.e(TAG, String.valueOf(s_info.length()));
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
                     try {
+                        mainMenu.selectedFieldInfo.clear();
                         fieldInfos.clear();
                     }catch (Exception e){}
                     try {
                         mainMenu.fieldInfoPosts.clear();
                     }catch (Exception e){}
-                    String s_t=jObj.getString("farms");
-                    String s_p=jObj.getString("machine_farm_d");
-                    List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
-                    mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());//存储距离信息
+                    String s_t=jObj.getString("result");
+//                    String s_p=jObj.getString("machine_farm_d");
+//                    List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
+                    mainMenu.selectedFieldInfo=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
+//                    mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());//存储距离信息
                     try {
                         Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
                         Log.e(TAG, fieldInfos.get(0).getCropLand_site());
@@ -551,15 +554,16 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 
                     if( (fieldInfos.size()<1)||( mainMenu.fieldInfoPosts.size()<1)){
                         commonUtil.error_hint("未查询到符合要求的农田信息，请重新查询！");
-                    }else
-                    {
-                        //存储到本地库
-                        saveFieldInfo(fieldInfoDao,fieldInfos);
-                        //按距离的排序好的农田
-                        arrangeField();
-                        mainMenu.addBackFragment(new item_query_requirement_1());//跳转执行查找
-                        commonUtil.error_hint("数据加载完成");
                     }
+//                    else
+//                    {
+//                        //存储到本地库
+//                        saveFieldInfo(fieldInfoDao,fieldInfos);
+//                        //按距离的排序好的农田
+//                        arrangeField();
+//                        mainMenu.addBackFragment(new item_query_requirement_1());//跳转执行查找
+//                        commonUtil.error_hint("数据加载完成");
+//                    }
                 } else {
 
                     String errorMsg = jObj.getString("result");
