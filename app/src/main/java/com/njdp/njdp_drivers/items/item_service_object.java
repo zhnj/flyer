@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -60,7 +61,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
     private String telephone;
     private String TAG=item_service_object.class.getSimpleName();
     private AwesomeValidation telephoneValidation=new AwesomeValidation(ValidationStyle.BASIC);
-    private LinearLayout ll_hint;
+    private RelativeLayout ll_hint;
 
     /////////////////////确认发布信息弹窗///////////////////////////
     private View parentView;//主View
@@ -83,7 +84,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
         view.findViewById(R.id.menu).setOnClickListener(this);
         view.findViewById(R.id.clear_hint).setOnClickListener(this);
         this.edit_telephone=(EditText)view.findViewById(R.id.server_telephone);
-        this.ll_hint=(LinearLayout)view.findViewById(R.id.hint);
+        this.ll_hint=(RelativeLayout)view.findViewById(R.id.hint);
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;

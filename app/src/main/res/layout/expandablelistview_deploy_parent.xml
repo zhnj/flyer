@@ -3,28 +3,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding5"
-    android:layout_marginLeft="@dimen/margin20">
+    android:layout_marginLeft="@dimen/margin20"
+    android:background="@android:color/transparent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/deploy_id"
-            android:text="方案1：时间最短/收益最大"
+            android:text="方案1"
             android:layout_marginTop="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:textColor="#C86F05"
+            android:textColor="@color/whiteFont"
             android:textSize="20dp"/>
         <Button
             android:id="@+id/deploy_selected"
             android:text="选择方案"
             android:textSize="18dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/rounded_green_button"
+            android:textColor="@color/primaryClolor"
+            android:background="@drawable/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="35dp"/>
     </LinearLayout>
@@ -91,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@android:color/black"
+            android:textColor="@color/whiteFont"
             android:textSize="18dp"/>
     </LinearLayout>
 </LinearLayout>

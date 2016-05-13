@@ -37,29 +37,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/padding10">
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/bootstrap_gray">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/margin5"
-                android:text="  为了保证平台能以短信的形式给您和农户（服务对象）发送作业结果（亩），请您输入服务对象的手机号。"
-                android:textSize="16dp"
-                android:textColor="#FFFFFF"
-                android:ellipsize="end"
-                android:singleLine="false"/>
+            android:background="@drawable/server_object_hint">
             <ImageButton
                 android:id="@+id/clear_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/ic_clear_white_18dp"/>
-        </LinearLayout>
+        </RelativeLayout>
         <EditText
             style="@style/Register_style"
             android:id="@+id/server_telephone"
@@ -69,6 +58,7 @@
             android:drawableLeft="@drawable/ic_phone_android_grey600_24dp"
             android:hint="请输入农户手机号"
             android:textColorHint="@color/whiteFont"
+            android:textColor="@color/whiteFont"
             android:maxLength="11"
             android:inputType="phone"
             />

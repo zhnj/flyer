@@ -75,7 +75,6 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private String url;
     private int deploySize;
     private List<FieldInfoPost> selectedFieldInfoPost=new ArrayList<FieldInfoPost>();
-    private List<FieldInfoPost> allFieldInfoPost=new ArrayList<FieldInfoPost>();
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     private StringBuffer[] s_deploy_1;//方案1路线
@@ -108,9 +107,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
         try{
             selectedFieldInfoPost.clear();
-            allFieldInfoPost.clear();
         }catch (Exception e) {}
-        allFieldInfoPost.addAll(mainMenu.fieldInfoPosts);
         setSelectedFieldInfoPost();
 
 
@@ -568,16 +565,17 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private void setSelectedFieldInfoPost()//默认所有的村庄路径全选存入selectedFieldInfoPost
     {
         int length1=mainMenu.selectedFieldInfo.size();
+        int length2 = mainMenu.fieldInfoPosts.size();
         for(int i=0;i<length1;i++)
         {
             String farmId=mainMenu.selectedFieldInfo.get(i).getFarm_id();
-            int length2 = allFieldInfoPost.size();
             for (int j = 0; j< length2; j++) {
-                FieldInfoPost fieldInfoPost1 = allFieldInfoPost.get(j);
+                FieldInfoPost fieldInfoPost1 = mainMenu.fieldInfoPosts.get(j);
                 if (fieldInfoPost1.getFarm_id().equals(farmId)) {
                     selectedFieldInfoPost.add(fieldInfoPost1);
                     int lp = selectedFieldInfoPost.size();
                     Log.e(TAG, "全部路线总数：" + lp + "：+l");
+                    break;
                 }
             }
         }

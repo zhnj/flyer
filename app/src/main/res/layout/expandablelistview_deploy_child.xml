@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="18dp"/>
     <TextView
         android:id="@+id/name"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="16dp"/>
     <TextView
         android:id="@+id/telephone"
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="16dp"/>
     <TextView
         android:id="@+id/fieldNumber"
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="16dp"/>
     <TextView
         android:id="@+id/univalenc"
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="16dp"/>
     <TextView
         android:id="@+id/site"
@@ -61,6 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/bootstrap_gray"
+        android:textColor="@color/whiteFont"
         android:textSize="16dp"/>
 </LinearLayout>
