@@ -128,6 +128,8 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
         view.findViewById(R.id.my_location).setOnClickListener(this);
+        countInfo=(Button)view.findViewById(R.id.infos);
+        countInfo.setOnClickListener(this);
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
 
@@ -150,10 +152,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_0_release_machine, null);
 
         infoView = mainMenu.getLayoutInflater().inflate(R.layout.require_pop, null);//需要改动
-        countInfo=(Button)infoView.findViewById(R.id.infos);
         expandableListView=(ExpandableListView)infoView.findViewById(R.id.fieldInfo_expand);
-        expandableListView.setOnClickListener(this);
-        countInfo.setOnClickListener(this);
         adapter=new BaseExpandableListAdapter() {
             @Override
             public int getGroupCount() {
@@ -229,29 +228,30 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                 final String farmId;
                 //获取对应序列的农田信息
                 if (mainMenu.selectedFieldInfo.size() >= 1) {
-                    fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
+                    fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);//农田信息
                     farmId = fieldInfo.getFarm_id();
-                    Log.e(TAG, "序号:" + farmId);
+                    Log.e(TAG, "农田序号:" + farmId);
 
                     if (convertView == null) {
-                        convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
+                        convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_query_parent, null);
                     }
-                    CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
                     LinearLayout textLayout = (LinearLayout) convertView.findViewById(R.id.expandParent_text);
-                    TextView tv1 = (TextView) convertView.findViewById(R.id.id);
-                    tv1.setText(String.valueOf(groupPosition + 1));
+                    TextView tv4 = (TextView) convertView.findViewById(R.id.field_getPhone);
+                    TextView tv5 = (TextView) convertView.findViewById(R.id.field_navigation);
                     try {
-                        TextView tv2 = (TextView) convertView.findViewById(R.id.site);
-                        tv2.setText(fieldInfo.getCropLand_site());
-//                        TextView tv3 = (TextView) convertView.findViewById(R.id.field_number);
-//                        tv3.setText(fieldInfo.getArea_num() + "亩");
+                        TextView tv1 = (TextView) convertView.findViewById(R.id.field_site);
+                        tv1.setText(fieldInfo.getCropLand_site());
+                        TextView tv2 = (TextView) convertView.findViewById(R.id.field_telephone);
+                        tv2.setText(fieldInfo.getTelephone());
+                        TextView tv3 = (TextView) convertView.findViewById(R.id.field_distance);
+                        tv3.setText("距您"+fieldInfo.getDistance() + "公里");
                     } catch (Exception e) {
-                        Log.e(TAG, "Error" + e.toString());
+                        Log.e(TAG, "布局错误1：" + e.toString());
                     }
 
                     textLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v) {//展开二级菜单
                             if (isExpanded) {
                                 expandableListView.collapseGroup(groupPosition);
                             } else {
@@ -259,8 +259,20 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                             }
                         }
                     });
+                    tv4.setOnClickListener(new View.OnClickListener() {//拨打电话
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    tv5.setOnClickListener(new View.OnClickListener() {//开始导航
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
                 }else {
-                    commonUtil.error_hint("未获取到农田信息，请返回上一个界面重新选择！");
+                    Log.e(TAG, "未知错误1：未获取到农田信息，请返回上一个界面重新选择！");
                 }
                 return convertView;
             }
@@ -655,4 +667,21 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         btn_popup.setFocusable(true);
         btn_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
+
+    private class callListener implements View.OnClickListener//拨打电话
+    {
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
+    private class navigationListener implements View.OnClickListener//开始导航
+    {
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
 }
