@@ -8,6 +8,7 @@
         android:layout_marginTop="@dimen/margin5"
         android:id="@+id/fieldInfo_expand"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:groupIndicator="@drawable/arrow_drop3">
     </ExpandableListView>
 </LinearLayout>

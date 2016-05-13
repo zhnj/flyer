@@ -36,7 +36,8 @@
         android:layout_marginTop="@dimen/margin10"
         android:id="@+id/intelligent_deploy_expand"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:groupIndicator="@drawable/arrow_drop3">
     </ExpandableListView>
 
 </LinearLayout>

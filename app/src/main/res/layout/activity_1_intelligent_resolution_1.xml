@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/arrange_button"
         android:layout_below="@+id/intelligent_arrange_top"
-        android:groupIndicator="@drawable/arrow_drop1">
+        android:groupIndicator="@drawable/arrow_drop3">
     </ExpandableListView>
     <Button
         android:id="@+id/arrange_button"
