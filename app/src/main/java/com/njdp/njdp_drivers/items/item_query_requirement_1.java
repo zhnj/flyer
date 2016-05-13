@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListAdapter;
@@ -84,6 +85,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private NetUtil netUtil;
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
+    private Button countInfo;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     private String token;
@@ -146,9 +148,12 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_0_release_machine, null);
+
         infoView = mainMenu.getLayoutInflater().inflate(R.layout.require_pop, null);//需要改动
-        expandableListView=(ExpandableListView)infoView.findViewById(R.id.infos);
+        countInfo=(Button)infoView.findViewById(R.id.infos);
+        expandableListView=(ExpandableListView)infoView.findViewById(R.id.fieldInfo_expand);
         expandableListView.setOnClickListener(this);
+        countInfo.setOnClickListener(this);
         adapter=new BaseExpandableListAdapter() {
             @Override
             public int getGroupCount() {
@@ -278,6 +283,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
             }
         };
         expandableListView.setAdapter(adapter);
+
         initBtnPopup();
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
