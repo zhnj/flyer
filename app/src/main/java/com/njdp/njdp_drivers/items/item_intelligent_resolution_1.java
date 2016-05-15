@@ -136,7 +136,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
             @Override
             public int getChildrenCount(int groupPosition) {
-                return 6;
+                return 1;
             }
 
             @Override
@@ -147,38 +147,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             @Override
             public Object getChild(int groupPosition, int childPosition) {
                 FieldInfo fieldInfo1= fieldInfoDao.getFieldInfo(groupPosition + 1);
-                if(childPosition==0)
-                {
-                    String s="农田面积："+fieldInfo1.getArea_num();
-                    return "农田面积："+fieldInfo1.getArea_num()+"亩";
-                } else if(childPosition==1)
-                {
-                    return "作物类型："+fieldInfo1.getCrops_kind();
-                } else if(childPosition==2)
-                {
-                    return "单价："+fieldInfo1.getUnit_price()+"元/亩";
-                } else if(childPosition==3)
-                {
-                    return "地块类型："+fieldInfo1.getBlock_type();
-                }else if(childPosition==4)
-                {
-                    Date date1=new Date();
-                    Date date2=new Date();
-                    try {
-                        date1 = format.parse(fieldInfo1.getStart_time());
-                        date2 = format.parse(fieldInfo1.getEnd_time());
-                    }catch (Exception e)
-                    {
-                        Log.e(TAG,e.toString());
-                    }
-                    return "起止日期："+format2.format(date1)+"---"+format2.format(date2);
-                }else if(childPosition==5)
-                {
-                    return "联系方式："+fieldInfo1.getUser_name();
-                }else
-                {
-                    return  null;
-                }
+                return fieldInfo1;
             }
 
             @Override
@@ -269,18 +238,31 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
             @Override
             public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+                FieldInfo fieldInfo1= fieldInfoDao.getFieldInfo(groupPosition + 1);
                 if (convertView == null) {
                     convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_child, null);
                 }
-                TextView tv=(TextView)convertView.findViewById(R.id.text);
-                tv.setText(String.valueOf(getChild(groupPosition, childPosition)));
-//                保留，左侧加上图标
-//                if (childPosition==5)
-//                {
-//                    ImageView image=(ImageView)convertView.findViewById(R.id.image);
-//                    image.setImageResource(R.drawable.ic_call_black_24dp);
-//                }
-                Log.e(TAG,String.valueOf(getChild(groupPosition, childPosition)));
+                TextView tv1=(TextView)convertView.findViewById(R.id.text1);
+                tv1.setText("农田面积："+fieldInfo1.getArea_num()+"亩");
+                TextView tv2=(TextView)convertView.findViewById(R.id.text2);
+                tv2.setText("作物类型："+fieldInfo1.getCrops_kind());
+                TextView tv3=(TextView)convertView.findViewById(R.id.text3);
+                tv3.setText("单价："+fieldInfo1.getUnit_price()+"元/亩");
+                TextView tv4=(TextView)convertView.findViewById(R.id.text4);
+                tv4.setText("地块类型："+fieldInfo1.getBlock_type());
+                Date date1=new Date();
+                Date date2=new Date();
+                try {
+                    date1 = format.parse(fieldInfo1.getStart_time());
+                    date2 = format.parse(fieldInfo1.getEnd_time());
+                }catch (Exception e)
+                {
+                    Log.e(TAG,e.toString());
+                }
+                TextView tv5=(TextView)convertView.findViewById(R.id.text5);
+                tv5.setText("起止日期：" + format2.format(date1) + "--" + format2.format(date2));
+                TextView tv6=(TextView)convertView.findViewById(R.id.text6);
+                tv6.setText("联系方式："+fieldInfo1.getUser_name());
                 return convertView;
             }
 
@@ -403,7 +385,8 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers=new HashMap<String,String>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded");
-                    return super.getHeaders();
+//                    return super.getHeaders();
+                    return headers;
                 }
             };
 

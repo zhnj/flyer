@@ -86,6 +86,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
     private Button countInfo;
+    private Button pop_countInfo;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     private String token;
@@ -149,7 +150,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
-        parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_0_release_machine, null);
+        parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_2_query_requirement_1, null);
 
         infoView = mainMenu.getLayoutInflater().inflate(R.layout.require_pop, null);//需要改动
         expandableListView=(ExpandableListView)infoView.findViewById(R.id.fieldInfo_expand);
@@ -161,7 +162,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
 
             @Override
             public int getChildrenCount(int groupPosition) {
-                return 5;
+                return 1;
             }
 
             @Override
@@ -172,34 +173,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
             @Override
             public Object getChild(int groupPosition, int childPosition) {
                 FieldInfo fieldInfo1= mainMenu.selectedFieldInfo.get(groupPosition);
-                if(childPosition==0)
-                {
-                    return "农田面积："+fieldInfo1.getArea_num()+"亩";
-                } else if(childPosition==1)
-                {
-                    return "作物类型："+fieldInfo1.getCrops_kind();
-                } else if(childPosition==2)
-                {
-                    return "单价："+fieldInfo1.getUnit_price()+"元/亩";
-                } else if(childPosition==3)
-                {
-                    return "地块类型："+fieldInfo1.getBlock_type();
-                }else if(childPosition==4)
-                {
-                    Date date1=new Date();
-                    Date date2=new Date();
-                    try {
-                        date1 = format.parse(fieldInfo1.getStart_time());
-                        date2 = format.parse(fieldInfo1.getEnd_time());
-                    }catch (Exception e)
-                    {
-                        Log.e(TAG,e.toString());
-                    }
-                    return "起止日期："+format2.format(date1)+"--"+format2.format(date2);
-                }else
-                {
-                    return  null;
-                }
+                return fieldInfo1;
             }
 
             @Override
@@ -276,12 +250,29 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
 
             @Override
             public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+                FieldInfo fieldInfo1= mainMenu.selectedFieldInfo.get(groupPosition);
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_child, null);
+                    convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_query_child, null);
                 }
-                TextView tv=(TextView)convertView.findViewById(R.id.text);
-                tv.setText(String.valueOf(getChild(groupPosition, childPosition)));
-                Log.e(TAG,String.valueOf(getChild(groupPosition, childPosition)));
+                TextView tv1=(TextView)convertView.findViewById(R.id.text1);
+                tv1.setText("农田面积："+fieldInfo1.getArea_num()+"亩");
+                TextView tv2=(TextView)convertView.findViewById(R.id.text2);
+                tv2.setText("作物类型："+fieldInfo1.getCrops_kind());
+                TextView tv3=(TextView)convertView.findViewById(R.id.text3);
+                tv3.setText("单价："+fieldInfo1.getUnit_price()+"元/亩");
+                TextView tv4=(TextView)convertView.findViewById(R.id.text4);
+                tv4.setText("地块类型："+fieldInfo1.getBlock_type());
+                Date date1=new Date();
+                Date date2=new Date();
+                try {
+                    date1 = format.parse(fieldInfo1.getStart_time());
+                    date2 = format.parse(fieldInfo1.getEnd_time());
+                }catch (Exception e)
+                {
+                    Log.e(TAG,e.toString());
+                }
+                TextView tv5=(TextView)convertView.findViewById(R.id.text5);
+                tv5.setText("起止日期：" + format2.format(date1) + "--" + format2.format(date2));
                 return convertView;
             }
 
@@ -294,6 +285,8 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         expandableListView.setAdapter(adapter);
 
         initBtnPopup();
+        pop_countInfo=(Button)infoView.findViewById(R.id.pop_infos);
+        pop_countInfo.setOnClickListener(this);
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
@@ -347,7 +340,12 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                 gps_MachineLocation(machine_id);
                 break;
             case R.id.infos:
-                btn_popup.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                btn_pop_flag=true;
+                btn_popup.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.pop_infos:
+                btn_pop_flag=false;
+                btn_popup.dismiss();
                 break;
         }
     }

@@ -3,11 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/expand_parent_bg"
     android:padding="@dimen/padding10">
     <LinearLayout
         android:id="@+id/expandParent_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_marginLeft="@dimen/margin30"
         android:orientation="vertical">
         <TextView
             android:id="@+id/field_site"
@@ -40,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin10"
         android:layout_alignParentRight="true">
         <TextView
             android:layout_width="wrap_content"
