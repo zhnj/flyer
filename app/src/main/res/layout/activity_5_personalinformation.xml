@@ -107,7 +107,7 @@
             style="@style/personalinformation_left"
             android:text="微信号" />
         <TextView
-            android:id="@+id/input_driver_driver_weixin"
+            android:id="@+id/input_driver_weixin"
             style="@style/personalinformation_right"
             android:text="weixin880"/>
     </LinearLayout>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -129,11 +131,12 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
         view.findViewById(R.id.my_location).setOnClickListener(this);
+        mainMenu=(slidingMenu)getActivity();
+        menu=mainMenu.drawer;
+
         countInfo=(Button)view.findViewById(R.id.infos);
         countInfo.setOnClickListener(this);
         countInfo.setText("共找到"+String.valueOf(mainMenu.selectedFieldInfo.size())+"块农田，点击查看");
-        mainMenu=(slidingMenu)getActivity();
-        menu=mainMenu.drawer;
 
         format = new SimpleDateFormat("yyyy-MM-dd");
         format2 = new SimpleDateFormat("yyyy/M/d");
@@ -220,13 +223,16 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                     } catch (Exception e) {
                         Log.e(TAG, "布局错误1：" + e.toString());
                     }
+                    final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
 
                     textLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {//展开二级菜单
                             if (isExpanded) {
+                                imv.setBackgroundResource(R.drawable.ic_arrow_drop_down_white_36dp);
                                 expandableListView.collapseGroup(groupPosition);
                             } else {
+                                imv.setBackgroundResource(R.drawable.ic_arrow_drop_up_white_36dp);
                                 expandableListView.expandGroup(groupPosition);
                             }
                         }

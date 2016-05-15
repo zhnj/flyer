@@ -3,47 +3,55 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/expand_parent_bg"
-    android:padding="@dimen/padding10">
+    android:background="@drawable/main_title"
+    android:padding="@dimen/padding10"
+    android:paddingTop="@dimen/padding20">
     <LinearLayout
         android:id="@+id/expandParent_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin10"
-        android:layout_marginLeft="@dimen/margin30"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/field_site"
-            android:text="河北省保定市徐水大庄乡"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/arrow_drop_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/whiteFont"
-            android:textSize="@dimen/font18"
-            />
-        <TextView
-            android:id="@+id/field_telephone"
-            android:layout_width="wrap_content"
+            android:background="@drawable/ic_arrow_drop_down_white_36dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin10"
-            android:text="13662621818"
-            android:textColor="@color/whiteFont"
-            android:textSize="@dimen/font16"/>
-        <TextView
-            android:id="@+id/field_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin10"
-            android:text="距您50公里"
-            android:drawableLeft="@drawable/ic_place_white_18dp"
-            android:textColor="@color/whiteFont"
-            android:textSize="@dimen/font16"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/field_site"
+                android:text="河北省保定市徐水大庄乡"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/whiteFont"
+                android:textSize="@dimen/font18"
+                />
+            <TextView
+                android:id="@+id/field_telephone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin10"
+                android:text="13662621818"
+                android:textColor="@color/whiteFont"
+                android:textSize="@dimen/font16"/>
+            <TextView
+                android:id="@+id/field_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin10"
+                android:text="距您50公里"
+                android:drawableLeft="@drawable/ic_place_white_18dp"
+                android:textColor="@color/whiteFont"
+                android:textSize="@dimen/font16"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin10"
         android:layout_alignParentRight="true">
         <TextView
             android:layout_width="wrap_content"

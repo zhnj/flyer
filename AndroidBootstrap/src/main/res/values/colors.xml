@@ -11,7 +11,7 @@
     <color name="bootstrap_gray_lightest">#f7f7f9</color>
 
     <!-- Brand -->
-    <color name="bootstrap_brand_primary">#0275d8</color>
+    <color name="bootstrap_brand_primary">#174464</color>
     <color name="bootstrap_brand_success">#03601F</color>
     <color name="bootstrap_brand_info">#03601F</color>
     <color name="bootstrap_brand_warning">#f0ad4e</color>

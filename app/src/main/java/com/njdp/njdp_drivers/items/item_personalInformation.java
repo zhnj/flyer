@@ -4,7 +4,6 @@ package com.njdp.njdp_drivers.items;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.LruBitmapCache;
-import com.njdp.njdp_drivers.db.SQLiteHandler;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
@@ -34,7 +32,6 @@ import com.njdp.njdp_drivers.util.NetUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,8 +49,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private TextView t_name;
     private TextView t_licence_plate;
     private TextView t_telephone;
-    private TextView t_owner_type;
-    private TextView t_machine_model;
+    private TextView t_weixin;
+    private TextView t_qq;
     private TextView t_gender;
     private TextView t_region;
     private LruBitmapCache loadImage;
@@ -66,6 +63,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private SessionManager sessionManager;
     private String path;
     private String token;
+    private String machine_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,8 +78,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         this.t_name=(TextView) view.findViewById(R.id.input_driver_name);
         this.t_licence_plate=(TextView) view.findViewById(R.id.input_driver_licence_plate);
         this.t_telephone=(TextView) view.findViewById(R.id.input_driver_telephone);
-        this.t_owner_type=(TextView) view.findViewById(R.id.input_driver_owner_type);
-        this.t_machine_model=(TextView) view.findViewById(R.id.input_driver_machine_model);
+        this.t_weixin =(TextView) view.findViewById(R.id.input_driver_weixin);
+        this.t_qq =(TextView) view.findViewById(R.id.input_driver_qq);
         this.t_gender=(TextView) view.findViewById(R.id.input_driver_gender);
         this.t_region=(TextView) view.findViewById(R.id.input_driver_region);
         title_Image.setOnClickListener(this);
@@ -90,11 +88,20 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         menu=mainMenu.drawer;
         driverDao=new DriverDao(getActivity());
         sessionManager=new SessionManager(getActivity());
+        token=sessionManager.getToken();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
         loadImage=new LruBitmapCache();
 
+
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            Log.e(TAG, machine_id);
+        }catch (Exception e)
+        {
+            Log.e(TAG,e.toString());
+        }
 
         try {
             driver = driverDao.getDriver(1);
@@ -179,9 +186,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 protected Map<String, String> getParams() {
                     // Posting parameters to login url
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("name", driver.getName());
-                    params.put("license_plater", driver.getMachine_id());
-                    params.put("password", driver.getPassword());
+                    params.put("machine_id", driver.getMachine_id());
                     params.put("token", token);
 
                     return netUtil.checkParams(params);
@@ -210,7 +215,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
                     // Now store the user in SQLite
                     JSONObject s_driver = jObj.getJSONObject("Driver");
-                    driver.setImage_url(s_driver.getString("ImageUrl"));
                     driver.setName(s_driver.getString("Name"));
                     driver.setTelephone(s_driver.getString("Telephone"));
                     driver.setMachine_id(s_driver.getString("License_plater"));
@@ -252,8 +256,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_licence_plate.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
         t_gender.setText(driver.getTelephone());
-        t_owner_type.setText(driver.getWechart());
-        t_machine_model.setText(driver.getQQ());
+        t_weixin.setText(driver.getWechart());
+        t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite());
     }
 }
