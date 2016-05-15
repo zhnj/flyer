@@ -10,7 +10,7 @@
         android:text="共找到13块田，点击关闭"
         android:layout_width="match_parent"
         android:textColor="@color/whiteFont"
-        android:background="@drawable/main_title"
+        android:background="@android:color/transparent"
         android:layout_height="@dimen/height40"
         android:layout_alignParentBottom="true"
         />
@@ -18,9 +18,7 @@
         android:id="@+id/fieldInfo_expand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/expan_bg"
-        android:layout_marginLeft="@dimen/margin5"
-        android:layout_marginRight="@dimen/margin5"
+        android:background="@drawable/main_title"
         android:groupIndicator="@drawable/arrow_drop3">
     </ExpandableListView>
 </LinearLayout>
