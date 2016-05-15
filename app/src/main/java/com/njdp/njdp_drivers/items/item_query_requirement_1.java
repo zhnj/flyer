@@ -131,6 +131,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         view.findViewById(R.id.my_location).setOnClickListener(this);
         countInfo=(Button)view.findViewById(R.id.infos);
         countInfo.setOnClickListener(this);
+        countInfo.setText("共找到"+String.valueOf(mainMenu.selectedFieldInfo.size())+"块农田，点击查看");
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
 
@@ -287,6 +288,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         initBtnPopup();
         pop_countInfo=(Button)infoView.findViewById(R.id.pop_infos);
         pop_countInfo.setOnClickListener(this);
+        pop_countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
