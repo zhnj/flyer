@@ -40,6 +40,8 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +53,9 @@ import java.util.List;
 import java.util.Map;
 
 import bean.Driver;
+import bean.FieldInfo;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+import okhttp3.Call;
 
 import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
@@ -92,9 +96,10 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private CommonUtil commonUtil;
     private Gson gson;
     private SessionManager sessionManager;
+    private File tempFile;
     private String path;
     private String token;
-    private String machine_id;
+    private String netImageUrl;
     private String fix_info_title;
     private String fix_info;//需要修改的个人信息
     private Map<String,String> fix_params=new HashMap<String,String>();
@@ -184,15 +189,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         gson=new Gson();
         loadImage=new LruBitmapCache();
 
-
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            Log.e(TAG, machine_id);
-        }catch (Exception e)
-        {
-            Log.e(TAG,e.toString());
-        }
-
         try {
             driver = driverDao.getDriver(1);
         }catch (Exception e) {
@@ -223,7 +219,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         fix_params.clear();
         fixValidation.clear();
-        fix_params.put("machine_id", machine_id);
         fix_params.put("token", token);
         switch (v.getId()) {
             case R.id.getback:
@@ -266,7 +261,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 fix_popup.showAtLocation(parentView, Gravity.CENTER, 0, 0);
                 break;
             case R.id.driver_region:
-                fix_params.put("Machine_region", fix_info);
+                fix_params.put("person_photo", fix_info);
                 break;
             case R.id.fix_getback:
                 fix_popup.dismiss();
@@ -276,13 +271,13 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 switch (fix_info_flag)
                 {
                     case 1:
-                        fix_params.put("Machine_name", fix_info);
+                        fix_params.put("person_name", fix_info);
                         break;
                     case 3:
-                        fix_params.put("Machine_weixin", fix_info);
+                        fix_params.put("person_weixin", fix_info);
                         break;
                     case 4:
-                        fix_params.put("Machine_qq:", fix_info);
+                        fix_params.put("person_qq:", fix_info);
                         break;
                 }
                 check_fix_info();
@@ -331,13 +326,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
             //服务器请求
             StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_LOGIN, new mSuccessListener(), mainMenu.mErrorListener) {
+                    AppConfig.URL_QUERYPERSONINFO, new mSuccessListener(), mainMenu.mErrorListener) {
 
                 @Override
                 protected Map<String, String> getParams() {
                     // Posting parameters to login url
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("machine_id",machine_id);
                     params.put("token", token);
 
                     return netUtil.checkParams(params);
@@ -365,20 +359,18 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 if (!error) {
 
                     // Now store the user in SQLite
-                    JSONObject s_driver = jObj.getJSONObject("Driver");
-                    driver.setName(s_driver.getString("Name"));
-                    driver.setTelephone(s_driver.getString("Telephone"));
-                    driver.setMachine_id(s_driver.getString("License_plater"));
-                    driver.setWechart(s_driver.getString("Wechart"));
-                    driver.setQQ(s_driver.getString("QQ"));
-                    driver.setProvince(s_driver.getString("Province"));
-                    driver.setCity(s_driver.getString("City"));
-                    driver.setCounty(s_driver.getString("County"));
-                    driver.setVillage(s_driver.getString("Village"));
+                    JSONObject s_driver = jObj.getJSONObject("result");
+                    netImageUrl=s_driver.getString("person_photo");
+                    driver.setName(s_driver.getString("person_name"));
+                    driver.setTelephone(s_driver.getString("person_phone"));
+                    driver.setWechart(s_driver.getString("person_weixin"));
+                    driver.setQQ(s_driver.getString("person_qq"));
+                    driver.setSite(s_driver.getString("person_address"));
                     driver.setId(1);
+                    tempFile= commonUtil.getPath();
+                    path=tempFile.getAbsolutePath()+"/temp/njdp_user_image.png";
+                    driver.setImage_url(path);//设置头像本地存储路径
 
-                    // Inserting row in users table
-//                    db.addDriver(driver);
                     driverDao.add(driver);
                     showDriverData(driver);
 
@@ -415,7 +407,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         } else {
             //服务器请求
             StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_LOGIN, new fixSuccessListener(), mainMenu.mErrorListener) {
+                    AppConfig.URL_FIXPERSONINFO, new fixSuccessListener(), mainMenu.mErrorListener) {
 
                 @Override
                 protected Map<String, String> getParams() {
@@ -479,7 +471,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     private void showDriverData(Driver driver)//显示用户数据
     {
-        Bitmap bitmap = loadImage.getBitmap(driver.getImage_url());
+        Bitmap bitmap = loadImage.getBitmap(netImageUrl);
         Bitmap zooBitmap=commonUtil.zoomBitmap(bitmap,300,300);
         commonUtil.saveBitmap(mainMenu, bitmap);
         title_Image.setImageBitmap(zooBitmap);
@@ -571,8 +563,43 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             if(tag)
             {
                 title_Image.setImageBitmap(mBitmap);
+                fix_iamge(new File(path));
                 //上传头像
             }
         }
+    }
+
+    private void fix_iamge(File file)
+    {
+        OkHttpUtils.post()
+                .url( AppConfig.URL_FIXPERSONINFO)
+                .params(fix_params)
+                .addFile("person_photo", "njdp_user_image.png",file)
+                .addHeader("content-disposition","form-data")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        Log.e(TAG, "3 Connect Error: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.e(TAG, "UploadImage:" + response);
+                            JSONObject jObj = new JSONObject(response);
+                            int status = jObj.getInt("status");
+                            if (status == 0) {
+                                String msg=jObj.getString("result");
+                                Log.e(TAG, "UploadImage response：" + msg);
+                            } else {
+                                String errorMsg = jObj.getString("error_msg");
+                                Log.e(TAG, "1 Json error：response错误：" + errorMsg);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "2 Json error：response错误： " + e.getMessage());
+                        }
+                    }
+                });
     }
 }

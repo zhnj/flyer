@@ -132,7 +132,7 @@ public class CommonUtil {
             fOut.close();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "头像保存失败！请重试", Toast.LENGTH_SHORT).show();
+            error_hint("头像保存失败！请重试");
             return false;
         }
         return true;

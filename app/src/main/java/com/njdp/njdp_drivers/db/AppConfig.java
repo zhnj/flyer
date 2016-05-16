@@ -31,6 +31,10 @@ public class AppConfig {
 
     public static String URL_JOBHISTORY= URL_IP+"app/farmMachineHistory/index";//作业历史查询
 
+    public static String URL_QUERYPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
+
+    public static String URL_FIXPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
+
 
 
 

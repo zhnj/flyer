@@ -139,4 +139,8 @@ public class Driver {
         return province+city+county+village;
     }
 
+    public void setSite(String site) {
+        this.site = site;
+    }
+
 }
