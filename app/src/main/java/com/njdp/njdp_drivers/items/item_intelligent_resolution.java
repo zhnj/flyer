@@ -208,6 +208,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void run() {
                 hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                 hintPopup_flag = true;
+                lp.alpha = 0.7f;
             }
         });
 
@@ -309,18 +310,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         locationService.start();// 定位SDK
 
         /////////////////地图代码结束////////////////////////
-
-
-        //连接服务器自动定位
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            Log.e(TAG, machine_id);
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
-        gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
-
-
 
         //////////////////////////////地图代码///////////////
         //定义Maker坐标点
@@ -720,10 +709,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         commonUtil.error_hint("数据加载完成");
                     }
                 } else {
-
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("服务器数据错误1：response错误:" + errorMsg);
+                    commonUtil.error_hint(errorMsg);
                 }
             } catch (JSONException e) {
                 // JSON error
@@ -1161,6 +1149,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             hintPopup_flag=false;
             lp.alpha = 1f;
             mainMenu.getWindow().setAttributes(lp);
+            //连接服务器自动定位
+            try {
+                machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+                Log.e(TAG, machine_id);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+            gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
         }
     }
 
@@ -1169,7 +1165,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         hintPopup = new PopupWindow(hintView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         hintPopup.setAnimationStyle(R.style.popWindow_fade);
-        hintPopup.setOutsideTouchable(true);
+        hintPopup.setOutsideTouchable(false);
         hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 

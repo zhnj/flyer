@@ -117,12 +117,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
-        view.findViewById(R.id.driver_name);
-        view.findViewById(R.id.driver_machine_id);
-        view.findViewById(R.id.driver_telephone);
-        view.findViewById(R.id.driver_weixin);
-        view.findViewById(R.id.driver_qq);
-        view.findViewById(R.id.driver_region);
+        view.findViewById(R.id.driver_name).setOnClickListener(this);
+        view.findViewById(R.id.driver_machine_id).setOnClickListener(this);
+        view.findViewById(R.id.driver_telephone).setOnClickListener(this);
+        view.findViewById(R.id.driver_weixin).setOnClickListener(this);
+        view.findViewById(R.id.driver_qq).setOnClickListener(this);
+        view.findViewById(R.id.driver_region).setOnClickListener(this);
         this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
         this.l_machine_id=(LinearLayout)view.findViewById(R.id.driver_machine_id);
         this.l_telephone=(LinearLayout)view.findViewById(R.id.driver_telephone);
