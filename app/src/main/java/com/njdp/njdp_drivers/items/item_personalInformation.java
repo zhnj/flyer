@@ -154,12 +154,14 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         btn_fix_save.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (!commonUtil.isempty(edt_fix_input))
                 {
                     btn_fix_save.setClickable(true);
@@ -169,11 +171,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     btn_fix_save.setClickable(false);
                     btn_fix_save.setEnabled(false);
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });//监听输入内容，判断是否禁用保存按钮
         fixView.findViewById(R.id.fix_getback).setOnClickListener(this);

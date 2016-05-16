@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:id="@+id/information_top"
         android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/main_title">
@@ -54,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height30"
             android:inputType="text"
+            android:textColor="@color/whiteFont"
             android:background="@drawable/save_edit"
             android:textCursorDrawable="@drawable/login_cursor"/>
         <TextView
