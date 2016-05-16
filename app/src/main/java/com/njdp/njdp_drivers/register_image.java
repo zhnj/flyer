@@ -29,7 +29,6 @@ import com.njdp.njdp_drivers.changeDefault.NewClickableSpan;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
-import com.njdp.njdp_drivers.db.SQLiteHandler;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
@@ -61,7 +60,6 @@ public class register_image extends AppCompatActivity {
     private String s2="隐私协议";
     private ProgressDialog pDialog;
     private NetUtil netUtil;
-    private CommonUtil commonUtil;
     private SessionManager session;
     private DriverDao driverDao;
     private Uri imageUri;
@@ -72,7 +70,7 @@ public class register_image extends AppCompatActivity {
     private static final int CROP_PHOTO_CODE = 002;
     private ArrayList<String> defaultDataArray;
     public boolean IsSetImage=false;
-    private CommonUtil nutil=new CommonUtil(register_image.this);
+    private CommonUtil commonUtil;
     private static final String TAG = register.class.getSimpleName();
     private File tempFile;
     private String path;//用户头像路径
@@ -133,7 +131,7 @@ public class register_image extends AppCompatActivity {
         notice.setHighlightColor(00000000);
 
         //设置头像本地存储路径
-        tempFile=nutil.getPath();
+        tempFile= commonUtil.getPath();
         path=tempFile.getAbsolutePath()+"/temp/njdp_user_image.png";
         driver.setImage_url(path);
 
@@ -229,7 +227,7 @@ public class register_image extends AppCompatActivity {
         Bundle bundle = picdata.getExtras();
         if (null != bundle) {
             Bitmap mBitmap = bundle.getParcelable("data");
-            boolean tag= nutil.saveBitmap(register_image.this, mBitmap);
+            boolean tag= commonUtil.saveBitmap(register_image.this, mBitmap);
             if(tag)
             {
                 userImage.setImageBitmap(mBitmap);

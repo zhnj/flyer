@@ -284,8 +284,8 @@ public class slidingMenu extends AppCompatActivity
                 addOrShowFragment(item5);
                 break;
             case 5:
-//                item6 = new item_personalInformation();
-//                addOrShowFragment(item5);
+                item6 = new item_personalInformation();
+                addOrShowFragment(item6);
                 break;
             case 6:
 //                item7= new item_repair_station();

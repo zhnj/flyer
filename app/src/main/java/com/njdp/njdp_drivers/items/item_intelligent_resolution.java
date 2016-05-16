@@ -203,10 +203,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         initHintPopup();
         hintView.findViewById(R.id.get_start).setOnClickListener(this);
         hintPopup.setOnDismissListener(new hintPopDisListener());
-        //打开界面出现提示
-        hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        hintPopup_flag=true;
-
+        parentView.post(new Runnable() {
+            @Override
+            public void run() {
+                hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                hintPopup_flag = true;
+            }
+        });
 
         //下拉菜单选择项初始化
         //范围
@@ -381,13 +384,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    if(popup_flag)
-                    {
-                        popup_flag=false;
+                    if (popup_flag) {
+                        popup_flag = false;
                         datePickerPop.dismiss();
                         return true;
-                    }else
-                    {
+                    } else {
                         mainMenu.finish();
                         return true;
                     }
