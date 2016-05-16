@@ -212,6 +212,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         });
 
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            Log.e(TAG, machine_id);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+
         //下拉菜单选择项初始化
         //范围
         areaAdapter= new SpinnerAdapter_up_white_1(mainMenu,getResources().getStringArray(R.array.area));
@@ -332,9 +339,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             case R.id.menu:
                 menu.openDrawer(Gravity.LEFT);
                 break;
-            case R.id.my_location:
-                gps_MachineLocation(machine_id);//定位我的位置
-                break;
             case R.id.arrange_button:
 //                //////////////////测试,需要替换//////////////////////////////////////////////////
 //                Search();
@@ -377,7 +381,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         popup_flag = false;
                         datePickerPop.dismiss();
                         return true;
-                    } else {
+                    } else if(hintPopup_flag){
+
+                    }else{
                         mainMenu.finish();
                         return true;
                     }
@@ -822,6 +828,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
+                commonUtil.error_hint("GPS定位成功");
             }catch (Exception e)
             {
                 commonUtil.error_hint("自动定位失败，请重试！");
@@ -1063,12 +1070,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
-            GPS_latitude=String.valueOf(curlocation.getLatitude());
-            GPS_longitude=String.valueOf( curlocation.getLongitude());
-            LatLng ll = new LatLng(curlocation.getLatitude(),
-                    curlocation.getLongitude());
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-            mBaiduMap.animateMapStatus(u);
+            gps_MachineLocation(machine_id);//定位我的位置
+//            GPS_latitude=String.valueOf(curlocation.getLatitude());
+//            GPS_longitude=String.valueOf( curlocation.getLongitude());
+//            LatLng ll = new LatLng(curlocation.getLatitude(),
+//                    curlocation.getLongitude());
+//            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//            mBaiduMap.animateMapStatus(u);
 
         }
     }
@@ -1150,20 +1158,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             lp.alpha = 1f;
             mainMenu.getWindow().setAttributes(lp);
             //连接服务器自动定位
-            try {
-                machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-                Log.e(TAG, machine_id);
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-            }
             gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
         }
     }
 
     private void initHintPopup()//初始化提示信息弹窗
     {
-        hintPopup = new PopupWindow(hintView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        hintPopup = new PopupWindow(hintView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         hintPopup.setAnimationStyle(R.style.popWindow_fade);
         hintPopup.setOutsideTouchable(false);
         hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));

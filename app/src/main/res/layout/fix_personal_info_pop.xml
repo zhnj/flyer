@@ -53,6 +53,7 @@
             android:id="@+id/fix_input_info"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height30"
+            android:inputType="text"
             android:background="@drawable/save_edit"
             android:textCursorDrawable="@drawable/login_cursor"/>
         <TextView

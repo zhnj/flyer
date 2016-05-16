@@ -288,7 +288,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                         fix_params.put("Machine_qq:", fix_info);
                         break;
                 }
-                fix_popup.dismiss();
                 check_fix_info();
                 break;
             default:
@@ -455,11 +454,24 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
                     String errorMsg=jObj.getString("result");
                     Log.e(TAG,"修改结果："+errorMsg);
+                    switch (fix_info_flag)
+                    {
+                        case 1:
+                            t_name.setText(fix_info);
+                            break;
+                        case 3:
+                            t_weixin.setText(fix_info);
+                            break;
+                        case 4:
+                            t_qq.setText(fix_info);
+                            break;
+                    }
+                    fix_popup.dismiss();
                 } else {
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("保存失败重试");
+                    commonUtil.error_hint("保存失败请重试");
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "2 Json error：response错误" + e.getMessage());
@@ -493,9 +505,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private void initFixPopup()//初始化修改信息弹窗
     {
         fix_popup = new PopupWindow(fixView, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        fix_popup.setAnimationStyle(R.style.popWindow_slide);
-        fix_popup.setOutsideTouchable(true);
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        fix_popup.setAnimationStyle(R.style.slideAnimation_bottom);
+        fix_popup.setFocusable(true);
         fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 
