@@ -51,14 +51,6 @@
             android:id="@+id/information_div_title_image"
             circleImageView:civ_border_width="2dp"
             circleImageView:civ_border_color="#ffffff"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/information_div_title_name"
-            android:text="周二"
-            android:textSize="@dimen/font22"
-            android:textColor="@android:color/white"
-            android:gravity="center_horizontal"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +67,7 @@
     <View
         style="@style/personalinformation_line"/>
     <LinearLayout
-        android:id="@+id/driver_licence_plate"
+        android:id="@+id/driver_machine_id"
         style="@style/personalinformation_linearlayout">
         <TextView
             style="@style/personalinformation_left"
@@ -126,19 +118,7 @@
     </LinearLayout>
     <View
         style="@style/personalinformation_line1"/>
-    <LinearLayout
-        android:id="@+id/driver_gender"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="性别" />
-            <TextView
-                android:id="@+id/input_driver_gender"
-                style="@style/personalinformation_right"
-                android:text="男"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line"/>
+
     <LinearLayout
         android:id="@+id/driver_region"
         style="@style/personalinformation_linearlayout">
@@ -148,7 +128,7 @@
             <TextView
                 android:id="@+id/input_driver_region"
                 style="@style/personalinformation_right"
-                android:text="河北省保定市徐水县大庄乡"/>
+                android:text="河北省保定市徐水县"/>
     </LinearLayout>
     <View
         style="@style/personalinformation_line2"/>

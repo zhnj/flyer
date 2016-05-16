@@ -603,7 +603,6 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         btn_popup.setAnimationStyle(R.style.popWindow_fade);
         btn_popup.setOutsideTouchable(true);
-        btn_popup.setOutsideTouchable(true);
         btn_popup.setFocusable(true);
         btn_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
         tv_machineId=(TextView)releaseView.findViewById(R.id.tv_machine_id);

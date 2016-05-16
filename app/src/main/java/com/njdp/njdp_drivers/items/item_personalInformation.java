@@ -1,23 +1,33 @@
 package com.njdp.njdp_drivers.items;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
@@ -25,6 +35,7 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.LruBitmapCache;
 import com.njdp.njdp_drivers.db.SessionManager;
+import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
@@ -44,17 +55,33 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     private slidingMenu mainMenu;
     private DrawerLayout menu;
+    private View parentView;//主View
+    ///////////////////////////////////////用户修改信息弹窗////////////////////////////////////////
+    private PopupWindow fix_popup;
+    private View fixView;
+    private boolean fix_popup_flag=false;
+    private EditText edt_fix_input;
+    private TextView t_fix_hint;
+    private TextView t_fix_title;
+    private Button btn_fix_save;
+    private int fix_info_flag;
+    private AwesomeValidation fixValidation=new AwesomeValidation(ValidationStyle.BASIC);
+    ///////////////////////////////////////用户修改信息弹窗////////////////////////////////////////
     private ImageView title_Image;
+    private LinearLayout l_name;
+    private LinearLayout l_machine_id;
+    private LinearLayout l_telephone;
+    private LinearLayout l_weixin;
+    private LinearLayout l_qq;
+    private LinearLayout l_region;
     private TextView title_name;
     private TextView t_name;
-    private TextView t_licence_plate;
+    private TextView t_machine_id;
     private TextView t_telephone;
     private TextView t_weixin;
     private TextView t_qq;
-    private TextView t_gender;
     private TextView t_region;
     private LruBitmapCache loadImage;
-    //    private SQLiteHandler db;
     private DriverDao driverDao;
     private NetUtil netUtil;
     private Driver driver;
@@ -64,6 +91,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private String path;
     private String token;
     private String machine_id;
+    private String fix_info_title;
+    private String fix_info;//需要修改的个人信息
+    private Map<String,String> fix_params=new HashMap<String,String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,19 +103,70 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
+        view.findViewById(R.id.driver_name);
+        view.findViewById(R.id.driver_machine_id);
+        view.findViewById(R.id.driver_telephone);
+        view.findViewById(R.id.driver_weixin);
+        view.findViewById(R.id.driver_qq);
+        view.findViewById(R.id.driver_gender);
+        view.findViewById(R.id.driver_region);
+        this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
+        this.l_machine_id=(LinearLayout)view.findViewById(R.id.driver_machine_id);
+        this.l_telephone=(LinearLayout)view.findViewById(R.id.driver_telephone);
+        this.l_weixin=(LinearLayout)view.findViewById(R.id.driver_weixin);
+        this.l_qq=(LinearLayout)view.findViewById(R.id.driver_qq);
+        this.l_region=(LinearLayout)view.findViewById(R.id.driver_region);
         this.title_Image=(ImageView) view.findViewById(R.id.information_div_title_image);
         this.title_name=(TextView) view.findViewById(R.id.information_div_title_name);
         this.t_name=(TextView) view.findViewById(R.id.input_driver_name);
-        this.t_licence_plate=(TextView) view.findViewById(R.id.input_driver_licence_plate);
+        this.t_machine_id =(TextView) view.findViewById(R.id.input_driver_licence_plate);
         this.t_telephone=(TextView) view.findViewById(R.id.input_driver_telephone);
         this.t_weixin =(TextView) view.findViewById(R.id.input_driver_weixin);
         this.t_qq =(TextView) view.findViewById(R.id.input_driver_qq);
-        this.t_gender=(TextView) view.findViewById(R.id.input_driver_gender);
         this.t_region=(TextView) view.findViewById(R.id.input_driver_region);
         title_Image.setOnClickListener(this);
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
+        parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_5_personalinformation, null);
+
+        fixView = mainMenu.getLayoutInflater().inflate(R.layout.fix_personal_info_pop, null);
+        initFixPopup();
+        fixView.findViewById(R.id.fix_save_change).setOnClickListener(this);
+        this.edt_fix_input =(EditText)fixView.findViewById(R.id.fix_input_info);
+        this.t_fix_hint=(TextView)fixView.findViewById(R.id.fix_hint_info);
+        this.t_fix_title=(TextView)fixView.findViewById(R.id.fix_title);
+        this.btn_fix_save=(Button)fixView.findViewById(R.id.fix_save_change);
+        btn_fix_save.setClickable(false);
+        btn_fix_save.setEnabled(false);
+        btn_fix_save.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (!commonUtil.isempty(edt_fix_input))
+                {
+                    btn_fix_save.setClickable(true);
+                    btn_fix_save.setEnabled(true);
+                }else
+                {
+                    btn_fix_save.setClickable(false);
+                    btn_fix_save.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });//监听输入内容，判断是否禁用保存按钮
+        fixView.findViewById(R.id.fix_getback).setOnClickListener(this);
+        fix_popup.setOnDismissListener(new fixPopDisListener());
+
         driverDao=new DriverDao(getActivity());
         sessionManager=new SessionManager(getActivity());
         token=sessionManager.getToken();
@@ -127,11 +208,14 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }else {
             intiData(driver);
         }
-
         return view;
     }
 
     public void onClick(View v) {
+        fix_params.clear();
+        fixValidation.clear();
+        fix_params.put("machine_id", machine_id);
+        fix_params.put("token", token);
         switch (v.getId()) {
             case R.id.getback:
                 mainMenu.finish();
@@ -140,6 +224,58 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 menu.openDrawer(Gravity.LEFT);
                 break;
             case R.id.information_div_title_image:
+                break;
+            case R.id.driver_name:
+                fix_info_flag=1;
+                t_fix_title.setText("修改姓名");
+                t_fix_hint.setText("请输入姓名");
+                fixValidation.addValidation(edt_fix_input, "^[\\u4e00-\\u9fa5]+$", getResources().getString(R.string.err_name));
+                fix_popup.showAtLocation(parentView, Gravity.LEFT, 0, 0);
+                break;
+            case R.id.driver_machine_id:
+//                fix_info_title="修改农机编号";
+//                fix_info="请输入农机编号";
+                break;
+            case R.id.driver_telephone:
+                fix_info_flag=2;
+//                fix_info_title="修改手机号";
+//                fix_info="请输入新的手机号";
+                break;
+            case R.id.driver_weixin:
+                fix_info_flag=3;
+                t_fix_title.setText("修改微信号");
+                t_fix_hint.setText("请输入微信号");
+                fixValidation.addValidation(edt_fix_input, "^[a-zA-Z\\d_]{5,}$", "请输入正确的微信号");
+                fix_popup.showAtLocation(parentView, Gravity.LEFT, 0, 0);
+                break;
+            case R.id.driver_qq:
+                fix_info_flag=4;
+                t_fix_title.setText("修改QQ号");
+                t_fix_hint.setText("请输入QQ号");
+                fixValidation.addValidation(edt_fix_input, "[1-9][0-9]{4,14}", "请输入正确的QQ号");
+                fix_popup.showAtLocation(parentView, Gravity.LEFT, 0, 0);
+                break;
+            case R.id.driver_region:
+                fix_params.put("Machine_region", fix_info);
+                break;
+            case R.id.fix_getback:
+                fix_popup.dismiss();
+                break;
+            case R.id.fix_save_change:
+                fix_info=edt_fix_input.getText().toString().trim();
+                switch (fix_info_flag)
+                {
+                    case 1:
+                        fix_params.put("Machine_name", fix_info);
+                        break;
+                    case 3:
+                        fix_params.put("Machine_weixin", fix_info);
+                        break;
+                    case 4:
+                        fix_params.put("Machine_qq:", fix_info);
+                        break;
+                }
+                check_fix_info();
                 break;
             default:
                 break;
@@ -156,8 +292,13 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    mainMenu.finish();
-                    return true;
+                    if (fix_popup_flag) {
+                        fix_popup.dismiss();
+                        return true;
+                    } else {
+                        mainMenu.finish();
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -179,14 +320,14 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         } else {
 
             //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.GET,
-                    AppConfig.URL_LOGIN, mSuccessListener, mainMenu.mErrorListener) {
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.URL_LOGIN, new mSuccessListener(), mainMenu.mErrorListener) {
 
                 @Override
                 protected Map<String, String> getParams() {
                     // Posting parameters to login url
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("machine_id", driver.getMachine_id());
+                    params.put("machine_id",machine_id);
                     params.put("token", token);
 
                     return netUtil.checkParams(params);
@@ -198,8 +339,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
     }
 
-    //响应服务器成功
-    private Response.Listener<String> mSuccessListener = new Response.Listener<String>() {
+    //初始化用户信息响应服务器成功
+    private class mSuccessListener implements Response.Listener<String>{
 
         @Override
         public void onResponse(String response) {
@@ -244,8 +385,76 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
     };
 
-    //显示用户数据
-    private void showDriverData(Driver driver)
+    private void check_fix_info()
+    {
+        if(commonUtil.isempty(edt_fix_input)){
+            commonUtil.error_hint("请输入完整的信息");
+        }else if (fixValidation.validate())
+        {
+            uploadInfo();
+        }
+    }
+
+    private void uploadInfo()//上传修改用户信息
+    {
+        String tag_string_req = "req_fix_info";
+        if (netUtil.checkNet(mainMenu) == false) {
+            mainMenu.hideDialog();
+            commonUtil.error_hint("网络连接错误");
+            return;
+        } else {
+            //服务器请求
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.URL_LOGIN, new fixSuccessListener(), mainMenu.mErrorListener) {
+
+                @Override
+                protected Map<String, String> getParams() {
+                    return netUtil.checkParams(fix_params);
+                }
+            };
+
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+    }
+
+    private class fixSuccessListener implements  Response.Listener<String>//信息修改成功响应
+    {
+
+        @Override
+        public void onResponse(String response) {
+            try {
+                Log.e("PersonalInfo fix_back",response);
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status==1) {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    Intent intent = new Intent(mainMenu, login.class);
+                    startActivity(intent);mainMenu.finish();
+                } else if(status==0){
+
+                    String errorMsg=jObj.getString("result");
+                    Log.e(TAG,"修改结果："+errorMsg);
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint("服务器数据错误1：response错误:" + errorMsg);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "2 Json error：response错误" + e.getMessage());
+                commonUtil.error_hint("服务器数据错误2：response错误:" + e.getMessage());
+            }
+        }
+    }
+
+    private void showDriverData(Driver driver)//显示用户数据
     {
         Bitmap bitmap = loadImage.getBitmap(driver.getImage_url());
         Bitmap zooBitmap=commonUtil.zoomBitmap(bitmap,300,300);
@@ -253,11 +462,27 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         title_Image.setImageBitmap(zooBitmap);
         title_name.setText(driver.getName());
         t_name.setText(driver.getName());
-        t_licence_plate.setText(driver.getMachine_id());
+        t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
-        t_gender.setText(driver.getTelephone());
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite());
+    }
+
+    private class fixPopDisListener implements PopupWindow.OnDismissListener//发布按钮弹出时监听dismiss后背景变回原样
+    {
+        @Override
+        public void onDismiss() {
+            fix_popup_flag=false;
+        }
+    }
+
+    private void initFixPopup()//初始化修改信息弹窗
+    {
+        fix_popup = new PopupWindow(fixView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        fix_popup.setAnimationStyle(R.style.slideAnimation_left_right);
+        fix_popup.setOutsideTouchable(true);
+        fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 }

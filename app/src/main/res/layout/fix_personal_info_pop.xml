@@ -13,24 +13,24 @@
         android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/main_title">
         <ImageButton
-            android:id="@+id/getback"
+            android:id="@+id/fix_getback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_chevron_left_white_48dp"
             />
         <TextView
-            android:id="@+id/change_info"
+            android:id="@+id/fix_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font20"
             android:textColor="@color/whiteFont"
             android:text="修改预留的QQ号"
-            android:layout_toEndOf="@+id/getback"
-            android:layout_toRightOf="@+id/getback"
+            android:layout_toEndOf="@+id/fix_getback"
+            android:layout_toRightOf="@+id/fix_getback"
             android:layout_centerVertical="true"
             />
         <com.beardedhen.androidbootstrap.BootstrapButton
-            android:id="@+id/save_change"
+            android:id="@+id/fix_save_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="保存"
@@ -50,13 +50,13 @@
         android:padding="@dimen/padding10"
         android:orientation="vertical">
         <EditText
-            android:id="@+id/input_info"
+            android:id="@+id/fix_input_info"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height30"
             android:background="@drawable/save_edit"
             android:textCursorDrawable="@drawable/login_cursor"/>
         <TextView
-            android:id="@+id/hint_info"
+            android:id="@+id/fix_hint_info"
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font16"
             android:text="请输入要修改的信息"

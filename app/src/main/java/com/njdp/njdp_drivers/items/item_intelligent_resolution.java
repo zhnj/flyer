@@ -3,6 +3,7 @@ package com.njdp.njdp_drivers.items;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -78,17 +81,24 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private slidingMenu mainMenu;
     private DrawerLayout menu;
     private com.beardedhen.androidbootstrap.BootstrapButton hintButton;
+    private View parentView;//主View
+    private WindowManager.LayoutParams lp;
 
     ///////////////////////////////////日期选择器变量/////////////////////
     private TextView t_startDate;
     private TextView t_endDate;
     private CalendarPickerView calendarPickerView;
     private View dateView;//日期选择View
-    private View parentView;//主View
     private PopupWindow datePickerPop;//日期选择器弹出
     private boolean popup_flag=false;//日期选择器是否弹出的标志
     private ArrayList<Date> dates = new ArrayList<Date>();//选择的起始日期
     ///////////////////////////////////日期选择器变量/////////////////////
+
+    ////////////////////////////////////操作提示/////////////////////////
+    private PopupWindow hintPopup;
+    private View hintView;//操作提示View
+    private boolean hintPopup_flag=false;
+    ////////////////////////////////////操作提示/////////////////////////
 
     private Spinner sp_area;
     private Spinner sp_type;
@@ -155,6 +165,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 false);
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
+        lp = mainMenu.getWindow().getAttributes();
 
         fieldInfoDao=new FieldInfoDao(mainMenu);
         sessionManager=new SessionManager(getActivity());
@@ -187,6 +198,15 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         hintButton=(com.beardedhen.androidbootstrap.BootstrapButton)dateView.findViewById(R.id.hintButton);
         calendarPickerView.setOnDateSelectedListener(new clDateSelectedListener());//选一个范围的日期
         calendarPickerView.setCellClickInterceptor(new clCellClick());//选一天的日期
+
+        hintView = mainMenu.getLayoutInflater().inflate(R.layout.intelligent_pop, null);
+        initHintPopup();
+        hintView.findViewById(R.id.get_start).setOnClickListener(this);
+        hintPopup.setOnDismissListener(new hintPopDisListener());
+        //打开界面出现提示
+        hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+        hintPopup_flag=true;
+
 
         //下拉菜单选择项初始化
         //范围
@@ -344,6 +364,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             case R.id.getHelp:
                 commonUtil.error_hint("请选择作业起止日期！");
                 break;
+            case R.id.get_start:
+                hintPopup.dismiss();
             default:
                 break;
         }
@@ -1129,6 +1151,25 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private class hintPopDisListener implements PopupWindow.OnDismissListener//发布按钮弹出时监听dismiss后背景变回原样
+    {
+        @Override
+        public void onDismiss() {
+            hintPopup_flag=false;
+            lp.alpha = 1f;
+            mainMenu.getWindow().setAttributes(lp);
+        }
+    }
+
+    private void initHintPopup()//初始化提示信息弹窗
+    {
+        hintPopup = new PopupWindow(hintView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        hintPopup.setAnimationStyle(R.style.popWindow_fade);
+        hintPopup.setOutsideTouchable(true);
+        hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 
 //    private class sl_areaClickListener implements AdapterView.OnItemClickListener
