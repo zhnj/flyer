@@ -61,13 +61,13 @@
         android:padding="@dimen/padding10">
         <Spinner
             android:id="@+id/area"
-            android:background="@android:color/transparent"
+            android:background="@drawable/arrow_down"
             style="@style/spinner_style_require"></Spinner>
         <Spinner
             android:id="@+id/type"
-            android:background="@android:color/transparent"
+            android:background="@drawable/arrow_down"
             style="@style/spinner_style_require"></Spinner>
-        <LinearLayout
+        <RadioGroup
             android:visibility="gone"
             android:id="@+id/ck_crop"
             android:layout_width="match_parent"
@@ -83,36 +83,28 @@
                 android:text="选择收割类型"
                 android:textSize="@dimen/font14"
                 android:textColor="#FFFFFF"/>
-            <TextView
-                style="@style/release_t_cropType"
-                android:text="小麦"
-                android:textColor="#FFFFFF"/>
-            <CheckBox
+            <RadioButton
                 style="@style/release_check1"
+                android:text="小麦"
+                android:textColor="#FFFFFF"
                 android:id="@+id/selectWheat"/>
-            <TextView
-                style="@style/release_t_cropType"
+            <RadioButton
+                android:id="@+id/selectCorn"
+                style="@style/release_check1"
                 android:text="玉米"
                 android:textColor="#FFFFFF"/>
-            <CheckBox
-                android:id="@+id/selectCorn"
-                style="@style/release_check1" />
-            <TextView
-                style="@style/release_t_cropType"
-                android:text="谷子"
-                android:textColor="#FFFFFF"/>
-            <CheckBox
+            <RadioButton
                 android:id="@+id/selectSoybean"
+                android:text="谷子"
+                android:textColor="#FFFFFF"
                 style="@style/release_check1"/>
-            <TextView
-                style="@style/release_t_cropType"
-                android:text="水稻"
-                android:textColor="#FFFFFF"/>
-            <CheckBox
+            <RadioButton
                 android:id="@+id/selectRice"
+                android:text="水稻"
+                android:textColor="#FFFFFF"
                 style="@style/release_check1"/>
-        </LinearLayout>
-        <LinearLayout
+        </RadioGroup>
+        <RadioGroup
             android:visibility="gone"
             android:id="@+id/ck_arableLand"
             android:layout_width="match_parent"
@@ -128,21 +120,17 @@
                 android:textSize="@dimen/font14"
                 android:text="选择耕地类型"
                 android:textColor="#FFFFFF"/>
-            <TextView
-                style="@style/release_t_cropType"
-                android:text="深松"
-                android:textColor="#FFFFFF"/>
-            <CheckBox
+            <RadioButton
                 style="@style/release_check2"
+                android:text="深松"
+                android:textColor="#FFFFFF"
                 android:id="@+id/selectSS"/>
-            <TextView
-                style="@style/release_t_cropType"
-                android:text="平地"
-                android:textColor="#FFFFFF"/>
-            <CheckBox
+            <RadioButton
                 android:id="@+id/selectPD"
+                android:text="平地"
+                android:textColor="#FFFFFF"
                 style="@style/release_check2" />
-        </LinearLayout>
+        </RadioGroup>
 
         <LinearLayout
             android:id="@+id/jobDate"

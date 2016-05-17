@@ -541,7 +541,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         for(int i=0;i<s_machine_cropTypes.length;i++)
         {
             if(i>0) {
-                machine_cropType.append("&");
+                st_sb_crop.append("&");
             }
             st_sb_crop.append(commonUtil.transferCropKind(s_machine_cropTypes[i]));
         }

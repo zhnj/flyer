@@ -99,9 +99,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private static final int CROP_PHOTO_CODE = 002;
     private ArrayList<String> defaultDataArray;
     private Uri imageUri;
-    private Bitmap bitmap;
-    private String Url_Image;
-    private String Url;
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
 
     @Override
@@ -325,10 +322,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private void showDriverData(Driver driver)//显示用户数据
     {
         getImage(netImageUrl);
-        Bitmap bitmap = getImage(netImageUrl);
-        commonUtil.saveBitmap(mainMenu, bitmap);
         driverDao.add(driver);
-        title_Image.setImageBitmap(commonUtil.zoomBitmap(bitmap,300,300));
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
@@ -347,7 +341,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
 //    }
 
-    private Bitmap getImage(String url)//获取用户头像
+    private void getImage(String url)//获取用户头像
     {
 //        loadImage.get(AppConfig.URL_IP+url, new ImageLoader.ImageListener() {
 //            @Override
@@ -381,10 +375,10 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     @Override
                     public void onResponse(Bitmap image) {
                         Log.e(TAG,"获取用户头像车成功");
-                        bitmap = image;
+                        commonUtil.saveBitmap(mainMenu, image);//保存到本地
+                        title_Image.setImageBitmap(commonUtil.zoomBitmap(image,300,300));//裁剪
                     }
                 });
-        return bitmap;
     }
 
     @Override

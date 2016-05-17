@@ -264,7 +264,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                 TextView tv1=(TextView)convertView.findViewById(R.id.text1);
                 tv1.setText("农田面积："+fieldInfo1.getArea_num()+"亩");
                 TextView tv2=(TextView)convertView.findViewById(R.id.text2);
-                tv2.setText("作物类型："+fieldInfo1.getCrops_kind());
+                tv2.setText("作物类型："+commonUtil.transferCropKind(fieldInfo1.getCrops_kind()));
                 TextView tv3=(TextView)convertView.findViewById(R.id.text3);
                 tv3.setText("单价："+fieldInfo1.getUnit_price()+"元/亩");
                 TextView tv4=(TextView)convertView.findViewById(R.id.text4);
