@@ -19,6 +19,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -128,6 +130,12 @@ public class slidingMenu extends AppCompatActivity
     public String s_startDate;
     public String s_endDate;
     ////////////////////////////////////需求查询//////////////////////////////////////////////
+    public int fix_info_flag;
+    public String fix_info_title;
+    public String fix_info;//需要修改的个人信息
+    public String t_fix_title;
+    public String t_fix_hint;
+    public boolean change_info_flag=false;
 
     @Override
     public void onBackPressed() {

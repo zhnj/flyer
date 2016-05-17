@@ -128,10 +128,10 @@ public class CommonUtil {
             fOut = new FileOutputStream(tempFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 60, fOut);
             fOut.flush();
-            Log.d(TAG, "path:" + file1.getAbsolutePath().toString());
+            Log.e(TAG, "保存成功path:" + file1.getAbsolutePath().toString());
             fOut.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "保存失败:" + e.getMessage());
             error_hint("头像保存失败！请重试");
             return false;
         }

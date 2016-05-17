@@ -10,7 +10,9 @@
 
     <string name="err_cropCheck">请选择作物类型或者耕地类型</string>
     <string name="serverObject_err_phone">手机号格式不正确</string>
-    <string name="err_name">请输入正确的姓名！</string>
+    <string name="err_weixin">请输入正确的微信号</string>
+    <string name="err_qq">请输入正确的QQ号</string>
+    <string name="err_name">请输入正确的姓名</string>
     <string name="err_name2">姓名不能为空</string>
     <string name="err_phone">请输入11位手机号！</string>
     <string name="err_phone2">手机号不能为空</string>
@@ -167,5 +169,11 @@
     <string name="title_activity_open_baidu_map">OpenBaiduMap</string>
     <string name="title_activity_item_query_requirement_1">item_query_requirement_1</string>
     <string name="title_activity_item__intelligent_resolution_4">item_Intelligent_resolution_4
+    </string>
+    <string name="title_activity_item_personalinformation_fix_info_1_fix_info">
+        item_personalinformationFixInfo_1_fix_info
+    </string>
+    <string name="title_activity_item_personalinformation_2_fix_site">
+        item_personalinformation_2_fix_site
     </string>
 </resources>
