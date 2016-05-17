@@ -103,6 +103,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     private StringBuilder machine_cropType;
     private StringBuilder sb_crop;
     private String s_machine_cropType;
+    private StringBuilder st_sb_crop;
     private String remark;
     private int selectedType;
     private String startTime;//作业开始时间
@@ -534,8 +535,19 @@ public class item_release_machine extends Fragment implements View.OnClickListen
             default:
                 break;
         }
+        /////////////////////////////////////将农机服务类型编码转换成汉字//////////////////////////
+        String[] s_machine_cropTypes=s_machine_cropType.split("&");
+        st_sb_crop=new StringBuilder(s_machine_cropTypes.length*3);
+        for(int i=0;i<s_machine_cropTypes.length;i++)
+        {
+            if(i>0) {
+                machine_cropType.append("&");
+            }
+            st_sb_crop.append(commonUtil.transferCropKind(s_machine_cropTypes[i]));
+        }
+        /////////////////////////////////////将农机服务类型编码转换成汉字//////////////////////////
         tv_machineType.setText(s_machine_type);
-        tv_cropType.setText(s_machine_cropType);
+        tv_cropType.setText(st_sb_crop.toString());
 
         Log.e(TAG,token);
         Log.e(TAG,machine_id);
