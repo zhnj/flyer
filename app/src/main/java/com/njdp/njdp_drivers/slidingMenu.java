@@ -130,12 +130,12 @@ public class slidingMenu extends AppCompatActivity
     public String s_startDate;
     public String s_endDate;
     ////////////////////////////////////需求查询//////////////////////////////////////////////
-    public int fix_info_flag;
+    public int fix_info_flag;//确定信息修改的内容类别
     public String fix_info_title;
     public String fix_info;//需要修改的个人信息
     public String t_fix_title;
     public String t_fix_hint;
-    public boolean change_info_flag=false;
+    public boolean change_info_flag=false;//是否修改信息的标志
 
     public boolean hintPopup_flag=true;
 

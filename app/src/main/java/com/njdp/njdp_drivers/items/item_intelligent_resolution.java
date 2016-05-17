@@ -208,6 +208,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void run() {
                 if(sessionManager.getHintFlag()){}
                 if(mainMenu.hintPopup_flag) {
+                    dialog_flag=1;
                     hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     lp.alpha = 0.7f;
                 }
@@ -651,7 +652,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         }
 
-    private void _initFieldInfo(final String area)
+    private void _initFieldInfo(final String area)//不带提示的获取数据
     {
         dialog_flag=0;
         if( mainMenu.selectedFieldInfo!=null) {

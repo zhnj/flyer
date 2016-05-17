@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -143,6 +144,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 tv6.setTextSize(16f);
                 setDate(tv6, groupPosition);
 
+                final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
                 LinearLayout text_layout=(LinearLayout)convertView.findViewById(R.id.text_Layout);
                 Button deploy_selecte=(Button)convertView.findViewById(R.id.deploy_selected);//选择方案按钮
                 class textLayoutListener implements View.OnClickListener//expand区域监听
@@ -150,13 +152,16 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                     @Override
                     public void onClick(View v) {
                         if (!isExpanded && (EXPAND_TAG == -1)) {
+                            imv.setBackgroundResource(R.drawable.ic_arrow_drop_up_white_36dp);
                             expandableListView.expandGroup(groupPosition);
                             expandableListView.setSelectedGroup(groupPosition);// 设置被选中的group置于顶端
                             EXPAND_TAG = groupPosition;
                         } else if (isExpanded && (EXPAND_TAG == groupPosition)) {
+                            imv.setBackgroundResource(R.drawable.ic_arrow_drop_down_white_36dp);
                             expandableListView.collapseGroup(EXPAND_TAG);
                             EXPAND_TAG = -1;
                         } else {
+                            imv.setBackgroundResource(R.drawable.ic_arrow_drop_up_white_36dp);
                             expandableListView.collapseGroup(EXPAND_TAG);
                             expandableListView.expandGroup(groupPosition);// 展开被选的group
                             expandableListView.setSelectedGroup(groupPosition);// 设置被选中的group置于顶端
@@ -246,12 +251,12 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 List<FieldInfo> fieldInfoList=getFieldInfo(groupPosition);
                 FieldInfo fieldInfo=fieldInfoList.get(childPosition);
                 if(fieldInfo!=null) {
-                    TextView tv1 = (TextView) convertView.findViewById(R.id.name);
-                    tv1.setText(fieldInfo.getName());
+//                    TextView tv1 = (TextView) convertView.findViewById(R.id.name);
+//                    tv1.setText(fieldInfo.getName());
                     TextView tv2 = (TextView) convertView.findViewById(R.id.telephone);
                     tv2.setText("电话："+fieldInfo.getUser_name());
                     TextView tv3 = (TextView) convertView.findViewById(R.id.fieldNumber);
-                    tv3.setText(fieldInfo.getArea_num()+"亩");
+                    tv3.setText("农田面积"+fieldInfo.getArea_num()+"亩");
                     TextView tv4 = (TextView) convertView.findViewById(R.id.univalenc);
                     tv4.setText("单价：" + fieldInfo.getUnit_price()+"元/亩");
                     TextView tv5 = (TextView) convertView.findViewById(R.id.site);

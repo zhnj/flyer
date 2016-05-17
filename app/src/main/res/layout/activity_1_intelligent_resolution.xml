@@ -93,22 +93,24 @@
             android:layout_marginBottom="@dimen/margin10"
             android:layout_marginLeft="@dimen/margin20"/>
     </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/intelligent_arrange_bottom"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height40"
+        android:layout_height="@dimen/height50"
         android:padding="@dimen/padding5"
         android:orientation="horizontal"
         android:background="@drawable/main_title"
         android:layout_alignParentBottom="true">
         <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height50"
-            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/height150"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/spinner_bg_1"
+            android:background="@drawable/area_arrow_up"
             android:id="@+id/area"/>
         <Button
+            android:layout_alignParentEnd="true"
             android:id="@+id/arrange_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,5 +120,5 @@
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font20"
             android:text="智能规划"/>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

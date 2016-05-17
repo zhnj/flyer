@@ -86,6 +86,7 @@
     </LinearLayout>
     <Spinner
         style="@style/spinner_style_1"
+        android:background="@drawable/arrow_down"
         android:id="@+id/machine_type"></Spinner>
     <EditText
         style="@style/release_hidden_editText"
@@ -183,6 +184,7 @@
     </LinearLayout>
     <Spinner
         style="@style/spinner_style_1"
+        android:background="@drawable/arrow_down"
         android:id="@+id/work_time"></Spinner>
 
     <LinearLayout

@@ -37,7 +37,7 @@ public class SpinnerAdapter_white extends ArrayAdapter<String> {
         tv.setText(mStringArray[position]);
         tv.setTextSize(18f);//改变字体大小
         tv.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));//改变颜色
-        parent.setBackgroundResource(R.drawable.spinner_bg);
+        parent.setBackgroundResource(R.drawable.arrow_down);
         return convertView;
     }
 
@@ -53,7 +53,8 @@ public class SpinnerAdapter_white extends ArrayAdapter<String> {
         tv.setText(mStringArray[position]);
         tv.setTextSize(18f);
         tv.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));
-        parent.setBackgroundColor(Color.TRANSPARENT);
+//        parent.setBackgroundColor(Color.TRANSPARENT);
+        parent.setBackgroundResource(R.drawable.arrow_down);
         return convertView;
     }
 }

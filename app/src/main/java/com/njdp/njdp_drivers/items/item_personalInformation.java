@@ -328,7 +328,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         Bitmap bitmap = getImage(netImageUrl);
         commonUtil.saveBitmap(mainMenu, bitmap);
         driverDao.add(driver);
-        title_Image.setImageBitmap(bitmap);
+        title_Image.setImageBitmap(commonUtil.zoomBitmap(bitmap,300,300));
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
@@ -349,41 +349,42 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     private Bitmap getImage(String url)//获取用户头像
     {
-        loadImage.get(AppConfig.URL_IP+url, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean b) {
-                if(response.getBitmap()!=null) {
-                    bitmap = commonUtil.zoomBitmap(response.getBitmap(), 300, 300);
-                }else{
-                    commonUtil.error_hint("获取头像失败");
-                    Log.e(TAG,"Image Error1："+"获取头像失败");
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                bitmap=null;
-                commonUtil.error_hint("获取头像失败");
-                Log.e(TAG,"Image Error2："+"获取头像失败-"+volleyError.getMessage());
-            }
-        });
-        return bitmap;
-//        OkHttpUtils
-//                .get()
-//                .url(url)
-//                .build()
-//                .execute(new BitmapCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e) {
-//                        Log.e(TAG,"获取用户头像失败"+e.getMessage());
-//                        commonUtil.error_hint("获取用户头像失败");
-//                    }
+//        loadImage.get(AppConfig.URL_IP+url, new ImageLoader.ImageListener() {
+//            @Override
+//            public void onResponse(ImageLoader.ImageContainer response, boolean b) {
+//                if(response.getBitmap()!=null) {
+//                    bitmap = response.getBitmap();
+//                }else{
+//                    commonUtil.error_hint("获取头像失败");
+//                    Log.e(TAG,"Image Error1："+"获取头像失败");
+//                }
+//            }
 //
-//                    @Override
-//                    public void onResponse(Bitmap image) {
-//                        bitmap=commonUtil.zoomBitmap(image, 300, 300);
-//                    }
-//                });
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                bitmap=null;
+//                commonUtil.error_hint("获取头像失败");
+//                Log.e(TAG,"Image Error2："+"获取头像失败-"+volleyError.getMessage());
+//            }
+//        });
+        OkHttpUtils
+                .get()
+                .url(AppConfig.URL_IP+url)
+                .build()
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        Log.e(TAG,"获取用户头像失败"+e.getMessage());
+                        commonUtil.error_hint("获取用户头像失败");
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap image) {
+                        Log.e(TAG,"获取用户头像车成功");
+                        bitmap = image;
+                    }
+                });
+        return bitmap;
     }
 
     @Override
