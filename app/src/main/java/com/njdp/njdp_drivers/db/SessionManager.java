@@ -28,6 +28,8 @@ public class SessionManager {
 
     private static final String NORM_ID = "norm_id";
 
+    private static final String HINT_FLAG="hint_flag";
+
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -39,6 +41,7 @@ public class SessionManager {
 
         editor.putBoolean(KEY_IS_LOGGEDIN, isLoginIn);
         editor.putString(TOKEN_TAG, token);
+        editor.putBoolean(HINT_FLAG, true); //智能调度出现提示
         editor.commit();
 
         Log.d(TAG, "User LoginState session modified!");
@@ -49,9 +52,15 @@ public class SessionManager {
 
         editor.putString(DEPLOY_ID, deploy_id);
         editor.putString(NORM_ID, norm_id);
+        editor.putBoolean(HINT_FLAG, false); //智能调度不再出现提示
         editor.commit();
 
         Log.d(TAG, "User d_n_id session modified!");
+    }
+
+    public boolean getHintFlag()
+    {
+        return pref.getBoolean(HINT_FLAG, true);
     }
 
     public boolean isLoginIn(){

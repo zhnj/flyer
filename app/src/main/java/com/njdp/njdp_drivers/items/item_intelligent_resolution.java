@@ -381,9 +381,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         popup_flag = false;
                         datePickerPop.dismiss();
                         return true;
-                    } else if(hintPopup_flag){
-
-                    }else{
+                    } else if(!hintPopup_flag){
                         mainMenu.finish();
                         return true;
                     }
@@ -611,10 +609,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 commonUtil.error_hint("网络连接错误");
                 mainMenu.hideDialog();
             } else {
-                //////////////////////////////////////////////////////////////////////////////////
-                startTime="2016-04-01";
-                endTime="2016-06-01";
-                //////////////////////////////////////////////////////////////////////////////////
                 //服务器请求
                 Log.e(TAG, machine_id);
                 Log.e(TAG, token);

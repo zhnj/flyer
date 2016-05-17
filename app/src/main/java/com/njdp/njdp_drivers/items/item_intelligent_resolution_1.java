@@ -209,11 +209,11 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            //////////////////////////临时存储选择的农田信息/////////////////////////
                             if (isChecked) {
                                 selectedFieldInfoPost.add(fieldInfoPost);
                                 int lp = selectedFieldInfoPost.size();
                                 Log.e(mainMenu.TAG, "路线总数：" + lp + "：+l");
-                                //////////////////////////临时存储选择的农田信息/////////////////////////
                             } else {
                                 int length = selectedFieldInfoPost.size();
                                 for (int i = 0; i < length; i++) {
@@ -225,7 +225,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                                         Log.e(mainMenu.TAG, "路线总数：" + lp + "：-l");
                                     }
                                 }
-                                //////////////////////////临时存储选择的农田信息/////////////////////////
+                            ////////////////////////////////临时存储选择的农田信息/////////////////////////
 
                             }
                         }
@@ -245,7 +245,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 TextView tv1=(TextView)convertView.findViewById(R.id.text1);
                 tv1.setText("农田面积："+fieldInfo1.getArea_num()+"亩");
                 TextView tv2=(TextView)convertView.findViewById(R.id.text2);
-                tv2.setText("作物类型："+fieldInfo1.getCrops_kind());
+                tv2.setText("作物类型："+commonUtil.transferCropKind(fieldInfo1.getCrops_kind()));
                 TextView tv3=(TextView)convertView.findViewById(R.id.text3);
                 tv3.setText("单价："+fieldInfo1.getUnit_price()+"元/亩");
                 TextView tv4=(TextView)convertView.findViewById(R.id.text4);
@@ -563,5 +563,4 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             }
         }
     }
-
 }

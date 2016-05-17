@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding5"
-    android:layout_marginLeft="@dimen/margin20"
-    android:background="@android:color/transparent">
+    android:paddingLeft="@dimen/padding5"
+    android:paddingBottom="@dimen/padding5"
+    android:paddingRight="@dimen/padding5"
+    android:paddingTop="@dimen/padding10">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,20 +14,21 @@
             android:id="@+id/deploy_id"
             android:text="方案1"
             android:layout_marginTop="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin5"
+            android:layout_marginLeft="@dimen/margin30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
-            android:textSize="20dp"/>
+            android:textSize="@dimen/font18"/>
         <Button
             android:id="@+id/deploy_selected"
             android:text="选择方案"
-            android:textSize="18dp"
+            android:textSize="@dimen/font14"
+            android:layout_marginRight="@dimen/margin10"
             android:textColor="@color/primaryClolor"
             android:background="@drawable/btn_bg"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/height60"
             android:layout_height="35dp"/>
     </LinearLayout>
     <LinearLayout
@@ -63,7 +65,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin25"
+            android:layout_marginLeft="@dimen/margin30"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/earnings"
@@ -73,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/Read"
-                android:textSize="18dp"/>
+                android:textSize="@dimen/font16"/>
             <TextView
                 android:id="@+id/cost"
                 android:text="估计成本：1000元"
@@ -82,17 +84,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/LighterGreen"
-                android:textSize="18dp"/>
+                android:textSize="@dimen/font16"/>
         </LinearLayout>
         <TextView
             android:id="@+id/timeFrame"
             android:text="作业时间段：2016/2/11---2016/3/13"
             android:layout_marginTop="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin25"
+            android:layout_marginLeft="@dimen/margin30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
-            android:textSize="18dp"/>
+            android:textSize="@dimen/font16"/>
     </LinearLayout>
 </LinearLayout>

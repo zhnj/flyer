@@ -34,9 +34,13 @@
 
     <ExpandableListView
         android:layout_marginTop="@dimen/margin10"
+        android:layout_marginLeft="@dimen/margin5"
+        android:layout_marginRight="@dimen/margin5"
+        android:layout_marginBottom="@dimen/margin20"
         android:id="@+id/intelligent_deploy_expand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/expan_bg"
         android:groupIndicator="@drawable/arrow_drop3">
     </ExpandableListView>
 

@@ -68,7 +68,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         this.btn_fix_save=(com.beardedhen.androidbootstrap.BootstrapButton)view.findViewById(R.id.fix_save_change);
         btn_fix_save.setClickable(false);
         btn_fix_save.setEnabled(false);
-        btn_fix_save.addTextChangedListener(new TextWatcher() {
+        edt_fix_input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -118,13 +118,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                 fixValidation.addValidation(edt_fix_input, "[1-9][0-9]{4,14}", getResources().getString(R.string.err_qq));
                 break;
         }
-        mainMenu.fix_info=edt_fix_input.getText().toString().trim();
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -132,6 +126,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         switch (v.getId())
         {
             case R.id.fix_save_change:
+                mainMenu.fix_info=edt_fix_input.getText().toString().trim();
                 try {
                     fix_params.clear();
                 }catch (Exception e){}
@@ -140,12 +135,15 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                 {
                     case 1:
                         fix_params.put("person_name", mainMenu.fix_info);
+                        Log.e(TAG,"name:"+fix_params.get("person_name"));
                         break;
                     case 3:
                         fix_params.put("person_weixin", mainMenu.fix_info);
+                        Log.e(TAG, "weixin:" +fix_params.get("person_weixin"));
                         break;
                     case 4:
                         fix_params.put("person_qq:", mainMenu.fix_info);
+                        Log.e(TAG, "qq:" + fix_params.get("person_qq"));
                         break;
                 }
                 check_fix_info();
@@ -170,6 +168,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
     private void uploadInfo()//上传修改用户信息
     {
+        Log.e(TAG,"token"+fix_params.get("token"));
         String tag_string_req = "req_fix_info";
         if (netUtil.checkNet(mainMenu) == false) {
             mainMenu.hideDialog();
@@ -182,6 +181,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
                 @Override
                 protected Map<String, String> getParams() {
+                    Log.e(TAG,gson.toJson(netUtil.checkParams(fix_params)));
                     return netUtil.checkParams(fix_params);
                 }
             };
@@ -193,7 +193,6 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
     private class fixSuccessListener implements  Response.Listener<String>//信息修改成功响应
     {
-
         @Override
         public void onResponse(String response) {
             try {
@@ -235,12 +234,23 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("保存失败请重试");
+                    commonUtil.error_hint("保存失败,请重试");
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "2 Json error：response错误" + e.getMessage());
-                commonUtil.error_hint("保存失败重试" );
+                commonUtil.error_hint("保存失败,请重试" );
             }
         }
+    }
+
+    private void postParamsClear()
+    {
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
+        fix_params.put("person_name", mainMenu.fix_info);
     }
 }

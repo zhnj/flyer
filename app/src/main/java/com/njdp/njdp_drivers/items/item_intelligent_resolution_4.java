@@ -40,7 +40,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
     private List<SavedFiledInfo> navigationDeploy=new ArrayList<SavedFiledInfo>();//选择的调配方案对应的农田信息
     private SavedFieldInfoDao savedFieldInfoDao;
     private String[] sites;//地点的数组
-    private int sl_site;//下拉选中的地点序号0，1，.....
+    private int sl_site=0;//下拉选中的地点序号0，1，.....
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,9 +58,9 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
         try {
             navigationDeploy.addAll(savedFieldInfoDao.allFieldInfo());
             sites=new String[savedFieldInfoDao.countOfField()];
-            for(int i=0;i<savedFieldInfoDao.countOfField();i++)
-            {
-                sites[i]=navigationDeploy.get(i).getCropLand_site();
+            sites[0]="请选择作业地点";
+            for(int i=0;i<savedFieldInfoDao.countOfField();i++) {
+                sites[i + 1] = navigationDeploy.get(i).getCropLand_site();
             }
         }catch (Exception e){
             Log.e(TAG,e.toString());
@@ -89,9 +89,15 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 menu.openDrawer(Gravity.LEFT);
                 break;
             case R.id.getNavigation:
-                double gps_longitude=navigationDeploy.get(sl_site).getLongitude();//经度
-                double gps_latitude;navigationDeploy.get(sl_site).getLatitude();//纬度
-                //导航
+                if(sl_site!=0) {
+                    double gps_longitude = navigationDeploy.get(sl_site).getLongitude();//经度
+                    double gps_latitude=navigationDeploy.get(sl_site).getLatitude();//纬度
+
+                    //导航
+
+                }else{
+                    commonUtil.error_hint("请选择作业地点！");
+                }
                 break;
             default:
                 break;

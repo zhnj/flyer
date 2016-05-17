@@ -458,7 +458,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     t_qq.setText(mainMenu.fix_info);
                     break;
             }
+            mainMenu.change_info_flag=false;
         }
-        mainMenu.change_info_flag=false;
     }
 }

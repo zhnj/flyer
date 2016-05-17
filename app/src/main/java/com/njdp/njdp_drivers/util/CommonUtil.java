@@ -164,4 +164,32 @@ public class CommonUtil {
         }
     }
 
+    public String transferCropKind(String cropKind)//将作物类型编码转换成汉字
+    {
+        switch (cropKind)
+        {
+            case "HWH":
+                return "收割小麦";
+            case "HCO":
+                return "收割玉米";
+            case "HRC":
+                return "收割水稻";
+            case "HGR":
+                return "收割谷物";
+            case "SWH":
+                return "种植小麦";
+            case "SCO":
+                return "种植玉米";
+            case "SRC":
+                return "种植水稻";
+            case "SGR":
+                return "种植谷物";
+            case "CSS":
+                return "深松";
+            case "CHA":
+                return "平地";
+        }
+        return "类型错误";
+    }
+
 }

@@ -180,8 +180,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
 
 
-
-
         //////////////////////////////////////////////
         ////////////////地图代码/////////////////////
         //获取地图控件引用
