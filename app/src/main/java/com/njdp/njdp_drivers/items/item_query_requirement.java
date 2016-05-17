@@ -365,6 +365,9 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         Log.e(TAG, s_machine_cropType);
         Log.e(TAG, startTime);
         Log.e(TAG, endTime);
+        Log.e(TAG, GPS_longitude);
+        Log.e(TAG, GPS_latitude);
+
         initFieldInfo();
     }
 
@@ -470,10 +473,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
             commonUtil.error_hint("网络连接错误");
             mainMenu.hideDialog();
         } else {
-            //////////////////////////////////////////////////////////////////////////////////
-            startTime="2016-04-01";
-            endTime="2016-06-01";
-            //////////////////////////////////////////////////////////////////////////////////
             //服务器请求
             StringRequest strReq = new StringRequest(Request.Method.POST,
                     url, new initSuccessListener(), mainMenu.mErrorListener) {

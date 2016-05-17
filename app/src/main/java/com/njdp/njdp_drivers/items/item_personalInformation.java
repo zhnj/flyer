@@ -383,7 +383,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
                     @Override
                     public void onResponse(Bitmap image) {
-                        Log.e(TAG,"获取用户头像车成功");
+                        Log.e(TAG,"获取用户头像成功");
                         commonUtil.saveBitmap(mainMenu, image);//保存到本地
                         title_Image.setImageBitmap(commonUtil.zoomBitmap(image,300,300));//裁剪
                     }

@@ -335,11 +335,35 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         return view;
     }
 
+    //监听返回按键
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    if(btn_pop_flag){//关闭确认信息弹窗
+                        btn_pop_flag=false;
+                        btn_popup.dismiss();
+                        return true;
+                    }else {
+                        mainMenu.getSupportFragmentManager().popBackStack();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
     public void onClick(View v)
     {
         switch (v.getId()) {
             case R.id.getback:
-                mainMenu.finish();
+                mainMenu.getSupportFragmentManager().popBackStack();
                 break;
             case R.id.menu:
                 menu.openDrawer(Gravity.LEFT);
@@ -636,29 +660,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
 
     ////////////////////////////地图代码结束/////////////////////////////////
 
-    //监听返回按键
-    @Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    if(btn_pop_flag){//关闭确认信息弹窗
-                        btn_pop_flag=false;
-                        btn_popup.dismiss();
-                        return true;
-                    }else {
-                        mainMenu.finish();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
+
 
     private void initBtnPopup()//初始化信息弹窗
     {
