@@ -137,6 +137,8 @@ public class slidingMenu extends AppCompatActivity
     public String t_fix_hint;
     public boolean change_info_flag=false;
 
+    public boolean hintPopup_flag=true;
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

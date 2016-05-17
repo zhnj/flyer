@@ -97,7 +97,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     ////////////////////////////////////操作提示/////////////////////////
     private PopupWindow hintPopup;
     private View hintView;//操作提示View
-    private boolean hintPopup_flag=false;
     ////////////////////////////////////操作提示/////////////////////////
 
     private Spinner sp_area;
@@ -126,6 +125,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     private boolean text_gps_flag = false;//GPS定位是否成功
+    private int dialog_flag=0;
     private Date first_date;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
@@ -206,9 +206,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         parentView.post(new Runnable() {
             @Override
             public void run() {
-                hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                hintPopup_flag = true;
-                lp.alpha = 0.7f;
+                if(sessionManager.getHintFlag()){}
+                if(mainMenu.hintPopup_flag) {
+                    hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    lp.alpha = 0.7f;
+                }
             }
         });
 
@@ -381,7 +383,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         popup_flag = false;
                         datePickerPop.dismiss();
                         return true;
-                    } else if(!hintPopup_flag){
+                    } else if(!mainMenu.hintPopup_flag){
                         mainMenu.finish();
                         return true;
                     }
@@ -601,6 +603,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
     private void initFieldInfo(final String area)
     {
+        dialog_flag=0;
+        if( mainMenu.selectedFieldInfo!=null) {
+            mainMenu.selectedFieldInfo.clear();
+        }
+//        try{
+//            mainMenu.selectedFieldInfo.clear();}
+//        catch (Exception e){}
             String tag_string_req = "req_init";
             mainMenu.pDialog.setMessage("正在载入 ...");
             mainMenu.showDialog();
@@ -641,6 +650,54 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
             }
         }
+
+    private void _initFieldInfo(final String area)
+    {
+        dialog_flag=0;
+        if( mainMenu.selectedFieldInfo!=null) {
+            mainMenu.selectedFieldInfo.clear();
+        }
+//        try{
+//            mainMenu.selectedFieldInfo.clear();}
+//        catch (Exception e){}
+
+        String tag_string_req = "req_init";
+
+        if (!netUtil.checkNet(mainMenu)) {
+            commonUtil.error_hint("网络连接错误");
+        } else {
+            //服务器请求
+            Log.e(TAG, machine_id);
+            Log.e(TAG, token);
+            Log.e(TAG, area);
+            Log.e(TAG, startTime);
+            Log.e(TAG, endTime);
+            Log.e(TAG, GPS_longitude);
+            Log.e(TAG, GPS_latitude);
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    url, new initSuccessListener(), mainMenu.mErrorListener) {
+
+                @Override
+                protected Map<String, String> getParams() {
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("machine_id", machine_id);
+                    params.put("token", token);
+                    params.put("deploy_range", area);//需要按照实际范围变动
+                    params.put("deploy_startdate", startTime);
+                    params.put("deploy_finishdate", endTime);
+                    params.put("Machine_longitude", GPS_longitude);
+                    params.put("Machine_Latitude", GPS_latitude);
+
+                    return netUtil.checkParams(params);
+                }
+            };
+            strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+    }
 
     private class initSuccessListener implements Response.Listener<String>//获取农田信息数据响应服务器成功
     {
@@ -689,7 +746,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
                     mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());//存储距离信息
                     try {
-                        Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
+                        Log.e(TAG, mainMenu.fieldInfoPosts.get(0).getDistance());
                         Log.e(TAG, fieldInfos.get(0).getCropLand_site());
                     }catch (Exception e)
                     {
@@ -720,7 +777,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         }
     }
-
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
 
 
@@ -810,19 +866,27 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            commonUtil.error_hint("GPS定位成功");
-            initFieldInfo(sl_area);
+            if(dialog_flag==1)
+            {
+                _initFieldInfo(sl_area);
+            }else{
+                initFieldInfo(sl_area);
+            }
         } else {
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
             try {
                 GPS_latitude = String.valueOf(curlocation.getLatitude());
                 GPS_longitude = String.valueOf(curlocation.getLongitude());
-                initFieldInfo(sl_area);
                 LatLng ll = new LatLng(curlocation.getLatitude(),
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-                commonUtil.error_hint("GPS定位成功");
+                if(dialog_flag==1)
+                {
+                    _initFieldInfo(sl_area);
+                }else{
+                    initFieldInfo(sl_area);
+                }
             }catch (Exception e)
             {
                 commonUtil.error_hint("自动定位失败，请重试！");
@@ -844,15 +908,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             for (int i = 0; i < testFieldInfos.size(); i++) {
                 FieldInfo fieldInfo = testFieldInfos.get(i);
                 fieldInfoDao.delete(fieldInfo);
-                Log.e(TAG, "删除第" + String.valueOf(fieldInfo.getId()) + "条");
+                Log.e(TAG, "删除第" + String.valueOf(fieldInfo.getId()) + "条："+fieldInfo.getFarm_id());
             }
         }
         for (int i = 0; i < fieldInfos.size(); i++) {
             FieldInfo fieldInfo = fieldInfos.get(i);
             fieldInfo.setId(i + 1);
             fieldInfoDao.add(fieldInfo);
-            Log.e(TAG, "存储第" + String.valueOf(fieldInfo.getId()) + "条");
-            Log.e(TAG, fieldInfoDao.getFieldInfo(i + 1).getFarm_id());
+            Log.e(TAG, "存储第" + String.valueOf(fieldInfo.getId()) + "条："+fieldInfoDao.getFieldInfo(i + 1).getFarm_id());
         }
         fieldInfos.clear();
     }
@@ -860,17 +923,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     //从本地读取，按mainMenu.fieldInfoPosts顺序排序存储到mainMenu.selectedFieldInfo
     private void arrangeField()
     {
-        for(int i=0;i<mainMenu.fieldInfoPosts.size();i++) {
+        for(int i=0;i<mainMenu.fieldInfoPosts.size();i++)
+        {
             Log.e(TAG, mainMenu.fieldInfoPosts.get(i).getFarm_id());
-            try {
-                FieldInfo fieldInfo = fieldInfoDao.getFieldInfoByFieldId(mainMenu.fieldInfoPosts.get(i).getFarm_id());
-                Log.e(TAG, "找到一条：" + fieldInfo.getFarm_id());
-                mainMenu.selectedFieldInfo.add(fieldInfo);
-            }catch (Exception e)
-            {
-                Log.e(TAG, e.toString());
-            }
+            FieldInfo fieldInfo = fieldInfoDao.getFieldInfoByFieldId(mainMenu.fieldInfoPosts.get(i).getFarm_id());
+            Log.e(TAG, "找到一条：" + fieldInfo.getFarm_id());
+            mainMenu.selectedFieldInfo.add(fieldInfo);
         }
+        Log.e(TAG, "共有" + mainMenu.selectedFieldInfo.size());
         this.markRepairStation(mainMenu.selectedFieldInfo);
     }
 
@@ -1064,6 +1124,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
+            dialog_flag=1;
             gps_MachineLocation(machine_id);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
@@ -1148,11 +1209,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onDismiss() {
-            hintPopup_flag=false;
+            mainMenu.hintPopup_flag=false;
             lp.alpha = 1f;
             mainMenu.getWindow().setAttributes(lp);
-            //连接服务器自动定位
-            gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
         }
     }
 

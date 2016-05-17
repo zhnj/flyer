@@ -10,7 +10,6 @@ public class AppConfig {
 
     public static String URL_REGISTER = URL_IP+"db_xskq/register1.php";// 注册 url
 
-
     public static String URL_GETPASSWORD1= URL_IP+"db_xskq/forget_password_isAccess.php";// 找回密码1 url
 
     public static String URL_GETPASSWORD2= URL_IP+"db_xskq/forget_password_finish.php";// 找回密码2 url
@@ -31,7 +30,7 @@ public class AppConfig {
 
     public static String URL_JOBHISTORY= URL_IP+"app/farmMachineHistory/index";//作业历史查询
 
-    public static String URL_QUERYPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
+    public static String URL_QUERYPERSONINFO= URL_IP+"app/getUserInfo";//查询个人信息
 
     public static String URL_FIXPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
 

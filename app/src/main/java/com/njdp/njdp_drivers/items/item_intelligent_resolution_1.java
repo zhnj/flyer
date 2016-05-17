@@ -548,7 +548,9 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private void setSelectedFieldInfoPost()//默认所有的村庄路径全选存入selectedFieldInfoPost
     {
         int length1=mainMenu.selectedFieldInfo.size();
+        Log.e(TAG,"农田数量："+length1);
         int length2 = mainMenu.fieldInfoPosts.size();
+        Log.e(TAG,"路径数量："+length2);
         for(int i=0;i<length1;i++)
         {
             String farmId=mainMenu.selectedFieldInfo.get(i).getFarm_id();

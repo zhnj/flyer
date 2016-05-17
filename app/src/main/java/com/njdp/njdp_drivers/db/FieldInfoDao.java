@@ -123,7 +123,10 @@ public class FieldInfoDao{
                     .query().get(0);
         } catch (SQLException e)
         {
-            Log.e("DriverDao Error", e.toString());
+            Log.e("FieldInfoDao Error", e.toString());
+        }catch (Exception e)
+        {
+            Log.e("FieldInfoDao Error", e.toString());
         }
 
         return null;

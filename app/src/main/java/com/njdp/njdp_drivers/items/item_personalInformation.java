@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -42,6 +44,7 @@ import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -54,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 
 import bean.Driver;
-import bean.FieldInfo;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
@@ -66,7 +68,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private slidingMenu mainMenu;
     private DrawerLayout menu;
     private View parentView;//主View
-    private ImageView title_Image;
+    private com.njdp.njdp_drivers.CircleMenu.CircleImageView title_Image;
     private LinearLayout l_name;
     private LinearLayout l_machine_id;
     private LinearLayout l_telephone;
@@ -79,7 +81,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private TextView t_weixin;
     private TextView t_qq;
     private TextView t_region;
-    private LruBitmapCache loadImage;
+    private ImageLoader loadImage;
     private DriverDao driverDao;
     private NetUtil netUtil;
     private Driver driver;
@@ -97,6 +99,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private static final int CROP_PHOTO_CODE = 002;
     private ArrayList<String> defaultDataArray;
     private Uri imageUri;
+    private Bitmap bitmap;
     private String Url_Image;
     private String Url;
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
@@ -121,7 +124,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         this.l_weixin=(LinearLayout)view.findViewById(R.id.driver_weixin);
         this.l_qq=(LinearLayout)view.findViewById(R.id.driver_qq);
         this.l_region=(LinearLayout)view.findViewById(R.id.driver_region);
-        this.title_Image=(ImageView) view.findViewById(R.id.information_div_title_image);
+        this.title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView) view.findViewById(R.id.information_div_title_image);
         this.t_name=(TextView) view.findViewById(R.id.input_driver_name);
         this.t_machine_id =(TextView) view.findViewById(R.id.input_driver_licence_plate);
         this.t_telephone=(TextView) view.findViewById(R.id.input_driver_telephone);
@@ -140,7 +143,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
-        loadImage=new LruBitmapCache();
+        loadImage=AppController.getInstance().getImageLoader();
 
         try {
             driver = driverDao.getDriver(1);
@@ -155,7 +158,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 if (path != null)
                 {
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    title_Image.setImageBitmap(bitmap);
+                    title_Image.setImageBitmap(commonUtil.zoomBitmap(bitmap,300,300));
                 }else {
                     intiData(driver);
                 }
@@ -276,17 +279,24 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
         @Override
         public void onResponse(String response) {
-            Log.i("tagconvertstr", "[" + response + "]");
-            Log.d(mainMenu.TAG, "PersonalInformation Response: " + response.toString());
             mainMenu.hideDialog();
 
             try {
+                Log.e(TAG, "PersonalInformation Response: " + response.toString());
                 JSONObject jObj = new JSONObject(response);
-                boolean error = jObj.getBoolean("error");
+                int status = jObj.getInt("status");
 
-                if (!error) {
+                if (status==1) {
 
-                    // Now store the user in SQLite
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    Intent intent = new Intent(mainMenu, login.class);
+                    startActivity(intent);mainMenu.finish();
+                } else if(status==0){
+
                     JSONObject s_driver = jObj.getJSONObject("result");
                     netImageUrl=s_driver.getString("person_photo");
                     driver.setName(s_driver.getString("person_name"));
@@ -299,28 +309,26 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     path=tempFile.getAbsolutePath()+"/temp/userimage.png";
                     driver.setImage_url(path);//设置头像本地存储路径
 
-                    driverDao.add(driver);
                     showDriverData(driver);
 
                 } else {
-                    // Error in login. Get the error message
-                    String errorMsg = jObj.getString("error_msg");
-                    commonUtil.error_hint(errorMsg);
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：获取用户数据失败-response错误:" + errorMsg);
                 }
             } catch (JSONException e) {
-                // JSON error
-                e.printStackTrace();
-                commonUtil.error_hint("Json error：response错误！" + e.getMessage());
+                Log.e(TAG, "2 Json error：获取用户数据失败-response错误" + e.getMessage());
             }
         }
     };
 
     private void showDriverData(Driver driver)//显示用户数据
     {
-        Bitmap bitmap = loadImage.getBitmap(netImageUrl);
-        Bitmap zooBitmap=commonUtil.zoomBitmap(bitmap,300,300);
+        getImage(netImageUrl);
+        Bitmap bitmap = getImage(netImageUrl);
         commonUtil.saveBitmap(mainMenu, bitmap);
-        title_Image.setImageBitmap(zooBitmap);
+        driverDao.add(driver);
+        title_Image.setImageBitmap(bitmap);
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
@@ -338,6 +346,45 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        fix_popup.setFocusable(true);
 //        fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
 //    }
+
+    private Bitmap getImage(String url)//获取用户头像
+    {
+        loadImage.get(AppConfig.URL_IP+url, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean b) {
+                if(response.getBitmap()!=null) {
+                    bitmap = commonUtil.zoomBitmap(response.getBitmap(), 300, 300);
+                }else{
+                    commonUtil.error_hint("获取头像失败");
+                    Log.e(TAG,"Image Error1："+"获取头像失败");
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                bitmap=null;
+                commonUtil.error_hint("获取头像失败");
+                Log.e(TAG,"Image Error2："+"获取头像失败-"+volleyError.getMessage());
+            }
+        });
+        return bitmap;
+//        OkHttpUtils
+//                .get()
+//                .url(url)
+//                .build()
+//                .execute(new BitmapCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e) {
+//                        Log.e(TAG,"获取用户头像失败"+e.getMessage());
+//                        commonUtil.error_hint("获取用户头像失败");
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Bitmap image) {
+//                        bitmap=commonUtil.zoomBitmap(image, 300, 300);
+//                    }
+//                });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
