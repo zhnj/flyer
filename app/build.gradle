@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'zhnj-driver'
+            keyPassword 'zhnj-123456'
+            storeFile file('D:/360安全浏览器下载/zhnj_driver.jks')
+            storePassword 'zhnj-123456'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.njdp.njdp_drivers"
         minSdkVersion 14
@@ -51,6 +58,7 @@ dependencies {
     }
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     //    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
     //    compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.zhy:okhttputils:2.4.1'
     compile files('libs/BaiduHUDSDK_2.0.jar')

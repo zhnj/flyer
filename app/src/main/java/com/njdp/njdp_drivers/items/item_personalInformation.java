@@ -115,6 +115,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         view.findViewById(R.id.driver_weixin).setOnClickListener(this);
         view.findViewById(R.id.driver_qq).setOnClickListener(this);
         view.findViewById(R.id.driver_region).setOnClickListener(this);
+        view.findViewById(R.id.login_out).setOnClickListener(this);
         this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
         this.l_machine_id=(LinearLayout)view.findViewById(R.id.driver_machine_id);
         this.l_telephone=(LinearLayout)view.findViewById(R.id.driver_telephone);
@@ -210,6 +211,13 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 break;
             case R.id.driver_region:
                 break;
+            case R.id.login_out:
+                Log.e(TAG, "退出登录" );
+                netUtil.clearSession(mainMenu);
+                Intent intent = new Intent(mainMenu, login.class);
+                startActivity(intent);
+                mainMenu.finish();
+                break;
             default:
                 break;
         }
@@ -291,7 +299,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);mainMenu.finish();
+                    startActivity(intent);
+                    mainMenu.finish();
                 } else if(status==0){
 
                     JSONObject s_driver = jObj.getJSONObject("result");
