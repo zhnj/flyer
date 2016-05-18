@@ -128,29 +128,29 @@
             android:text="小麦"
             android:textColor="#FFFFFF"/>
         <CheckBox
-            style="@style/release_check1"
-            android:id="@+id/selectWheat"/>
+            android:id="@+id/selectWheat"
+            style="@style/checkBox1" />
         <TextView
             style="@style/release_t_cropType"
             android:text="玉米"
             android:textColor="#FFFFFF"/>
         <CheckBox
             android:id="@+id/selectCorn"
-            style="@style/release_check1" />
+            style="@style/checkBox1" />
         <TextView
             style="@style/release_t_cropType"
             android:text="谷子"
             android:textColor="#FFFFFF"/>
         <CheckBox
             android:id="@+id/selectSoybean"
-            style="@style/release_check1"/>
+            style="@style/checkBox1"/>
         <TextView
             style="@style/release_t_cropType"
             android:text="水稻"
             android:textColor="#FFFFFF"/>
         <CheckBox
             android:id="@+id/selectRice"
-            style="@style/release_check1"/>
+            style="@style/checkBox1"/>
     </LinearLayout>
     <LinearLayout
         android:visibility="gone"
@@ -172,7 +172,7 @@
             android:text="深松"
             android:textColor="#FFFFFF"/>
         <CheckBox
-            style="@style/release_check2"
+            style="@style/checkBox1"
             android:id="@+id/selectSS"/>
         <TextView
             style="@style/release_t_cropType"
@@ -180,7 +180,7 @@
             android:textColor="#FFFFFF"/>
         <CheckBox
             android:id="@+id/selectPD"
-            style="@style/release_check2" />
+            style="@style/checkBox1" />
     </LinearLayout>
     <Spinner
         style="@style/spinner_style_1"

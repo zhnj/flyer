@@ -331,7 +331,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private void showDriverData(Driver driver)//显示用户数据
     {
         getImage(netImageUrl);
-        driverDao.add(driver);
+//        driverDao.add(driver);
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
@@ -372,20 +372,25 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        });
         OkHttpUtils
                 .get()
-                .url(AppConfig.URL_IP+url)
+                .url(AppConfig.URL_IP + url)
                 .build()
+                .connTimeOut(20 * 000)
+                .readTimeOut(20 * 1000)
+                .writeTimeOut(20*1000)
                 .execute(new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-                        Log.e(TAG,"获取用户头像失败"+e.getMessage());
+                        Log.e(TAG, "获取用户头像失败" + e.getMessage());
                         commonUtil.error_hint("获取用户头像失败");
                     }
 
                     @Override
                     public void onResponse(Bitmap image) {
-                        Log.e(TAG,"获取用户头像成功");
-                        commonUtil.saveBitmap(mainMenu, image);//保存到本地
-                        title_Image.setImageBitmap(commonUtil.zoomBitmap(image,300,300));//裁剪
+                        Log.e(TAG, "获取用户头像成功");
+//                        Bitmap mbitmap = image;
+//                        commonUtil.saveBitmap(mainMenu, mbitmap);//保存到本地
+//                        title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
+                        title_Image.setImageBitmap(image);//裁剪
                     }
                 });
     }
