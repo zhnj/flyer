@@ -74,6 +74,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private String norm_id;
     private String url;
     private int deploySize;
+    private List<FieldInfoPost> allFieldInfoPost=new ArrayList<FieldInfoPost>();
     private List<FieldInfoPost> selectedFieldInfoPost=new ArrayList<FieldInfoPost>();
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
@@ -131,7 +132,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         adapter=new BaseExpandableListAdapter() {
             @Override
             public int getGroupCount() {
-                return size;
+                return allFieldInfoPost.size();
             }
 
             @Override
@@ -172,12 +173,12 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 final FieldInfoPost fieldInfoPost;
                 final String farmId;
                 //获取对应序列的农田信息
-                if (selectedFieldInfoPost.size() >= 1) {
-                    fieldInfoPost = selectedFieldInfoPost.get(groupPosition);
-                    Log.e(TAG, "序号1:" + fieldInfoPost.getFarm_id());
+                if (allFieldInfoPost.size() >= 1) {
+                    fieldInfoPost = allFieldInfoPost.get(groupPosition);
+                    Log.e(TAG, "parent序号1:" + fieldInfoPost.getFarm_id());
                     fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
                     farmId=fieldInfo.getFarm_id();
-                    Log.e(TAG, "序号2:" + farmId);
+                    Log.e(TAG, "paren序号2:" + farmId);
 
                     if (convertView == null) {
                         convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
@@ -238,23 +239,27 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
             @Override
             public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-                FieldInfo fieldInfo1= fieldInfoDao.getFieldInfo(groupPosition + 1);
+                FieldInfoPost fieldInfoPost = allFieldInfoPost.get(groupPosition);
+                Log.e(TAG, "child序号1:" + fieldInfoPost.getFarm_id());
+                FieldInfo fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
+                String farmId=fieldInfo.getFarm_id();
+                Log.e(TAG, "child序号2:" + farmId);
                 if (convertView == null) {
                     convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_child, null);
                 }
                 TextView tv1=(TextView)convertView.findViewById(R.id.text1);
-                tv1.setText("农田面积："+fieldInfo1.getArea_num()+"亩");
+                tv1.setText("农田面积："+fieldInfo.getArea_num()+"亩");
                 TextView tv2=(TextView)convertView.findViewById(R.id.text2);
-                tv2.setText("作物类型："+commonUtil.transferCropKind(fieldInfo1.getCrops_kind()));
+                tv2.setText("作物类型："+commonUtil.transferCropKind(fieldInfo.getCrops_kind()));
                 TextView tv3=(TextView)convertView.findViewById(R.id.text3);
-                tv3.setText("单价："+fieldInfo1.getUnit_price()+"元/亩");
+                tv3.setText("单价："+fieldInfo.getUnit_price()+"元/亩");
                 TextView tv4=(TextView)convertView.findViewById(R.id.text4);
-                tv4.setText("地块类型："+fieldInfo1.getBlock_type());
+                tv4.setText("地块类型："+fieldInfo.getBlock_type());
                 Date date1=new Date();
                 Date date2=new Date();
                 try {
-                    date1 = format.parse(fieldInfo1.getStart_time());
-                    date2 = format.parse(fieldInfo1.getEnd_time());
+                    date1 = format.parse(fieldInfo.getStart_time());
+                    date2 = format.parse(fieldInfo.getEnd_time());
                 }catch (Exception e)
                 {
                     Log.e(TAG,e.toString());
@@ -262,7 +267,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 TextView tv5=(TextView)convertView.findViewById(R.id.text5);
                 tv5.setText("起止日期：" + format2.format(date1) + "--" + format2.format(date2));
                 TextView tv6=(TextView)convertView.findViewById(R.id.text6);
-                tv6.setText("联系方式："+fieldInfo1.getUser_name());
+                tv6.setText("联系方式："+fieldInfo.getUser_name());
                 return convertView;
             }
 
@@ -558,8 +563,11 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 FieldInfoPost fieldInfoPost1 = mainMenu.fieldInfoPosts.get(j);
                 if (fieldInfoPost1.getFarm_id().equals(farmId)) {
                     selectedFieldInfoPost.add(fieldInfoPost1);
+                    allFieldInfoPost.add(fieldInfoPost1);
+                    int alp = allFieldInfoPost.size();
                     int lp = selectedFieldInfoPost.size();
-                    Log.e(TAG, "全部路线总数：" + lp + "：+l");
+                    Log.e(TAG, "全部路线总数：" + alp + "：+l");
+                    Log.e(TAG, "post路线总数：" + lp + "：+l");
                     break;
                 }
             }
