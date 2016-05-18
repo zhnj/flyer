@@ -184,7 +184,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     if (convertView == null) {
                         convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
                     }
-                    CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
+                    final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
                     LinearLayout textLayout = (LinearLayout) convertView.findViewById(R.id.expandParent_text);
                     TextView tv1 = (TextView) convertView.findViewById(R.id.id);
                     tv1.setText(String.valueOf(groupPosition + 1));
@@ -207,10 +207,10 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                             }
                         }
                     });
-
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    checkBox.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        public void onClick(View v) {
+                            boolean isChecked=checkBox.isChecked();
                             //////////////////////////临时存储选择的农田信息/////////////////////////
                             if (isChecked) {
                                 selectedFieldInfoPost.add(fieldInfoPost);
@@ -227,11 +227,11 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                                         Log.e(mainMenu.TAG, "路线总数：" + lp + "：-l");
                                     }
                                 }
-                            ////////////////////////////////临时存储选择的农田信息/////////////////////////
-
                             }
+                            ////////////////////////////////临时存储选择的农田信息/////////////////////////
                         }
                     });
+
                 }else {
                     commonUtil.error_hint("未获取到农田信息，请返回上一个界面重新选择！");
                 }
