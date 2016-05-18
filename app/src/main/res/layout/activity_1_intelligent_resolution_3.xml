@@ -37,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/intelligent_arrange_top"
         android:layout_above="@+id/intelligent_arrange_bottom">
-        <com.baidu.mapapi.map.TextureMapView
+        <com.baidu.mapapi.map.MapView
             android:id="@+id/diaopeimapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

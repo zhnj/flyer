@@ -313,25 +313,18 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
-    <!--单选radioBUtton1-->
-    <style name="radioButton">
+    <!--发布界面作物类型CheckBox-->
+    <style name="release_check1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
-    <!--单选radioButton2-->
-    <style name="radioButton2">
+    <!--发布界面作物类型CheckBox-->
+    <style name="release_check2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
-        <item name="android:layout_marginRight">10dp</item>
-    </style>
-    <!--多选CheckBox1-->
-    <style name="checkBox1">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@drawable/checkbox_on_off_2</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
     <!--发布界面显示日期的TextView-->

@@ -176,6 +176,7 @@ public class slidingMenu extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Log.i("ccccccccc",String.valueOf(id)+"ssssss");
         if (id == R.id.item_1) {
             fragment = new item_release_machine();
             addOrShowFragment(fragment);
@@ -192,8 +193,7 @@ public class slidingMenu extends AppCompatActivity
             fragment = new item_job_history();
             addOrShowFragment(fragment);
         } else if (id == R.id.item_6) {
-//            fragment = new item_repair_station();
-//            addOrShowFragment(fragment);
+            //
         } else if (id == R.id.item_7) {
 
         }else if (id == R.id.item_8) {
@@ -298,8 +298,8 @@ public class slidingMenu extends AppCompatActivity
                 addOrShowFragment(item6);
                 break;
             case 6:
-//                item7= new item_repair_station();
-//                addOrShowFragment(item7);
+                item6 = new item_repair_station();
+                addOrShowFragment(item6);
                 break;
             case 7:
                 //加油站

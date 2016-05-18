@@ -22,6 +22,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
@@ -58,16 +62,26 @@ import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
+import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SavedFieldInfoDao;
+import com.njdp.njdp_drivers.db.SessionManager;
+import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
+import com.njdp.njdp_drivers.util.NetUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import bean.FieldInfo;
 import bean.SavedFiledInfo;
@@ -85,11 +99,18 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     private int count;
     private int deploy_tag;
     private CommonUtil commonUtil;
+    private String token;
+    private SessionManager sessionManager;
+    private String machine_id;//机器ID
+    private NetUtil netUtil;
+    private String GPS_longitude="1.1";//GPS经度
+    private String GPS_latitude="1.1";//GPS纬度
+    private boolean text_gps_flag = false;//GPS定位是否成功
 
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////地图用变量///////////////////////////////
-    private TextureMapView mMapView;
+    private MapView mMapView;
     BaiduMap mBaiduMap;
     View markerpopwindow;
 
@@ -154,6 +175,11 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         menu=mainMenu.drawer;
         savedFieldInfoDao=new SavedFieldInfoDao(getActivity());
 
+        netUtil=new NetUtil(mainMenu);
+
+        sessionManager=new SessionManager(mainMenu);
+        token=sessionManager.getToken();
+
         try {
             navigationDeploy.addAll(savedFieldInfoDao.allFieldInfo());
         }catch (Exception e){
@@ -183,7 +209,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         //////////////////////////////////////////////
         ////////////////地图代码/////////////////////
         //获取地图控件引用
-        mMapView = (TextureMapView)view.findViewById(R.id.diaopeimapView);
+        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -247,6 +273,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 //我的方案
                 break;
             case R.id.replanning:
+                navigationDeploy.clear();
                 clearDeploy();//清空方案数据
                 mainMenu.selectedFieldInfo.clear();
                 navigationDeploy.clear();
@@ -317,8 +344,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                             // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude())
+                    .direction(100).latitude(Double.parseDouble(GPS_latitude))
+                    .longitude(Double.parseDouble(GPS_longitude))
                     .build();
             // 设置定位数据
             mBaiduMap.setMyLocationData(locData);
@@ -382,7 +409,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         Polyline mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
     }
     private void drawPolyLine() {
-        Integer[] marks = new Integer[]{R.drawable.icon_st, R.drawable.s2, R.drawable.s3, R.drawable.s4, R.drawable.s5,
+        Integer[] marks = new Integer[]{R.drawable.icon_st, R.drawable.s1,R.drawable.s2, R.drawable.s3, R.drawable.s4, R.drawable.s5,
                 R.drawable.s6, R.drawable.s7, R.drawable.s8, R.drawable.s9, R.drawable.s10,R.drawable.s11,R.drawable.s12, R.drawable.s13,
                 R.drawable.s14, R.drawable.s15, R.drawable.s16, R.drawable.s17, R.drawable.s18, R.drawable.s19, R.drawable.s20, R.drawable.s21,
                 R.drawable.s22, R.drawable.s23, R.drawable.s24, R.drawable.s25, R.drawable.s26, R.drawable.s27, R.drawable.s28, R.drawable.s29,
@@ -436,65 +463,91 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         ///////////////////////路径规划////////////////////////
         //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            if(machine_id!=null){
+                //根据农机IP向服务器请求获取农机经纬度
+                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+
+        ///////////////////////路径规划////////////////////////
+        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
         List<PlanNode> passby = new ArrayList<PlanNode>();
-        if(navigationDeploy.size()>2) {
-            for (int i = 1; i < navigationDeploy.size() - 1; i++) {
+        if(navigationDeploy.size()>1) {
+            for (int i = 0; i < navigationDeploy.size() - 1; i++) {
                 LatLng ll = new LatLng(navigationDeploy.get(i).getLatitude(),navigationDeploy.get(i).getLongitude());
                 PlanNode node = PlanNode.withLocation(ll);
                 passby.add(node);
             }
         }
-        LatLng llst = new LatLng(navigationDeploy.get(0).getLatitude(),navigationDeploy.get(0).getLongitude());
+        LatLng llst = new LatLng(Double.parseDouble(GPS_latitude),Double.parseDouble(GPS_longitude));
         LatLng llen = new LatLng(navigationDeploy.get(navigationDeploy.size()-1).getLatitude(),navigationDeploy.get(navigationDeploy.size()-1).getLongitude());
         this.drawRoutPlan(llst,llen,passby);
 
 
+        //构建当前位置图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(marks[0]);
+        LatLng point = new LatLng(Double.parseDouble(GPS_latitude),Double.parseDouble(GPS_longitude));
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap)
+                .zIndex(15);
+        //在地图上添加Marker，并显示
+        Marker marker = (Marker) mBaiduMap.addOverlay(option);
 
+
+        Log.i("hhhhhh", navigationDeploy.size()+"sssssssss");
         //添加位置文字
-        for (int i = 0; i < navigationDeploy.size(); i++) {
+        for (int i = 1; i <= navigationDeploy.size(); i++) {
             //构建Marker图标
             int icon;
-            if(i<30&&i!=navigationDeploy.size()-1){
+            if(i<=30&&i!=navigationDeploy.size()){
                 icon = marks[i];
-            }else if(i==navigationDeploy.size()-1&&navigationDeploy.size()>1){
+            }else if(i==navigationDeploy.size()){
                 icon=R.drawable.icon_en;
             } else{
                 icon=R.drawable.icon_gcoding;
             }
-            BitmapDescriptor bitmap = BitmapDescriptorFactory
+            bitmap = BitmapDescriptorFactory
                     .fromResource(icon);
-            LatLng point = new LatLng(navigationDeploy.get(i).getLatitude(),navigationDeploy.get(i).getLongitude());
+            point = new LatLng(navigationDeploy.get(i-1).getLatitude(),navigationDeploy.get(i-1).getLongitude());
             //构建MarkerOption，用于在地图上添加Marker
-            OverlayOptions option = new MarkerOptions()
+            option = new MarkerOptions()
                     .position(point)
                     .icon(bitmap)
                     .zIndex(15);
             //在地图上添加Marker，并显示
-            Marker marker = (Marker) mBaiduMap.addOverlay(option);
+            marker = (Marker) mBaiduMap.addOverlay(option);
 
             //构建文字Option对象，用于在地图上添加文字
             OverlayOptions textOption = new TextOptions()
                     .bgColor(0xAAFFFF00)
                     .fontSize(24)
                     .fontColor(0xFFFF00FF)
-                    .text(navigationDeploy.get(i).getCropLand_site()+"")
+                    .text(navigationDeploy.get(i-1).getCropLand_site()+"")
                     .rotate(-30)
                     .zIndex(14)
                     .position(point);
             //在地图上添加该文字对象并显示
             mBaiduMap.addOverlay(textOption);
 
+
             FieldInfo info = new FieldInfo();
-            info.setArea_num(navigationDeploy.get(i).getArea_num());
-            info.setVillage(navigationDeploy.get(i).getCropLand_site());
-            info.setUnit_price(navigationDeploy.get(i).getUnit_price());
-            info.setStart_time(navigationDeploy.get(i).getStart_time());
-            info.setEnd_time(navigationDeploy.get(i).getEnd_time());
-            info.setUser_name(navigationDeploy.get(i).getUser_name());
+            info.setArea_num(navigationDeploy.get(i-1).getArea_num());
+            info.setVillage(navigationDeploy.get(i-1).getCropLand_site());
+            info.setUnit_price(navigationDeploy.get(i-1).getUnit_price());
+            info.setStart_time(navigationDeploy.get(i-1).getStart_time());
+            info.setEnd_time(navigationDeploy.get(i-1).getEnd_time());
+            info.setUser_name(navigationDeploy.get(i-1).getUser_name());
             info.setLatitude(point.latitude);
             info.setLongitude(point.longitude);
-            info.setTelephone(navigationDeploy.get(i).getUser_name());
-            info.setQq(navigationDeploy.get(i).getQq());
+            info.setTelephone(navigationDeploy.get(i-1).getUser_name());
+            info.setQq(navigationDeploy.get(i-1).getQq());
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("info", info);
@@ -797,4 +850,96 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     ////////////////////////////地图代码结束//////////////////////////
     //////////////////////////////////////////////////////////////
 
+
+    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    public void gps_MachineLocation(final String machine_id) {
+        String tag_string_req = "req_GPS";
+        //服务器请求
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
+
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("machine_id", machine_id);
+                params.put("token", token);
+
+                return netUtil.checkParams(params);
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
+    {
+        @Override
+        public void onResponse(String response) {
+            Log.d(TAG, "AreaInit Response: " + response);
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status == 1) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    Intent intent = new Intent(mainMenu, login.class);
+                    startActivity(intent);
+                    mainMenu.finish();
+                } else if (status == 0) {
+
+                    ///////////////////////////获取服务器农机，经纬度/////////////////////
+                    JSONObject location = jObj.getJSONObject("result");
+                    GPS_longitude = location.getString("x");
+                    GPS_latitude = location.getString("y");
+                    ///////////////////////////获取服务器农机，经纬度/////////////////////
+
+                    text_gps_flag = false;
+                    isGetLocation();
+                } else {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "GPSLocation Error:" + errorMsg);
+                    text_gps_flag = true;
+                    isGetLocation();
+                }
+            } catch (JSONException e) {
+                // JSON error
+                Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
+                text_gps_flag = true;
+                isGetLocation();
+            }
+        }
+    }
+
+    private class locationErrorListener implements  Response.ErrorListener//定位服务器响应失败
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(TAG, "ConnectService Error: " + error.getMessage());
+            netUtil.testVolley(error);
+            text_gps_flag = true;
+            isGetLocation();
+        }
+    }
+
+    //定位成功或者失败后的响应
+    private void isGetLocation() {
+        if (!text_gps_flag) {
+            Log.e(TAG, "GPS自动定位成功");
+        } else {
+            Log.e(TAG, "GPS自动定位失败,开启百度定位！");
+            try {
+                GPS_latitude = String.valueOf(curlocation.getLatitude());
+                GPS_longitude = String.valueOf(curlocation.getLongitude());
+            }catch (Exception e)
+            {
+                commonUtil.error_hint("自动定位失败，请重试！");
+                Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
+            }
+        }
+    }
 }

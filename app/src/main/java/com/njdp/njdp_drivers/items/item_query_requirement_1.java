@@ -44,6 +44,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -106,7 +107,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private double nav_longitude;
     private double nav_latitude;
     ////////////////////////地图变量//////////////////////////
-    private TextureMapView mMapView = null;
+    private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -254,6 +255,9 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                         @Override
                         public void onClick(View v) {
 
+                            double longtide=fieldInfo.getLongitude();
+
+
                         }
                     });
                 }else {
@@ -305,8 +309,8 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
-        mMapView = (TextureMapView) getActivity().findViewById(R.id.bmapView);
-        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
+        mMapView = (MapView) getActivity().findViewById(R.id.bmapView);
+        mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
