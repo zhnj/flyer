@@ -176,10 +176,10 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 //获取对应序列的农田信息
                 if (allFieldInfoPost.size() >= 1) {
                     fieldInfoPost = allFieldInfoPost.get(groupPosition);
-                    Log.e(TAG, "parent序号1:" + fieldInfoPost.getFarm_id());
+//                    Log.e(TAG, "parent序号1:" + fieldInfoPost.getFarm_id());
                     fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
                     farmId=fieldInfo.getFarm_id();
-                    Log.e(TAG, "paren序号2:" + farmId);
+//                    Log.e(TAG, "paren序号2:" + farmId);
 
                     if (convertView == null) {
                         convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
@@ -379,11 +379,13 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     for(int i=0;i<selectedFieldInfoPost.size();i++)
                     {
                         params.put("farm_distance["+selectedFieldInfoPost.get(i).getFarm_id()+"]", selectedFieldInfoPost.get(i).getDistance());
+                        Log.e(TAG, gson.toJson(selectedFieldInfoPost.get(i)));
                     }
                     params.put("deploy_id",deploy_id);
                     params.put("norm_id",norm_id);
                     params.put("token",token);
 
+                    Log.e(TAG,gson.toJson(params));
                     return netUtil.checkParams(params);
                 }
 
