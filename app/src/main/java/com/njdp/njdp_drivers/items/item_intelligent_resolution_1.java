@@ -107,6 +107,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         url=AppConfig.URL_BASICDEPLOY;
 
         try{
+            allFieldInfoPost.clear();
             selectedFieldInfoPost.clear();
         }catch (Exception e) {}
         setSelectedFieldInfoPost();
@@ -132,7 +133,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         adapter=new BaseExpandableListAdapter() {
             @Override
             public int getGroupCount() {
-                return allFieldInfoPost.size();
+                return mainMenu.selectedFieldInfo.size();
             }
 
             @Override
@@ -142,7 +143,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
             @Override
             public Object getGroup(int groupPosition) {
-                return fieldInfoDao.getFieldInfoByFieldId(mainMenu.fieldInfoPosts.get(groupPosition).getFarm_id());
+                return fieldInfoDao.getFieldInfoByFieldId(allFieldInfoPost.get(groupPosition).getFarm_id());
             }
 
             @Override
