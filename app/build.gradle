@@ -57,9 +57,8 @@ dependencies {
         exclude module: 'httpclient'
     }
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    //    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-
-    //    compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.zhy:okhttputils:2.4.1'
     compile files('libs/BaiduHUDSDK_2.0.jar')
     compile files('libs/baidumapapi_base_v3_7_1.jar')

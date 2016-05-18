@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -83,6 +84,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private StringBuffer[] s_deploy_3;;//方案3路线
     private StringBuffer[] s_deploy_4;;//方案4路线
     private StringBuffer[] s_deploy_5;;//方案5路线
+    private HashMap<Integer, Boolean> checkState = new HashMap<Integer,Boolean>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -105,6 +107,10 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         deploy_id=sessionManager.getDeployId();
         norm_id=sessionManager.getNormId();
         url=AppConfig.URL_BASICDEPLOY;
+        for(int i=0;i< mainMenu.selectedFieldInfo.size();i++)
+        {
+            checkState.put(i,true);
+        }
 
         try{
             allFieldInfoPost.clear();
@@ -179,11 +185,13 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);
                     farmId=fieldInfo.getFarm_id();
 //                    Log.e(TAG, "paren序号2:" + farmId);
-
                     if (convertView == null) {
                         convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_parent, null);
                     }
+
                     final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.selected);
+                    checkBox.setChecked(checkState.get(groupPosition) == null ? false: true);
+
                     LinearLayout textLayout = (LinearLayout) convertView.findViewById(R.id.expandParent_text);
                     TextView tv1 = (TextView) convertView.findViewById(R.id.id);
                     tv1.setText(String.valueOf(groupPosition + 1));
@@ -212,10 +220,12 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                             boolean isChecked=checkBox.isChecked();
                             //////////////////////////临时存储选择的农田信息/////////////////////////
                             if (isChecked) {
+                                checkState.put(groupPosition, isChecked);
                                 selectedFieldInfoPost.add(fieldInfoPost);
                                 int lp = selectedFieldInfoPost.size();
                                 Log.e(mainMenu.TAG, "路线总数：" + lp + "：+l");
                             } else {
+                                checkState.remove(groupPosition);
                                 int length = allFieldInfoPost.size();
                                 for (int i = 0; i < length; i++) {
                                     FieldInfoPost fieldInfoPost1 = allFieldInfoPost.get(i);
@@ -554,9 +564,9 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private void setSelectedFieldInfoPost()//默认所有的村庄路径全选存入selectedFieldInfoPost
     {
         int length1=mainMenu.selectedFieldInfo.size();
-        Log.e(TAG,"农田数量："+length1);
+        Log.e(TAG, "农田数量：" + length1);
         int length2 = mainMenu.fieldInfoPosts.size();
-        Log.e(TAG,"路径数量："+length2);
+        Log.e(TAG, "路径数量：" + length2);
         for(int i=0;i<length1;i++)
         {
             String farmId=mainMenu.selectedFieldInfo.get(i).getFarm_id();
@@ -574,4 +584,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             }
         }
     }
+
+
+
 }

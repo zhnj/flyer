@@ -4,53 +4,42 @@ package com.njdp.njdp_drivers.items;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
-import com.njdp.njdp_drivers.db.LruBitmapCache;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +48,8 @@ import java.util.Map;
 import bean.Driver;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 
 import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
@@ -81,17 +72,19 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private TextView t_weixin;
     private TextView t_qq;
     private TextView t_region;
-    private ImageLoader loadImage;
     private DriverDao driverDao;
     private NetUtil netUtil;
     private Driver driver;
     private CommonUtil commonUtil;
     private Gson gson;
     private SessionManager sessionManager;
-    private File tempFile;
+    private ImageLoader imageLoader;
+    private ImageLoader.ImageListener imageListener;
     private String path;
     private String token;
     private String netImageUrl;
+    private static final int ERROR = 1;
+    private static final int SUCCESS = 2 ;
 
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
     private int crop = 300;// 裁剪大小
@@ -141,7 +134,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
-        loadImage=AppController.getInstance().getImageLoader();
+        imageLoader=AppController.getInstance().getImageLoader();
+        imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
 
         try {
             driver = driverDao.getDriver(1);
@@ -151,7 +145,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
         if(driver.getTelephone()!=null) {
             try {
-                showDriverData(driver);
+                showDriverInfo(driver);
                 path = driver.getImage_url();
                 if (path != null)
                 {
@@ -168,6 +162,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             intiData(driver);
         }
         setTextFix();//修改后，显示修改后的信息
+        intiData(driver);
         return view;
     }
 
@@ -261,7 +256,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         } else {
 
             //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.POST,
+            StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
                     AppConfig.URL_QUERYPERSONINFO, new mSuccessListener(), mainMenu.mErrorListener) {
 
                 @Override
@@ -309,13 +304,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     driver.setTelephone(s_driver.getString("person_phone"));
                     driver.setWechart(s_driver.getString("person_weixin"));
                     driver.setQQ(s_driver.getString("person_qq"));
-                    driver.setSite(s_driver.getString("person_address"));
+                    driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
                     driver.setId(1);
-                    tempFile= commonUtil.getPath();
-                    path=tempFile.getAbsolutePath()+"/njdpTemp/userimage.png";
+                    path=commonUtil.imageTempFile();
                     driver.setImage_url(path);//设置头像本地存储路径
-
-                    showDriverData(driver);
+                    new Thread(getImageTask).start();
 
                 } else {
 
@@ -328,18 +321,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
     };
 
-    private void showDriverData(Driver driver)//显示用户数据
-    {
-        getImage(netImageUrl);
-//        driverDao.add(driver);
-        t_name.setText(driver.getName());
-        t_machine_id.setText(driver.getMachine_id());
-        t_telephone.setText(driver.getTelephone());
-        t_weixin.setText(driver.getWechart());
-        t_qq.setText(driver.getQQ());
-        t_region.setText(driver.getSite_0());
-    }
-
 
 //    private void initFixPopup()//初始化修改信息弹窗
 //    {
@@ -350,49 +331,102 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
 //    }
 
+    private void showDriverInfo(Driver driver)//只显示用户基本信息
+    {
+        t_name.setText(driver.getName());
+        t_machine_id.setText(driver.getMachine_id());
+        t_telephone.setText(driver.getTelephone());
+        t_weixin.setText(driver.getWechart());
+        t_qq.setText(driver.getQQ());
+        t_region.setText(driver.getSite_0());
+    }
+
+    //////////////////////////////////////////////////下载用户头像/////////////////////////////////
+    //获取用户头像
+    private Runnable getImageTask = new Runnable() {
+
+        @Override
+        public void run() {
+            getImage(AppConfig.URL_IP+netImageUrl);
+        }
+    };
+    private final OkHttpClient client = new OkHttpClient();
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case SUCCESS:
+                    Log.e(TAG, "获取头像成功");
+//                    showDriverData(driver, (Bitmap) msg.obj);
+                    if((Bitmap) msg.obj!=null) {
+                        title_Image.setImageBitmap((Bitmap) msg.obj);
+                    }else {
+                        Log.e(TAG,"图像获取错误");
+                    }
+                    break;
+                case ERROR:;
+                    Log.e(TAG,"获取图成功");
+                    break;
+            }
+        }
+    };
     private void getImage(String url)//获取用户头像
     {
-//        loadImage.get(AppConfig.URL_IP+url, new ImageLoader.ImageListener() {
-//            @Override
-//            public void onResponse(ImageLoader.ImageContainer response, boolean b) {
-//                if(response.getBitmap()!=null) {
-//                    bitmap = response.getBitmap();
-//                }else{
-//                    commonUtil.error_hint("获取头像失败");
-//                    Log.e(TAG,"Image Error1："+"获取头像失败");
-//                }
-//            }
+        imageLoader.get(url,imageListener,300, 300);
+//        OkHttpUtils
+//                .get()
+//                .url(AppConfig.URL_IP + url)
+//                .build()
+//                .connTimeOut(20 * 000)
+//                .readTimeOut(20 * 1000)
+//                .writeTimeOut(20*1000)
+//                .execute(new BitmapCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e) {
+//                        Log.e(TAG, "获取用户头像失败" + e.getMessage());
+//                        commonUtil.error_hint("获取用户头像失败");
+//                    }
 //
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                bitmap=null;
-//                commonUtil.error_hint("获取头像失败");
-//                Log.e(TAG,"Image Error2："+"获取头像失败-"+volleyError.getMessage());
-//            }
-//        });
-        OkHttpUtils
-                .get()
-                .url(AppConfig.URL_IP + url)
-                .build()
-                .connTimeOut(20 * 000)
-                .readTimeOut(20 * 1000)
-                .writeTimeOut(20*1000)
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        Log.e(TAG, "获取用户头像失败" + e.getMessage());
-                        commonUtil.error_hint("获取用户头像失败");
-                    }
+//                    @Override
+//                    public void onResponse(Bitmap image) {
+//                        Log.e(TAG, "获取用户头像成功");
+//                        if(image!=null) {
+//                            showDriverData(driver, image);
+//                        }
+//                    }
+//                });
+//        try {
+//            okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();//获取请求对象
+//            ResponseBody body = client.newCall(request).execute().body();//获取响应体
+//            InputStream in = body.byteStream();//获取流
+//            Bitmap bitmap = BitmapFactory.decodeStream(in);//转化为bitmap
+//            Message msg = Message.obtain();//使用Hanlder发送消息
+//
+//            msg.what = SUCCESS;
+//            msg.obj = bitmap;
+//            handler.sendMessage(msg);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            //失败
+//            Message msg = Message.obtain();
+//            msg.what = ERROR;
+//            handler.sendMessage(msg);
+//        }
+    }
+    //////////////////////////////////////////////////下载用户头像/////////////////////////////////
 
-                    @Override
-                    public void onResponse(Bitmap image) {
-                        Log.e(TAG, "获取用户头像成功");
-//                        Bitmap mbitmap = image;
-//                        commonUtil.saveBitmap(mainMenu, mbitmap);//保存到本地
-//                        title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
-                        title_Image.setImageBitmap(image);//裁剪
-                    }
-                });
+    private void showDriverData(Driver driver,Bitmap mbitmap)//显示用户基本信息和头像
+    {
+        commonUtil.saveBitmap(mainMenu, mbitmap);//保存到本地
+        title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
+        title_Image.setImageBitmap(mbitmap);
+        driverDao.add(driver);
+        t_name.setText(driver.getName());
+        t_machine_id.setText(driver.getMachine_id());
+        t_telephone.setText(driver.getTelephone());
+        t_weixin.setText(driver.getWechart());
+        t_qq.setText(driver.getQQ());
+        t_region.setText(driver.getSite_0());
     }
 
     @Override

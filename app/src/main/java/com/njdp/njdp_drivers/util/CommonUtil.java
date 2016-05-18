@@ -81,7 +81,7 @@ public class CommonUtil {
     public String imageTempFile()
     {
         File tempFile=getPath();
-        String path=tempFile.getAbsolutePath()+"/temp/njdp_user_image.png";
+        String path=tempFile.getAbsolutePath()+"/njdpTemp/userimage.png";
         return path;
     }
 
@@ -192,4 +192,14 @@ public class CommonUtil {
         return "类型错误";
     }
 
+    public String transferSite(String site)//将地址中间的横线去掉
+    {
+        String[] s_site=site.split("-");
+        StringBuilder st_site=new StringBuilder(s_site.length*3);
+        for(int i=0;i<s_site.length;i++)
+        {
+            st_site.append((s_site[i]));
+        }
+        return st_site.toString();
+    }
 }

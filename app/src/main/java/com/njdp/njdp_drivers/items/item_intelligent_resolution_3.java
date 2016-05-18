@@ -249,6 +249,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             case R.id.replanning:
                 clearDeploy();//清空方案数据
                 mainMenu.selectedFieldInfo.clear();
+                navigationDeploy.clear();
                 mainMenu.addOrShowFragment(new item_intelligent_resolution());
                 break;
             case R.id.navigation:

@@ -402,71 +402,71 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private void Search()
     {
 
-    //////////////////////////////////////////测试数据test////////////////////////////////////////
-        try {
-            String response = "{\"status\":0,\"deploy_id\":85,\"norm_id\":10," +
-                    "\"machine_farm_d\":[{\"farm_id\":4,\"distance\":\"301.95\"}," +
-                    "{\"farm_id\":5,\"distance\":\"301.95\"}," +
-                    "{\"farm_id\":6,\"distance\":\"301.95\"}," +
-                    "{\"farm_id\":2,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":3,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":1,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":8,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":10,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":9,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":11,\"distance\":\"309.805\"}," +
-                    "{\"farm_id\":7,\"distance\":\"309.805\"}]," +
-                    "\"farms\":[" +
-                    "{\"farm_id\":1,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":2,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":3,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"58.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"大名县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":4,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"50.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"峰峰矿区\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-30\"}," +
-                    "{\"farm_id\":5,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"50.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"峰峰矿区\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-30\"}," +
-                    "{\"farm_id\":6,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":7,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":8,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":9,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":10,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
-                    "{\"farm_id\":11,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"58.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"成安县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-29\"}]}";
-
-            JSONObject jObj = new JSONObject(response);
-            deploy_id=jObj.getString("deploy_id");
-            norm_id=jObj.getString("norm_id");
-            JSONArray s_post=jObj.getJSONArray("machine_farm_d");
-            JSONArray s_info=jObj.getJSONArray("farms");
-            String s_t=jObj.getString("farms");
-            String s_p=jObj.getString("machine_farm_d");
-            sessionManager.setUserTag(deploy_id, norm_id);
-            Log.e(TAG, String.valueOf(s_post.length()));
-            Log.e(TAG, String.valueOf(s_info.length()));
-            fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());
-            mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());
-            for(int i=0;i<mainMenu.fieldInfoPosts.size();i++)
-            {
-                FieldInfoPost ft=mainMenu.fieldInfoPosts.get(i);
-                Log.e("farm_id:",ft.getFarm_id());
-                Log.e("distance:",ft.getDistance());
-            }
-            Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
-            Log.e(TAG,fieldInfos.get(1).getCropLand_site());
-
-        }catch (Exception e){
-            e.printStackTrace();
-            Log.e(TAG,e.toString());
-        }
-        if( (fieldInfos.size()<1)||( mainMenu.fieldInfoPosts.size()<1)){
-            commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
-        }else
-        {
-            //存储到本地库
-            saveFieldInfo(fieldInfoDao,fieldInfos);
-            //按距离的排序好的农田
-            arrangeField();
-
-            Fragment fragment = new item_intelligent_resolution_1();
-            mainMenu.addBackFragment(fragment);
-        }
-        //////////////////////////////////////////测试数据test////////////////////////////////////
+//    //////////////////////////////////////////测试数据test////////////////////////////////////////
+//        try {
+//            String response = "{\"status\":0,\"deploy_id\":85,\"norm_id\":10," +
+//                    "\"machine_farm_d\":[{\"farm_id\":4,\"distance\":\"301.95\"}," +
+//                    "{\"farm_id\":5,\"distance\":\"301.95\"}," +
+//                    "{\"farm_id\":6,\"distance\":\"301.95\"}," +
+//                    "{\"farm_id\":2,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":3,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":1,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":8,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":10,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":9,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":11,\"distance\":\"309.805\"}," +
+//                    "{\"farm_id\":7,\"distance\":\"309.805\"}]," +
+//                    "\"farms\":[" +
+//                    "{\"farm_id\":1,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":2,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":3,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"58.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"大名县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":4,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"50.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"峰峰矿区\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-30\"}," +
+//                    "{\"farm_id\":5,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"50.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"峰峰矿区\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-30\"}," +
+//                    "{\"farm_id\":6,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":7,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":8,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":9,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":10,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"28.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"肥乡县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.45580333333334\",\"latitude\":\"38.920224999999995\",\"start_time\":\"2016-04-28\",\"end_time\":\"2016-04-29\"}," +
+//                    "{\"farm_id\":11,\"user_name\":\"12345678901\",\"crops_kind\":\"小麦\",\"area_num\":\"58.0\",\"unit_price\":\"68.0\",\"block_type\":\"规则\",\"province\":\"河北\",\"city\":\"邯郸\",\"county\":\"成安县\",\"town\":\"测试乡\",\"village\":\"成功村\",\"longitude\":\"115.47697500000001\",\"latitude\":\"38.85114166666666\",\"start_time\":\"2016-04-29\",\"end_time\":\"2016-04-29\"}]}";
+//
+//            JSONObject jObj = new JSONObject(response);
+//            deploy_id=jObj.getString("deploy_id");
+//            norm_id=jObj.getString("norm_id");
+//            JSONArray s_post=jObj.getJSONArray("machine_farm_d");
+//            JSONArray s_info=jObj.getJSONArray("farms");
+//            String s_t=jObj.getString("farms");
+//            String s_p=jObj.getString("machine_farm_d");
+//            sessionManager.setUserTag(deploy_id, norm_id);
+//            Log.e(TAG, String.valueOf(s_post.length()));
+//            Log.e(TAG, String.valueOf(s_info.length()));
+//            fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());
+//            mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());
+//            for(int i=0;i<mainMenu.fieldInfoPosts.size();i++)
+//            {
+//                FieldInfoPost ft=mainMenu.fieldInfoPosts.get(i);
+//                Log.e("farm_id:",ft.getFarm_id());
+//                Log.e("distance:",ft.getDistance());
+//            }
+//            Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
+//            Log.e(TAG,fieldInfos.get(1).getCropLand_site());
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            Log.e(TAG,e.toString());
+//        }
+//        if( (fieldInfos.size()<1)||( mainMenu.fieldInfoPosts.size()<1)){
+//            commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
+//        }else
+//        {
+//            //存储到本地库
+//            saveFieldInfo(fieldInfoDao,fieldInfos);
+//            //按距离的排序好的农田
+//            arrangeField();
+//
+//            Fragment fragment = new item_intelligent_resolution_1();
+//            mainMenu.addBackFragment(fragment);
+//        }
+//        //////////////////////////////////////////测试数据test////////////////////////////////////
 
         if( mainMenu.selectedFieldInfo.size()<1){
             commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
@@ -877,12 +877,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-//            if(dialog_flag==1)
-//            {
-//                _initFieldInfo(sl_area);
-//            }else{
-//                initFieldInfo(sl_area);
-//            }
+            if(dialog_flag==1)
+            {
+                _initFieldInfo(sl_area);
+            }else{
+                initFieldInfo(sl_area);
+            }
         } else {
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
             try {
@@ -892,12 +892,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-//                if(dialog_flag==1)
-//                {
-//                    _initFieldInfo(sl_area);
-//                }else{
-//                    initFieldInfo(sl_area);
-//                }
+                if(dialog_flag==1)
+                {
+                    _initFieldInfo(sl_area);
+                }else{
+                    initFieldInfo(sl_area);
+                }
             }catch (Exception e)
             {
                 commonUtil.error_hint("自动定位失败，请重试！");
