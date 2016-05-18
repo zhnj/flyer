@@ -148,18 +148,17 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
             @Override
             public Object getChild(int groupPosition, int childPosition) {
-                FieldInfo fieldInfo1= fieldInfoDao.getFieldInfo(groupPosition + 1);
-                return fieldInfo1;
+                return fieldInfoDao.getFieldInfoByFieldId(allFieldInfoPost.get(groupPosition).getFarm_id());
             }
 
             @Override
             public long getGroupId(int groupPosition) {
-                return groupPosition;
+                return 2000+groupPosition*10;
             }
 
             @Override
             public long getChildId(int groupPosition, int childPosition) {
-                return childPosition;
+                return 2000+groupPosition*10+childPosition;
             }
 
             @Override
@@ -217,12 +216,11 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                                 int lp = selectedFieldInfoPost.size();
                                 Log.e(mainMenu.TAG, "路线总数：" + lp + "：+l");
                             } else {
-                                int length = selectedFieldInfoPost.size();
+                                int length = allFieldInfoPost.size();
                                 for (int i = 0; i < length; i++) {
-                                    FieldInfoPost fieldInfoPost1 = selectedFieldInfoPost.get(i);
+                                    FieldInfoPost fieldInfoPost1 = allFieldInfoPost.get(i);
                                     if (fieldInfoPost1.getFarm_id().equals(farmId)) {
                                         selectedFieldInfoPost.remove(fieldInfoPost1);
-                                        length--;
                                         int lp = selectedFieldInfoPost.size();
                                         Log.e(mainMenu.TAG, "路线总数：" + lp + "：-l");
                                     }

@@ -312,7 +312,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     driver.setSite(s_driver.getString("person_address"));
                     driver.setId(1);
                     tempFile= commonUtil.getPath();
-                    path=tempFile.getAbsolutePath()+"/temp/userimage.png";
+                    path=tempFile.getAbsolutePath()+"/njdpTemp/userimage.png";
                     driver.setImage_url(path);//设置头像本地存储路径
 
                     showDriverData(driver);
@@ -337,7 +337,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_telephone.setText(driver.getTelephone());
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
-        t_region.setText(driver.getSite());
+        t_region.setText(driver.getSite_0());
     }
 
 

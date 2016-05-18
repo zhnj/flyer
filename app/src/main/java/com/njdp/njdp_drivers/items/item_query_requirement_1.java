@@ -102,6 +102,9 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private View infoView;
     private PopupWindow btn_popup;
     private boolean btn_pop_flag=false;
+    private String telephone;
+    private double nav_longitude;
+    private double nav_latitude;
     ////////////////////////地图变量//////////////////////////
     private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
@@ -176,8 +179,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
 
             @Override
             public Object getChild(int groupPosition, int childPosition) {
-                FieldInfo fieldInfo1= mainMenu.selectedFieldInfo.get(groupPosition);
-                return fieldInfo1;
+                return mainMenu.selectedFieldInfo.get(groupPosition);
             }
 
             @Override
@@ -205,6 +207,9 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                 if (mainMenu.selectedFieldInfo.size() >= 1) {
                     fieldInfo = mainMenu.selectedFieldInfo.get(groupPosition);//农田信息
                     farmId = fieldInfo.getFarm_id();
+                    telephone=fieldInfo.getUser_name();
+                    nav_longitude=fieldInfo.getLongitude();
+                    nav_latitude=fieldInfo.getLatitude();
                     Log.e(TAG, "农田序号:" + farmId);
 
                     if (convertView == null) {
@@ -217,13 +222,15 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                         TextView tv1 = (TextView) convertView.findViewById(R.id.field_site);
                         tv1.setText(fieldInfo.getCropLand_site());
                         TextView tv2 = (TextView) convertView.findViewById(R.id.field_telephone);
-                        tv2.setText(fieldInfo.getTelephone());
+                        tv2.setText(fieldInfo.getUser_name());
                         TextView tv3 = (TextView) convertView.findViewById(R.id.field_distance);
                         tv3.setText("距您"+fieldInfo.getDistance() + "公里");
                     } catch (Exception e) {
                         Log.e(TAG, "布局错误1：" + e.toString());
                     }
                     final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
+                    convertView.findViewById(R.id.field_telephone).setOnClickListener(new callListener());
+                    convertView.findViewById(R.id.field_navigation).setOnClickListener(new navigationListener());
 
                     textLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -673,7 +680,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         btn_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 
-    private class callListener implements View.OnClickListener//拨打电话
+    private class callListener implements View.OnClickListener//拨打电话telephone
     {
         @Override
         public void onClick(View v) {
@@ -681,7 +688,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         }
     }
 
-    private class navigationListener implements View.OnClickListener//开始导航
+    private class navigationListener implements View.OnClickListener//开始导航nav_longitude，nav_latitude
     {
         @Override
         public void onClick(View v) {

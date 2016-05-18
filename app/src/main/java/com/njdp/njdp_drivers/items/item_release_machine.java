@@ -190,7 +190,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         this.tvr_machineType=(TextView)view.findViewById(R.id.tvr_machine_type);
         this.tvr_cropType=(TextView)view.findViewById(R.id.tvr_cropType);
         this.tvr_workTime=(TextView)view.findViewById(R.id.tvr_workTime);
-        this.tv_remark=(TextView)view.findViewById(R.id.tvr_remark);
+        this.tvr_remark=(TextView)view.findViewById(R.id.tvr_remark);
         ck_wheat.setOnCheckedChangeListener(new ckWheatListener());
         ck_corn.setOnCheckedChangeListener(new ckCornListener());
         ck_soybean.setOnCheckedChangeListener(new ckSoybeanListener());
@@ -330,16 +330,19 @@ public class item_release_machine extends Fragment implements View.OnClickListen
 
     private void showReleaseHistory()//查看是否有发布历史
     {
-        if(sessionManager.getReleaseFlag())
-        {
-            ll_history.setVisibility(View.VISIBLE);
-            noRelease.setVisibility(View.GONE);
-            tvr_cropType.setText(sessionManager.getCropType());
-            tvr_machineType.setText(sessionManager.getMachineType());
-            tvr_workTime.setText(sessionManager.getWorkTime());
-            tvr_remark.setText(sessionManager.getRemark());
-        }else
-        {
+        try {
+            if (sessionManager.getReleaseFlag()) {
+                ll_history.setVisibility(View.VISIBLE);
+                noRelease.setVisibility(View.GONE);
+                tvr_cropType.setText(sessionManager.getCropType());
+                tvr_machineType.setText(sessionManager.getMachineType());
+                tvr_workTime.setText(sessionManager.getWorkTime());
+                tvr_remark.setText(sessionManager.getRemark());
+            } else {
+                ll_history.setVisibility(View.GONE);
+                noRelease.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
             ll_history.setVisibility(View.GONE);
             noRelease.setVisibility(View.VISIBLE);
         }
@@ -401,8 +404,8 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     commonUtil.error_hint("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
-                    tvr_cropType.setText(s_machine_cropType);
-                    tvr_machineType.setText(transfer_s__machine_cropType(s_machine_type));
+                    tvr_cropType.setText(transfer_s__machine_cropType(s_machine_type));
+                    tvr_machineType.setText(s_machine_type);
                     tvr_workTime.setText(workTime);
                     tvr_remark.setText(remark);
                 } else {
