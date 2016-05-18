@@ -184,7 +184,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
             Log.e(TAG, machine_id);
             Log.e(TAG, telephone);
             Log.e(TAG, token);
-            pDialog.setMessage("正在通知农户 ...");
+            pDialog.setMessage("请等待 ...");
             showDialog();
             //服务器请求
             StringRequest strReq = new StringRequest(Request.Method.POST,

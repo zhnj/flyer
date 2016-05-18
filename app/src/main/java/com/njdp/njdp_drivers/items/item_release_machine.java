@@ -97,13 +97,12 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     private String token;
     private String machine_number;//发布农机数量/暂留
     private String machine_id;
-    private String workTime = "16";
+    private String workTime = "24";
     private StringBuilder machine_type;
     private String s_machine_type;
     private StringBuilder machine_cropType;
     private StringBuilder sb_crop;
     private String s_machine_cropType;
-    private StringBuilder st_sb_crop;
     private String remark;
     private int selectedType;
     private String startTime;//作业开始时间
@@ -129,6 +128,12 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     private WindowManager.LayoutParams lp;
     /////////////////////确认发布信息弹窗///////////////////////////
 
+    private TextView tvr_machineType;
+    private TextView tvr_cropType;
+    private TextView tvr_workTime;
+    private TextView tvr_remark;
+    private TextView noRelease;
+    private LinearLayout ll_history;
     private LinearLayout ll_hint;
     private EditText text_remark;
     private CheckBox ck_wheat;
@@ -180,6 +185,12 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         this.ll_crop=(LinearLayout)view.findViewById(R.id.ck_crop);
         this.ll_gd=(LinearLayout)view .findViewById(R.id.ck_arableLand);
         this.ll_hint=(LinearLayout)view.findViewById(R.id.hint);
+        this.ll_history=(LinearLayout)view.findViewById(R.id.release_history);
+        this.noRelease=(TextView)view.findViewById(R.id.noRelease);
+        this.tvr_machineType=(TextView)view.findViewById(R.id.tvr_machine_type);
+        this.tvr_cropType=(TextView)view.findViewById(R.id.tvr_cropType);
+        this.tvr_workTime=(TextView)view.findViewById(R.id.tvr_workTime);
+        this.tv_remark=(TextView)view.findViewById(R.id.tvr_remark);
         ck_wheat.setOnCheckedChangeListener(new ckWheatListener());
         ck_corn.setOnCheckedChangeListener(new ckCornListener());
         ck_soybean.setOnCheckedChangeListener(new ckSoybeanListener());
@@ -190,6 +201,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         mainMenu = (slidingMenu) getActivity();
         menu = mainMenu.drawer;
         lp = mainMenu.getWindow().getAttributes();
+        showReleaseHistory();//查看是否有发布历史
 
         machine_id_Validation.addValidation(text_machine_id, "\\d{12}|\\d{18}", getResources().getString(R.string.error_machineId));
         pDialog = new ProgressDialog(mainMenu);
@@ -316,6 +328,23 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         });
     }
 
+    private void showReleaseHistory()//查看是否有发布历史
+    {
+        if(sessionManager.getReleaseFlag())
+        {
+            ll_history.setVisibility(View.VISIBLE);
+            noRelease.setVisibility(View.GONE);
+            tvr_cropType.setText(sessionManager.getCropType());
+            tvr_machineType.setText(sessionManager.getMachineType());
+            tvr_workTime.setText(sessionManager.getWorkTime());
+            tvr_remark.setText(sessionManager.getRemark());
+        }else
+        {
+            ll_history.setVisibility(View.GONE);
+            noRelease.setVisibility(View.VISIBLE);
+        }
+    }
+
     //发布信息到数据库
     private void releaseInfo() {
 
@@ -370,6 +399,12 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     mainMenu.finish();
                 } else if (status == 0) {
                     commonUtil.error_hint("农机信息发布成功");
+                    ll_history.setVisibility(View.VISIBLE);
+                    noRelease.setVisibility(View.GONE);
+                    tvr_cropType.setText(s_machine_cropType);
+                    tvr_machineType.setText(transfer_s__machine_cropType(s_machine_type));
+                    tvr_workTime.setText(workTime);
+                    tvr_remark.setText(remark);
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
@@ -535,19 +570,9 @@ public class item_release_machine extends Fragment implements View.OnClickListen
             default:
                 break;
         }
-        /////////////////////////////////////将农机服务类型编码转换成汉字//////////////////////////
-        String[] s_machine_cropTypes=s_machine_cropType.split("&");
-        st_sb_crop=new StringBuilder(s_machine_cropTypes.length*3);
-        for(int i=0;i<s_machine_cropTypes.length;i++)
-        {
-            if(i>0) {
-                st_sb_crop.append("&");
-            }
-            st_sb_crop.append(commonUtil.transferCropKind(s_machine_cropTypes[i]));
-        }
-        /////////////////////////////////////将农机服务类型编码转换成汉字//////////////////////////
+
         tv_machineType.setText(s_machine_type);
-        tv_cropType.setText(st_sb_crop.toString());
+        tv_cropType.setText(transfer_s__machine_cropType(s_machine_type));
 
         Log.e(TAG,token);
         Log.e(TAG,machine_id);
@@ -559,6 +584,20 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         btn_popup.showAtLocation(parentView, Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
         lp.alpha = 0.7f;
         mainMenu.getWindow().setAttributes(lp);
+    }
+
+    private String transfer_s__machine_cropType(final String s__machine_cropType)//将s__machine_cropType编码转换成汉字
+    {
+        String[] s_machine_cropTypes=s_machine_cropType.split("&");
+        StringBuilder st_sb_crop=new StringBuilder(s_machine_cropTypes.length*3);
+        for(int i=0;i<s_machine_cropTypes.length;i++)
+        {
+            if(i>0) {
+                st_sb_crop.append("&");
+            }
+            st_sb_crop.append(commonUtil.transferCropKind(s_machine_cropTypes[i]));
+        }
+        return st_sb_crop.toString();
     }
 
     //控制描述输入框的显示和隐藏
@@ -607,7 +646,6 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
-
 
     private void initBtnPopup()//初始化确认信息弹窗
     {
@@ -802,10 +840,10 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
             if(position==0){
-                workTime="16";
-                tv_workTime.setText("16小时");
+                workTime="24";
+                tv_workTime.setText("24小时");
             }else {
-                workTime = String.valueOf(position + 1);
+                workTime = String.valueOf(position);
                 tv_workTime.setText(String.valueOf(position)+"小时");
             }
         }

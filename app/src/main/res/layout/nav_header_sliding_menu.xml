@@ -20,12 +20,5 @@
         android:src="@drawable/turnplate_center"
         circleImageView:civ_border_width="2dp"
         circleImageView:civ_border_color="#ffffff"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="司机1号"
-        android:textSize="26dp"
-        android:textColor="@android:color/white"
-        android:gravity="center_horizontal"/>
 
 </LinearLayout>

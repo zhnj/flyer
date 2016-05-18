@@ -50,6 +50,14 @@
         <item>14小时</item>
         <item>15小时</item>
         <item>16小时</item>
+        <item>17小时</item>
+        <item>18小时</item>
+        <item>19小时</item>
+        <item>20小时</item>
+        <item>21小时</item>
+        <item>22小时</item>
+        <item>23小时</item>
+        <item>24小时</item>
     </string-array>
     <string-array name="mainItem">
         <item>我要发布</item>

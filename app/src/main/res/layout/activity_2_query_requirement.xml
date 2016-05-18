@@ -53,6 +53,7 @@
             android:layout_gravity="center"
             android:background="@drawable/ic_clear_white_18dp"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/requirement_div"
         android:layout_width="match_parent"
@@ -86,21 +87,25 @@
             <RadioButton
                 style="@style/radioButton"
                 android:text="小麦"
+                android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
                 android:id="@+id/selectWheat"/>
             <RadioButton
                 android:id="@+id/selectCorn"
                 style="@style/radioButton"
                 android:text="玉米"
+                android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"/>
             <RadioButton
                 android:id="@+id/selectSoybean"
                 android:text="谷子"
+                android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
                 style="@style/radioButton"/>
             <RadioButton
                 android:id="@+id/selectRice"
                 android:text="水稻"
+                android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
                 style="@style/radioButton"/>
         </RadioGroup>

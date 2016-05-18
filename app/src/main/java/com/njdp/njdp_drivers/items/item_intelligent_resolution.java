@@ -125,7 +125,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     private boolean text_gps_flag = false;//GPS定位是否成功
-    private int dialog_flag=0;
+    private int dialog_flag=1;
     private Date first_date;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
@@ -230,6 +230,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sl_area_flag = true;
+                dialog_flag=1;
                 sl_area = sp_area.getSelectedItem().toString();
                 switch (sl_area)
                 {
@@ -1162,6 +1163,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 popup_flag=false;
                 first_date= null;
                 hintButton.setText("请选择作业开始日期");
+                dialog_flag=1;
                 gps_MachineLocation(machine_id);
                 datePickerPop.dismiss();
             }
@@ -1186,6 +1188,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
                 gps_MachineLocation(machine_id);
+                dialog_flag=1;
                 datePickerPop.dismiss();
             }
         }

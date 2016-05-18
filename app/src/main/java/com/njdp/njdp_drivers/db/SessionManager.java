@@ -30,6 +30,13 @@ public class SessionManager {
 
     private static final String HINT_FLAG="hint_flag";
 
+
+    private static final String RELEASE_FLAG="release_flag";
+    private static final String MACHINE_TYPE="machine_type";
+    private static final String CROP_TYPE="crop_type";
+    private static final String WORK_TIME="work_time";
+    private static final String REMARK="remark";
+
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -58,6 +65,25 @@ public class SessionManager {
         Log.d(TAG, "User d_n_id session modified!");
     }
 
+    //缓存发布历史
+    public void setReleaseHistory(final String machine_type,final String crop_type,final String work_time,final String remark) {
+
+        editor.putBoolean(RELEASE_FLAG, true);
+        editor.putString(MACHINE_TYPE, machine_type);
+        editor.putString(CROP_TYPE, crop_type);
+        editor.putString(WORK_TIME, work_time);
+        editor.putString(REMARK, remark);
+        editor.commit();
+
+        Log.d(TAG, "User ReleaseHistory session modified!");
+    }
+
+    //清空发布历史
+    public void clearReleaseHistory()
+    {
+        editor.putBoolean(RELEASE_FLAG, true);
+    }
+
     public boolean getHintFlag()
     {
         return pref.getBoolean(HINT_FLAG, true);
@@ -77,6 +103,26 @@ public class SessionManager {
 
     public String getNormId(){
         return pref.getString(NORM_ID, "");
+    }
+
+    public String getRemark() {
+        return pref.getString(REMARK, "");
+    }
+
+    public String getWorkTime() {
+        return pref.getString(WORK_TIME, "");
+    }
+
+    public String getCropType() {
+        return pref.getString(CROP_TYPE, "");
+    }
+
+    public String getMachineType() {
+        return pref.getString(MACHINE_TYPE, "");
+    }
+
+    public boolean getReleaseFlag() {
+        return pref.getBoolean(RELEASE_FLAG, false);
     }
 
 }
