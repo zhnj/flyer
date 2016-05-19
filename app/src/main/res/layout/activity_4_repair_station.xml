@@ -77,7 +77,6 @@
             >
             <LinearLayout android:layout_height="wrap_content"
                 android:layout_width="wrap_content" android:layout_gravity="center"
-                android:background="@drawable/reapet_bg"
                 >
                 <ImageButton android:layout_width="wrap_content" android:id="@+id/mbutton"
                     android:layout_height="wrap_content"

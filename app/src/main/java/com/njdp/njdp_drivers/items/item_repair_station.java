@@ -50,6 +50,8 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_up_white_1;
+import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white_1;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -158,8 +160,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         token=sessionManager.getToken();
 
         this.spinner_area=(Spinner)view.findViewById(R.id.search_area);
-        area_adapter=ArrayAdapter.createFromResource(mainMenu, R.array.area, android.R.layout.simple_spinner_item);
-        area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        area_adapter= new SpinnerAdapter_white_1(mainMenu,getResources().getStringArray(R.array.area));
+        //area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_area.setAdapter(area_adapter);
         spinner_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -167,6 +169,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                 sl_area_flag = true;
                 sl_area = spinner_area.getSelectedItem().toString();
                 initRepairStationInfo(sl_area, token);
+
+
             }
 
             @Override
@@ -291,8 +295,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         params.put("longitude", String.valueOf(GPS_longitude));
 
                     }else{
-                        params.put("latitude",String.valueOf(curlocation.getLatitude()));
-                        params.put("longitude", String.valueOf(curlocation.getLongitude()));
+                        params.put("latitude",String.valueOf(GPS_latitude));
+                        params.put("longitude", String.valueOf(GPS_longitude));
                     }
 
 
@@ -330,6 +334,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         startActivity(intent);
                         mainMenu.finish();
                     } else if (status == 0) {
+                        repairInfos.clear();
                         JSONArray jObjs = jObj.getJSONArray("result");
                         Log.i("cccccccc",String.valueOf(jObjs.length()));
                         for(int i = 0; i < jObjs.length(); i++) {
@@ -383,6 +388,10 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         .direction(100).latitude(location.getLatitude())
                         .longitude(location.getLongitude())
                         .build();
+
+                GPS_latitude=String.valueOf(location.getLatitude());
+                GPS_longitude=String.valueOf(location.getLongitude());
+
             }
 
             // 设置定位数据
@@ -425,8 +434,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
             }else{
-                LatLng ll = new LatLng(curlocation.getLatitude(),
-                        curlocation.getLongitude());
+                LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
+                        Double.parseDouble(GPS_longitude));
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
             }
@@ -487,6 +496,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
         //生成动态数组(前三个)，加入数据
         ArrayList<HashMap<String, Object>> listItem1 = new ArrayList<HashMap<String, Object>>();
+        listItem.clear();
         for(int i=0;i<repairInfos.size();i++)
         {
             if(i>2){
