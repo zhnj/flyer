@@ -181,6 +181,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
+        //获取农机并获取农机经纬度
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            Log.e(TAG, machine_id);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
 
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
@@ -198,7 +205,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void run() {
                 if(sessionManager.getHintFlag()){}
                 if(mainMenu.hintPopup_flag) {
-                    dialog_flag=1;
+                    gps_MachineLocation(machine_id,1);
                     hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     lp.alpha = 0.7f;
                 }
@@ -219,14 +226,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         hintView.findViewById(R.id.get_start).setOnClickListener(this);
         hintPopup.setOnDismissListener(new hintPopDisListener());
 
-        //获取农机并获取农机经纬度
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            Log.e(TAG, machine_id);
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
-
 
         //下拉菜单选择项初始化
         //范围
@@ -236,7 +235,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sl_area_flag = true;
-                dialog_flag=0;
                 sl_area = sp_area.getSelectedItem().toString();
                 switch (sl_area)
                 {
@@ -255,7 +253,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         sl_area="100";
                         break;
                 }
-                gps_MachineLocation(machine_id);
+                gps_MachineLocation(machine_id,0);
             }
 
             @Override
@@ -619,7 +617,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
     private void initFieldInfo(final String area)
     {
-        dialog_flag=0;
         try {
             fieldInfos.clear();
             mainMenu.fieldInfoPosts.clear();
@@ -669,7 +666,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
     private void _initFieldInfo(final String area)//不带提示的获取数据
     {
-        dialog_flag=0;
         try {
             fieldInfos.clear();
             mainMenu.fieldInfoPosts.clear();
@@ -796,7 +792,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
 
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
-    public void gps_MachineLocation(final String machine_id) {
+    public void gps_MachineLocation(final String machine_id,int i_dialog_flag) {
+        dialog_flag=i_dialog_flag;
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -845,18 +842,18 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
-                    isGetLocation();
+                    isGetLocation(dialog_flag);
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "GPSLocation Error:" + errorMsg);
                     text_gps_flag = true;
-                    isGetLocation();
+                    isGetLocation(dialog_flag);
                 }
             } catch (JSONException e) {
                 // JSON error
                 Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
                 text_gps_flag = true;
-                isGetLocation();
+                isGetLocation(dialog_flag);
             }
         }
     }
@@ -868,19 +865,21 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             Log.e(TAG, "ConnectService Error: " + error.getMessage());
             netUtil.testVolley(error);
             text_gps_flag = true;
-            isGetLocation();
+            isGetLocation(dialog_flag);
         }
     }
 
     //定位成功或者失败后的响应
-    private void isGetLocation() {
+    private void isGetLocation(int dialog_flag) {
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
             LatLng ll = new LatLng(Double.valueOf(GPS_latitude),
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            if(dialog_flag==1)
+            if(dialog_flag==0){
+                Log.e(TAG,"仅定位");
+            } else if(dialog_flag==1)
             {
                 _initFieldInfo(sl_area);
             }else{
@@ -895,7 +894,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-                if(dialog_flag==1)
+                if(dialog_flag==0){
+                    Log.e(TAG,"仅定位");
+                } if(dialog_flag==1)
                 {
                     _initFieldInfo(sl_area);
                 }else{
@@ -1140,8 +1141,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
-            dialog_flag=0;
-            gps_MachineLocation(machine_id);//定位我的位置
+            gps_MachineLocation(machine_id,-1);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
 //            LatLng ll = new LatLng(curlocation.getLatitude(),
@@ -1178,8 +1178,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 first_date= null;
                 Log.e(TAG, "first_date清空了");
                 hintButton.setText("请选择作业开始日期");
-                dialog_flag=0;
-                gps_MachineLocation(machine_id);
+                gps_MachineLocation(machine_id,0);
                 datePickerPop.dismiss();
             }
             return false;
@@ -1202,8 +1201,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 popup_flag=false;
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
-                gps_MachineLocation(machine_id);
-                dialog_flag=0;
+                gps_MachineLocation(machine_id,0);
                 datePickerPop.dismiss();
             }
         }

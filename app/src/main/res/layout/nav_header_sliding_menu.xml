@@ -13,6 +13,7 @@
     android:gravity="bottom">
 
     <com.njdp.njdp_drivers.CircleMenu.CircleImageView
+        android:visibility="gone"
         android:id="@+id/user_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -20,5 +21,13 @@
         android:src="@drawable/turnplate_center"
         circleImageView:civ_border_width="2dp"
         circleImageView:civ_border_color="#ffffff"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="智慧农机"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:layout_marginBottom="@dimen/margin30"
+        android:textColor="@color/whiteFont"/>
 
 </LinearLayout>

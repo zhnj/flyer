@@ -318,10 +318,10 @@ public class item_job_history extends Fragment implements View.OnClickListener{
     {
         Calendar calendar = Calendar.getInstance();
         calendar.add(calendar.MONTH, 1);
+        Date defaultEndDate=calendar.getTime();
+        calendar.set(Calendar.DAY_OF_YEAR, 1);
         Date defaultStartDate=calendar.getTime();
         t_startDate.setText(getResources().getString(R.string.jobStart1)+ format.format(defaultStartDate));
-        calendar.set(Calendar.DAY_OF_YEAR, 1);
-        Date defaultEndDate=calendar.getTime();
         t_endDate.setText(getResources().getString(R.string.jobEnd1)+ format.format(defaultEndDate));//显示默认的起止年月日
         start_date=format2.format(defaultStartDate);
         end_date=format2.format(defaultEndDate);
@@ -336,7 +336,8 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         minDate.add(Calendar.YEAR,-1);
         calendarPickerView=(CalendarPickerView)dateView.findViewById(R.id.calendarDatePicker);
         calendarPickerView.init(minDate.getTime(), maxDate.getTime())
-                .inMode(CalendarPickerView.SelectionMode.RANGE).withSelectedDate(today.getTime());
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
+//        calendarPickerView.scrollToDate(today.getTime());
         datePickerPop = new PopupWindow(dateView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);

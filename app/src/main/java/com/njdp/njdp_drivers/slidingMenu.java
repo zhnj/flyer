@@ -61,7 +61,6 @@ public class slidingMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public ProgressDialog pDialog;
-    private com.njdp.njdp_drivers.CircleMenu.CircleImageView title_Image;
     public SessionManager session;
     private DriverDao driverDao;
     private SavedFieldInfoDao savedFieldInfoDao;
@@ -69,14 +68,13 @@ public class slidingMenu extends AppCompatActivity
     public static final String TAG =slidingMenu.class.getSimpleName();
     public DrawerLayout drawer;
     private Fragment fragment,mContent,item1,item2,item3,item4,item5,item6,item7,item8;
-    private com.njdp.njdp_drivers.CircleMenu.CircleImageView user_image;
+    private DrawerLayout menu;
+    private com.njdp.njdp_drivers.CircleMenu.CircleImageView title_Image;
     private int index;
     private String token;
     private CommonUtil commonUtil;
     private NetUtil netUtil;
-    private LruBitmapCache loadImage;
     private String path;//用户头像路径
-    private String userTempFile;
     private Driver driver;
     private Bitmap bitmap;
     private Bitmap zooBitmap;
@@ -96,22 +94,25 @@ public class slidingMenu extends AppCompatActivity
         driverDao=new DriverDao(getApplicationContext());
         savedFieldInfoDao=new SavedFieldInfoDao(getApplicationContext());
         session = new SessionManager(getApplicationContext());
-        loadImage=new LruBitmapCache();
         commonUtil=new CommonUtil(slidingMenu.this);
         netUtil=new NetUtil(slidingMenu.this);
-        user_image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView)findViewById(R.id.user_image);//用户头像ImageView
-        token=session.getToken();
-        initUserInfo();
-        intiData(driver);
 
         fragment = null;
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView)navigationView.findViewById(R.id.user_image);//用户头像ImageView
+        imageLoader=AppController.getInstance().getImageLoader();
+        imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
+        token=session.getToken();
+        initUserInfo();
+        intiData(driver);
 
         Bundle index_Bundle = this.getIntent().getBundleExtra("index_bundle");
         index=index_Bundle.getInt("index");
@@ -395,7 +396,10 @@ public class slidingMenu extends AppCompatActivity
                     driver.setId(1);
                     path=commonUtil.imageTempFile();
                     driver.setImage_url(path);//设置头像本地存储路径
+                    try{//有问题，ImageView设置
                     getImage(AppConfig.URL_IP + netImageUrl);
+                    }catch (Exception e){
+                        e.printStackTrace();}
 
                 } else {
 
