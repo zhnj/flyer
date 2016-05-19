@@ -17,6 +17,16 @@
         android:textColor="@color/whiteFont"
         android:textSize="18dp"/>
     <TextView
+        android:id="@+id/site"
+        android:text="地址：河北省保定市徐水大庄乡"
+        android:layout_marginTop="@dimen/margin5"
+        android:layout_marginLeft="@dimen/margin5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/whiteFont"
+        android:textSize="16dp"/>
+    <TextView
         android:id="@+id/telephone"
         android:text="17766668888"
         android:layout_marginTop="@dimen/margin5"
@@ -39,16 +49,6 @@
     <TextView
         android:id="@+id/univalenc"
         android:text="单价：200/亩"
-        android:layout_marginTop="@dimen/margin5"
-        android:layout_marginLeft="@dimen/margin5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/whiteFont"
-        android:textSize="16dp"/>
-    <TextView
-        android:id="@+id/site"
-        android:text="地址：河北省保定市徐水大庄乡"
         android:layout_marginTop="@dimen/margin5"
         android:layout_marginLeft="@dimen/margin5"
         android:layout_width="wrap_content"

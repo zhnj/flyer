@@ -220,6 +220,22 @@
         <item name="android:textSize">24dp</item>
     </style>
 
+    <!--主页面头部-->
+    <style name="mainpages_page_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/main_title</item>
+        <item name="android:layout_marginTop">@dimen/margin20</item>
+    </style>
+    <!--LinearLayout主页面背景-->
+    <style name="mainpages_ll_page_bg">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/main_bg</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
     <!--个人信息表单linearlayout样式-->
     <style name="personalinformation_linearlayout">
         <item name="android:layout_width">match_parent</item>
@@ -313,18 +329,25 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
-    <!--发布界面作物类型CheckBox-->
-    <style name="release_check1">
+    <!--单选radioBUtton1-->
+    <style name="radioButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
-    <!--发布界面作物类型CheckBox-->
-    <style name="release_check2">
+    <!--单选radioButton2-->
+    <style name="radioButton2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+    <!--多选CheckBox1-->
+    <style name="checkBox1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@drawable/checkbox_on_off_2</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
     <!--发布界面显示日期的TextView-->

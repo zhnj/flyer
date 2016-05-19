@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.njdp.njdp_drivers.items.item_repair_station"
-    android:background="@drawable/main_bg"
-    >
+    style="@style/mainpages_ll_page_bg"
+    tools:context="com.njdp.njdp_drivers.items.item_repair_station">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        style="@style/mainpages_page_title"
         android:id="@+id/repair_station__top"
-        android:background="@drawable/main_title"
         >
         <TextView
             style="@style/Pages_Title"
@@ -35,13 +29,10 @@
     </RelativeLayout>
 
         <Spinner
-            style="@style/spinner_style_0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
+            style="@style/spinner_style_intell"
+            android:padding="@dimen/padding5"
             android:textColor="#FFFFFF"
-            android:id="@+id/search_area"
-            android:layout_below="@+id/repair_station__top">
+            android:id="@+id/search_area">
         </Spinner>
 
     <RelativeLayout
@@ -125,4 +116,4 @@
 
         </LinearLayout>
     </com.njdp.njdp_drivers.items.MySlidingDrawer>
-</RelativeLayout>
+</LinearLayout>

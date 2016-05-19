@@ -340,6 +340,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
+                mainMenu.selectedFieldInfo.clear();
                 mainMenu.finish();
                 break;
             case R.id.menu:
@@ -357,7 +358,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 break;
             case R.id.jobDate:
                 popup_flag=true;
-                calendarPickerView.setSelected(false);
+                calendarPickerView.clearChoices();
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.getBack:
@@ -615,12 +616,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private void initFieldInfo(final String area)
     {
         dialog_flag=0;
-        if( mainMenu.selectedFieldInfo!=null) {
-            mainMenu.selectedFieldInfo.clear();
-        }
-//        try{
-//            mainMenu.selectedFieldInfo.clear();}
-//        catch (Exception e){}
+        try {
+            fieldInfos.clear();
+            mainMenu.fieldInfoPosts.clear();
+        }catch (Exception e){}
+
             String tag_string_req = "req_init";
             mainMenu.pDialog.setMessage("正在载入 ...");
             mainMenu.showDialog();
@@ -665,12 +665,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private void _initFieldInfo(final String area)//不带提示的获取数据
     {
         dialog_flag=0;
-        if( mainMenu.selectedFieldInfo!=null) {
+        try {
+            fieldInfos.clear();
+            mainMenu.fieldInfoPosts.clear();
+        }catch (Exception e){}
+
+        try{
             mainMenu.selectedFieldInfo.clear();
-        }
-//        try{
-//            mainMenu.selectedFieldInfo.clear();}
-//        catch (Exception e){}
+        } catch (Exception e){}
 
         String tag_string_req = "req_init";
 
@@ -745,13 +747,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     Log.e(TAG, String.valueOf(s_info.length()));
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
 
-
-                    try {
-                        fieldInfos.clear();
-                    }catch (Exception e){}
-                    try {
-                        mainMenu.fieldInfoPosts.clear();
-                    }catch (Exception e){}
                     String s_t=jObj.getString("farms");
                     String s_p=jObj.getString("machine_farm_d");
                     List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
@@ -1171,6 +1166,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 dates.clear();
                 popup_flag=false;
                 first_date= null;
+                Log.e(TAG,"first_date清空了");
                 hintButton.setText("请选择作业开始日期");
                 dialog_flag=1;
                 gps_MachineLocation(machine_id);

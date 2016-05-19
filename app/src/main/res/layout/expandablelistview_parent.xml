@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/padding5"
     android:paddingBottom="@dimen/padding5"
     android:paddingRight="@dimen/padding5"
-    android:paddingTop="@dimen/padding10">
+    android:paddingTop="@dimen/padding10"
+    >
     <LinearLayout
         android:id="@+id/expandParent_text"
         android:layout_width="wrap_content"
