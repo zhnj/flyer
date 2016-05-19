@@ -775,6 +775,10 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 //                text_crop.setVisibility(View.GONE);
 //            }
             switch (position) {
+                case 0:
+                    ll_crop.setVisibility(View.GONE);
+                    ll_gd.setVisibility(View.GONE);
+                    break;
                 case 1:
                     ll_crop.setVisibility(View.VISIBLE);
                     ll_gd.setVisibility(View.GONE);

@@ -332,6 +332,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     {
         try {
             if (sessionManager.getReleaseFlag()) {
+                Log.e(TAG,"有发布历史");
                 ll_history.setVisibility(View.VISIBLE);
                 noRelease.setVisibility(View.GONE);
                 tvr_cropType.setText(sessionManager.getCropType());
@@ -404,8 +405,8 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     commonUtil.error_hint("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
-                    sessionManager.setReleaseHistory(s_machine_type,s_machine_type,workTime,remark);
-                    tvr_cropType.setText(transfer_s__machine_cropType(s_machine_type));
+                    sessionManager.setReleaseHistory(s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
+                    tvr_cropType.setText(transfer_s__machine_cropType(s_machine_cropType));
                     tvr_machineType.setText(s_machine_type);
                     tvr_workTime.setText(workTime);
                     tvr_remark.setText(remark);
@@ -736,6 +737,10 @@ public class item_release_machine extends Fragment implements View.OnClickListen
 //            }
             s_machine_type = sp_type.getSelectedItem().toString();
             switch (position) {
+                case 0:
+                    ll_crop.setVisibility(View.GONE);
+                    ll_gd.setVisibility(View.GONE);
+                    break;
                 case 1:
                     ll_crop.setVisibility(View.VISIBLE);
                     ll_gd.setVisibility(View.GONE);

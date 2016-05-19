@@ -81,7 +81,7 @@ public class SessionManager {
     //清空发布历史
     public void clearReleaseHistory()
     {
-        editor.putBoolean(RELEASE_FLAG, true);
+        editor.putBoolean(RELEASE_FLAG, false);
     }
 
     public boolean getHintFlag()
