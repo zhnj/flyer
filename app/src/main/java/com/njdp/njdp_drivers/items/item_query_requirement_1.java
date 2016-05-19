@@ -1,11 +1,15 @@
 package com.njdp.njdp_drivers.items;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +21,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -30,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -52,6 +58,11 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.navisdk.adapter.BNOuterLogUtil;
+import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
+import com.baidu.navisdk.adapter.BNRoutePlanNode;
+import com.baidu.navisdk.adapter.BNaviSettingManager;
+import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
@@ -69,17 +80,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import bean.FieldInfo;
 import bean.FieldInfoPost;
 
-public class item_query_requirement_1 extends Fragment implements View.OnClickListener{
+public class item_query_requirement_1 extends Fragment  implements View.OnClickListener{
     private static final String TAG = item_query_requirement_1.class.getSimpleName();
     private slidingMenu mainMenu;
     private DrawerLayout menu;
@@ -124,6 +137,15 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     private String permissionInfo;
     private final int SDK_PERMISSION_REQUEST = 127;
     private BDLocation curlocation ; //当前位置
+
+    //导航
+     /*
+    *导航用变量
+    * */
+    public static List<Activity> activityList = new LinkedList<Activity>();
+    private static final String APP_FOLDER_NAME = "BNSDK";
+    public static final String ROUTE_PLAN_NODE = "routePlanNode";
+    private String mSDCardPath = null;
     ////////////////////////地图变量//////////////////////////
 
     @Override
@@ -248,16 +270,23 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                     tv4.setOnClickListener(new View.OnClickListener() {//拨打电话
                         @Override
                         public void onClick(View v) {
-
+                            Log.i("dddddd",fieldInfo.getTelephone()+"ddddddddddd");
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
                     });
                     tv5.setOnClickListener(new View.OnClickListener() {//开始导航
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v) {//导航
+                            Double longtitude=fieldInfo.getLongitude();
+                            Double latitude=fieldInfo.getLatitude();
 
-                            double longtide=fieldInfo.getLongitude();
+                            //导航
+                            GohereListener gohere =  new GohereListener(longtitude,latitude);
+                            gohere.routeplanToNavi();
 
-
+                            Log.i("jjjjjjjjjjj",String.valueOf(longtitude)+"ggg"+String.valueOf(latitude));
                         }
                     });
                 }else {
@@ -306,10 +335,23 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         pop_countInfo=(Button)infoView.findViewById(R.id.pop_infos);
         pop_countInfo.setOnClickListener(this);
         pop_countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
+
+
         //////////////////////////地图代码////////////////////////////
+        //获取农机并获取农机经纬度
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            if(machine_id!=null){
+                //根据农机IP向服务器请求获取农机经纬度
+                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+
+
         //获取地图控件引用
 
-        mMapView = (MapView) getActivity().findViewById(R.id.bmapView);
         mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
@@ -341,7 +383,22 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         mBaiduMap.setMyLocationEnabled(true);
         locationService.start();// 定位SDK
 
+        markRepairStation(mainMenu.selectedFieldInfo);
         /////////////////地图代码结束////////////////////////
+
+
+         /*
+        * 导航用
+        * */
+        activityList.add(getActivity());
+        BNOuterLogUtil.setLogSwitcher(true);
+        if (initDirs()) {
+            initNavi();
+        }
+        /*
+        * 导航用结束
+        * */
+
 
         return view;
     }
@@ -526,7 +583,7 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
                     .fromResource(R.drawable.icon_geo);
             MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, false, mCurrentMarker);
             mBaiduMap.setMyLocationConfigeration(config);
-            Log.i("wwwwwwwwwwwwwwww", location.getLatitude() + "---" + location.getLongitude());
+            Log.i("tttttttttt", location.getLatitude() + "---" + location.getLongitude());
 
 
             //保存百度地图定位的当前位置
@@ -647,6 +704,12 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
             //初始化infoWindow，最后那个参数表示显示的位置相对于覆盖物的竖直偏移量，这里也可以传入一个监听器
             infoWindow = new InfoWindow(markerpopwindow, llInfo, 0);
             mBaiduMap.showInfoWindow(infoWindow);//显示此infoWindow
+            mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
+                @Override
+                public void onTouch(MotionEvent motionEvent) {
+                    mBaiduMap.hideInfoWindow();
+                }
+            });
             //让地图以备点击的覆盖物为中心
             MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.setMapStatus(status);
@@ -659,10 +722,8 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
     {
         @Override
         public void onClick(View v) {
-            GPS_latitude=String.valueOf(curlocation.getLatitude());
-            GPS_longitude=String.valueOf( curlocation.getLongitude());
-            LatLng ll = new LatLng(curlocation.getLatitude(),
-                    curlocation.getLongitude());
+            LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
+                    Double.parseDouble(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
 
@@ -700,4 +761,184 @@ public class item_query_requirement_1 extends Fragment implements View.OnClickLi
         }
     }
 
+    /*
+   * 导航使用
+   * */
+
+    /*
+    点击去这里按钮进行导航监听类
+    * */
+    class GohereListener implements View.OnClickListener {
+        private Double latitude;
+        private Double logtitude;
+
+        public GohereListener(Double latitude,Double logtitude) {
+            this.latitude=latitude;
+            this.logtitude=logtitude;
+        }
+
+        @Override
+        public void onClick(View v) {
+            //使用百度地图进行导航
+            routeplanToNavi();
+        }
+
+        private void routeplanToNavi() {
+            BNRoutePlanNode sNode = null;
+            BNRoutePlanNode eNode = null;
+
+            sNode = new BNRoutePlanNode( Double.parseDouble(GPS_longitude), Double.parseDouble(GPS_latitude),"", null, BNRoutePlanNode.CoordinateType.BD09LL);
+            eNode = new BNRoutePlanNode( this.latitude,this.logtitude, "", null, BNRoutePlanNode.CoordinateType.BD09LL);
+
+            if (sNode != null && eNode != null) {
+                List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
+                list.add(sNode);
+                list.add(eNode);
+                /*发起算路操作并在算路成功后通过回调监听器进入导航过程.
+                 *参数:
+                 *activity - 建议是应用的主Activity
+                 *nodes - 传入的算路节点，顺序是起点、途经点、终点，其中途经点最多三个，参考 BNRoutePlanNode
+                 *preference - 算路偏好，参考RoutePlanPreference定义 [推荐:1,高速优先(用时最少):2,少走高速（路径最短）:4,少收费:8,躲避拥堵:16]
+                 *isGPSNav - true表示真实GPS导航，false表示模拟导航
+                 *listener - 开始导航回调监听器，在该监听器里一般是进入导航过程页面
+                 * */
+                BaiduNaviManager.getInstance().launchNavigator(getActivity(), list, 2, true, new GohereRoutePlanListener(sNode));
+
+            }
+        }
+    }
+
+    class GohereRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
+        private BNRoutePlanNode mBNRoutePlanNode = null;
+
+        public GohereRoutePlanListener(BNRoutePlanNode node) {
+            mBNRoutePlanNode = node;
+        }
+
+        @Override
+        public void onJumpToNavigator() {
+            /*
+             * 设置途径点以及resetEndNode会回调该接口
+			 */
+            for (Activity ac : activityList) {
+
+                if (ac.getClass().getName().endsWith("BNDGuideActivity")) {
+
+                    return;
+                }
+            }
+
+            Intent intent = new Intent(getActivity(), BNDGuideActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ROUTE_PLAN_NODE, (BNRoutePlanNode) mBNRoutePlanNode);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        }
+
+        @Override
+        public void onRoutePlanFailed() {
+            Toast.makeText(getActivity(), "算路失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+    //初始化导航用文件件
+    private boolean initDirs() {
+        mSDCardPath = getSdcardDir();
+        if (mSDCardPath == null) {
+            return false;
+        }
+        File f = new File(mSDCardPath, APP_FOLDER_NAME);
+        if (!f.exists()) {
+            try {
+                f.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //得到SD卡路径
+    private String getSdcardDir() {
+        if (Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
+            return Environment.getExternalStorageDirectory().toString();
+        }
+        return null;
+    }
+
+    //初始化导航配置
+    String authinfo = null;
+
+    private void initNavi() {
+        BNOuterTTSPlayerCallback ttsCallback = null;
+        BaiduNaviManager.getInstance().init(getActivity(), mSDCardPath, APP_FOLDER_NAME, new BaiduNaviManager.NaviInitListener() {
+            @Override
+            public void onAuthResult(int i, String s) {
+                if (0 == i) {
+                    authinfo = "key校验成功!";
+                } else {
+                    authinfo = "key校验失败, " + s;
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), authinfo, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void initStart() {
+                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void initSuccess() {
+                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
+                initSetting();
+            }
+
+            @Override
+            public void initFailed() {
+                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+            }
+        }, null, ttsHandler, null);
+    }
+
+    private void initSetting() {
+        BNaviSettingManager.setDayNightMode(BNaviSettingManager.DayNightMode.DAY_NIGHT_MODE_DAY);
+        BNaviSettingManager.setShowTotalRoadConditionBar(BNaviSettingManager.PreViewRoadCondition.ROAD_CONDITION_BAR_SHOW_ON);
+        BNaviSettingManager.setVoiceMode(BNaviSettingManager.VoiceMode.Veteran);
+        BNaviSettingManager.setPowerSaveMode(BNaviSettingManager.PowerSaveMode.DISABLE_MODE);
+        BNaviSettingManager.setRealRoadCondition(BNaviSettingManager.RealRoadCondition.NAVI_ITS_ON);
+    }
+
+    /**
+     * 内部TTS播报状态回传handler
+     */
+    private Handler ttsHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            int type = msg.what;
+            switch (type) {
+                case BaiduNaviManager.TTSPlayMsgType.PLAY_START_MSG: {
+                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
+                    //showToastMsg("Handler : TTS play start");
+                    break;
+                }
+                case BaiduNaviManager.TTSPlayMsgType.PLAY_END_MSG: {
+                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
+                    //showToastMsg("Handler : TTS play end");
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
+    ////////////////////////////地图代码结束//////////////////////////
+    //////////////////////////////////////////////////////////////
 }

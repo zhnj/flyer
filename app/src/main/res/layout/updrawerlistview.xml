@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:clickable="true"
-            android:background="@drawable/zhndp_zhidao"
             android:layout_alignRight="@+id/mark_phone"
             />
     </LinearLayout>

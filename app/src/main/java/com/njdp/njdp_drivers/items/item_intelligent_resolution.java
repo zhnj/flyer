@@ -37,6 +37,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -130,7 +131,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
-    private TextureMapView mMapView = null;
+    private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -215,6 +216,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         });
 
+        //获取农机并获取农机经纬度
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
             Log.e(TAG, machine_id);
@@ -290,8 +292,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
-        mMapView = (TextureMapView) getActivity().findViewById(R.id.bmapView);
-        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
+        mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();

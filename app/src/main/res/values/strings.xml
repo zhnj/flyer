@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">njdp_drivers</string>
+    <string name="app_name">智慧农机</string>
     <string name="action_settings">Settings</string>
 
     <string name="edittext">输入搜索距离</string>
