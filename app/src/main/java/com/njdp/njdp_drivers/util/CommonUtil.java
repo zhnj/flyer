@@ -232,4 +232,12 @@ public class CommonUtil {
         }
         return st_site.toString();
     }
+
+    public void destroyBitmap(Bitmap bitmap)//销毁Bitmap
+    {
+        if (null != bitmap && !bitmap.isRecycled()){
+            bitmap.recycle();
+            bitmap = null;
+        }
+    }
 }

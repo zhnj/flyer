@@ -403,6 +403,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     startActivity(intent);
                     mainMenu.finish();
                 } else if (status == 0) {
+                    Log.e(TAG,"农机信息发布成功");
                     commonUtil.error_hint("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);

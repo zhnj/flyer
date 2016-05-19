@@ -83,8 +83,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private String path;
     private String token;
     private String netImageUrl;
-    private static final int ERROR = 1;
-    private static final int SUCCESS = 2 ;
 
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
     private int crop = 300;// 裁剪大小
@@ -393,13 +391,14 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     {
         commonUtil.saveBitmap_noCrop(mainMenu, mbitmap);//保存到本地
         title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
-        driverDao.add(driver);
+        driverDao.update(driver);
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
         t_telephone.setText(driver.getTelephone());
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite_0());
+        commonUtil.destroyBitmap(mbitmap);
     }
 
     @Override
@@ -524,4 +523,5 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             mainMenu.change_info_flag=false;
         }
     }
+
 }

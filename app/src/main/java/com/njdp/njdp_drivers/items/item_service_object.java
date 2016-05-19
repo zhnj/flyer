@@ -229,6 +229,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
                     String Msg = jObj.getString("result");
                     Log.e(TAG, Msg);
                     commonUtil.error_hint("服务对象设置成功");
+                    mainMenu.finish();//设置成功后，退出界面
                 } else {
 
                     String errorMsg = jObj.getString("result");
