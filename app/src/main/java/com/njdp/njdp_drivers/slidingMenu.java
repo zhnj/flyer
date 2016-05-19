@@ -404,4 +404,16 @@ public class slidingMenu extends AppCompatActivity
         }
     };
 
+
+    //清空缓存农田数据
+    public void clearFieldData()
+    {
+        try {
+            selectedFieldInfo.clear();
+        }catch (Exception e){}
+        try {
+            fieldInfoPosts.clear();
+        }catch (Exception e){}
+    }
+
 }

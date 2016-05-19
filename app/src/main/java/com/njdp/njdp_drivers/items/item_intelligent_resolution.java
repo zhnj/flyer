@@ -168,6 +168,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
         lp = mainMenu.getWindow().getAttributes();
+        mainMenu.clearFieldData();//清空缓存的农田数据
 
         fieldInfoDao=new FieldInfoDao(mainMenu);
         sessionManager=new SessionManager(getActivity());
@@ -224,6 +225,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
+
 
         //下拉菜单选择项初始化
         //范围
@@ -630,6 +632,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 commonUtil.error_hint("网络连接错误");
                 mainMenu.hideDialog();
             } else {
+                mainMenu.clearFieldData();//清空缓存的农田数据
                 //服务器请求
                 Log.e(TAG, machine_id);
                 Log.e(TAG, token);
@@ -680,6 +683,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         if (!netUtil.checkNet(mainMenu)) {
             commonUtil.error_hint("网络连接错误");
         } else {
+            mainMenu.clearFieldData();//清空缓存的农田数据
             //服务器请求
             Log.e(TAG, machine_id);
             Log.e(TAG, token);
@@ -742,12 +746,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
 
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
-                    JSONArray s_post=jObj.getJSONArray("machine_farm_d");
-                    JSONArray s_info=jObj.getJSONArray("farms");
-                    Log.e(TAG, String.valueOf(s_post.length()));
-                    Log.e(TAG, String.valueOf(s_info.length()));
+//                    JSONArray s_post=jObj.getJSONArray("machine_farm_d");
+//                    JSONArray s_info=jObj.getJSONArray("farms");
+//                    Log.e(TAG, String.valueOf(s_post.length()));
+//                    Log.e(TAG, String.valueOf(s_info.length()));
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
 
+                    mainMenu.clearFieldData();//清空缓存的农田数据
                     String s_t=jObj.getString("farms");
                     String s_p=jObj.getString("machine_farm_d");
                     List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息

@@ -352,7 +352,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     private void releaseInfo() {
 
         String tag_string_req = "req_njdp_release";
-        pDialog.setMessage("正在发布中......");
+        pDialog.setMessage("正在发布......");
         showDialog();
 
         if (netUtil.checkNet(mainMenu) == false) {
@@ -404,6 +404,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     commonUtil.error_hint("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
+                    sessionManager.setReleaseHistory(s_machine_type,s_machine_type,workTime,remark);
                     tvr_cropType.setText(transfer_s__machine_cropType(s_machine_type));
                     tvr_machineType.setText(s_machine_type);
                     tvr_workTime.setText(workTime);

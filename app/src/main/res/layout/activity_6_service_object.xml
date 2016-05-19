@@ -35,7 +35,7 @@
     <RelativeLayout
         android:id="@+id/hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height60"
         android:background="@drawable/server_object_hint">
         <ImageButton
             android:id="@+id/clear_hint"
@@ -52,7 +52,7 @@
         <EditText
             style="@style/Register_style"
             android:id="@+id/server_telephone"
-            android:layout_marginTop="@dimen/margin10"
+            android:layout_marginTop="@dimen/margin30"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/edit_box_normal"
             android:drawableLeft="@drawable/ic_phone_android_grey600_24dp"
@@ -68,7 +68,7 @@
             android:background="@drawable/rounded_white_button"
             android:layout_below="@+id/register_image_div"
             android:text="确定"
-            android:layout_marginTop="@dimen/margin40"
+            android:layout_marginTop="@dimen/margin50"
             android:textColor="@color/primaryClolor"/>
     </LinearLayout>
 </LinearLayout>

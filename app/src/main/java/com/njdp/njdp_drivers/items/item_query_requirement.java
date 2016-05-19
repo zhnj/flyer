@@ -128,6 +128,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 false);
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
+        mainMenu.clearFieldData();//清空缓存的农田数据
 
         fieldInfoDao=new FieldInfoDao(mainMenu);
         sessionManager=new SessionManager(getActivity());
@@ -215,6 +216,9 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.query:
+                try {
+                    mainMenu.selectedFieldInfo.clear();
+                }catch (Exception e){}
                 checkQuery();
 
 //                ///////////////////////////////////////////////测试/////////////////////////////////
@@ -367,7 +371,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         Log.e(TAG, endTime);
         Log.e(TAG, GPS_longitude);
         Log.e(TAG, GPS_latitude);
-        initFieldInfo();
+        gps_MachineLocation(machine_id);
     }
 
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
@@ -452,6 +456,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void isGetLocation() {
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
+            initFieldInfo();
         } else {
             Log.e(TAG, "定位失败！");
             commonUtil.error_hint("查询失败,请重试");
@@ -463,7 +468,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void initFieldInfo()
     {
         String tag_string_req = "req_init";
-        mainMenu.pDialog.setMessage("正在载入 ...");
+        mainMenu.pDialog.setMessage("正在查询 ...");
         mainMenu.showDialog();
 
         if (!netUtil.checkNet(mainMenu)) {
@@ -523,6 +528,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     startActivity(intent);
                     mainMenu.finish();
                 }else if(status==0){
+                    mainMenu.clearFieldData();//清空缓存的农田数据
                     ///////////////////////////农田信息，包括经纬度/////////////////////////////////
 
                     /////////////////////////////////测试有多少个农田信息///////////////////////////
@@ -535,9 +541,9 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                         mainMenu.selectedFieldInfo.clear();
 //                        fieldInfos.clear();
                     }catch (Exception e){}
-                    try {
-                        mainMenu.fieldInfoPosts.clear();
-                    }catch (Exception e){}
+//                    try {
+//                        mainMenu.fieldInfoPosts.clear();
+//                    }catch (Exception e){}
                     String s_t=jObj.getString("result");
 //                    String s_p=jObj.getString("machine_farm_d");
 //                    List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
@@ -721,7 +727,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 popup_flag=false;
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
-                gps_MachineLocation(machine_id);
                 datePickerPop.dismiss();
             }
         }

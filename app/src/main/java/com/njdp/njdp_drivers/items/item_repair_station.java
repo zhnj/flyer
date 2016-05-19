@@ -282,6 +282,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     }else{
                         if(area.equals("默认距离")){
                             params.put("range","50");
+                        }else if(area.equals("全部")){
+                            params.put("range","100");
                         }else {
                             params.put("range", area);
                         }

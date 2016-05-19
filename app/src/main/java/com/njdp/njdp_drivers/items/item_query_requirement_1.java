@@ -431,6 +431,10 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     {
         switch (v.getId()) {
             case R.id.getback:
+                mainMenu.clearFieldData();//清空缓存的农田数据
+                try {
+                    mainMenu.selectedFieldInfo.clear();
+                }catch (Exception e){}
                 mainMenu.getSupportFragmentManager().popBackStack();
                 break;
             case R.id.menu:

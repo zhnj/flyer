@@ -294,7 +294,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         switch (v.getId()) {
             case R.id.getback:
                 selectedFieldInfoPost.clear();
-                mainMenu.selectedFieldInfo.clear();
+                mainMenu.clearFieldData();//清空缓存的农田数据
                 mainMenu.getSupportFragmentManager().popBackStack();
                 break;
             case R.id.menu:

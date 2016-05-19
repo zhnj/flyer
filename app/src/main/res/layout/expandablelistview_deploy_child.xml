@@ -16,7 +16,7 @@
         android:layout_gravity="center_vertical"
         android:textColor="#F8EF26"
         android:textSize="@dimen/font18"/>
-    +<TextView
+    <TextView
         android:id="@+id/site"
         android:text="地址：河北省保定市徐水大庄乡"
         android:layout_marginTop="@dimen/margin5"
