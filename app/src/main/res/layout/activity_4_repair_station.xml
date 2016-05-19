@@ -31,7 +31,7 @@
         <Spinner
             style="@style/spinner_style_intell"
             android:padding="@dimen/padding5"
-            android:textColor="#FFFFFF"
+            android:background="@drawable/arrow_down"
             android:id="@+id/search_area">
         </Spinner>
 
@@ -41,7 +41,7 @@
         android:id="@+id/repair_station__map"
         android:layout_below="@+id/search_area"
         >
-    <com.baidu.mapapi.map.MapView
+    <com.baidu.mapapi.map.TextureMapView
         android:id="@+id/bmapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

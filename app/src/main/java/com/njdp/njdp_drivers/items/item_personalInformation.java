@@ -308,7 +308,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     driver.setId(1);
                     path=commonUtil.imageTempFile();
                     driver.setImage_url(path);//设置头像本地存储路径
-                    new Thread(getImageTask).start();
+                    getImage(AppConfig.URL_IP + netImageUrl);
 
                 } else {
 
@@ -372,7 +372,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     };
     private void getImage(String url)//获取用户头像
     {
-        imageLoader.get(url,imageListener,300, 300);
+        imageLoader.get(url, imageListener, 300, 300);
+        title_Image.setDrawingCacheEnabled(true);
+        Bitmap mbitmap=Bitmap.createBitmap(title_Image.getDrawingCache());
+        title_Image.setDrawingCacheEnabled(false);
+        showDriverData(driver,mbitmap);
 //        OkHttpUtils
 //                .get()
 //                .url(AppConfig.URL_IP + url)
@@ -417,9 +421,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     private void showDriverData(Driver driver,Bitmap mbitmap)//显示用户基本信息和头像
     {
-        commonUtil.saveBitmap(mainMenu, mbitmap);//保存到本地
+        commonUtil.saveBitmap_noCrop(mainMenu, mbitmap);//保存到本地
         title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
-        title_Image.setImageBitmap(mbitmap);
         driverDao.add(driver);
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());

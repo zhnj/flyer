@@ -120,7 +120,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private double nav_longitude;
     private double nav_latitude;
     ////////////////////////地图变量//////////////////////////
-    private MapView mMapView = null;
+    private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -352,7 +352,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
         //获取地图控件引用
 
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
+        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();

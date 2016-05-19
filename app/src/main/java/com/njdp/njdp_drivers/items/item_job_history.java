@@ -165,6 +165,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 menu.openDrawer(Gravity.LEFT);
                 break;
             case R.id.selectDate:
+                calendarPickerView.clearChoices();
                 popup_flag=true;
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;

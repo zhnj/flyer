@@ -330,21 +330,21 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
     <!--单选radioBUtton1-->
-    <style name="radioButton">
+    <style name="radioButton_1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
     <!--单选radioButton2-->
-    <style name="radioButton2">
+    <style name="radioButton_2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/radiobutton_on_off</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
     <!--多选CheckBox1-->
-    <style name="checkBox1">
+    <style name="checkBox_1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@drawable/checkbox_on_off_2</item>
@@ -426,27 +426,6 @@
     <style name="popWindow_slide">
         <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
-    </style>
-    <!--单选radioBUtton1-->
-    <style name="radioButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@drawable/radiobutton_on_off</item>
-        <item name="android:layout_marginRight">5dp</item>
-    </style>
-    <!--单选radioButton2-->
-    <style name="radioButton2">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@drawable/radiobutton_on_off</item>
-        <item name="android:layout_marginRight">10dp</item>
-    </style>
-    <!--多选CheckBox1-->
-    <style name="checkBox1">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <!--<item name="android:button">@drawableeckbox_on_off_2</item>-->
-        <item name="android:layout_marginRight">10dp</item>
     </style>
 
 </resources>

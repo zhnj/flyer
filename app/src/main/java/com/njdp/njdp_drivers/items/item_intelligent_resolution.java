@@ -131,7 +131,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
-    private MapView mMapView = null;
+    private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -292,7 +292,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
+        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -359,7 +359,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 break;
             case R.id.jobDate:
                 popup_flag=true;
-                calendarPickerView.clearChoices();
+                calendarPickerView.clearHighlightedDates();
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.getBack:

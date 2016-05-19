@@ -33,7 +33,7 @@
         <item>大豆</item>
     </string-array>
     <string-array name="workTime">
-        <item>请选择作业时长,默认16小时</item>
+        <item>请选择作业时长,默认24小时</item>
         <item>1小时</item>
         <item>2小时</item>
         <item>3小时</item>

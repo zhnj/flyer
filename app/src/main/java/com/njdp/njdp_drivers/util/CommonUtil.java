@@ -107,6 +107,36 @@ public class CommonUtil {
         return newbmp;
     }
 
+    //保存照片到本地,不裁剪
+    public boolean saveBitmap_noCrop(Context context,Bitmap mBitmap) {
+        File file=getPath();
+        File tempFile=null;
+        FileOutputStream fOut;
+        if (!file.exists()) {
+            try {
+                file.mkdirs();
+                tempFile=new File(file.getAbsolutePath(),"/njdpTemp");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            tempFile=new File(file.getAbsolutePath(),"/njdpTemp");
+        }
+        try {
+            File file1=new File(tempFile,"userimage"+".png");
+            fOut = new FileOutputStream(tempFile);
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 60, fOut);
+            fOut.flush();
+            Log.e(TAG, "保存成功path:" + file1.getAbsolutePath().toString());
+            fOut.close();
+        } catch (Exception e) {
+            Log.e(TAG, "保存失败:" + e.getMessage());
+            error_hint("头像保存失败！请重试");
+            return false;
+        }
+        return true;
+    }
+
     //保存照片到本地
     public boolean saveBitmap(Context context,Bitmap mBitmap) {
         File file=getPath();

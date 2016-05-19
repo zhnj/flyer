@@ -212,6 +212,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 break;
             case R.id.jobDate:
                 popup_flag=true;
+                calendarPickerView.clearChoices();
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.query:

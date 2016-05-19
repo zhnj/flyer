@@ -47,9 +47,11 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white_1;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -98,7 +100,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
 
     ////////////////////////地图变量//////////////////////////
-    private MapView mMapView = null;
+    private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -158,8 +160,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         token=sessionManager.getToken();
 
         this.spinner_area=(Spinner)view.findViewById(R.id.search_area);
-        area_adapter=ArrayAdapter.createFromResource(mainMenu, R.array.area, android.R.layout.simple_spinner_item);
-        area_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        area_adapter=new SpinnerAdapter_white_1(mainMenu, getResources().getStringArray(R.array.area));
         spinner_area.setAdapter(area_adapter);
         spinner_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -185,7 +186,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         //获取地图控件引用
 
         //mMapView = (MapView) getActivity().findViewById(R.id.bmapView);
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
+        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -330,6 +331,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         startActivity(intent);
                         mainMenu.finish();
                     } else if (status == 0) {
+                        repairInfos.clear();
                         JSONArray jObjs = jObj.getJSONArray("result");
                         Log.i("cccccccc",String.valueOf(jObjs.length()));
                         for(int i = 0; i < jObjs.length(); i++) {

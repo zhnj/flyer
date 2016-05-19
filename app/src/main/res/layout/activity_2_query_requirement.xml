@@ -85,14 +85,14 @@
                 android:textSize="@dimen/font14"
                 android:textColor="#FFFFFF"/>
             <RadioButton
-                style="@style/radioButton"
+                style="@style/radioButton_1"
                 android:text="小麦"
                 android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
                 android:id="@+id/selectWheat"/>
             <RadioButton
                 android:id="@+id/selectCorn"
-                style="@style/radioButton"
+                style="@style/radioButton_1"
                 android:text="玉米"
                 android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"/>
@@ -101,13 +101,13 @@
                 android:text="谷子"
                 android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
-                style="@style/radioButton"/>
+                style="@style/radioButton_1"/>
             <RadioButton
                 android:id="@+id/selectRice"
                 android:text="水稻"
                 android:textSize="@dimen/font12"
                 android:textColor="#FFFFFF"
-                style="@style/radioButton"/>
+                style="@style/radioButton_1"/>
         </RadioGroup>
         <RadioGroup
             android:visibility="gone"
@@ -126,7 +126,7 @@
                 android:text="选择耕地类型"
                 android:textColor="#FFFFFF"/>
             <RadioButton
-                style="@style/radioButton2"
+                style="@style/radioButton_2"
                 android:text="深松"
                 android:textColor="#FFFFFF"
                 android:id="@+id/selectSS"/>
@@ -134,7 +134,7 @@
                 android:id="@+id/selectPD"
                 android:text="平地"
                 android:textColor="#FFFFFF"
-                style="@style/radioButton2" />
+                style="@style/radioButton_2" />
         </RadioGroup>
 
         <LinearLayout

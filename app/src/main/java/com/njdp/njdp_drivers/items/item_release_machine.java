@@ -664,7 +664,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         tv_workTime=(TextView)releaseView.findViewById(R.id.tv_workTime);
         tv_remark=(TextView)releaseView.findViewById(R.id.tv_remark);
         showType=(TextView)releaseView.findViewById(R.id.showType);
-        tv_workTime.setText("16小时");
+        tv_workTime.setText("24小时");
     }
 
 //    private class clCellClick implements CalendarPickerView.CellClickInterceptor//日期选择单天监听
