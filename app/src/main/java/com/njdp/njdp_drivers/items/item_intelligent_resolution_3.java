@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -208,6 +209,17 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         //////////////////////////////////////////////
         ////////////////地图代码/////////////////////
+        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            if(machine_id!=null){
+                //根据农机IP向服务器请求获取农机经纬度
+                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+
         //获取地图控件引用
         mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView.showScaleControl(true);
@@ -223,7 +235,12 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         //注册监听
         locationService.registerListener(new mListener());
-        locationService.setLocationOption(locationService.getOption());
+        LocationClientOption mLocationClientOption = new LocationClientOption();
+        mLocationClientOption.setOpenGps(true);
+        mLocationClientOption.setLocationMode(com.baidu.location.LocationClientOption.LocationMode.Hight_Accuracy);
+        mLocationClientOption.setCoorType("bd09ll");
+        mLocationClientOption.setScanSpan(10 * 1000);
+        locationService.setLocationOption(mLocationClientOption);
 
 
         mBaiduMap.setMyLocationEnabled(true);
@@ -273,7 +290,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 //我的方案
                 break;
             case R.id.replanning:
-                navigationDeploy.clear();
                 clearDeploy();//清空方案数据
                 mainMenu.selectedFieldInfo.clear();
                 mainMenu.addOrShowFragment(new item_intelligent_resolution());
@@ -305,8 +321,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     {
         @Override
         public void onClick(View v) {
-            LatLng ll = new LatLng(curlocation.getLatitude(),
-                    curlocation.getLongitude());
+            LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
+                    Double.parseDouble(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
 
@@ -458,19 +474,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         colors.add(Integer.valueOf(Color.GREEN));
         colors.add(Integer.valueOf(Color.BLACK));
 
-
-
-        ///////////////////////路径规划////////////////////////
-        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            if(machine_id!=null){
-                //根据农机IP向服务器请求获取农机经纬度
-                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
 
         ///////////////////////路径规划////////////////////////
         //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划

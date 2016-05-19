@@ -206,7 +206,7 @@ public class BNDGuideActivity extends Activity {
                         BNRouteGuideManager.getInstance().showCustomizedLayer(false);
                     } else if (msg.what == MSG_RESET_NODE) {
                         BNRouteGuideManager.getInstance().resetEndNodeInNavi(
-                                new BNRoutePlanNode(115.47536373138428, 38.84751236963161, "河北农业大学", null, BNRoutePlanNode.CoordinateType.GCJ02));
+                                mBNRoutePlanNode);
                     }
                 }
             };
