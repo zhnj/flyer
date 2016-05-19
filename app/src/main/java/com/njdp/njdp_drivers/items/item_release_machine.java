@@ -344,6 +344,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 noRelease.setVisibility(View.VISIBLE);
             }
         }catch (Exception e){
+            Log.e(TAG,"查找历史出错");
             ll_history.setVisibility(View.GONE);
             noRelease.setVisibility(View.VISIBLE);
         }

@@ -127,7 +127,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     private boolean text_gps_flag = false;//GPS定位是否成功
-    private int dialog_flag=1;
+    private int dialog_flag=0;
     private Date first_date;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
@@ -193,6 +193,18 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         sp_area=(Spinner)view.findViewById(R.id.area);
 
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_1_intelligent_resolution, null);
+        parentView.post(new Runnable() {
+            @Override
+            public void run() {
+                if(sessionManager.getHintFlag()){}
+                if(mainMenu.hintPopup_flag) {
+                    dialog_flag=1;
+                    hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                    lp.alpha = 0.7f;
+                }
+            }
+        });
+
         dateView = mainMenu.getLayoutInflater().inflate(R.layout.datepicker, null);
         dateInit();//日期选择初始化
         initDatePicker();//日历选择器监听
@@ -206,17 +218,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         initHintPopup();
         hintView.findViewById(R.id.get_start).setOnClickListener(this);
         hintPopup.setOnDismissListener(new hintPopDisListener());
-        parentView.post(new Runnable() {
-            @Override
-            public void run() {
-                if(sessionManager.getHintFlag()){}
-                if(mainMenu.hintPopup_flag) {
-                    dialog_flag=1;
-                    hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-                    lp.alpha = 0.7f;
-                }
-            }
-        });
 
         //获取农机并获取农机经纬度
         try {
@@ -235,7 +236,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sl_area_flag = true;
-                dialog_flag=1;
+                dialog_flag=0;
                 sl_area = sp_area.getSelectedItem().toString();
                 switch (sl_area)
                 {
@@ -772,9 +773,10 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     }else
                     {
                         //存储到本地库
-                        saveFieldInfo(fieldInfoDao,fieldInfos);
+                        saveFieldInfo(fieldInfoDao, fieldInfos);
                         //按距离的排序好的农田
                         arrangeField();
+                        Log.e(TAG,"数据加载完成");
                         commonUtil.error_hint("数据加载完成");
                     }
                 } else {
@@ -1138,7 +1140,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
-            dialog_flag=1;
+            dialog_flag=0;
             gps_MachineLocation(machine_id);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
@@ -1176,7 +1178,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 first_date= null;
                 Log.e(TAG, "first_date清空了");
                 hintButton.setText("请选择作业开始日期");
-                dialog_flag=1;
+                dialog_flag=0;
                 gps_MachineLocation(machine_id);
                 datePickerPop.dismiss();
             }
@@ -1201,7 +1203,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
                 gps_MachineLocation(machine_id);
-                dialog_flag=1;
+                dialog_flag=0;
                 datePickerPop.dismiss();
             }
         }
