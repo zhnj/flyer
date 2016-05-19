@@ -337,7 +337,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         calendarPickerView=(CalendarPickerView)dateView.findViewById(R.id.calendarDatePicker);
         calendarPickerView.init(minDate.getTime(), maxDate.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE);
-//        calendarPickerView.scrollToDate(today.getTime());
+        calendarPickerView.scrollToDate(today.getTime());//滚动到当前日期
         datePickerPop = new PopupWindow(dateView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);
