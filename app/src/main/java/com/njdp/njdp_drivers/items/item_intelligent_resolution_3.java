@@ -278,6 +278,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         switch (v.getId()) {
             case R.id.getback:
                 clearDeploy();//清空方案数据
+                navigationDeploy.clear();
                 mainMenu.getSupportFragmentManager().popBackStack();
                 break;
             case R.id.menu:

@@ -256,13 +256,13 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                     TextView tv2 = (TextView) convertView.findViewById(R.id.telephone);
                     tv2.setText("电话："+fieldInfo.getUser_name());
                     TextView tv3 = (TextView) convertView.findViewById(R.id.fieldNumber);
-                    tv3.setText("农田面积"+fieldInfo.getArea_num()+"亩");
+                    tv3.setText("农田面积："+fieldInfo.getArea_num()+"亩");
                     TextView tv4 = (TextView) convertView.findViewById(R.id.univalenc);
                     tv4.setText("单价：" + fieldInfo.getUnit_price()+"元/亩");
                     TextView tv5 = (TextView) convertView.findViewById(R.id.site);
                     tv5.setText("地址：" + fieldInfo.getCropLand_site());
                     TextView tv6 = (TextView) convertView.findViewById(R.id.cropLand_id);
-                    tv6.setText("作业地点：" + String.valueOf(childPosition + 1));
+                    tv6.setText("作业地点" + String.valueOf(childPosition + 1)+"：");
                 }else{
                     Log.e(TAG,"error：方案显示错误!");
                 }

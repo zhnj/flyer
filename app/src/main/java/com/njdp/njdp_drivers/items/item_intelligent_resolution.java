@@ -1,6 +1,7 @@
 package com.njdp.njdp_drivers.items;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -359,7 +360,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 break;
             case R.id.jobDate:
                 popup_flag=true;
-                calendarPickerView.clearHighlightedDates();
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.getBack:
@@ -966,6 +966,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 ViewGroup.LayoutParams.MATCH_PARENT);
         datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);
         datePickerPop.setOutsideTouchable(true);
+        datePickerPop.setOnDismissListener(new datePickerDismiss());
+
     }
 
     ////////////////////////////地图代码开始//////////////////////////////////
@@ -1167,7 +1169,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 dates.clear();
                 popup_flag=false;
                 first_date= null;
-                Log.e(TAG,"first_date清空了");
+                Log.e(TAG, "first_date清空了");
                 hintButton.setText("请选择作业开始日期");
                 dialog_flag=1;
                 gps_MachineLocation(machine_id);
@@ -1202,6 +1204,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         @Override
         public void onDateUnselected(Date date) {
 
+        }
+    }
+
+    private class datePickerDismiss implements PopupWindow.OnDismissListener
+    {
+        @Override
+        public void onDismiss() {
+            initDatePicker();
         }
     }
 

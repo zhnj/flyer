@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginTop="@dimen/margin25"
         android:padding="@dimen/padding5">
         <TextView
             android:layout_width="wrap_content"
@@ -44,7 +44,6 @@
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font14"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/margin5"
             android:text="请选择要去的地点："/>
         <Spinner
             android:id="@+id/site"
@@ -55,12 +54,13 @@
     </LinearLayout>
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height40"
         android:id="@+id/getNavigation"
         android:text="开始导航"
-        android:textSize="@dimen/font18"
+        android:textSize="@dimen/font16"
+        android:clickable="true"
         android:textColor="@color/primaryClolor"
         android:background="@drawable/btn_bg"
-        android:layout_marginTop="@dimen/margin30"
+        android:layout_marginTop="@dimen/margin20"
         android:layout_gravity="center"/>
 </LinearLayout>

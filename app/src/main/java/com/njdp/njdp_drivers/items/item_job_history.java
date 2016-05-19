@@ -165,7 +165,6 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 menu.openDrawer(Gravity.LEFT);
                 break;
             case R.id.selectDate:
-                calendarPickerView.clearChoices();
                 popup_flag=true;
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
@@ -187,8 +186,6 @@ public class item_job_history extends Fragment implements View.OnClickListener{
     {
         Log.e(TAG,start_date);
         Log.e(TAG,end_date);
-        start_date="2016-04-02 00:00:00";
-        end_date="2016-06-01 00:00:00";
         Log.e(TAG,machine_id);
         Log.e(TAG,token);
         String tag_string_req = "req_JobHistory";
@@ -332,18 +329,18 @@ public class item_job_history extends Fragment implements View.OnClickListener{
 
     //初始化日期选择器popupWindow
     private void initDatePicker() {
-        Calendar today=Calendar.getInstance();
         Calendar maxDate=Calendar.getInstance();
         Calendar minDate=Calendar.getInstance();
         maxDate.add(Calendar.YEAR, 1);
-        minDate.add(Calendar.YEAR,-2);
+        minDate.add(Calendar.YEAR,-1);
         calendarPickerView=(CalendarPickerView)dateView.findViewById(R.id.calendarDatePicker);
         calendarPickerView.init(minDate.getTime(), maxDate.getTime())
-                .inMode(CalendarPickerView.SelectionMode.RANGE).withSelectedDate(today.getTime());
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
         datePickerPop = new PopupWindow(dateView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);
         datePickerPop.setOutsideTouchable(true);
+        datePickerPop.setOnDismissListener(new datePickerDismiss());
     }
 
     //日期选择单天监听
@@ -376,6 +373,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
             return false;
         }
     }
+
     //日期选择器范围时间监听
     private class clDateSelectedListener implements CalendarPickerView.OnDateSelectedListener
     {
@@ -388,7 +386,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 t_startDate.setText(getResources().getString(R.string.jobStart1) + format.format(dates.get(0)));
                 t_endDate.setText(getResources().getString(R.string.jobEnd1) + format.format(dates.get(size - 1)));
                 start_date = format2.format(dates.get(0));
-                Calendar getDate= Calendar.getInstance();
+                Calendar getDate = Calendar.getInstance();
                 getDate.setTime(dates.get(size - 1));//结束日期加一天
                 getDate.add(Calendar.MONTH, -1);
                 end_date=format2.format(getDate.getTime());
@@ -405,6 +403,14 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         @Override
         public void onDateUnselected(Date date) {
 
+        }
+    }
+
+    private class datePickerDismiss implements PopupWindow.OnDismissListener
+    {
+        @Override
+        public void onDismiss() {
+            initDatePicker();
         }
     }
 

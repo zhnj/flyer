@@ -142,13 +142,13 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
-        savedFieldInfoDao=new SavedFieldInfoDao(getActivity());
+        savedFieldInfoDao=new SavedFieldInfoDao(mainMenu);
 
         try {
             navigationDeploy.addAll(savedFieldInfoDao.allFieldInfo());
-            sites=new String[savedFieldInfoDao.countOfField()];
+            sites=new String[navigationDeploy.size()+1];
             sites[0]="请选择作业地点";
-            for(int i=0;i<savedFieldInfoDao.countOfField();i++) {
+            for(int i=0;i<navigationDeploy.size();i++) {
                 sites[i + 1] = navigationDeploy.get(i).getCropLand_site();
             }
         }catch (Exception e){
@@ -219,8 +219,8 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 break;
             case R.id.getNavigation:
                 if(sl_site!=0) {
-                    double gps_longitude = navigationDeploy.get(sl_site).getLongitude();//经度
-                    double gps_latitude=navigationDeploy.get(sl_site).getLatitude();//纬度
+                    double gps_longitude = navigationDeploy.get(sl_site-1).getLongitude();//经度
+                    double gps_latitude=navigationDeploy.get(sl_site-1).getLatitude();//纬度
                     Log.i("aaaaaaaa","sssssss");
                     //导航
                     GohereListener gohere =  new GohereListener(gps_longitude,gps_latitude);

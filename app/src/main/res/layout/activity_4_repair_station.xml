@@ -27,33 +27,33 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
-
-        <Spinner
-            style="@style/spinner_style_intell"
-            android:padding="@dimen/padding5"
-            android:background="@drawable/arrow_down"
-            android:id="@+id/search_area">
-        </Spinner>
-
+    <Spinner
+        style="@style/spinner_style_intell"
+        android:padding="@dimen/padding5"
+        android:layout_width="match_parent"
+        android:background="@drawable/arrow_down"
+        android:id="@+id/search_area">
+    </Spinner>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/repair_station__map"
-        android:layout_below="@+id/search_area"
-        >
-    <com.baidu.mapapi.map.TextureMapView
-        android:id="@+id/bmapView"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true" />
+        android:id="@+id/repair_station__map"
+        android:layout_below="@+id/search_area">
+        <com.baidu.mapapi.map.TextureMapView
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
         <ImageButton
             android:id="@+id/my_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/margin20"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin20"
+            android:layout_marginBottom="@dimen/margin20"
             android:background="@drawable/ic_my_location_grey600_36dp"/>
-        </RelativeLayout>
+    </RelativeLayout>
     <com.njdp.njdp_drivers.items.MySlidingDrawer android:id="@+id/stockDrawer"
         android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:orientation="vertical" android:handle="@+id/handlecontent"
@@ -64,19 +64,17 @@
         <LinearLayout android:id="@id/handlecontent"
             android:layout_width="fill_parent" android:layout_height="match_parent"
             android:background="#ffffff"
-            android:orientation="vertical"
-            >
-            <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="wrap_content" android:layout_gravity="center"
-                android:background="@drawable/reapet_bg"
-                >
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/reapet_bg">
                 <ImageButton android:layout_width="wrap_content" android:id="@+id/mbutton"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/sliding_up"
-                    />
+                    android:background="@drawable/sliding_up" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/otherHandler"
                 android:layout_width="match_parent"
@@ -96,7 +94,6 @@
                     </ExpandableListView>
                 </RelativeLayout>
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout android:id="@id/content"

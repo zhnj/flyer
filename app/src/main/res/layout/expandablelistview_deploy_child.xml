@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/whiteFont"
-        android:textSize="18dp"/>
-    <TextView
+        android:textColor="#F8EF26"
+        android:textSize="@dimen/font18"/>
+    +<TextView
         android:id="@+id/site"
         android:text="地址：河北省保定市徐水大庄乡"
         android:layout_marginTop="@dimen/margin5"
@@ -24,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/whiteFont"
-        android:textSize="16dp"/>
+        android:textColor="#F8EF26"
+        android:textSize="@dimen/font16"/>
     <TextView
         android:id="@+id/telephone"
         android:text="17766668888"

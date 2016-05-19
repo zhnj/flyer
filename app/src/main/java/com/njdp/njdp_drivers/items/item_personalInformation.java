@@ -161,8 +161,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }else {
             intiData(driver);
         }
-        setTextFix();//修改后，显示修改后的信息
         intiData(driver);
+        setTextFix();//修改后，显示修改后的信息
         return view;
     }
 
@@ -341,35 +341,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_region.setText(driver.getSite_0());
     }
 
-    //////////////////////////////////////////////////下载用户头像/////////////////////////////////
-    //获取用户头像
-    private Runnable getImageTask = new Runnable() {
-
-        @Override
-        public void run() {
-            getImage(AppConfig.URL_IP+netImageUrl);
-        }
-    };
-    private final OkHttpClient client = new OkHttpClient();
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case SUCCESS:
-                    Log.e(TAG, "获取头像成功");
-//                    showDriverData(driver, (Bitmap) msg.obj);
-                    if((Bitmap) msg.obj!=null) {
-                        title_Image.setImageBitmap((Bitmap) msg.obj);
-                    }else {
-                        Log.e(TAG,"图像获取错误");
-                    }
-                    break;
-                case ERROR:;
-                    Log.e(TAG,"获取图成功");
-                    break;
-            }
-        }
-    };
     private void getImage(String url)//获取用户头像
     {
         imageLoader.get(url, imageListener, 300, 300);
@@ -417,7 +388,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //            handler.sendMessage(msg);
 //        }
     }
-    //////////////////////////////////////////////////下载用户头像/////////////////////////////////
 
     private void showDriverData(Driver driver,Bitmap mbitmap)//显示用户基本信息和头像
     {

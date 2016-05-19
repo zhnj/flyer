@@ -212,7 +212,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 break;
             case R.id.jobDate:
                 popup_flag=true;
-                calendarPickerView.clearChoices();
                 datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.query:
@@ -271,7 +270,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         });
     }
 
-    private void checkQuery()//检查发布信息
+    private void checkQuery()//检查查询信息信息
     {
         if (selectedType == 0) {
             commonUtil.error_hint2_short(R.string.error_machineId3);
@@ -368,7 +367,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         Log.e(TAG, endTime);
         Log.e(TAG, GPS_longitude);
         Log.e(TAG, GPS_latitude);
-
         initFieldInfo();
     }
 
@@ -454,8 +452,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void isGetLocation() {
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
-            queryInfo();
-            commonUtil.error_hint("自动定位成功");
         } else {
             Log.e(TAG, "定位失败！");
             commonUtil.error_hint("查询失败,请重试");
@@ -637,9 +633,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void initDatePicker() {
         Calendar maxDate=Calendar.getInstance();
         maxDate.add(Calendar.MONTH, 2);
-        dateView = mainMenu.getLayoutInflater().inflate(R.layout.datepicker, null);
-        dateView.findViewById(R.id.getBack).setOnClickListener(this);
-        dateView.findViewById(R.id.getHelp).setOnClickListener(this);
         calendarPickerView=(CalendarPickerView)dateView.findViewById(R.id.calendarDatePicker);
         calendarPickerView.init(new Date(), maxDate.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE);
@@ -647,6 +640,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 ViewGroup.LayoutParams.MATCH_PARENT);
         datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);
         datePickerPop.setOutsideTouchable(true);
+        datePickerPop.setOnDismissListener(new datePickerDismiss());
     }
 
     private class areaListener implements AdapterView.OnItemSelectedListener//农田范围监听
@@ -680,7 +674,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 
         }
     }
-
     //日期选择单天监听
     private class clCellClick implements CalendarPickerView.CellClickInterceptor
     {
@@ -703,7 +696,9 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 dates.clear();
                 popup_flag=false;
                 first_date= null;
+                Log.e(TAG, "first_date清空了");
                 hintButton.setText("请选择作业开始日期");
+                gps_MachineLocation(machine_id);
                 datePickerPop.dismiss();
             }
             return false;
@@ -726,6 +721,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 popup_flag=false;
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
+                gps_MachineLocation(machine_id);
                 datePickerPop.dismiss();
             }
         }
@@ -733,6 +729,14 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         @Override
         public void onDateUnselected(Date date) {
 
+        }
+    }
+
+    private class datePickerDismiss implements PopupWindow.OnDismissListener
+    {
+        @Override
+        public void onDismiss() {
+            initDatePicker();
         }
     }
 
