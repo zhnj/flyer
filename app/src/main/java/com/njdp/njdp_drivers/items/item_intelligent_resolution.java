@@ -132,7 +132,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
-    private TextureMapView mMapView = null;
+    private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -294,7 +294,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
-        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
+        mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -1017,12 +1017,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             curlocation = location;
 
             // 第一次定位时，将地图位置移动到当前位置，这里有问题，先定位到河北农业大学
-            /*if (isFristLocation) {
+            if (isFristLocation) {
                 isFristLocation = false;
-
-                //保存当前location
-                curlocation = location;
-
                 if(!text_gps_flag) {//成功获取农机位置
                     LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
                             Double.parseDouble(GPS_longitude));
@@ -1034,7 +1030,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                     mBaiduMap.animateMapStatus(u);
                 }
-            }*/
+            }
         }
     }
 
@@ -1143,6 +1139,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
+            gps_MachineLocation(machine_id,-1);//定位我的位置
             gps_MachineLocation(machine_id,-1);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
