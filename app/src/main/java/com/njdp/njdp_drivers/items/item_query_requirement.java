@@ -293,7 +293,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             case 2:
@@ -301,7 +301,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             case 3:
@@ -309,7 +309,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             default:

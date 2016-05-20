@@ -111,7 +111,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////地图用变量///////////////////////////////
-    private TextureMapView mMapView;
+    private MapView mMapView;
     BaiduMap mBaiduMap;
     View markerpopwindow;
 
@@ -206,22 +206,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         //////////////////////////////Test Log
 
 
-
-        //////////////////////////////////////////////
-        ////////////////地图代码/////////////////////
-        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            if(machine_id!=null){
-                //根据农机IP向服务器请求获取农机经纬度
-                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
-
         //获取地图控件引用
-        mMapView = (TextureMapView)view.findViewById(R.id.diaopeimapView);
+        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -235,12 +221,13 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         //注册监听
         locationService.registerListener(new mListener());
-        LocationClientOption mLocationClientOption = new LocationClientOption();
-        mLocationClientOption.setOpenGps(true);
-        mLocationClientOption.setLocationMode(com.baidu.location.LocationClientOption.LocationMode.Hight_Accuracy);
-        mLocationClientOption.setCoorType("bd09ll");
-        mLocationClientOption.setScanSpan(10 * 1000);
-        locationService.setLocationOption(mLocationClientOption);
+        //LocationClientOption mLocationClientOption = new LocationClientOption();
+        //mLocationClientOption.setOpenGps(true);
+        //mLocationClientOption.setLocationMode(com.baidu.location.LocationClientOption.LocationMode.Hight_Accuracy);
+        //mLocationClientOption.setCoorType("bd09ll");
+        //mLocationClientOption.setScanSpan(10 * 1000);
+        //locationService.setLocationOption(mLocationClientOption);
+        locationService.setLocationOption(locationService.getOption());
 
 
         mBaiduMap.setMyLocationEnabled(true);
@@ -270,6 +257,21 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         * */
         /////////////////////地图代码结束/////////////////////////
         /////////////////////////////////////////////////////////
+
+
+        //////////////////////////////////////////////
+        ////////////////地图代码/////////////////////
+        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            if(machine_id!=null){
+                //根据农机IP向服务器请求获取农机经纬度
+                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+
 
         return  view;
     }
@@ -328,6 +330,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
 
+
         }
     }
     //回到方案路径按钮点击事件,将第一个位置定位到屏幕中心
@@ -354,16 +357,28 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     class mListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            //保存当前location
+            // 构造定位数据
+            MyLocationData locData;
+            if(!text_gps_flag){//成功获取农机经纬度
+                locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(100).latitude(Double.parseDouble(GPS_latitude))
+                        .longitude(Double.parseDouble(GPS_longitude))
+                        .build();
+            }else{
+                locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(100).latitude(location.getLatitude())
+                        .longitude(location.getLongitude())
+                        .build();
+            }
+
+            //保存百度地图定位的当前位置
             curlocation = location;
 
-            // 构造定位数据
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                            // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(Double.parseDouble(GPS_latitude))
-                    .longitude(Double.parseDouble(GPS_longitude))
-                    .build();
+
             // 设置定位数据
             mBaiduMap.setMyLocationData(locData);
             // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
@@ -372,26 +387,26 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, false, mCurrentMarker);
             mBaiduMap.setMyLocationConfigeration(config);
 
+            // 第一次定位时，将地图位置移动当前位置
+            if (isFristLocation) {
+                isFristLocation = false;
+
+                if(!text_gps_flag) {//成功获取农机位置
+                    LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
+                            Double.parseDouble(GPS_longitude));
+                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                    mBaiduMap.animateMapStatus(u);
+                }else{
+                    LatLng ll = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                    mBaiduMap.animateMapStatus(u);
+                }
+            }
 
             //调用画折线函数画线
             drawPolyLine();
 
-
-            // 第一次定位时，将地图位置移动当前位置
-            /*if (isFristLocation) {
-                isFristLocation = false;
-
-                //保存当前location
-                curlocation = location;
-
-                //LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
-                //MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-                //mBaiduMap.animateMapStatus(u);
-
-
-                //调用画折线函数画线
-                drawPolyLine();
-            }*/
         }
     }
 
