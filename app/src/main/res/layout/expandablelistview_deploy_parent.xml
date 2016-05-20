@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/Read"
+                android:textColor="@color/LighterGreen"
                 android:textSize="@dimen/font16"/>
             <TextView
                 android:id="@+id/cost"
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/LighterGreen"
+                android:textColor="@color/whiteFont"
                 android:textSize="@dimen/font16"/>
         </LinearLayout>
         <TextView
