@@ -110,7 +110,8 @@ public class slidingMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        headerView = LayoutInflater.from(slidingMenu.this).inflate(R.layout.nav_header_sliding_menu, null);
+        headerView = LayoutInflater.from(this).inflate(R.layout.nav_header_sliding_menu, null);
+        navigationView.addHeaderView(headerView);
         title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView)headerView.findViewById(R.id.user_image);//用户头像ImageView
         imageLoader=AppController.getInstance().getImageLoader();
         imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);

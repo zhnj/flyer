@@ -344,6 +344,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 noRelease.setVisibility(View.VISIBLE);
             }
         }catch (Exception e){
+            e.printStackTrace();
             Log.e(TAG,"查找历史出错");
             ll_history.setVisibility(View.GONE);
             noRelease.setVisibility(View.VISIBLE);
@@ -407,7 +408,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     commonUtil.error_hint("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
-                    sessionManager.setReleaseHistory(s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
+                    sessionManager.setReleaseHistory(true,s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
                     tvr_cropType.setText(transfer_s__machine_cropType(s_machine_cropType));
                     tvr_machineType.setText(s_machine_type);
                     tvr_workTime.setText(workTime);
