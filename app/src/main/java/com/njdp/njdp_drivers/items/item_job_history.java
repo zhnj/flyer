@@ -74,7 +74,6 @@ public class item_job_history extends Fragment implements View.OnClickListener{
     private CalendarPickerView calendarPickerView;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
-    private SimpleDateFormat format3;
     private Date first_date;
     private com.beardedhen.androidbootstrap.BootstrapButton hintButton;
     private ArrayList<Date> dates = new ArrayList<Date>();//选择的起始日期
@@ -98,7 +97,6 @@ public class item_job_history extends Fragment implements View.OnClickListener{
 
         format = new SimpleDateFormat("yyyy年M月d日");
         format2= new SimpleDateFormat("yyyy-MM-dd");
-        format3=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
         sessionManager=new SessionManager(getActivity());
@@ -322,9 +320,12 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         Date defaultStartDate=calendar.getTime();
         t_startDate.setText(getResources().getString(R.string.jobStart1)+ format.format(defaultStartDate));
-        t_endDate.setText(getResources().getString(R.string.jobEnd1)+ format.format(defaultEndDate));//显示默认的起止年月日
-        start_date=format2.format(defaultStartDate);
-        end_date=format2.format(defaultEndDate);
+        t_endDate.setText(getResources().getString(R.string.jobEnd1) + format.format(defaultEndDate));//显示默认的起止年月日
+        Calendar getDate = Calendar.getInstance();
+        getDate.setTime(defaultEndDate);//结束日期加一天
+        getDate.add(Calendar.DAY_OF_MONTH, 1);
+        start_date=format2.format(defaultStartDate)+" 00:00:00";
+        end_date=format2.format(getDate.getTime())+" 00:00:00";
     }
 
     //初始化日期选择器popupWindow
@@ -362,10 +363,11 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 String first_dateTime = format.format(date);
                 t_startDate.setText(getResources().getString(R.string.jobStart1) + first_dateTime);
                 t_endDate.setText(getResources().getString(R.string.jobEnd1) + first_dateTime);
-                start_date = format2.format(date);
-                end_date=format2.format(date);
-                start_date+=" 00:00:00";
-                end_date+=" 00:00:00";
+                start_date = format2.format(date)+" 00:00:00";
+                Calendar getDate = Calendar.getInstance();
+                getDate.setTime(date);//结束日期加一天
+                getDate.add(Calendar.DAY_OF_MONTH, 1);
+                end_date=format2.format(getDate)+" 00:00:00";
                 dates.clear();
                 popup_flag=false;
                 first_date= null;
@@ -387,13 +389,11 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 dates.addAll(calendarPickerView.getSelectedDates());
                 t_startDate.setText(getResources().getString(R.string.jobStart1) + format.format(dates.get(0)));
                 t_endDate.setText(getResources().getString(R.string.jobEnd1) + format.format(dates.get(size - 1)));
-                start_date = format2.format(dates.get(0));
+                start_date = format2.format(dates.get(0))+" 00:00:00";
                 Calendar getDate = Calendar.getInstance();
                 getDate.setTime(dates.get(size - 1));//结束日期加一天
-                getDate.add(Calendar.MONTH, -1);
-                end_date=format2.format(getDate.getTime());
-                start_date+=" 00:00:00";
-                end_date+=" 00:00:00";
+                getDate.add(Calendar.DAY_OF_MONTH, 1);
+                end_date=format2.format(getDate.getTime())+" 00:00:00";
                 dates.clear();
                 popup_flag=false;
                 first_date=null;
