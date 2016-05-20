@@ -13,8 +13,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -81,6 +83,7 @@ public class slidingMenu extends AppCompatActivity
     private ImageLoader imageLoader;
     private ImageLoader.ImageListener imageListener;
     private String netImageUrl;
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +110,8 @@ public class slidingMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView)navigationView.findViewById(R.id.user_image);//用户头像ImageView
+        headerView = LayoutInflater.from(slidingMenu.this).inflate(R.layout.nav_header_sliding_menu, null);
+        title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView)headerView.findViewById(R.id.user_image);//用户头像ImageView
         imageLoader=AppController.getInstance().getImageLoader();
         imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
         token=session.getToken();

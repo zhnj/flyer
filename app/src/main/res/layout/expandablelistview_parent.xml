@@ -6,7 +6,6 @@
     android:paddingLeft="@dimen/padding5"
     android:paddingBottom="@dimen/padding5"
     android:paddingRight="@dimen/padding5"
-    android:background="@color/Black"
     android:paddingTop="@dimen/padding10"
     >
     <LinearLayout

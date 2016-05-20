@@ -127,12 +127,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     private boolean text_gps_flag = false;//GPS定位是否成功
-    private int dialog_flag=0;
+    private static int showDialog_flag=0;//是否显示正在载入的标志
     private Date first_date;
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
-    private MapView mMapView = null;
+//    private MapView mMapView = null;
+    private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -205,9 +206,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void run() {
                 if(sessionManager.getHintFlag()){}
                 if(mainMenu.hintPopup_flag) {
-                    gps_MachineLocation(machine_id,1);
                     hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     lp.alpha = 0.7f;
+//                    gps_MachineLocation(machine_id,1);
                 }
             }
         });
@@ -236,24 +237,30 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sl_area_flag = true;
                 sl_area = sp_area.getSelectedItem().toString();
+                Log.e(TAG, "选择的距离：" + sl_area);
                 switch (sl_area)
                 {
                     case "50公里":
                         sl_area="50";
+                        gps_MachineLocation(machine_id,0);
                         break;
                     case "80公里":
                         sl_area="80";
+                        gps_MachineLocation(machine_id,0);
                         break;
                     case "100公里":
                         sl_area="100";
+                        gps_MachineLocation(machine_id,0);
                         break;
                     case "默认距离":
                         sl_area="50";
+                        gps_MachineLocation(machine_id,1);
                     case "全部":
                         sl_area="100";
+                        gps_MachineLocation(machine_id,0);
                         break;
                 }
-                gps_MachineLocation(machine_id,0);
+
             }
 
             @Override
@@ -294,7 +301,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
+//        mMapView = (MapView) view.findViewById(R.id.bmapView);
+        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -772,8 +780,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         saveFieldInfo(fieldInfoDao, fieldInfos);
                         //按距离的排序好的农田
                         arrangeField();
-                        Log.e(TAG,"数据加载完成");
-                        commonUtil.error_hint("数据加载完成");
+                        Log.e(TAG, "数据加载完成");
+//                        commonUtil.error_hint("数据加载完成");
                     }
                 } else {
                     String errorMsg = jObj.getString("result");
@@ -792,10 +800,10 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
 
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
-    public void gps_MachineLocation(final String machine_id,int i_dialog_flag) {
-        dialog_flag=i_dialog_flag;
-        Log.e(TAG,String.valueOf(i_dialog_flag));
-        Log.e(TAG,String.valueOf(dialog_flag));
+    public void gps_MachineLocation(final String machine_id,final int i_dialog_flag) {
+        showDialog_flag=i_dialog_flag;
+        Log.e(TAG,"传入"+String.valueOf(i_dialog_flag));
+        Log.e(TAG,"赋值"+String.valueOf(showDialog_flag));
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -816,13 +824,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-
     private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
     {
         @Override
         public void onResponse(String response) {
-            Log.d(TAG, "GPS Response: " + response);
             try {
+                Log.e(TAG, "GPS Response: " + response);
                 JSONObject jObj = new JSONObject(response);
                 int status = jObj.getInt("status");
 
@@ -844,18 +851,18 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
-                    isGetLocation(dialog_flag);
+                    isGetLocation();
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "GPSLocation Error:" + errorMsg);
                     text_gps_flag = true;
-                    isGetLocation(dialog_flag);
+                    isGetLocation();
                 }
             } catch (JSONException e) {
                 // JSON error
                 Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
                 text_gps_flag = true;
-                isGetLocation(dialog_flag);
+                isGetLocation();
             }
         }
     }
@@ -867,21 +874,22 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             Log.e(TAG, "ConnectService Error: " + error.getMessage());
             netUtil.testVolley(error);
             text_gps_flag = true;
-            isGetLocation(dialog_flag);
+            isGetLocation();
         }
     }
 
     //定位成功或者失败后的响应
-    private void isGetLocation(int dialog_flag) {
+    private void isGetLocation() {
+        Log.e(TAG,"赋值"+String.valueOf(showDialog_flag));
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
             LatLng ll = new LatLng(Double.valueOf(GPS_latitude),
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            if(dialog_flag==-1){
+            if(showDialog_flag==-1){
                 Log.e(TAG,"仅定位");
-            } else if(dialog_flag==1)
+            } else if(showDialog_flag==1)
             {
                 _initFieldInfo(sl_area);
             }else{
@@ -896,9 +904,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-                if(dialog_flag==-1){
+                if(showDialog_flag==-1){
                     Log.e(TAG,"仅定位");
-                } if(dialog_flag==1)
+                } if(showDialog_flag==1)
                 {
                     _initFieldInfo(sl_area);
                 }else{
@@ -1140,7 +1148,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         @Override
         public void onClick(View v) {
             gps_MachineLocation(machine_id,-1);//定位我的位置
-            gps_MachineLocation(machine_id,-1);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
 //            LatLng ll = new LatLng(curlocation.getLatitude(),
@@ -1248,27 +1255,5 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 
-//    private class sl_areaClickListener implements AdapterView.OnItemClickListener
-//    {
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            sl_area = sp_area.getSelectedItem().toString();
-//            switch (sl_area) {
-//                case "50公里":
-//                    sl_area = "50";
-//                    break;
-//                case "80公里":
-//                    sl_area = "80";
-//                    break;
-//                case "100公里":
-//                    sl_area = "100";
-//                    break;
-//                case "默认距离":
-//                    sl_area = "50";
-//                    break;
-//            }
-//            gps_MachineLocation(machine_id);
-//        }
-//    }
+
 }
