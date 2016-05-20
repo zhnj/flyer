@@ -101,7 +101,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
     ////////////////////////地图变量//////////////////////////
 //    private MapView mMapView = null;
-    private TextureMapView mMapView = null;
+    private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -187,7 +187,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         //获取地图控件引用
 
         //mMapView = (MapView) getActivity().findViewById(R.id.bmapView);
-        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
+        mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -488,6 +488,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
         //**********************初始化listview***************/
         //绑定Layout里面的ListView1
+        listItem.clear();
         list1 = (ExpandableListView) view.findViewById(R.id.repair_station_listview1);
 
         //生成动态数组(前三个)，加入数据
@@ -959,52 +960,61 @@ public class item_repair_station extends Fragment implements View.OnClickListene
             TextView textweixin = (TextView)myView.findViewById(R.id.ytext5);
             TextView textchief = (TextView)myView.findViewById(R.id.ytext6);
 
-            if(listItem.get(groupPosition).get("ItemRange")!=null) {
-                textrange.setText("距离:" + (String) listItem.get(groupPosition).get("ItemRange"));
-            }else{
+            if(listItem.get(groupPosition).get("ItemRange")==null||"".equals(listItem.get(groupPosition).get("ItemRange"))) {
                 textrange.setText("距离:未知");
-            }
-            if(listItem.get(groupPosition).get("ItemAddress")!=null) {
-                textaddress.setText("地址:" + (String) listItem.get(groupPosition).get("ItemAddress"));
             }else{
-                textaddress.setText("地址:未知");
+                textrange.setText("距离:" + (String) listItem.get(groupPosition).get("ItemRange"));
             }
-            if(listItem.get(groupPosition).get("ItemPhone")!=null) {
+            if(listItem.get(groupPosition).get("ItemAddress")==null||"".equals(listItem.get(groupPosition).get("ItemAddress"))) {
+                textaddress.setText("地址:未知");
+            }else{
+                textaddress.setText("地址:" + (String) listItem.get(groupPosition).get("ItemAddress"));
+            }
+            if(listItem.get(groupPosition).get("ItemPhone")==null||"".equals(listItem.get(groupPosition).get("ItemPhone"))) {
+                textphone.setText("联系电话:未知");
+            }else{
                 textphone.setText("联系电话:" + (String) listItem.get(groupPosition).get("ItemPhone"));
 
                 final int tellindex = groupPosition;
                 btnTell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listItem.get(tellindex).get("ItemPhone")));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        if (listItem.get(tellindex).get("ItemPhone") == null || "".equals((listItem.get(tellindex).get("ItemPhone")))) {
+                            commonUtil.error_hint("无联系电话或联系电话错误");
+                        } else {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listItem.get(tellindex).get("ItemPhone")));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
                     }
                 });
-            }else{
-                textphone.setText("联系电话:未知");
+
             }
 
-            if(listItem.get(groupPosition).get("ItemQQ")!=null) {
+            if(listItem.get(groupPosition).get("ItemQQ")==null||"".equals(listItem.get(groupPosition).get("ItemQQ"))) {
+                textqq.setText("QQ:未知");
+            }else{
                 textqq.setText("QQ:" + (String) listItem.get(groupPosition).get("ItemQQ"));
 
                 final int qqindex = groupPosition;
                 btnQQ.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String url="mqqwpa://im/chat?chat_type=wpa&uin="+listItem.get(qqindex).get("ItemQQ");
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        if (listItem.get(qqindex).get("ItemQQ") == null || "".equals(listItem.get(qqindex).get("ItemQQ"))) {
+                            commonUtil.error_hint("无QQ号或QQ号错误");
+                        } else {
+                            String url = "mqqwpa://im/chat?chat_type=wpa&uin=" + listItem.get(qqindex).get("ItemQQ");
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        }
                     }
                 });
-            }else{
-                textqq.setText("QQ:未知");
             }
-            if(listItem.get(groupPosition).get("ItemWeixin")!=null) {
-                textweixin.setText("微信:"+(String) listItem.get(groupPosition).get("ItemWeixin"));
-            }else{
+            if(listItem.get(groupPosition).get("ItemWeixin")==null||"".equals(listItem.get(groupPosition).get("ItemWeixin"))) {
                 textweixin.setText("微信:未知");
+            }else{
+                textweixin.setText("微信:"+(String) listItem.get(groupPosition).get("ItemWeixin"));
             }
-            if(listItem.get(groupPosition).get("ItemOthers")==null){
+            if(listItem.get(groupPosition).get("ItemOthers")==null||"".equals(listItem.get(groupPosition).get("ItemOthers"))){
                 textchief.setText("其它说明:无");
             }else{
                 textchief.setText("其它说明:"+(String) listItem.get(groupPosition).get("ItemOthers"));

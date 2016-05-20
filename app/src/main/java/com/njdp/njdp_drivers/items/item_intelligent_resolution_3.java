@@ -112,7 +112,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////地图用变量///////////////////////////////
 //    private MapView mMapView;
-    private TextureMapView mMapView;
+    private MapView mMapView;
     BaiduMap mBaiduMap;
     View markerpopwindow;
 
@@ -201,7 +201,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         //获取地图控件引用
 //        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
-        mMapView = (TextureMapView)view.findViewById(R.id.diaopeimapView);
+        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
