@@ -293,7 +293,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             case 2:
@@ -301,7 +301,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             case 3:
@@ -309,7 +309,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 {
                     commonUtil.error_hint2_short(R.string.err_cropCheck);
                 }else {
-                    gps_MachineLocation(machine_id);
+                    queryInfo();
                 }
                 break;
             default:
@@ -317,7 +317,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         }
     }
 
-    private void queryInfo()//存储s_machine_cropType
+    private void queryInfo()//存储s_machine_cropType,并进行查询农田信息
     {
         switch (selectedType)
         {
@@ -357,11 +357,6 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
             default:
                 break;
         }
-        query_field();
-    }
-
-    private void query_field() //查询农田信息
-    {
         Log.e(TAG,token);
         Log.e(TAG,machine_id);
         Log.e(TAG, sl_area);
@@ -401,7 +396,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         @Override
         public void onResponse(String response) {
             hideDialog();
-            Log.d(TAG, "AreaInit Response: " + response);
+            Log.d(TAG, "GPS Response: " + response);
             try {
                 JSONObject jObj = new JSONObject(response);
                 int status = jObj.getInt("status");

@@ -197,14 +197,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         count=navigationDeploy.size();
         Log.e(TAG,String.valueOf(count));
 
-        //////////////////////////////Test Log
-        for (int i=0;i<count;i++)
-        {
-            Log.e(TAG,String.valueOf(navigationDeploy.get(i).getId()));
-            Log.e(TAG,navigationDeploy.get(i).getCropLand_site());
-        }
-        //////////////////////////////Test Log
-
 
 
         //////////////////////////////////////////////

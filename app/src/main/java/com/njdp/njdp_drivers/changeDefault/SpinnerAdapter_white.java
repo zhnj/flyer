@@ -35,7 +35,7 @@ public class SpinnerAdapter_white extends ArrayAdapter<String> {
         //修改Spinner展开后的字体
         TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
         tv.setText(mStringArray[position]);
-        tv.setTextSize(18f);//改变字体大小
+        tv.setTextSize(16f);//改变字体大小
         tv.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));//改变颜色
         parent.setBackgroundResource(R.drawable.spinner_bg);
         return convertView;
@@ -51,7 +51,7 @@ public class SpinnerAdapter_white extends ArrayAdapter<String> {
         // 修改Spinner选择后结果的字体
         TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
         tv.setText(mStringArray[position]);
-        tv.setTextSize(18f);
+        tv.setTextSize(16f);
         tv.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));
 //        parent.setBackgroundColor(Color.TRANSPARENT);
         parent.setBackgroundResource(R.drawable.arrow_down);

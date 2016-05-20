@@ -646,8 +646,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
     {
         @Override
         public void onResponse(String response) {
-            Log.d(TAG, "AreaInit Response: " + response);
             try {
+                Log.d(TAG, "GPS Response: " + response);
                 JSONObject jObj = new JSONObject(response);
                 int status = jObj.getInt("status");
 

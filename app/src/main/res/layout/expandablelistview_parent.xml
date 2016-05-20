@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:paddingLeft="@dimen/padding5"
     android:paddingBottom="@dimen/padding5"
     android:paddingRight="@dimen/padding5"
+    android:background="@color/Black"
     android:paddingTop="@dimen/padding10"
     >
     <LinearLayout
         android:id="@+id/expandParent_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="left|center_vertical">
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin40">
         <TextView
             android:id="@+id/id"
             android:text="1"
@@ -31,21 +33,17 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font16"
-            android:layout_marginLeft="@dimen/margin5"/>
+            android:layout_marginLeft="@dimen/margin5"></TextView>
     </LinearLayout>
-    <LinearLayout
+    <CheckBox
+        android:id="@+id/selected"
+        android:paddingRight="@dimen/padding5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        <CheckBox
-            android:id="@+id/selected"
-            android:paddingRight="@dimen/padding5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/checkbox_on_off"
-            android:checked="true"
-            android:layout_gravity="right|center_vertical"
-            />
-    </LinearLayout>
-</LinearLayout>
+        android:button="@drawable/checkbox_on_off"
+        android:checked="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/mainpages_ll_page_bg"
+    android:orientation="vertical"
     tools:context="com.njdp.njdp_drivers.items.item_repair_station">
 
     <RelativeLayout
         style="@style/mainpages_page_title"
-        android:id="@+id/repair_station__top"
-        >
+        android:id="@+id/repair_station__top">
         <TextView
             style="@style/Pages_Title"
             android:text="维修站"
@@ -31,7 +31,8 @@
         style="@style/spinner_style_intell"
         android:layout_width="match_parent"
         android:background="@drawable/arrow_down"
-        android:id="@+id/search_area">
+        android:id="@+id/search_area"
+        android:layout_below="@+id/repair_station__top">
     </Spinner>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -104,7 +105,8 @@
         </LinearLayout>
 
         <LinearLayout android:id="@id/content"
-            android:layout_width="fill_parent" android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:background="#ffffff">
 
             <LinearLayout
@@ -120,4 +122,4 @@
 
         </LinearLayout>
     </com.njdp.njdp_drivers.items.MySlidingDrawer>
-</LinearLayout>
+</RelativeLayout>

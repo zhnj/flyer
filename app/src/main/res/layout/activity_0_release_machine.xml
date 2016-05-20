@@ -116,8 +116,8 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding5"
             android:paddingBottom="@dimen/padding5"
-            android:paddingRight="@dimen/padding10"
-            android:paddingLeft="@dimen/padding10">
+            android:paddingRight="@dimen/padding5"
+            android:paddingLeft="@dimen/padding5">
             <TextView
                 style="@style/release_t_cropType"
                 android:layout_marginRight="@dimen/margin5"
@@ -221,7 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="添加描述"
-                android:textSize="@dimen/font18"
+                android:textSize="@dimen/font16"
                 android:layout_marginLeft="@dimen/margin10"
                 android:layout_gravity="center"
                 android:textColor="#FFFFFF"/>
@@ -234,13 +234,15 @@
         </LinearLayout>
         <EditText
             style="@style/release_remark_editText"
+            android:layout_height="@dimen/height30"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@android:drawable/edit_text"
             android:id="@+id/remark"
-            android:visibility="gone"
+            android:textSize="@dimen/font16"
             android:layout_gravity="start"
             android:textAlignment="textStart"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine"
+            android:visibility="gone"/>
     </LinearLayout>
     <ImageButton
         android:layout_width="wrap_content"

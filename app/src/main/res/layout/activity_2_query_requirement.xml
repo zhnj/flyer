@@ -76,8 +76,8 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding5"
             android:paddingBottom="@dimen/padding5"
-            android:paddingRight="@dimen/padding10"
-            android:paddingLeft="@dimen/padding10">
+            android:paddingRight="@dimen/padding5"
+            android:paddingLeft="@dimen/padding5">
             <TextView
                 style="@style/release_t_cropType"
                 android:layout_marginRight="@dimen/margin5"

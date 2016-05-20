@@ -202,7 +202,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                             //////////////////////////////////存储选择的导航方案////////////////////////////
                             if(saveFieldInfoDao.countOfField()>0)
                             {
-                                //本地库里是否存在农田信息，存在则删除
+                                //本地保存的方案里是否存在农田信息，存在则删除
                                 List<SavedFiledInfo> testFieldInfos=saveFieldInfoDao.allFieldInfo();
                                 for (int i = 0; i < testFieldInfos.size(); i++) {
                                     SavedFiledInfo savedFiledInfo = testFieldInfos.get(i);
@@ -433,8 +433,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                     mainMenu.finish();
                 }else if(status==0){
                     String msg=jObj.getString("result");
-                    Log.e(TAG, msg);
-                    commonUtil.error_hint("上传选择方案成功");
+                    Log.e(TAG, msg+"---上传选择方案成功");
+//                    commonUtil.error_hint("上传选择方案成功");
 
                 } else {
 

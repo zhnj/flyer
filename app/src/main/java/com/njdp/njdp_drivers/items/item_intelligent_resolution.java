@@ -794,6 +794,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
     public void gps_MachineLocation(final String machine_id,int i_dialog_flag) {
         dialog_flag=i_dialog_flag;
+        Log.e(TAG,String.valueOf(i_dialog_flag));
+        Log.e(TAG,String.valueOf(dialog_flag));
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -819,7 +821,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onResponse(String response) {
-            Log.d(TAG, "AreaInit Response: " + response);
+            Log.d(TAG, "GPS Response: " + response);
             try {
                 JSONObject jObj = new JSONObject(response);
                 int status = jObj.getInt("status");
@@ -877,7 +879,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            if(dialog_flag==0){
+            if(dialog_flag==-1){
                 Log.e(TAG,"仅定位");
             } else if(dialog_flag==1)
             {
@@ -894,7 +896,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-                if(dialog_flag==0){
+                if(dialog_flag==-1){
                     Log.e(TAG,"仅定位");
                 } if(dialog_flag==1)
                 {
