@@ -199,6 +199,14 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         Log.e(TAG,String.valueOf(count));
 
 
+        //////////////////////////////////////////////
+        ////////////////地图代码/////////////////////
+        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
         //获取地图控件引用
 //        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
@@ -251,21 +259,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         * */
         /////////////////////地图代码结束/////////////////////////
         /////////////////////////////////////////////////////////
-
-
-        //////////////////////////////////////////////
-        ////////////////地图代码/////////////////////
-        //获取第一个位置和最后一个位置,获取中间节点，进行驾车路径规划
-        try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            if(machine_id!=null){
-                //根据农机IP向服务器请求获取农机经纬度
-                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
-
 
         return  view;
     }
@@ -351,6 +344,17 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     class mListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+
+            //保存百度地图定位的当前位置
+            curlocation = location;
+
+
+            //获取农机经纬度
+            if(machine_id!=null){
+                //根据农机IP向服务器请求获取农机经纬度
+                gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+            }
+
             // 构造定位数据
             MyLocationData locData;
             if(!text_gps_flag){//成功获取农机经纬度
@@ -368,10 +372,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                         .longitude(location.getLongitude())
                         .build();
             }
-
-            //保存百度地图定位的当前位置
-            curlocation = location;
-
 
             // 设置定位数据
             mBaiduMap.setMyLocationData(locData);
@@ -495,10 +495,11 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 PlanNode node = PlanNode.withLocation(ll);
                 passby.add(node);
             }
+            LatLng llst = new LatLng(Double.parseDouble(GPS_latitude),Double.parseDouble(GPS_longitude));
+            LatLng llen = new LatLng(navigationDeploy.get(navigationDeploy.size()-1).getLatitude(),navigationDeploy.get(navigationDeploy.size()-1).getLongitude());
+            this.drawRoutPlan(llst,llen,passby);
         }
-        LatLng llst = new LatLng(Double.parseDouble(GPS_latitude),Double.parseDouble(GPS_longitude));
-        LatLng llen = new LatLng(navigationDeploy.get(navigationDeploy.size()-1).getLatitude(),navigationDeploy.get(navigationDeploy.size()-1).getLongitude());
-        this.drawRoutPlan(llst,llen,passby);
+
 
 
         //构建当前位置图标
@@ -943,11 +944,14 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     private void isGetLocation() {
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
+            drawPolyLine();
         } else {
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
             try {
                 GPS_latitude = String.valueOf(curlocation.getLatitude());
                 GPS_longitude = String.valueOf(curlocation.getLongitude());
+
+                drawPolyLine();
             }catch (Exception e)
             {
                 commonUtil.error_hint("自动定位失败，请重试！");
