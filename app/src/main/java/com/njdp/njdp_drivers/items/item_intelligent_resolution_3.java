@@ -195,8 +195,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         }
 
         commonUtil=new CommonUtil(mainMenu);
-        count=navigationDeploy.size();
-        Log.e(TAG,String.valueOf(count));
+        count=savedFieldInfoDao.allFieldInfo().size();
+        Log.e(TAG,"方案作业地点数："+String.valueOf(count));
 
 
         //获取地图控件引用
@@ -305,9 +305,9 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     {
         for (int i=0;i<count;i++)
         {
-            SavedFiledInfo savedFiledInfo=navigationDeploy.get(i);
+            SavedFiledInfo savedFiledInfo=savedFieldInfoDao.allFieldInfo().get(i);
             savedFieldInfoDao.delete(savedFiledInfo);
-            Log.e(TAG,"删除"+String.valueOf(i+1)+"次");
+            Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
         }
     }
 

@@ -255,6 +255,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     case "默认距离":
                         sl_area="50";
                         gps_MachineLocation(machine_id,1);
+                        break;
                     case "全部":
                         sl_area="100";
                         gps_MachineLocation(machine_id,0);
