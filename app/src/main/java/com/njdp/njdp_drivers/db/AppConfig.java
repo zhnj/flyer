@@ -35,7 +35,6 @@ public class AppConfig {
 
     public static String URL_FIXPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
 
-
     public static String URL_REPAIRE=URL_IP+"app/repairStation/index";//维修站
 
 

@@ -288,9 +288,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 break;
             case R.id.replanning:
                 clearDeploy();//清空方案数据
-                mainMenu.selectedFieldInfo.clear();
-                navigationDeploy.clear();
-                mainMenu.addOrShowFragment(new item_intelligent_resolution());
                 break;
             case R.id.navigation:
                 mainMenu.addBackFragment(new item_intelligent_resolution_4());
@@ -303,11 +300,20 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     //清空储存的方案数据
     private void clearDeploy()
     {
+        mainMenu.pDialog.setMessage("请等待......");
+        mainMenu.showDialog();
         for (int i=0;i<count;i++)
         {
             SavedFiledInfo savedFiledInfo=savedFieldInfoDao.allFieldInfo().get(i);
             savedFieldInfoDao.delete(savedFiledInfo);
             Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
+            if(i==count-1)
+            {
+                mainMenu.selectedFieldInfo.clear();
+                navigationDeploy.clear();
+                mainMenu.hideDialog();
+                mainMenu.addOrShowFragment(new item_intelligent_resolution());
+            }
         }
     }
 

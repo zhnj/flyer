@@ -48,7 +48,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/turnplate_center"
             android:id="@+id/information_div_title_image"
             circleImageView:civ_border_width="2dp"
             circleImageView:civ_border_color="#ffffff"/>

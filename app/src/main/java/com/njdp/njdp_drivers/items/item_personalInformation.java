@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,6 +38,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,16 +51,14 @@ import java.util.Map;
 import bean.Driver;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 
-import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
 
 public class item_personalInformation extends Fragment implements View.OnClickListener {
 
     private slidingMenu mainMenu;
     private DrawerLayout menu;
+    private String TAG=item_personalInformation.class.getSimpleName();
     private View parentView;//主View
     private com.njdp.njdp_drivers.CircleMenu.CircleImageView title_Image;
     private LinearLayout l_name;
@@ -81,6 +82,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private ImageLoader imageLoader;
     private ImageLoader.ImageListener imageListener;
     private String path;
+    private String path_post;
     private String token;
     private String netImageUrl;
 
@@ -144,6 +146,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         if(driver.getTelephone()!=null) {
             try {
                 showDriverInfo(driver);
+                path=null;
                 path = driver.getImage_url();
                 if (path != null)
                 {
@@ -304,6 +307,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     driver.setQQ(s_driver.getString("person_qq"));
                     driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
                     driver.setId(1);
+                    path=null;
                     path=commonUtil.imageTempFile();
                     driver.setImage_url(path);//设置头像本地存储路径
                     getImage(AppConfig.URL_IP + netImageUrl);
@@ -410,10 +414,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         switch (requestCode) {
             case REQUEST_IMAGE:
                 if(resultCode == mainMenu.RESULT_OK){
+                    path_post=null;
                     // 获取返回的图片列表
                     List<String> paths = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                    path=paths.get(0);
-                    File file=new File(path);
+                    path_post=paths.get(0);
+                    File file=new File(path_post);
                     imageUri= Uri.fromFile(file);
                     cropPhoto();
                 }
@@ -464,8 +469,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             if(tag)
             {
                 title_Image.setImageBitmap(mBitmap);
-                fix_iamge(new File(path));
+                fix_iamge(new File(path_post));
                 //上传头像
+            }else {
+                title_Image.setImageDrawable(ContextCompat.getDrawable(mainMenu,R.drawable.turnplate_center));
+                //上传失败，默认头像
             }
         }
     }
