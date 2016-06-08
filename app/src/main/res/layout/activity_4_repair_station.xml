@@ -67,7 +67,7 @@
             android:id="@id/handlecontent"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/main_bg"
+            android:background="@drawable/main_bg_quarter"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
         <LinearLayout android:id="@id/content"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff">
+            android:background="@drawable/main_bg">
 
             <LinearLayout
                 android:id="@+id/repair_station__layout2"
