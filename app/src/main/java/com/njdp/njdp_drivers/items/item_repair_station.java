@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -281,10 +282,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     if(null == area){
                         params.put("range", "50");
                     }else{
-                        if(area.equals("默认距离")){
-                            params.put("range","50");
-                        }else if(area.equals("全部")){
-                            params.put("range","100");
+                        if(area.equals("全部")){
+                            params.put("range","300");
                         }else {
                             params.put("range", area);
                         }
@@ -932,6 +931,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
             }*/
 
             TextView textname = (TextView) myView.findViewById(R.id.ItemName);
+            textname.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             //TextView textaddress = (TextView) myView.findViewById(R.id.ItemAddress);
             //TextView textrange = (TextView) myView.findViewById(R.id.ItemRange);
 
@@ -951,13 +951,19 @@ public class item_repair_station extends Fragment implements View.OnClickListene
             myView = inflater.inflate(R.layout.updrawinglistview_child, null);
 
             TextView textrange = (TextView)myView.findViewById(R.id.ytext1);
+            textrange.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             TextView textaddress = (TextView)myView.findViewById(R.id.ytext2);
+            textaddress.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             TextView textphone = (TextView)myView.findViewById(R.id.ytext3);
+            textphone.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             Button btnTell = (Button)myView.findViewById(R.id.ytext31);//打电话
             TextView textqq = (TextView)myView.findViewById(R.id.ytext4);
+            textqq.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             Button btnQQ = (Button)myView.findViewById(R.id.ytext41);//打开QQ
             TextView textweixin = (TextView)myView.findViewById(R.id.ytext5);
+            textweixin.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
             TextView textchief = (TextView)myView.findViewById(R.id.ytext6);
+            textchief.setTextColor(ContextCompat.getColor(mainMenu,R.color.whiteFont));
 
             if(listItem.get(groupPosition).get("ItemRange")!=null) {
                 textrange.setText("距离:" + (String) listItem.get(groupPosition).get("ItemRange"));

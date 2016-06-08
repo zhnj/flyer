@@ -67,7 +67,7 @@
             android:id="@id/handlecontent"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff"
+            android:background="@drawable/main_bg"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_height="wrap_content"
