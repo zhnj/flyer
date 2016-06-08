@@ -302,15 +302,12 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         mainMenu.showDialog();
         for (int i=0;i<count;i++)
         {
-            List<SavedFiledInfo> testFieldInfos=savedFieldInfoDao.allFieldInfo();
-            Log.e(TAG,String.valueOf(testFieldInfos.size()));
-            SavedFiledInfo savedFiledInfo=testFieldInfos.get(i);
+            SavedFiledInfo savedFiledInfo=navigationDeploy.get(i);
             savedFieldInfoDao.delete(savedFiledInfo);
             Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
             if(i==count-1)
             {
                 mainMenu.selectedFieldInfo.clear();
-                testFieldInfos.clear();
                 navigationDeploy.clear();
                 mainMenu.hideDialog();
                 mainMenu.addOrShowFragment(new item_intelligent_resolution());
@@ -323,13 +320,11 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     {
         for (int i=0;i<count;i++)
         {
-            List<SavedFiledInfo> testFieldInfos=savedFieldInfoDao.allFieldInfo();
-            SavedFiledInfo savedFiledInfo=testFieldInfos.get(i);
+            SavedFiledInfo savedFiledInfo=navigationDeploy.get(i);
             savedFieldInfoDao.delete(savedFiledInfo);
             Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
             if(i==count-1)
             {
-                testFieldInfos.clear();
                 navigationDeploy.clear();
                 mainMenu.getSupportFragmentManager().popBackStack();
             }
@@ -343,11 +338,16 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     {
         @Override
         public void onClick(View v) {
-            LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
-                    Double.parseDouble(GPS_longitude));
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-            mBaiduMap.animateMapStatus(u);
-
+            try {
+                machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+                if(machine_id!=null){
+                    //根据农机IP向服务器请求获取农机经纬度
+                    gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+                }
+            } catch (Exception e) {
+                commonUtil.error_hint("定位失败请重试");
+                Log.e(TAG, e.toString());
+            }
 
         }
     }
@@ -978,11 +978,16 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             try {
                 GPS_latitude = String.valueOf(curlocation.getLatitude());
                 GPS_longitude = String.valueOf(curlocation.getLongitude());
+                Log.e(TAG, "百度定位成功");
             }catch (Exception e)
             {
                 commonUtil.error_hint("自动定位失败，请重试！");
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
         }
+        LatLng ll = new LatLng(Double.parseDouble(GPS_latitude),
+                Double.parseDouble(GPS_longitude));
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+        mBaiduMap.animateMapStatus(u);
     }
 }

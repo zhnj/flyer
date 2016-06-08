@@ -337,13 +337,13 @@ public class slidingMenu extends AppCompatActivity
     //初始化用户信息
     private void intiData(final Driver driver) {
 
-        String tag_string_req = "req_login";
+        String tag_string_req = "req_slidingMenu";
 
-        pDialog.setMessage("正在载入数据 ...");
-        showDialog();
+//        pDialog.setMessage("正在载入数据 ...");
+//        showDialog();
 
         if (netUtil.checkNet(slidingMenu.this) == false) {
-            hideDialog();
+//            hideDialog();
             commonUtil.error_hint("网络连接错误");
             return;
         } else {
@@ -372,7 +372,7 @@ public class slidingMenu extends AppCompatActivity
 
         @Override
         public void onResponse(String response) {
-            hideDialog();
+//            hideDialog();
 
             try {
                 Log.e(TAG, "PersonalInformation Response: " + response.toString());
@@ -440,6 +440,7 @@ public class slidingMenu extends AppCompatActivity
 
         @Override
         public void onErrorResponse(VolleyError error) {
+//            hideDialog();
             netUtil.testVolley(error);
             Log.e(TAG, "3 ConncectService Error错误!");
             Log.e("GET-ERROR", error.getMessage(), error);
@@ -448,7 +449,6 @@ public class slidingMenu extends AppCompatActivity
                 Log.e("GET-ERROR", new String(htmlBodyBytes), error);
             } catch (Exception e){}
             commonUtil.error_hint("服务器连接失败！");
-            hideDialog();
         }
     };
 

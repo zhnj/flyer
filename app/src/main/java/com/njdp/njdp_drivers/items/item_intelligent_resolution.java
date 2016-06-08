@@ -208,7 +208,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 if(mainMenu.hintPopup_flag) {
                     hintPopup.showAtLocation(parentView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     lp.alpha = 0.7f;
-//                    gps_MachineLocation(machine_id,1);
                 }
             }
         });
