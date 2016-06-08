@@ -242,7 +242,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 {
                     case "50公里":
                         sl_area="50";
-                        gps_MachineLocation(machine_id,0);
+                        gps_MachineLocation(machine_id,1);
                         break;
                     case "80公里":
                         sl_area="80";
@@ -252,12 +252,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         sl_area="100";
                         gps_MachineLocation(machine_id,0);
                         break;
-                    case "默认距离":
-                        sl_area="50";
-                        gps_MachineLocation(machine_id,1);
-                        break;
                     case "全部":
-                        sl_area="100";
+                        sl_area="1000";
                         gps_MachineLocation(machine_id,0);
                         break;
                 }

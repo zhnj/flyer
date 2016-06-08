@@ -898,18 +898,21 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
             @Override
             public void initStart() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "百度导航引擎初始化开始");
             }
 
             @Override
             public void initSuccess() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
                 initSetting();
+                Log.e(TAG, "百度导航引擎初始化成功");
             }
 
             @Override
             public void initFailed() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "百度导航引擎初始化失败");
             }
         }, null, ttsHandler, null);
     }
@@ -930,12 +933,14 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             int type = msg.what;
             switch (type) {
                 case BaiduNaviManager.TTSPlayMsgType.PLAY_START_MSG: {
-                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Handler : TTS play start");
                     //showToastMsg("Handler : TTS play start");
                     break;
                 }
                 case BaiduNaviManager.TTSPlayMsgType.PLAY_END_MSG: {
-                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG,"Handler : TTS play end");
                     //showToastMsg("Handler : TTS play end");
                     break;
                 }

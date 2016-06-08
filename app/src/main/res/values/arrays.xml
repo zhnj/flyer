@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="area">
-        <item>默认距离</item>
         <item>50公里</item>
         <item>80公里</item>
         <item>100公里</item>

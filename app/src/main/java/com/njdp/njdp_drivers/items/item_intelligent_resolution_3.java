@@ -273,9 +273,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
-                clearDeploy();//清空方案数据
-                navigationDeploy.clear();
-                mainMenu.getSupportFragmentManager().popBackStack();
+                backClearDeploy();//清空方案数据
                 break;
             case R.id.menu:
                 menu.openDrawer(Gravity.LEFT);
@@ -287,7 +285,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 //我的方案
                 break;
             case R.id.replanning:
-                clearDeploy();//清空方案数据
+                replanClearDeploy();//清空方案数据
                 break;
             case R.id.navigation:
                 mainMenu.addBackFragment(new item_intelligent_resolution_4());
@@ -298,18 +296,21 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     }
 
     //清空储存的方案数据
-    private void clearDeploy()
+    private void replanClearDeploy()
     {
         mainMenu.pDialog.setMessage("请等待......");
         mainMenu.showDialog();
         for (int i=0;i<count;i++)
         {
-            SavedFiledInfo savedFiledInfo=savedFieldInfoDao.allFieldInfo().get(i);
+            List<SavedFiledInfo> testFieldInfos=savedFieldInfoDao.allFieldInfo();
+            Log.e(TAG,String.valueOf(testFieldInfos.size()));
+            SavedFiledInfo savedFiledInfo=testFieldInfos.get(i);
             savedFieldInfoDao.delete(savedFiledInfo);
             Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
             if(i==count-1)
             {
                 mainMenu.selectedFieldInfo.clear();
+                testFieldInfos.clear();
                 navigationDeploy.clear();
                 mainMenu.hideDialog();
                 mainMenu.addOrShowFragment(new item_intelligent_resolution());
@@ -317,6 +318,23 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         }
     }
 
+    //清空储存的方案数据
+    private void backClearDeploy()
+    {
+        for (int i=0;i<count;i++)
+        {
+            List<SavedFiledInfo> testFieldInfos=savedFieldInfoDao.allFieldInfo();
+            SavedFiledInfo savedFiledInfo=testFieldInfos.get(i);
+            savedFieldInfoDao.delete(savedFiledInfo);
+            Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
+            if(i==count-1)
+            {
+                testFieldInfos.clear();
+                navigationDeploy.clear();
+                mainMenu.getSupportFragmentManager().popBackStack();
+            }
+        }
+    }
 
     ///////////////////////////地图代码/////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -812,25 +830,29 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), authinfo, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity(), authinfo, Toast.LENGTH_LONG).show();
+                        Log.e(TAG,authinfo);
                     }
                 });
             }
 
             @Override
             public void initStart() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "百度导航引擎初始化开始");
             }
 
             @Override
             public void initSuccess() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
                 initSetting();
+                Log.e(TAG, "百度导航引擎初始化成功");
             }
 
             @Override
             public void initFailed() {
-                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "百度导航引擎初始化失败");
             }
         }, null, ttsHandler, null);
     }
@@ -851,12 +873,14 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             int type = msg.what;
             switch (type) {
                 case BaiduNaviManager.TTSPlayMsgType.PLAY_START_MSG: {
-                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG,"Handler : TTS play start");
                     //showToastMsg("Handler : TTS play start");
                     break;
                 }
                 case BaiduNaviManager.TTSPlayMsgType.PLAY_END_MSG: {
-                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Handler : TTS play end");
                     //showToastMsg("Handler : TTS play end");
                     break;
                 }

@@ -662,10 +662,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     sl_area="100";
                     break;
                 case "全部":
-                    sl_area="100";
-                    break;
-                case "默认距离":
-                    sl_area="50";
+                    sl_area="1000";
                     break;
             }
         }

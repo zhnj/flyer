@@ -1,8 +1,5 @@
 package bean;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by USER-PC on 2016/4/20.
  */
@@ -10,6 +7,8 @@ public class BasicDeployRes {
     private String plan_id;
     private String cost;
     private String income;
+    private String beginDate;
+    private String endDate;
 //    private String workTime;
     private StringBuffer[] route;
 //    private Map<String,FieldCost> routes;
@@ -37,6 +36,22 @@ public class BasicDeployRes {
 
     public void setEarnings(String earnings) {
         this.income = earnings;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
     }
 
 //    public String getWorkTime() {

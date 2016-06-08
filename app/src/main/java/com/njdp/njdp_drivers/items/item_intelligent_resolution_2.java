@@ -139,10 +139,11 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 TextView tv4=(TextView)convertView.findViewById(R.id.earnings);
                 tv4.setText("估计收益：" + basicDeployRes.getEarnings()+"元");
                 TextView tv5=(TextView)convertView.findViewById(R.id.cost);
-                tv5.setText("估计成本：" + basicDeployRes.getCost()+"元");
+                tv5.setText("估计成本：" + basicDeployRes.getCost() + "元");
                 TextView tv6=(TextView)convertView.findViewById(R.id.timeFrame);
                 tv6.setTextSize(16f);
-                setDate(tv6, groupPosition);
+                tv6.setText("作业时段："+basicDeployRes.getBeginDate()+"至"+basicDeployRes.getEndDate());
+//                setDate(tv6, groupPosition);
 
                 final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
                 LinearLayout text_layout=(LinearLayout)convertView.findViewById(R.id.text_Layout);
@@ -173,7 +174,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "Get Navigation！");
+                        Log.e(TAG, "Get Navigation！");
                         mainMenu.deploy_tag=groupPosition+1;
                         //根据选择
                         try {
