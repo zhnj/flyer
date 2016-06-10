@@ -35,6 +35,7 @@ import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.item_intelligent_resolution;
 import com.njdp.njdp_drivers.items.item_intelligent_resolution_3;
 import com.njdp.njdp_drivers.items.item_job_history;
+import com.njdp.njdp_drivers.items.item_oil_station;
 import com.njdp.njdp_drivers.items.item_personalInformation;
 import com.njdp.njdp_drivers.items.item_query_requirement;
 import com.njdp.njdp_drivers.items.item_release_machine;
@@ -209,12 +210,14 @@ public class slidingMenu extends AppCompatActivity
             fragment = new item_job_history();
             addOrShowFragment(fragment);
         } else if (id == R.id.item_6) {
-            //
+            fragment = new item_repair_station();
+            addOrShowFragment(fragment);
         } else if (id == R.id.item_7) {
-
+            fragment = new item_oil_station();
+            addOrShowFragment(fragment);
         }else if (id == R.id.item_8) {
-//            fragment = new item_personalInformation();
-//            addOrShowFragment(fragment);
+            fragment = new item_personalInformation();
+            addOrShowFragment(fragment);
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -306,7 +309,8 @@ public class slidingMenu extends AppCompatActivity
                 addOrShowFragment(item6);
                 break;
             case 7:
-                //加油站
+                item7 = new item_oil_station();
+                addOrShowFragment(item7);
                 break;
         }
     }
@@ -351,7 +355,6 @@ public class slidingMenu extends AppCompatActivity
             //服务器请求
             StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
                     AppConfig.URL_QUERYPERSONINFO, new mSuccessListener(), mErrorListener) {
-
                 @Override
                 protected Map<String, String> getParams() {
                     // Posting parameters to login url

@@ -37,18 +37,18 @@
             android:id="@+id/ytext3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/font16"
             android:paddingLeft="@dimen/margin40"
             android:layout_weight="1"
             />
         <Button
             android:id="@+id/ytext31"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height40"
+            android:background="@android:color/transparent"
             android:textColor="@color/whiteFont"
-            android:textSize="16dp"
+            android:textSize="@dimen/font16"
             android:text="打电话"
-            android:layout_weight="3"
             />
    </LinearLayout>
     <LinearLayout
@@ -63,18 +63,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textSize="16dp"
+            android:textSize="@dimen/font16"
             android:paddingLeft="@dimen/margin40"
             android:layout_weight="1"
             />
         <Button
             android:id="@+id/ytext41"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height40"
+            android:background="@android:color/transparent"
             android:textColor="@color/whiteFont"
-            android:textSize="16dp"
+            android:textSize="@dimen/font16"
             android:text="指导维修"
-            android:layout_weight="3"
             />
     </LinearLayout>
     <TextView
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="16dp"
+        android:textSize="@dimen/font16"
         android:paddingLeft="@dimen/margin40"
         android:layout_below="@+id/layoutQQ"
         android:layout_marginTop="@dimen/padding10"

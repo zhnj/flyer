@@ -76,6 +76,7 @@ import bean.RepairInfo;
 
 public class item_repair_station extends Fragment implements View.OnClickListener {
 
+    private StringRequest strReq;
     private slidingMenu mainMenu;
     private DrawerLayout menu;
     private Spinner spinner_area;
@@ -102,7 +103,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
     ////////////////////////地图变量//////////////////////////
 //    private MapView mMapView = null;
-    private MapView mMapView = null;
+    private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
     /**
@@ -147,9 +148,16 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                 false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
+        view.findViewById(R.id.my_location).setOnClickListener(this);
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
+
+        // Progress dialog
+        pDialog = new ProgressDialog(mainMenu);
+        pDialog.setCancelable(false);
+
+        url= AppConfig.URL_REPAIRE;
 
         commonUtil=new CommonUtil(mainMenu);
 
@@ -162,7 +170,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         token=sessionManager.getToken();
 
         this.spinner_area=(Spinner)view.findViewById(R.id.search_area);
-        area_adapter=new SpinnerAdapter_white_1(mainMenu, getResources().getStringArray(R.array.area));
+        area_adapter=new SpinnerAdapter_white_1(mainMenu, getResources().getStringArray(R.array.area_0));
         spinner_area.setAdapter(area_adapter);
         spinner_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -178,17 +186,12 @@ public class item_repair_station extends Fragment implements View.OnClickListene
             }
         });
 
-        // Progress dialog
-        pDialog = new ProgressDialog(mainMenu);
-        pDialog.setCancelable(false);
-        url= AppConfig.URL_REPAIRE;
-
 
         //////////////////////////地图代码////////////////////////////
         //获取地图控件引用
 
         //mMapView = (MapView) getActivity().findViewById(R.id.bmapView);
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
+        mMapView = (TextureMapView) view.findViewById(R.id.bmapView);
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
@@ -245,13 +248,23 @@ public class item_repair_station extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
+                strReq.cancel();
                 mainMenu.finish();
                 break;
             case R.id.menu:
                 menu.openDrawer(Gravity.LEFT);
                 break;
             case R.id.my_location:
-                menu.openDrawer(Gravity.LEFT);
+                try {
+                    machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+                    if(machine_id!=null){
+                        //根据农机IP向服务器请求获取农机经纬度
+                        gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
+                    }
+                } catch (Exception e) {
+                    commonUtil.error_hint("定位失败请重试！");
+                    Log.e(TAG, e.toString());
+                }
                 break;
             default:
                 break;
@@ -264,15 +277,15 @@ public class item_repair_station extends Fragment implements View.OnClickListene
     {
         String tag_string_req = "req_repairStation";
 
-        mainMenu.pDialog.setMessage("正在载入 ...");
-        mainMenu.showDialog();
+//        pDialog.setMessage("正在载入 ...");
+//        showDialog();
 
         if(!netUtil.checkNet(mainMenu)){
             commonUtil.error_hint("网络连接错误");
-            mainMenu.hideDialog();
+//            hideDialog();
         }else {
             //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.POST,
+            strReq = new StringRequest(Request.Method.POST,
                     url, RSuccessListener, mainMenu.mErrorListener) {
 
                 @Override
@@ -315,7 +328,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         @Override
         public void onResponse(String response) {
             Log.d(TAG, "AreaInit Response: " + response);
-            mainMenu.hideDialog();
+//            hideDialog();
             //if (netUtil.checkNet(mainMenu)) {
                 //commonUtil.error_hint2_short(R.string.net_error);
             //} else {
@@ -359,7 +372,6 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     // JSON error
                     Log.e(TAG, "Error,Json error：response错误:" + e.getMessage());
                // }
-                mainMenu.hideDialog();
             }
         }
     };
@@ -1034,6 +1046,16 @@ public class item_repair_station extends Fragment implements View.OnClickListene
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return false;
         }
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

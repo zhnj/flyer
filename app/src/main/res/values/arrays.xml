@@ -6,6 +6,12 @@
         <item>100公里</item>
         <item>全部</item>
     </string-array>
+    <string-array name="area_0">
+        <item>30公里</item>
+        <item>50公里</item>
+        <item>80公里</item>
+        <item>100公里</item>
+    </string-array>
     <string-array name="machine_number">
         <item>请选择农机数量</item>
         <item>1台</item>

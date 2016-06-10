@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/mainpages_ll_page_bg"
+    tools:context="com.njdp.njdp_drivers.items.item_oil_station">
+
+    <RelativeLayout
+        style="@style/mainpages_page_title"
+        android:id="@+id/repair_station__top">
+        <TextView
+            style="@style/Pages_Title"
+            android:text="加油站"
+            />
+        <ImageButton
+            android:id="@+id/getback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_menu_white_48dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/repair_station__top">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font24"
+            android:textColor="@color/whiteFont"
+            android:layout_centerInParent="true"
+            android:textAlignment="center"
+            android:text="正在建设。。。。。"/>
+    </RelativeLayout>
+</RelativeLayout>
