@@ -45,7 +45,7 @@
     <application
         android:name=".db.AppController"
         android:allowBackup="true"
-        android:icon="@drawable/zhnj_logo"
+        android:icon="@drawable/zhnj_logo2"
         android:label="@string/app_name1"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >

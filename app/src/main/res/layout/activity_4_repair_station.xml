@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:id="@+id/repair_station__map"
         android:layout_below="@+id/search_area">
-        <com.baidu.mapapi.map.TextureMapView
+        <com.baidu.mapapi.map.MapView
             android:id="@+id/bmapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

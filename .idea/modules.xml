@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidBootstrap/AndroidBootstrap.iml" filepath="$PROJECT_DIR$/AndroidBootstrap/AndroidBootstrap.iml" />
       <module fileurl="file://$PROJECT_DIR$/MultiImageSelector/MultiImageSelector.iml" filepath="$PROJECT_DIR$/MultiImageSelector/MultiImageSelector.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NJDP_driver.iml" filepath="$PROJECT_DIR$/NJDP_driver.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/njdpDriver.iml" filepath="$PROJECT_DIR$/njdpDriver.iml" />
     </modules>
   </component>
 </project>
