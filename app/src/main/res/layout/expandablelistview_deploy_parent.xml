@@ -24,11 +24,8 @@
             android:textSize="@dimen/font18"/>
         <Button
             android:id="@+id/deploy_selected"
-            android:text="选择方案"
-            android:textSize="@dimen/font14"
             android:layout_marginRight="@dimen/margin10"
-            android:textColor="@color/primaryClolor"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_choose"
             android:layout_width="@dimen/height60"
             android:layout_height="@dimen/height30"/>
     </LinearLayout>
