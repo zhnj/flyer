@@ -251,32 +251,33 @@
         android:layout_marginTop="@dimen/margin30"
         android:id="@+id/release_button"
         android:background="@drawable/btn_release"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/noRelease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin10"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
             android:text="您还没有发布农机"
-            android:textSize="@dimen/font16"
+            android:textSize="@dimen/font18"
             android:textColor="@color/whiteFont"
             android:padding="@dimen/padding5" />
         <LinearLayout
             android:id="@+id/release_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:visibility="gone">
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding5"
                 android:text="发布历史："
-                android:textSize="@dimen/font16"
+                android:textSize="@dimen/font18"
                 android:textColor="@color/whiteFont"/>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -293,14 +294,14 @@
                         android:text="农机服务类型："
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font14"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                     <TextView
                         android:text="播种"
                         android:id="@+id/tvr_machine_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font14"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                 </LinearLayout>
                 <LinearLayout
@@ -314,14 +315,14 @@
                         android:text="作物类型："
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                     <TextView
                         android:text="小麦,玉米"
                         android:id="@+id/tvr_cropType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                 </LinearLayout>
                 <LinearLayout
@@ -333,14 +334,14 @@
                         android:text="农机每天作业时长："
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                     <TextView
                         android:text="16小时"
                         android:id="@+id/tvr_workTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                 </LinearLayout>
                 <LinearLayout
@@ -353,19 +354,19 @@
                         android:text="其他描述："
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:textColor="@color/whiteFont"/>
                     <TextView
                         android:text="无"
                         android:id="@+id/tvr_remark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/font16"
                         android:scrollbars="vertical"
                         android:singleLine="false"
                         android:textColor="@color/whiteFont"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
