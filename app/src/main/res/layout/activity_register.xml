@@ -6,18 +6,25 @@
     android:id="@+id/xksqapp_register_student"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/main_bg"
     android:fitsSystemWindows="true"
+    android:paddingTop="@dimen/padding20"
     tools:context="com.njdp.njdp_drivers.register">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:id="@+id/register_top"
-        android:background="#03601F">
+        android:background="@drawable/main_title">
         <TextView
-            android:id="@+id/register_title"
             style="@style/Pages_Title"
-            android:text="农机手注册"
+            android:text="机手注册"
+            />
+        <ImageButton
+            android:id="@+id/getback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
             />
     </RelativeLayout>
     <LinearLayout
@@ -60,25 +67,10 @@
             android:id="@+id/user_machine_id"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
-            android:drawableLeft="@drawable/ic_directions_car_grey600_24dp"
+            android:drawableLeft="@drawable/user_machine_id"
             android:hint="农机编号"
             android:maxLength="16"
             android:inputType="number"
-            />
-        <View
-            style="@style/Register_HorizontalLine_style"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-        <EditText
-            style="@style/Register_style"
-            android:id="@+id/user_license_plate"
-            android:textCursorDrawable="@drawable/login_cursor"
-            android:background="@drawable/login_edit_changecolor"
-            android:drawableLeft="@drawable/ic_directions_car_grey600_24dp"
-            android:hint="农机牌照"
-            android:maxLength="11"
-            android:inputType="text"
             />
         <View
             style="@style/Register_HorizontalLine_style"
@@ -130,33 +122,20 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:id="@+id/register_bottom"
-        android:layout_alignParentBottom="true">
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:background="#728ea3" />
-        <com.beardedhen.androidbootstrap.BootstrapButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_next"
-            android:text="下一步"
-            android:textSize="18dp"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            bootstrap:bootstrapBrand="success"
-            bootstrap:bootstrapSize="xl"
-            bootstrap:buttonMode="regular"
-            bootstrap:showOutline="false"
-            bootstrap:roundedCorners="true"/>
-    </RelativeLayout>
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_next"
+        android:text="下一步"
+        android:textSize="@dimen/font18"
+        android:layout_marginRight="@dimen/margin10"
+        android:layout_marginBottom="@dimen/margin15"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        bootstrap:bootstrapBrand="secondary"
+        bootstrap:bootstrapSize="lg"
+        bootstrap:buttonMode="regular"
+        bootstrap:showOutline="false"
+        bootstrap:roundedCorners="true"/>
 </RelativeLayout>

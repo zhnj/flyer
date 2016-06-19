@@ -34,6 +34,7 @@ import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,6 +110,7 @@ public class register_image extends AppCompatActivity {
             driver.setPassword(driver_bundle.getString("password"));
             driver.setTelephone(driver_bundle.getString("telephone"));
             driver.setMachine_id(driver_bundle.getString("machine_id"));
+            driver.setSite(driver_bundle.getString("address"));
         }else
         {
             error_hint("程序错误！请联系管理员！");
@@ -253,7 +255,7 @@ public class register_image extends AppCompatActivity {
 
         if (!file.exists()) {
             hideDialog();
-            Toast.makeText(register_image.this, "头像图片不存在!请重新选择！", Toast.LENGTH_SHORT).show();
+            commonUtil.error_hint("头像图片不存在!请重新选择！");
             IsSetImage=false;
             return;
         } else if (!netUtil.checkNet(register_image.this)) {
@@ -262,47 +264,28 @@ public class register_image extends AppCompatActivity {
             return;
         }else {
             OkHttpUtils.post()
-                    .addFile("imageFile", "njdp_user_image.png", file)
+                    .addFile("person_photo", "userimage.png", file)
                     .url(url)
                     .params(params)
+                    .addHeader("content-disposition","form-data")
                     .build()
-                    .execute(new Callback() {
-
-                        //xml格式数据解析
-                        @Override
-                        public Object parseNetworkResponse(okhttp3.Response response) throws Exception {
-                            return null;
-                        }
-
-                        //连接服务器错误
+                    .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e) {
-
-                            Log.e(TAG, "Register Connect Error: " + e.getMessage());
-                            empty_hint(R.string.connect_error);
-                            hideDialog();
+                            Log.e(TAG, "3 Register Connect Error: " + e.getMessage());
                         }
-                        //Json数据解析
-                        @Override
-                        public void onResponse(Object response) {
 
+                        @Override
+                        public void onResponse(String response) {
                             try {
-                                String result=String.valueOf(response);
-                                JSONObject jObj = new JSONObject(result);
-                                boolean error = jObj.getBoolean("error");
-                                boolean imageError = jObj.getBoolean("imageError");
-                                if (!imageError) {
-                                    Log.e(TAG, "Register UploadImage Error: " + response);
-                                    empty_hint(R.string.register_error3);
-                                    hideDialog();
-                                } else if (!error) {
-                                    String errorMsg = jObj.getString("error_msg");
-                                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                                    commonUtil.error_hint(errorMsg);
-                                    hideDialog();
-                                } else {
-                                    String token=jObj.getString("token");
-                                    session.setLogin(true,token);
+                                Log.e(TAG, "UploadImage:" + response);
+                                JSONObject jObj = new JSONObject(response);
+                                int status = jObj.getInt("status");
+                                if (status == 0) {
+                                    String msg = jObj.getString("result");
+                                    Log.e(TAG, "UploadImage response：" + msg);
+                                    String token = jObj.getString("token");
+                                    session.setLogin(true, token);
                                     driver.setId(1);
                                     driverDao.add(driver);
 
@@ -311,12 +294,12 @@ public class register_image extends AppCompatActivity {
                                     Intent intent = new Intent(register_image.this, mainpages.class);
                                     startActivity(intent);
                                     finish();
+                                } else {
+                                    String errorMsg = jObj.getString("result");
+                                    Log.e(TAG, "1 Register error：response错误：" + errorMsg);
                                 }
-                            }catch (Exception e)
-                            {
-                                empty_hint(R.string.register_error2);
-                                e.printStackTrace();
-                                Log.e(TAG, "Register Error: " + e.getMessage());
+                            } catch (Exception e) {
+                                Log.e(TAG, "2 Json error：response错误： " + e.getMessage());
                             }
                         }
                     });

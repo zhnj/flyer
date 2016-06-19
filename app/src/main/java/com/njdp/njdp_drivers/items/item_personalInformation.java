@@ -502,7 +502,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                                 String msg=jObj.getString("result");
                                 Log.e(TAG, "UploadImage response：" + msg);
                             } else {
-                                String errorMsg = jObj.getString("error_msg");
+                                String errorMsg = jObj.getString("result");
                                 Log.e(TAG, "1 Json error：response错误：" + errorMsg);
                             }
                         } catch (Exception e) {

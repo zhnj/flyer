@@ -36,7 +36,7 @@ import java.util.Map;
 public class register extends Activity {
     private EditText text_user_name=null;
     private EditText text_user_telephone=null;
-    private EditText text_user_license_plater=null;
+    private EditText text_user_machine_id=null;
     private EditText text_verification_code=null;
     private EditText text_user_password=null;
     private Button btn_verification_code=null;
@@ -49,8 +49,9 @@ public class register extends Activity {
     private SessionManager session;
     private String name;
     private String telephone;
-    private String license_plater;
+    private String machine_id;
     private String password;
+    private String address;
     private String t_verify_code;
     private String verify_code;
 
@@ -69,7 +70,7 @@ public class register extends Activity {
 
         text_user_name = (EditText) super.findViewById(R.id.user_name);
         text_user_telephone = (EditText) super.findViewById(R.id.user_telephone);
-        text_user_license_plater= (EditText) super.findViewById(R.id.user_license_plate);
+        text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
         text_verification_code = (EditText) super.findViewById(R.id.verification_code);
         text_user_password = (EditText) super.findViewById(R.id.user_password);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
@@ -94,13 +95,11 @@ public class register extends Activity {
                 } else if(mValidation.validate()==true){
                     name=text_user_name.getText().toString().trim();
                     telephone=text_user_telephone.getText().toString().trim();
-                    license_plater=text_user_license_plater.getText().toString().trim();
+                    machine_id=text_user_machine_id.getText().toString().trim();
                     password=text_user_password.getText().toString().trim();
                     t_verify_code=text_verification_code.getText().toString().trim();
-
                     if (verify_code.equals(t_verify_code)) {
                         register_next();
-
                     } else {
                         error_hint("验证码错误！");
                     }
@@ -180,8 +179,8 @@ public class register extends Activity {
         driver_bundle.putString("name", text_user_name.getText().toString());
         driver_bundle.putString("password", text_user_password.getText().toString());
         driver_bundle.putString("telephone", text_user_telephone.getText().toString());
-        driver_bundle.putString("license_plater", text_user_license_plater.getText().toString());
-        driver_bundle.putBoolean("isDriver", true);
+        driver_bundle.putString("machine_id", text_user_machine_id.getText().toString());
+        driver_bundle.putString("address", text_user_machine_id.getText().toString());
         intent.putExtra("driver_register", driver_bundle);
         startActivity(intent);
     }
@@ -265,7 +264,7 @@ public class register extends Activity {
             @Override
             public void afterTextChanged(Editable s) {
                 if ((s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_license_plater.getText())) {
+                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -289,7 +288,7 @@ public class register extends Activity {
             @Override
             public void afterTextChanged(Editable s) {
                 if ((s.length() > 0) && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_license_plater.getText())) {
+                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -313,7 +312,7 @@ public class register extends Activity {
             @Override
             public void afterTextChanged(Editable s) {
                 if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_license_plater.getText())) {
+                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -337,7 +336,7 @@ public class register extends Activity {
             @Override
             public void afterTextChanged(Editable s) {
                 if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
-                        && !TextUtils.isEmpty(text_user_telephone.getText())&& !TextUtils.isEmpty(text_user_license_plater.getText())) {
+                        && !TextUtils.isEmpty(text_user_telephone.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -347,7 +346,7 @@ public class register extends Activity {
             }
         });
 
-        text_user_license_plater.addTextChangedListener(new TextWatcher() {
+        text_user_machine_id.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
