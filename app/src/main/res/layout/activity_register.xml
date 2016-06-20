@@ -115,7 +115,7 @@
             android:id="@+id/user_password"
             android:hint="密码(6~16位的字母,数字或下划线)"
             android:maxLength="16"
-            android:inputType="text"
+            android:inputType="textPassword"
             />
         <View
             style="@style/Register_HorizontalLine_style"

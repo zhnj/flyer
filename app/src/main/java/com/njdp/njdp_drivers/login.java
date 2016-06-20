@@ -12,6 +12,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,6 +38,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bean.Driver;
 
@@ -58,6 +61,7 @@ public class login extends Activity {
     private String path;//用户头像路径
     private NetUtil netUtil;
     private CommonUtil commonUtil;
+    private int first_KeyBack = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,31 @@ public class login extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            Log.d(TAG,"登录界面禁止返回,只能退出");
+            Timer tExit = null;
+            if(first_KeyBack ==0) {
+                first_KeyBack = 1; // 准备退出
+                commonUtil.error_hint2_long(R.string.exit_notice);
+                tExit = new Timer();
+                tExit.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        first_KeyBack = 0; // 取消退出
+                    }
+                }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+            } else {
+                finish();
+                System.exit(0);
+            }
+        }
+        return false;
     }
 
     //点击眼睛按钮，设置密码显示或者隐藏

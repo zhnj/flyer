@@ -174,7 +174,9 @@
             android:label="@string/title_activity_item_personalinformation_2_fix_site"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".select_province" >
+        <activity
+            android:name=".select_province"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".select_city" >
         </activity>

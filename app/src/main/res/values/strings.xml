@@ -43,6 +43,7 @@
     <string name="login_error">登录失败,连接服务器错误</string>
     <string name="connect_error">连接服务器错误</string>
     <string name="net_error">网络连接错误</string>
+    <string name="exit_notice">再按一次退出智慧农机，退出后，您将无法享受智慧农机平台提供的优质服务</string>
 
     <string name="jobStart">开始日期：</string>
     <string name="jobEnd">结束日期：</string>

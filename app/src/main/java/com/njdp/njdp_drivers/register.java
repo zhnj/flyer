@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class register extends Activity {
     private EditText text_user_password=null;
     private TextView text_user_address=null;
     private Button btn_verification_code=null;
+    private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
     private AwesomeValidation verification_code_Validation=new AwesomeValidation(ValidationStyle.BASIC);
     private AwesomeValidation mValidation=new AwesomeValidation(ValidationStyle.BASIC);
@@ -69,6 +71,7 @@ public class register extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        netUtil=new NetUtil(register.this);
         // Session manager
         session = new SessionManager(getApplicationContext());
 
@@ -79,7 +82,8 @@ public class register extends Activity {
         text_user_password = (EditText) super.findViewById(R.id.user_password);
         text_user_address=(TextView) super.findViewById(R.id.user_site);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
-
+        btn_back=(ImageButton) super.findViewById(R.id.getback);
+        btn_back.setOnClickListener(new backClickListener());
         btn_register_next.setEnabled(false);
         btn_register_next.setClickable(false);
 
@@ -137,10 +141,28 @@ public class register extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==CODE_SELECT_SITE&&resultCode==RESULT_OK){
-            address_select_flag=1;
-            text_user_address.setText(data.getStringExtra("select_site"));
+            String select_result=data.getStringExtra("select_site");
+            if(select_result.equals("1")) {
+                address_select_flag = 1;
+                text_user_address.setText(select_result);
+                if (!TextUtils.isEmpty(text_user_name.getText()) &&!TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
+                        && !TextUtils.isEmpty(text_verification_code.getText()) && !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                    btn_register_next.setClickable(true);
+                    btn_register_next.setEnabled(true);
+                } else {
+                    btn_register_next.setEnabled(false);
+                    btn_register_next.setClickable(false);
+                }
+            }else
+            {
+                address_select_flag=0;
+                btn_register_next.setEnabled(false);
+                btn_register_next.setClickable(false);
+            }
         }else {
             address_select_flag=0;
+            btn_register_next.setEnabled(false);
+            btn_register_next.setClickable(false);
         }
     }
 
@@ -259,7 +281,7 @@ public class register extends Activity {
         mValidation.addValidation(activity, R.id.user_name, "^[\\u4e00-\\u9fa5]+$", R.string.err_name);
         mValidation.addValidation(activity, R.id.user_telephone,"^1[3-9]\\d{9}+$", R.string.err_phone);
         //农机牌照
-        mValidation.addValidation(activity, R.id.user_license_plate,"/[\\u4e00-\\u9fa5]{1}[A-Z]{1}(?:(?![a-zA-Z]{5})[0-9a-zA-z]){5}/", R.string.err_license_plate);
+        mValidation.addValidation(activity, R.id.user_machine_id,"/[\\u4e00-\\u9fa5]{1}[A-Z]{1}(?:(?![a-zA-Z]{5})[0-9a-zA-z]){5}/", R.string.err_license_plate);
 //        mValidation.addValidation(activity, R.id.user_id_card,"\\d{15}|\\d{18}", R.string.err_id_card); //身份证
         mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
         mValidation.addValidation(activity, R.id.user_password, "^[A-Za-z0-9_]{5,15}+$", R.string.err_password);
@@ -397,6 +419,14 @@ public class register extends Activity {
             Intent intent=new Intent();
             intent.setClass(register.this, select_province.class);
             startActivityForResult(intent, CODE_SELECT_SITE);
+        }
+    }
+
+    //省市县选择监听
+    private class backClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            finish();
         }
     }
 }

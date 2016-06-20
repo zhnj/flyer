@@ -90,6 +90,7 @@
         <View
             style="@style/Login_HorizontalLine_style"/>
         <Button
+            android:visibility="gone"
             style="@style/Login_BtnForgetPassword"
             android:id="@+id/forget_password"
             android:onClick="get_password"
