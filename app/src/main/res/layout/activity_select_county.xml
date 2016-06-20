@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/main_bg"
+    tools:context="com.njdp.njdp_drivers.select_county">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/information_top"
+        android:layout_marginTop="@dimen/margin20"
+        android:background="@drawable/main_title">
+        <ImageButton
+            android:id="@+id/select_site_getBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font18"
+            android:textColor="@color/whiteFont"
+            android:text="选择地址"
+            android:layout_toEndOf="@+id/select_site_getBack"
+            android:layout_toRightOf="@+id/select_site_getBack"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <View
+        style="@style/selectSite_line"/>
+    <ListView
+        android:id="@+id/list_province"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+    <View
+        style="@style/selectSite_line"/>
+</LinearLayout>

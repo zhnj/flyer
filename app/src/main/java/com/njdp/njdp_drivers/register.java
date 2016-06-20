@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,6 +40,7 @@ public class register extends Activity {
     private EditText text_user_machine_id=null;
     private EditText text_verification_code=null;
     private EditText text_user_password=null;
+    private TextView text_user_address=null;
     private Button btn_verification_code=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
     private AwesomeValidation verification_code_Validation=new AwesomeValidation(ValidationStyle.BASIC);
@@ -54,6 +56,8 @@ public class register extends Activity {
     private String address;
     private String t_verify_code;
     private String verify_code;
+    private int address_select_flag=0;
+    private int CODE_SELECT_SITE=101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class register extends Activity {
         text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
         text_verification_code = (EditText) super.findViewById(R.id.verification_code);
         text_user_password = (EditText) super.findViewById(R.id.user_password);
+        text_user_address=(TextView) super.findViewById(R.id.user_site);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
 
         btn_register_next.setEnabled(false);
@@ -88,16 +93,16 @@ public class register extends Activity {
             @Override
             public void onClick(View v) {
 
-                if(isempty(R.id.user_telephone)){
+                if (isempty(R.id.user_telephone)) {
                     empty_hint(R.string.err_phone2);
-                } else if(isempty(R.id.verification_code)){
+                } else if (isempty(R.id.verification_code)) {
                     empty_hint(R.string.err_verification_code2);
-                } else if(mValidation.validate()==true){
-                    name=text_user_name.getText().toString().trim();
-                    telephone=text_user_telephone.getText().toString().trim();
-                    machine_id=text_user_machine_id.getText().toString().trim();
-                    password=text_user_password.getText().toString().trim();
-                    t_verify_code=text_verification_code.getText().toString().trim();
+                } else if (mValidation.validate() == true) {
+                    name = text_user_name.getText().toString().trim();
+                    telephone = text_user_telephone.getText().toString().trim();
+                    machine_id = text_user_machine_id.getText().toString().trim();
+                    password = text_user_password.getText().toString().trim();
+                    t_verify_code = text_verification_code.getText().toString().trim();
                     if (verify_code.equals(t_verify_code)) {
                         register_next();
                     } else {
@@ -123,6 +128,20 @@ public class register extends Activity {
             }
         });
 
+        //点击选择地址
+        text_user_address.setOnClickListener(new select_site_clickListener());
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==CODE_SELECT_SITE&&resultCode==RESULT_OK){
+            address_select_flag=1;
+            text_user_address.setText(data.getStringExtra("select_site"));
+        }else {
+            address_select_flag=0;
+        }
     }
 
     //EditText输入是否为空
@@ -263,7 +282,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
+                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
                         && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
@@ -287,7 +306,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_password.getText())
+                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_password.getText())
                         && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
@@ -311,7 +330,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
+                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
                         && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
@@ -335,7 +354,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
+                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
                         && !TextUtils.isEmpty(text_user_telephone.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
@@ -359,7 +378,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
+                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
                         && !TextUtils.isEmpty(text_user_telephone.getText())  && !TextUtils.isEmpty(text_verification_code.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
@@ -369,5 +388,15 @@ public class register extends Activity {
                 }
             }
         });
+    }
+
+    //省市县选择监听
+    private class select_site_clickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent intent=new Intent();
+            intent.setClass(register.this, select_province.class);
+            startActivityForResult(intent, CODE_SELECT_SITE);
+        }
     }
 }

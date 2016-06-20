@@ -121,6 +121,14 @@
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+        <TextView
+            style="@style/Register_style"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_pin_drop_grey600_24dp"
+            android:id="@+id/user_site"
+            android:textSize="@dimen/font18"
+            android:text="点击选择省市县地址"
+            />
 
     </LinearLayout>
     <com.beardedhen.androidbootstrap.BootstrapButton

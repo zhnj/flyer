@@ -117,11 +117,9 @@
             android:name=".items.item_personalInformation"
             android:label="@string/title_activity_5_personal_information"
             android:theme="@style/AppTheme.NoActionBar" />
-        <Fragment
-            android:name=".items.item_service_object" >
+        <Fragment android:name=".items.item_service_object" >
         </Fragment>
-        <Fragment
-            android:name=".items.item_oil_station" >
+        <Fragment android:name=".items.item_oil_station" >
         </Fragment>
 
         <activity
@@ -175,6 +173,12 @@
             android:name=".items.item_personalinformation_2_fix_site"
             android:label="@string/title_activity_item_personalinformation_2_fix_site"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".select_province" >
+        </activity>
+        <activity android:name=".select_city" >
+        </activity>
+        <activity android:name=".select_county" >
         </activity>
     </application>
 
