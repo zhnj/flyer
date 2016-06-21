@@ -214,7 +214,7 @@ public class select_province extends AppCompatActivity {
 //            {
 //                Log.e(TAG, "县" +countyDates[i]);
 //            }
-            linearLayout_list_province.startAnimation(hideAction);
+//            linearLayout_list_province.startAnimation(hideAction);
             linearLayout_list_province.setVisibility(View.GONE);
             linearLayout_list_city.startAnimation(showAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
@@ -237,13 +237,15 @@ public class select_province extends AppCompatActivity {
                     cityDates, listCityItems));
 
             if(cityList.size()>0) {
-                linearLayout_list_city.startAnimation(hideAction);
+//                linearLayout_list_city.startAnimation(hideAction);
                 linearLayout_list_city.setVisibility(View.GONE);
                 linearLayout_list_county.startAnimation(showAction);
                 linearLayout_list_county.setVisibility(View.VISIBLE);
             }else{
                 Intent intent = new Intent();
-                intent.putExtra("select_site", mProvince + mCity);
+                Bundle _bundle=new Bundle();
+                _bundle.putString("select_site",mProvince + mCity);
+                intent.putExtras(_bundle);
                 Log.e(TAG,"选择结果："+ mProvince + mCity);
                 setResult(RESULT_OK, intent); //此处的intent可以用A传过来intent，或者使用新的intent
                 try {
@@ -274,7 +276,9 @@ public class select_province extends AppCompatActivity {
             list_county.setAdapter(new ListViewAdapter_select_site(select_province.this,
                     countyDates, listCountyItems));
             Intent intent = new Intent();
-            intent.putExtra("select_site", mProvince + mCity + mCounty);
+            Bundle _bundle=new Bundle();
+            _bundle.putString("select_site", mProvince + mCity + mCounty);
+            intent.putExtras(_bundle);
             Log.e(TAG, "选择结果：" + mProvince + mCity + mCounty);
             setResult(RESULT_OK, intent); //此处的intent可以用A传过来intent，或者使用新的intent
             try {
@@ -296,7 +300,9 @@ public class select_province extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
-            intent.putExtra("select_site","0");
+            Bundle _bundle=new Bundle();
+            _bundle.putString("select_site", "0");
+            intent.putExtras(_bundle);
             Log.e(TAG, "选择结果：无");
             setResult(RESULT_OK, intent); //此处的intent可以用A传过来intent，或者使用新的intent
             try {
@@ -318,9 +324,9 @@ public class select_province extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            linearLayout_list_city.startAnimation(hideAction);
+//            linearLayout_list_city.startAnimation(hideAction);
             linearLayout_list_city.setVisibility(View.GONE);
-            linearLayout_list_province.startAnimation(showAction);
+            linearLayout_list_province.startAnimation(hideAction);
             linearLayout_list_province.setVisibility(View.VISIBLE);
         }
     }
@@ -330,9 +336,9 @@ public class select_province extends AppCompatActivity {
     {
         @Override
         public void onClick(View v) {
-            linearLayout_list_county.startAnimation(hideAction);
+//            linearLayout_list_county.startAnimation(hideAction);
             linearLayout_list_county.setVisibility(View.GONE);
-            linearLayout_list_city.startAnimation(showAction);
+            linearLayout_list_city.startAnimation(hideAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
         }
     }

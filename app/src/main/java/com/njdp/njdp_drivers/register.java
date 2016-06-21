@@ -141,8 +141,9 @@ public class register extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==CODE_SELECT_SITE&&resultCode==RESULT_OK){
-            String select_result=data.getStringExtra("select_site");
-            if(select_result.equals("1")) {
+            Bundle _bundle=data.getExtras();
+            String select_result=_bundle.getString("select_site");
+            if(!select_result.equals("0")) {
                 address_select_flag = 1;
                 text_user_address.setText(select_result);
                 if (!TextUtils.isEmpty(text_user_name.getText()) &&!TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
