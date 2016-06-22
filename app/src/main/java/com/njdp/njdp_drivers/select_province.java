@@ -2,8 +2,6 @@ package com.njdp.njdp_drivers;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,14 +13,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.njdp.njdp_drivers.changeDefault.ListViewAdapter_select_site;
+import com.njdp.njdp_drivers.changeDefault.ListViewAdapter_select_sites;
 import com.njdp.njdp_drivers.changeDefault.XmlParserHandler;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -111,7 +108,7 @@ public class select_province extends AppCompatActivity {
             provinceDates = new String[provinceList.size()];
 //            Log.e(TAG, "共" + String.valueOf(provinceList.size()) + "个省");
             refreshProvinceList();
-            list_province.setAdapter(new ListViewAdapter_select_site(select_province.this,
+            list_province.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                     provinceDates, listProvinceItems));
 //            initCity(0);
         } catch (Exception e) {
@@ -131,7 +128,7 @@ public class select_province extends AppCompatActivity {
         cityDates=new String[cityList.size()];
 //        Log.e(TAG, "城市数量：" + String.valueOf(cityList.size()));
         refreshCityList();
-        list_city.setAdapter(new ListViewAdapter_select_site(select_province.this,
+        list_city.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                 cityDates, listCityItems));
 //        initCounty(0);
     }
@@ -148,7 +145,7 @@ public class select_province extends AppCompatActivity {
         {
             countyDates = new String[countyList.size()];
             refreshCountyList();
-            list_county.setAdapter(new ListViewAdapter_select_site(select_province.this,
+            list_county.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                     countyDates, listCountyItems));
         }
     }
@@ -201,7 +198,7 @@ public class select_province extends AppCompatActivity {
             select_rate=1;
             mProvince=provinceDates[position];
             listProvinceItems.put(mProvince, "1");//选中了某个地区0变1作为标志
-            list_province.setAdapter(new ListViewAdapter_select_site(select_province.this,
+            list_province.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                     provinceDates, listProvinceItems));//刷新列表
 //            Log.e(TAG, "省"+String.valueOf(listProvinceItems.size()));
 //            Log.e(TAG, "市"+String.valueOf(listCityItems.size()));
@@ -233,7 +230,7 @@ public class select_province extends AppCompatActivity {
             select_rate=2;
             mCity = cityDates[position];
             listCityItems.put(mCity, "1");//选中了某个地区0变1作为标志
-            list_city.setAdapter(new ListViewAdapter_select_site(select_province.this,
+            list_city.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                     cityDates, listCityItems));
 
             if(cityList.size()>0) {
@@ -273,7 +270,7 @@ public class select_province extends AppCompatActivity {
             select_rate=3;
             mCounty=countyDates[position];
             listCityItems.put(mCounty, "1");//选中了某个地区0变1作为标志
-            list_county.setAdapter(new ListViewAdapter_select_site(select_province.this,
+            list_county.setAdapter(new ListViewAdapter_select_sites(select_province.this,
                     countyDates, listCountyItems));
             Intent intent = new Intent();
             Bundle _bundle=new Bundle();
