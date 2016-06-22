@@ -25,7 +25,6 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.njdp.njdp_drivers.changeDefault.TimeCount;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
-import com.njdp.njdp_drivers.db.SQLiteHandler;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.NetUtil;
 
@@ -281,9 +280,9 @@ public class register extends Activity {
     private void form_verification(final Activity activity){
         mValidation.addValidation(activity, R.id.user_name, "^[\\u4e00-\\u9fa5]+$", R.string.err_name);
         mValidation.addValidation(activity, R.id.user_telephone,"^1[3-9]\\d{9}+$", R.string.err_phone);
-        //农机牌照
-        mValidation.addValidation(activity, R.id.user_machine_id,"/[\\u4e00-\\u9fa5]{1}[A-Z]{1}(?:(?![a-zA-Z]{5})[0-9a-zA-z]){5}/", R.string.err_license_plate);
-//        mValidation.addValidation(activity, R.id.user_id_card,"\\d{15}|\\d{18}", R.string.err_id_card); //身份证
+        mValidation.addValidation(activity, R.id.user_machine_id,"\\d{11}+$", R.string.err_machine_id);
+//        mValidation.addValidation(activity, R.id.user_machine_id,"/[\\u4e00-\\u9fa5]{1}[A-Z]{1}(?:(?![a-zA-Z]{5})[0-9a-zA-z]){5}/", R.string.err_machine_id);//牌照号正则
+//        mValidation.addValidation(activity, R.id.user_id_card,"\\d{15}|\\d{18}", R.string.err_id_card); //身份证正则
         mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
         mValidation.addValidation(activity, R.id.user_password, "^[A-Za-z0-9_]{5,15}+$", R.string.err_password);
     }

@@ -15,10 +15,10 @@
     <string name="err_qq">请输入正确的QQ号</string>
     <string name="err_name">请输入正确的姓名</string>
     <string name="err_name2">姓名不能为空</string>
-    <string name="err_phone">请输入11位手机号！</string>
+    <string name="err_phone">请输入11位手机号</string>
     <string name="err_phone2">手机号不能为空</string>
-    <string name="err_license_plate">请输入正确的牌照号！</string>
-    <string name="err_license_plate_2">牌照号不能为空</string>
+    <string name="err_machine_id">请输入正确的农机编号</string>
+    <string name="err_machine_id_2">农机编号不能为空</string>
     <string name="err_verification_code">请输入正确的验证码！</string>
     <string name="err_verification_code2">验证码不能为空</string>
     <string name="error_machineId">请输入正确的农机编号</string>
