@@ -87,8 +87,7 @@ public class mainpages extends Activity {
                     }
                 }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
             } else {
-                finish();
-                System.exit(0);
+              SysCloseActivity.getInstance().exit();
             }
         }
         return false;
