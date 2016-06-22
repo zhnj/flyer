@@ -1,6 +1,7 @@
 package com.njdp.njdp_drivers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -465,6 +467,15 @@ public class slidingMenu extends AppCompatActivity
         try {
             fieldInfoPosts.clear();
         }catch (Exception e){}
+    }
+
+    //重新登录，返回登陆界面
+    public void backLogin()
+    {
+        Intent intent = new Intent(this, login.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(intent);
     }
 
 }

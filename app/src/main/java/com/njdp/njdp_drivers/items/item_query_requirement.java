@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -407,9 +408,8 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     commonUtil.error_hint("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
@@ -519,9 +519,8 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     commonUtil.error_hint("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
                 }else if(status==0){
                     mainMenu.clearFieldData();//清空缓存的农田数据
                     ///////////////////////////农田信息，包括经纬度/////////////////////////////////

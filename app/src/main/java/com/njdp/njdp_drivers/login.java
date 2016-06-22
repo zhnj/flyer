@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -131,8 +132,8 @@ public class login extends Activity {
                     }
                 }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
             } else {
+                SysCloseActivity.getInstance().exit();
                 finish();
-                System.exit(0);
             }
         }
         return false;

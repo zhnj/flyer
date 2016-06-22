@@ -63,6 +63,7 @@ import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -930,9 +931,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                     commonUtil.error_hint("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////

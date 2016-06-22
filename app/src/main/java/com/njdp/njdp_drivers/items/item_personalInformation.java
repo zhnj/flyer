@@ -24,6 +24,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -208,11 +209,10 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             case R.id.driver_region:
                 break;
             case R.id.login_out:
-                Log.e(TAG, "退出登录" );
+                Log.e(TAG, "退出登录");
                 netUtil.clearSession(mainMenu);
-                Intent intent = new Intent(mainMenu, login.class);
-                startActivity(intent);
-                mainMenu.finish();
+                mainMenu.backLogin();
+                SysCloseActivity.getInstance().exit();
                 break;
             default:
                 break;

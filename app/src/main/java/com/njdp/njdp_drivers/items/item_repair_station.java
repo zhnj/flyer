@@ -53,6 +53,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_white_1;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -342,9 +343,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         commonUtil.error_hint("密钥失效，请重新登录");
                         //清空数据，重新登录
                         netUtil.clearSession(mainMenu);
-                        Intent intent = new Intent(mainMenu, login.class);
-                        startActivity(intent);
-                        mainMenu.finish();
+                        mainMenu.backLogin();
+                        SysCloseActivity.getInstance().exit();
                     } else if (status == 0) {
                         repairInfos.clear();
                         JSONArray jObjs = jObj.getJSONArray("result");
@@ -670,9 +670,8 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     commonUtil.error_hint("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////

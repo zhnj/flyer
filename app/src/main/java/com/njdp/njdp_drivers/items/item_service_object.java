@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -222,9 +223,8 @@ public class item_service_object extends Fragment implements View.OnClickListene
                     commonUtil.error_hint("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
                 } else if (status == 0) {
                     String Msg = jObj.getString("result");
                     Log.e(TAG, Msg);
