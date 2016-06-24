@@ -422,7 +422,7 @@ public class register extends Activity {
         }
     }
 
-    //省市县选择监听
+    //返回监听
     private class backClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {

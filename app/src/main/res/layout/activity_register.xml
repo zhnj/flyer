@@ -129,7 +129,6 @@
             android:textSize="@dimen/font18"
             android:text="点击选择省市县地址"
             />
-
     </LinearLayout>
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:layout_width="wrap_content"

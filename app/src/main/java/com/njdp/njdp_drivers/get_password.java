@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,6 +33,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.nereo.multi_image_selector.bean.Image;
+
 public class get_password extends AppCompatActivity {
 
     private String verify_code;
@@ -41,6 +44,7 @@ public class get_password extends AppCompatActivity {
     private EditText text_telephone =null;
     private EditText text_user_license_plater =null;
     private EditText text_VerificationCcode =null;
+    private ImageButton btn_back=null;
     private static final String TAG = register.class.getSimpleName();
     private ProgressDialog pDialog;
     private CommonUtil commonUtil ;
@@ -58,6 +62,7 @@ public class get_password extends AppCompatActivity {
         this.text_telephone =(EditText) super.findViewById(R.id.user_telephone);
         this.text_user_license_plater =(EditText) super.findViewById(R.id.user_username);
         this.text_VerificationCcode =(EditText) super.findViewById(R.id.user_VerifyCode);
+        this.btn_back=(ImageButton)super.findViewById(R.id.getBack);
 
         getPassword_next.setEnabled(false);
         getPassword_next.setClickable(false);
@@ -89,6 +94,8 @@ public class get_password extends AppCompatActivity {
             }
         });
 
+        btn_back.setOnClickListener(new backClickListener());
+
     }
 
     //获取验证码
@@ -100,7 +107,7 @@ public class get_password extends AppCompatActivity {
             commonUtil.error_hint( "网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.GET,
+            StringRequest strReq = new StringRequest(Request.Method.POST,
                     AppConfig.URL_REGISTER, vertifySuccessListener, mErrorListener) {
                 @Override
                 protected Map<String, String> getParams() {
@@ -266,6 +273,14 @@ public class get_password extends AppCompatActivity {
         Toast toast = Toast.makeText(get_password.this, getResources().getString(in), Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, -50);
         toast.show();
+    }
+
+    //返回监听
+    private class backClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
     }
 
 }

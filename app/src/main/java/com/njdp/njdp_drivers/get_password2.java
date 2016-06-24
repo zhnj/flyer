@@ -40,6 +40,7 @@ public class get_password2 extends AppCompatActivity {
     private ImageButton password_show = null;
     private ImageButton password_reveal2=null;
     private ImageButton password_show2=null;
+    private ImageButton btn_back=null;
     private String name;
     private String telephone;
     private String machine_id;
@@ -97,6 +98,7 @@ public class get_password2 extends AppCompatActivity {
         this.password_show2=(ImageButton) super.findViewById(R.id.show_button2);
         this.text_password=(EditText)super.findViewById(R.id.user_password);
         this.text_password2=(EditText)super.findViewById(R.id.user_password2);
+        this.btn_back=(ImageButton)super.findViewById(R.id.getBack);
 
         findViewById(R.id.finish).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +115,9 @@ public class get_password2 extends AppCompatActivity {
                 }
             }
         });
+
+        btn_back.setOnClickListener(new backClickListener());
+
     }
 
     //点击眼睛1按钮，设置密码显示或者隐藏
@@ -222,5 +227,13 @@ public class get_password2 extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    //返回监听
+    private class backClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
     }
 }
