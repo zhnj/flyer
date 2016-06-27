@@ -211,10 +211,10 @@ public class select_province extends AppCompatActivity {
 //            {
 //                Log.e(TAG, "县" +countyDates[i]);
 //            }
-            linearLayout_list_province.startAnimation(slideLeftAction);
             linearLayout_list_province.setVisibility(View.GONE);
-            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
+//            linearLayout_list_province.setAnimation(slideLeftAction);
+//            linearLayout_list_city.setAnimation(slideLeftAction);
         }
     }
 
@@ -234,10 +234,10 @@ public class select_province extends AppCompatActivity {
                     cityDates, listCityItems));
 
             if(cityList.size()>0) {
-                linearLayout_list_city.startAnimation(slideLeftAction);
                 linearLayout_list_city.setVisibility(View.GONE);
-                linearLayout_list_county.startAnimation(slideLeftAction);
                 linearLayout_list_county.setVisibility(View.VISIBLE);
+//                linearLayout_list_city.setAnimation(slideLeftAction);
+//                linearLayout_list_county.setAnimation(slideLeftAction);
             }else{
                 Intent intent = new Intent();
                 Bundle _bundle=new Bundle();
@@ -321,10 +321,10 @@ public class select_province extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.GONE);
-            linearLayout_list_province.startAnimation(slideLeftAction);
             linearLayout_list_province.setVisibility(View.VISIBLE);
+//            linearLayout_list_city.setAnimation(slideRightAction);
+//            linearLayout_list_province.setAnimation(slideRightAction);
         }
     }
 
@@ -333,10 +333,12 @@ public class select_province extends AppCompatActivity {
     {
         @Override
         public void onClick(View v) {
-            linearLayout_list_county.startAnimation(slideLeftAction);
+
             linearLayout_list_county.setVisibility(View.GONE);
-            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
+//            linearLayout_list_county.setAnimation(slideRightAction);
+//            linearLayout_list_city.setAnimation(slideRightAction);
+
         }
     }
 
