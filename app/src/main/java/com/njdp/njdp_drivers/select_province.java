@@ -52,8 +52,8 @@ public class select_province extends AppCompatActivity {
     private Map<String,Object> listCityItems=new HashMap<String,Object>();;
     private Map<String,Object> listCountyItems=new HashMap<String,Object>();;
     private AssetManager asset;
-    private TranslateAnimation showAction;
-    private TranslateAnimation hideAction;
+    private TranslateAnimation slideLeftAction;
+    private TranslateAnimation slideRightAction;
     private int select_rate=0;//0,1,2,3
 
     @Override
@@ -61,14 +61,14 @@ public class select_province extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_province);
 
-        showAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+        slideLeftAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF,
                 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        showAction.setDuration(360);
-        hideAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
+        slideLeftAction.setDuration(360);
+        slideRightAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        hideAction.setDuration(360);
+        slideRightAction.setDuration(360);
 
         btn_provinceBack=(ImageButton) super.findViewById(R.id.select_site_getBack);
         btn_cityBack=(ImageButton) super.findViewById(R.id.select_site_getBack1);
@@ -211,9 +211,9 @@ public class select_province extends AppCompatActivity {
 //            {
 //                Log.e(TAG, "县" +countyDates[i]);
 //            }
-//            linearLayout_list_province.startAnimation(hideAction);
+            linearLayout_list_province.startAnimation(slideLeftAction);
             linearLayout_list_province.setVisibility(View.GONE);
-            linearLayout_list_city.startAnimation(showAction);
+            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
         }
     }
@@ -234,9 +234,9 @@ public class select_province extends AppCompatActivity {
                     cityDates, listCityItems));
 
             if(cityList.size()>0) {
-//                linearLayout_list_city.startAnimation(hideAction);
+                linearLayout_list_city.startAnimation(slideLeftAction);
                 linearLayout_list_city.setVisibility(View.GONE);
-                linearLayout_list_county.startAnimation(showAction);
+                linearLayout_list_county.startAnimation(slideLeftAction);
                 linearLayout_list_county.setVisibility(View.VISIBLE);
             }else{
                 Intent intent = new Intent();
@@ -321,9 +321,9 @@ public class select_province extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-//            linearLayout_list_city.startAnimation(hideAction);
+            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.GONE);
-            linearLayout_list_province.startAnimation(hideAction);
+            linearLayout_list_province.startAnimation(slideLeftAction);
             linearLayout_list_province.setVisibility(View.VISIBLE);
         }
     }
@@ -333,9 +333,9 @@ public class select_province extends AppCompatActivity {
     {
         @Override
         public void onClick(View v) {
-//            linearLayout_list_county.startAnimation(hideAction);
+            linearLayout_list_county.startAnimation(slideLeftAction);
             linearLayout_list_county.setVisibility(View.GONE);
-            linearLayout_list_city.startAnimation(hideAction);
+            linearLayout_list_city.startAnimation(slideLeftAction);
             linearLayout_list_city.setVisibility(View.VISIBLE);
         }
     }

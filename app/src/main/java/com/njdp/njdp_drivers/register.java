@@ -41,6 +41,8 @@ public class register extends Activity {
     private EditText text_verification_code=null;
     private EditText text_user_password=null;
     private TextView text_user_address=null;
+    private TextView text_user_qq=null;
+    private TextView text_user_weixin=null;
     private Button btn_verification_code=null;
     private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
@@ -80,6 +82,8 @@ public class register extends Activity {
         text_verification_code = (EditText) super.findViewById(R.id.verification_code);
         text_user_password = (EditText) super.findViewById(R.id.user_password);
         text_user_address=(TextView) super.findViewById(R.id.user_site);
+        text_user_qq=(TextView) super.findViewById(R.id.user_qq);
+        text_user_weixin=(TextView) super.findViewById(R.id.user_weixin);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
         btn_back=(ImageButton) super.findViewById(R.id.getback);
         btn_back.setOnClickListener(new backClickListener());
@@ -124,7 +128,7 @@ public class register extends Activity {
                 } else if(verification_code_Validation.validate()==true){
                     get_VerifyCode();
                     //按钮60s倒计时，禁用60s
-                    TimeCount time_CountDown = new TimeCount(register.this,60000,1000,btn_verification_code);
+                    TimeCount time_CountDown = new TimeCount(60000,1000,btn_verification_code,register.this);
                     time_CountDown.start();
                     empty_hint(R.string.vertify_hint);
                 }
@@ -145,8 +149,10 @@ public class register extends Activity {
             if(!select_result.equals("0")) {
                 address_select_flag = 1;
                 text_user_address.setText(select_result);
-                if (!TextUtils.isEmpty(text_user_name.getText()) &&!TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText()) && !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                if (!TextUtils.isEmpty(text_user_name.getText()) &&!TextUtils.isEmpty(text_user_telephone.getText())
+                        && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_machine_id.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -281,6 +287,8 @@ public class register extends Activity {
         mValidation.addValidation(activity, R.id.user_name, "^[\\u4e00-\\u9fa5]+$", R.string.err_name);
         mValidation.addValidation(activity, R.id.user_telephone,"^1[3-9]\\d{9}+$", R.string.err_phone);
         mValidation.addValidation(activity, R.id.user_machine_id,"\\d{11}+$", R.string.err_machine_id);
+        mValidation.addValidation(activity, R.id.user_qq,"[1-9][0-9]{4,14}",R.string.err_qq);
+        mValidation.addValidation(activity, R.id.user_weixin, "^[a-zA-Z\\d_]{5,}$", R.string.err_weixin);
 //        mValidation.addValidation(activity, R.id.user_machine_id,"/[\\u4e00-\\u9fa5]{1}[A-Z]{1}(?:(?![a-zA-Z]{5})[0-9a-zA-z]){5}/", R.string.err_machine_id);//牌照号正则
 //        mValidation.addValidation(activity, R.id.user_id_card,"\\d{15}|\\d{18}", R.string.err_id_card); //身份证正则
         mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
@@ -304,8 +312,10 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText())
+                        && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_machine_id.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -328,8 +338,10 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_name.getText())
+                        && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_machine_id.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -352,8 +364,10 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText())
+                        && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_machine_id.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -376,8 +390,10 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
-                        && !TextUtils.isEmpty(text_user_telephone.getText())&& !TextUtils.isEmpty(text_user_machine_id.getText())) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText())
+                        && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_telephone.getText())
+                        && !TextUtils.isEmpty(text_user_machine_id.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -400,8 +416,62 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag!=0)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
-                        && !TextUtils.isEmpty(text_user_telephone.getText())  && !TextUtils.isEmpty(text_verification_code.getText())) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText())
+                        && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_telephone.getText())
+                        && !TextUtils.isEmpty(text_verification_code.getText())&& !TextUtils.isEmpty(text_user_qq.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
+                    btn_register_next.setClickable(true);
+                    btn_register_next.setEnabled(true);
+                } else {
+                    btn_register_next.setEnabled(false);
+                    btn_register_next.setClickable(false);
+                }
+            }
+        });
+
+        text_user_qq.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ((address_select_flag==1)&&(s.length()>0) && !TextUtils.isEmpty(text_user_password.getText())
+                        && !TextUtils.isEmpty(text_user_name.getText()) && !TextUtils.isEmpty(text_user_machine_id.getText())
+                        && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_weixin.getText())) {
+                    btn_register_next.setClickable(true);
+                    btn_register_next.setEnabled(true);
+                } else {
+                    btn_register_next.setEnabled(false);
+                    btn_register_next.setClickable(false);
+                }
+            }
+        });
+
+        text_user_weixin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_machine_id.getText())
+                        && !TextUtils.isEmpty(text_user_password.getText()) && !TextUtils.isEmpty(text_user_name.getText())
+                        && !TextUtils.isEmpty(text_user_telephone.getText()) && !TextUtils.isEmpty(text_verification_code.getText())
+                        && !TextUtils.isEmpty(text_user_qq.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {

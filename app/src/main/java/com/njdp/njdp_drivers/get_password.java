@@ -87,7 +87,7 @@ public class get_password extends AppCompatActivity {
                     String username= text_telephone.getText().toString().trim();
                     String telephone= text_user_license_plater.getText().toString().trim();
                     //按钮60s倒计时，禁用60s
-                    TimeCount time_CountDown = new TimeCount(get_password.this, 60000, 1000, btn_verification_code);
+                    TimeCount time_CountDown = new TimeCount(60000, 1000, btn_verification_code,get_password.this);
                     time_CountDown.start();
                     empty_hint(R.string.vertify_hint);
                 }

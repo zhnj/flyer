@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
     tools:context="com.njdp.njdp_drivers.select_province">
 
     <LinearLayout
         android:id="@+id/site_select_province"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,6 +51,7 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -91,6 +92,7 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"

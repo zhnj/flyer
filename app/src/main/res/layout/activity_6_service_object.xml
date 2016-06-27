@@ -55,7 +55,7 @@
             android:layout_marginTop="@dimen/margin30"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/edit_box_normal"
-            android:drawableLeft="@drawable/ic_phone_android_grey600_24dp"
+            android:drawableLeft="@drawable/ic_phone_iphone_white_24dp"
             android:hint="请输入农户手机号"
             android:textColorHint="@color/whiteFont"
             android:textColor="@color/whiteFont"

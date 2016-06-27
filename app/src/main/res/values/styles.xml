@@ -191,7 +191,7 @@
     <style name="Register_HorizontalLine_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">#696969</item>
+        <item name="android:background">@color/whiteFont</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
     <!--注册表单垂直线样式-->

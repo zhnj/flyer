@@ -386,6 +386,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        mMapView.onResume();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -404,6 +405,18 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
     }
 
     //跳转到选择界面
