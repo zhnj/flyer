@@ -87,8 +87,6 @@
     <RelativeLayout
         style="@style/Login_Bottom"
         android:id="@+id/login_bottom">
-        <View
-            style="@style/Login_HorizontalLine_style"/>
         <Button
             android:visibility="gone"
             style="@style/Login_BtnForgetPassword"
