@@ -16,7 +16,7 @@
       android:background="@drawable/main_title">
     <TextView
         style="@style/Pages_Title"
-        android:text="智能调度"
+        android:text="去哪儿好"
         />
     <ImageButton
         android:id="@+id/getback"

@@ -129,7 +129,7 @@
                 android:textCursorDrawable="@drawable/login_cursor"
                 android:background="@drawable/login_edit_changecolor"
                 android:hint="QQ号"
-                android:drawableLeft="@drawable/ic_qq_1"
+                android:drawableLeft="@drawable/ic_qq"
                 android:inputType="textPhonetic"
                 />
             <View
@@ -142,7 +142,7 @@
                 android:textCursorDrawable="@drawable/login_cursor"
                 android:background="@drawable/login_edit_changecolor"
                 android:hint="微信号"
-                android:drawableLeft="@drawable/ic_wechat_1"
+                android:drawableLeft="@drawable/ic_wechart"
                 android:inputType="textPhonetic"
                 />
             <View

@@ -632,6 +632,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //
 //    }
 
+
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
     private void initFieldInfo(final String area)
     {

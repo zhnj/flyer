@@ -296,6 +296,24 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         }
     }
 
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        mMapView.onResume();
+        super.onResume();
+    }
+
     //清空储存的方案数据
     private void replanClearDeploy()
     {

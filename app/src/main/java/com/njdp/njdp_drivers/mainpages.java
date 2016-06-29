@@ -26,7 +26,7 @@ public class mainpages extends Activity {
 
     private CircleMenuLayout mCircleMenuLayout;
 
-    private String[] mItemTexts =new String[]{"我要发布","智能调度","需求查询","服务对象","历史作业","个人信息","维修站","加油站"};
+    private String[] mItemTexts =new String[]{"我要发布","去哪儿好","需求查询","服务对象","历史作业","个人信息","维修站","加油站"};
     private int[] mItemImgs = new int[] {
             R.drawable.ic_release, R.drawable.ic_intell_arrange,
             R.drawable.ic_require, R.drawable.ic_server_object,
