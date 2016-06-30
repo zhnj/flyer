@@ -4,7 +4,9 @@ public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 测试 url
 
-    public static String URL_IP="http://218.12.43.229:81/";//服务器地址
+//    public static String URL_IP="http://218.12.43.229:81/";//服务器地址
+
+    public static String URL_IP="http://211.68.180.9:88/";//服务器地址
 
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 

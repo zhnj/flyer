@@ -154,6 +154,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String permissionInfo;
     private final int SDK_PERMISSION_REQUEST = 127;
     private BDLocation curlocation ; //当前位置
+    private BitmapDescriptor centreBitmap;//中心覆盖物的图标
+    private Marker centreMarker;
     ////////////////////////地图变量//////////////////////////
 
 
@@ -308,6 +310,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setOnMapStatusChangeListener(new centreMap());
 
+        centreBitmap= BitmapDescriptorFactory.fromResource(R.drawable.ic_set_location);//构建中心覆盖物Marker图标
+
         // 改变地图状态
         //MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(14.0f);
         //mBaiduMap.setMapStatus(msu);
@@ -422,6 +426,10 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         if (mMapView!=null) {
             mMapView.onDestroy();
             mMapView = null;
+        }
+        if (null != centreBitmap ){
+            centreBitmap.recycle();
+            centreBitmap = null;
         }
         super.onDestroy();
     }
@@ -1205,18 +1213,24 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         /**获取经纬度*/
         centre_latitude = mCenterLatLng.latitude;
         centre_longitude = mCenterLatLng.longitude;
+        if(centreMarker!=null) {
+            centreMarker.remove();
+        }
+        showMaker(centre_latitude, centre_longitude, centreBitmap);
+    }
 
-        LatLng point = new LatLng(centre_latitude, centre_longitude);
-        //构建Marker图标
-        BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.ic_set_location);
+    //在（latitude,longitude）坐标处显示id为id_maker_icon的覆盖物
+    private void showMaker(double latitude,double longitude,BitmapDescriptor bitmap)
+    {
+        centreMarker=null;
+        LatLng point = new LatLng(latitude, longitude);
+
         //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
                 .icon(bitmap);
         //在地图上添加Marker，并显示
-        Marker marker = (Marker) mBaiduMap.addOverlay(option);
-
+        centreMarker = (Marker) mBaiduMap.addOverlay(option);
     }
 
     ////////////////////////////地图代码结束/////////////////////////////////
