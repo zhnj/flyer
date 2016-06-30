@@ -298,7 +298,11 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
     @Override
     public void onDestroy() {
-        mMapView.onDestroy();
+        mBaiduMap.setMyLocationEnabled(false);
+        if (mMapView!=null) {
+            mMapView.onDestroy();
+            mMapView = null;
+        }
         super.onDestroy();
     }
 

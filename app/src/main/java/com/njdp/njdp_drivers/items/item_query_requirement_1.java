@@ -409,6 +409,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     //监听返回按键
     @Override
     public void onResume() {
+        mMapView.onResume();
         super.onResume();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
@@ -428,6 +429,22 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        mBaiduMap.setMyLocationEnabled(false);
+        if (mMapView!=null) {
+            mMapView.onDestroy();
+            mMapView = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
     }
 
     public void onClick(View v)
@@ -788,6 +805,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             //使用百度地图进行导航
             routeplanToNavi();
         }
+
 
         private void routeplanToNavi() {
             BNRoutePlanNode sNode = null;

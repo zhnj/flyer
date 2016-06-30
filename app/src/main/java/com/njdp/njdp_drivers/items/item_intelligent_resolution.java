@@ -36,6 +36,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -127,6 +128,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private List<FieldInfo> fieldInfos=new ArrayList<FieldInfo>();//返回的农田信息
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
+    private double centre_longitude;//地图中间经度
+    private double centre_latitude;//地图中间维度
     private boolean text_gps_flag = false;//GPS定位是否成功
     private static int showDialog_flag=0;//是否显示正在载入的标志
     private Date first_date;
@@ -303,6 +306,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
+        mBaiduMap.setOnMapStatusChangeListener(new centreMap());
 
         // 改变地图状态
         //MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(14.0f);
@@ -339,6 +343,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //{38.86317366367406, 115.47990000000006}, {38.914613417728475, 115.4850954388619}};
         Log.i("nnnnnnnnnnnnnnnnnn", String.valueOf(mainMenu.selectedFieldInfo.size()));
         //this.markRepairStation(mainMenu.selectedFieldInfo);
+        LatLng cenpt = new LatLng(29.806651,121.606983);
+        MapStatus mMapStatus = new MapStatus.Builder()
+                .target(cenpt)
+                .zoom(18)
+                .build();
 
         //////////////////地图代码结束/////////////////////////
 
@@ -409,7 +418,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
     @Override
     public void onDestroy() {
-        mMapView.onDestroy();
+        mBaiduMap.setMyLocationEnabled(false);
+        if (mMapView!=null) {
+            mMapView.onDestroy();
+            mMapView = null;
+        }
         super.onDestroy();
     }
 
@@ -1098,8 +1111,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         mMapView.refreshDrawableState();
     }
 
+
     //地图图标点击事件监听类
-    class markerClicklistener implements BaiduMap.OnMarkerClickListener {
+    private class markerClicklistener implements BaiduMap.OnMarkerClickListener {
 
         /**
          * 地图 Marker 覆盖物点击事件监听函数
@@ -1152,7 +1166,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     }
 
     //回到当前位置按钮点击事件,将当前位置定位到屏幕中心
-    class goBackListener implements View.OnClickListener
+    private class goBackListener implements View.OnClickListener
     {
         @Override
         public void onClick(View v) {
@@ -1165,6 +1179,44 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //            mBaiduMap.animateMapStatus(u);
 
         }
+    }
+
+    //监听地图的改变，改变中心的坐标
+    private class centreMap implements BaiduMap.OnMapStatusChangeListener{
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus) {
+            updateMapState(mapStatus);
+        }
+
+        @Override
+        public void onMapStatusChange(MapStatus mapStatus) {
+            updateMapState(mapStatus);
+        }
+
+        @Override
+        public void onMapStatusChangeFinish(MapStatus mapStatus) {
+            updateMapState(mapStatus);
+        }
+    }
+
+    //获取MapStatus的经纬度
+    private void updateMapState(MapStatus status) {
+        LatLng mCenterLatLng = status.target;
+        /**获取经纬度*/
+        centre_latitude = mCenterLatLng.latitude;
+        centre_longitude = mCenterLatLng.longitude;
+
+        LatLng point = new LatLng(centre_latitude, centre_longitude);
+        //构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.ic_set_location);
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        Marker marker = (Marker) mBaiduMap.addOverlay(option);
+
     }
 
     ////////////////////////////地图代码结束/////////////////////////////////
