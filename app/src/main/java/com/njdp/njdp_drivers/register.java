@@ -48,7 +48,7 @@ public class register extends Activity {
     private AwesomeValidation verification_code_Validation=new AwesomeValidation(ValidationStyle.BASIC);
     private AwesomeValidation mValidation=new AwesomeValidation(ValidationStyle.BASIC);
     private static final String TAG = register.class.getSimpleName();
-    private ProgressDialog pDialog;
+//    private ProgressDialog pDialog;
     private NetUtil netUtil;
     private CommonUtil commonUtil;
 //    private SessionManager session;
@@ -59,7 +59,7 @@ public class register extends Activity {
     private String telephone;
     private String t_verify_code;
     private String verify_code;
-    private int address_select_flag=0;
+//    private int address_select_flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,7 +307,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag==1)&&(s.length() > 0) &&!TextUtils.isEmpty(text_verification_code.getText())) {
+                if ((s.length() > 0) &&!TextUtils.isEmpty(text_verification_code.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -330,7 +330,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((address_select_flag==1)&&(s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
