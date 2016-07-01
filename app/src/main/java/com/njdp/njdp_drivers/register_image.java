@@ -143,11 +143,11 @@ public class register_image extends AppCompatActivity {
             public void onClick(View v) {
                 if (IsSetImage==true)
                 {
-                    //上传头像.并注册
+                    //上传头像
                     register_uploadImage(Url_Image, path);
                 } else {
-                    //默认头像，注册
-                    register_finish(Url);
+                    //默认头像
+//                    register_finish(Url);
                 }
             }
         });
@@ -307,86 +307,82 @@ public class register_image extends AppCompatActivity {
     }
 
 
-    //不上传头像注册注册
-    private void register_finish(String url) {
+//    //不上传头像注册注册
+//    private void register_finish(String url) {
+//
+//        // Tag used to cancel the request
+//        String tag_string_req = "req_register_image";
+//
+//        pDialog.setMessage("即将完成注册 ...");
+//        showDialog();
+//
+//        if (netUtil.checkNet(register_image.this) == false) {
+//            error_hint("网络连接错误");
+//            return;
+//        }else {
+//            StringRequest strReq = new StringRequest(Request.Method.POST,
+//                    url,mSuccessListener,mErrorListener) {
+//
+//                @Override
+//                protected Map<String, String> getParams() {
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    params.put("machine_id", driver.getMachine_id());
+//                    params.put("password", driver.getPassword());
+//                    params.put("telephone", driver.getTelephone());
+//                    return params;
+//                }
+//            };
+//
+//            // Adding request to request queue
+//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+//        }
+//    }
 
-        // Tag used to cancel the request
-        String tag_string_req = "req_register_image";
-
-        pDialog.setMessage("即将完成注册 ...");
-        showDialog();
-
-        if (netUtil.checkNet(register_image.this) == false) {
-            error_hint("网络连接错误");
-            return;
-        }else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    url,mSuccessListener,mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("machine_id", driver.getMachine_id());
-                    params.put("password", driver.getPassword());
-                    params.put("telephone", driver.getTelephone());
-                    params.put("imageurl", driver.getImage_url());
-                    params.put("setImage", "false");
-                    params.put("tag", "M");
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        }
-    }
-
-
-    //注册响应服务器成功
-    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
-
-        @Override
-        public void onResponse(String response) {
-            Log.d(TAG, "Register Response: " + response.toString());
-            hideDialog();
-
-            try {
-                JSONObject jObj = new JSONObject(response);
-                boolean error = jObj.getBoolean("error");
-                if(!error) {
-                    String token=jObj.getString("token");
-                    session.setLogin(true,token);
-                    driver.setId(1);
-                    driverDao.add(driver);
-
-                    // 跳转到主页面
-                    empty_hint(R.string.register_success);
-                    Intent intent = new Intent(register_image.this, mainpages.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    // Error occurred in registration. Get the error
-                    String errorMsg = jObj.getString("error_msg");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint( errorMsg);
-                }
-            } catch (JSONException e) {
-                empty_hint(R.string.register_error2);
-                e.printStackTrace();
-                Log.e(TAG, "RegisterError: " + e.getMessage());
-            }
-        }
-    };
-
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "RegisterError: " + error.getMessage());
-            empty_hint(R.string.connect_error);
-            hideDialog();
-        }
-    };
+//    //注册响应服务器成功
+//    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+//
+//        @Override
+//        public void onResponse(String response) {
+//            Log.d(TAG, "Register Response: " + response.toString());
+//            hideDialog();
+//
+//            try {
+//                JSONObject jObj = new JSONObject(response);
+//                boolean error = jObj.getBoolean("error");
+//                if(!error) {
+//                    String token=jObj.getString("token");
+//                    session.setLogin(true,token);
+//                    driver.setId(1);
+//                    driverDao.add(driver);
+//
+//                    // 跳转到主页面
+//                    empty_hint(R.string.register_success);
+//                    Intent intent = new Intent(register_image.this, mainpages.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    // Error occurred in registration. Get the error
+//                    String errorMsg = jObj.getString("error_msg");
+//                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+//                    commonUtil.error_hint( errorMsg);
+//                }
+//            } catch (JSONException e) {
+//                empty_hint(R.string.register_error2);
+//                e.printStackTrace();
+//                Log.e(TAG, "RegisterError: " + e.getMessage());
+//            }
+//        }
+//    };
+//
+//    //响应服务器失败
+//    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//            Log.e(TAG, "RegisterError: " + error.getMessage());
+//            empty_hint(R.string.connect_error);
+//            hideDialog();
+//        }
+//    };
 
     //ProgressDialog显示与隐藏
     private void showDialog() {

@@ -176,11 +176,15 @@
         </activity>
         <activity
             android:name=".select_province"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity android:name=".select_city" >
         </activity>
         <activity android:name=".select_county" >
+        </activity>
+        <activity android:name=".register_1" >
+        </activity>
+        <activity android:name=".register_2" >
         </activity>
     </application>
 

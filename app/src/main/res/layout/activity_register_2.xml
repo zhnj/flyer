@@ -9,7 +9,7 @@
     android:background="@drawable/main_bg"
     android:fitsSystemWindows="true"
     android:paddingTop="@dimen/padding20"
-    tools:context="com.njdp.njdp_drivers.register">
+    tools:context="com.njdp.njdp_drivers.register_2">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,47 +49,59 @@
         android:layout_below="@+id/register_top">
         <EditText
             style="@style/Register_style"
-            android:id="@+id/user_telephone"
+            android:id="@+id/user_name"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
-            android:drawableLeft="@drawable/ic_phone_iphone_white_24dp"
-            android:hint="手机号"
-            android:maxLength="11"
-            android:inputType="phone"
+            android:drawableLeft="@drawable/ic_person_outline_white_24dp"
+            android:hint="姓名"
+            android:inputType="textPhonetic"
             />
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="45dp"
-            android:id="@+id/user_verification_code"
-            >
-            <EditText
-                style="@style/Register_VertifyInput_style"
-                android:id="@+id/verification_code"
-                android:textCursorDrawable="@drawable/login_cursor"
-                android:background="@drawable/login_edit_changecolor"
-                android:drawableLeft="@drawable/ic_vpn_key_white_24dp"
-                android:hint="验证码"
-                android:maxLength="6"
-                android:inputType="number"
-                />
-            <View
-                style="@style/Register_Vertical_style"
-                android:layout_toStartOf="@+id/register_get_verification_code"
-                android:layout_toLeftOf="@+id/register_get_verification_code"
-                android:id="@+id/line" />
-            <Button
-                style="@style/Register_Button_Vertify"
-                android:id="@+id/register_get_verification_code"
-                android:text="获取验证码" />
-        </RelativeLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_qq"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:hint="QQ号"
+            android:drawableLeft="@drawable/ic_qq"
+            android:inputType="textPhonetic"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_weixin"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:hint="微信号"
+            android:drawableLeft="@drawable/ic_wechart"
+            android:inputType="textPhonetic"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        <TextView
+            style="@style/Register_style"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_pin_drop_grey600_24dp"
+            android:id="@+id/user_site"
+            android:textSize="@dimen/font18"
+            android:text="点击选择省市县地址"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
     </LinearLayout>
 </RelativeLayout>
