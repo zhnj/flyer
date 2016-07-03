@@ -27,62 +27,35 @@
             android:layout_centerVertical="true"
             android:background="@drawable/ic_chevron_left_white_48dp"
             />
-        <com.beardedhen.androidbootstrap.BootstrapButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin5"
-            android:id="@+id/register_next"
-            android:text="下一步"
-            android:textSize="@dimen/font18"
-            bootstrap:bootstrapBrand="secondary"
-            bootstrap:bootstrapSize="lg"
-            bootstrap:buttonMode="regular"
-            bootstrap:showOutline="false"
-            bootstrap:roundedCorners="true"/>
     </RelativeLayout>
     <LinearLayout
         style="@style/Register_Div"
         android:orientation="vertical"
         android:id="@+id/regiser_div"
         android:layout_below="@+id/register_top">
-        <EditText
-            style="@style/Register_style"
-            android:id="@+id/user_telephone"
-            android:textCursorDrawable="@drawable/login_cursor"
-            android:background="@drawable/login_edit_changecolor"
-            android:drawableLeft="@drawable/ic_phone_iphone_white_24dp"
-            android:hint="手机号"
-            android:maxLength="11"
-            android:inputType="phone"
-            />
-        <View
-            style="@style/Register_HorizontalLine_style"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="45dp"
             android:id="@+id/user_verification_code"
             >
             <EditText
-                style="@style/Register_VertifyInput_style"
-                android:id="@+id/verification_code"
+                style="@style/Register_style"
+                android:id="@+id/user_telephone"
                 android:textCursorDrawable="@drawable/login_cursor"
                 android:background="@drawable/login_edit_changecolor"
-                android:drawableLeft="@drawable/ic_vpn_key_white_24dp"
-                android:hint="验证码"
-                android:maxLength="6"
-                android:inputType="number"
+                android:drawableLeft="@drawable/ic_phone_iphone_white_24dp"
+                android:hint="手机号"
+                android:maxLength="11"
+                android:inputType="phone"
                 />
             <View
+                android:visibility="gone"
                 style="@style/Register_Vertical_style"
                 android:layout_toStartOf="@+id/register_get_verification_code"
                 android:layout_toLeftOf="@+id/register_get_verification_code"
                 android:id="@+id/line" />
             <Button
+                android:visibility="gone"
                 style="@style/Register_Button_Vertify"
                 android:id="@+id/register_get_verification_code"
                 android:text="获取验证码" />
@@ -91,5 +64,29 @@
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/margin30"
+            android:id="@+id/register_next"
+            android:text="获取验证码"
+            android:textSize="@dimen/font18"
+            bootstrap:bootstrapBrand="secondary"
+            bootstrap:bootstrapSize="lg"
+            bootstrap:buttonMode="regular"
+            bootstrap:showOutline="false"
+            bootstrap:roundedCorners="true"/>
     </LinearLayout>
 </RelativeLayout>
+<!--<EditText-->
+<!--style="@style/Register_VertifyInput_style"-->
+<!--android:id="@+id/verification_code"-->
+<!--android:textCursorDrawable="@drawable/login_cursor"-->
+<!--android:background="@drawable/login_edit_changecolor"-->
+<!--android:drawableLeft="@drawable/ic_vpn_key_white_24dp"-->
+<!--android:hint="验证码"-->
+<!--android:maxLength="6"-->
+<!--android:inputType="number"-->
+    <!--/>-->

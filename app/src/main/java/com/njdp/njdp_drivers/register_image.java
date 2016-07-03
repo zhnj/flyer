@@ -64,8 +64,8 @@ public class register_image extends AppCompatActivity {
     private SessionManager session;
     private DriverDao driverDao;
     private Uri imageUri;
-    private String Url_Image;
-    private String Url;
+    private String url;
+    private String token;
     private int crop = 300;// 裁剪大小
     private static final int REQUEST_IMAGE=001;
     private static final int CROP_PHOTO_CODE = 002;
@@ -85,17 +85,16 @@ public class register_image extends AppCompatActivity {
         setContentView(R.layout.activity_register_image);
 
         //修改
-        Url=AppConfig.URL_REGISTER;
-        Url_Image=AppConfig.URL_GETPASSWORD2;
+        url=AppConfig.URL_FIXPERSONINFO;
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
         session = new SessionManager(getApplicationContext());// Session manager
-//        db = new SQLiteHandler(getApplicationContext());
         driverDao=new DriverDao(register_image.this);
         commonUtil=new CommonUtil(register_image.this);
         netUtil=new NetUtil(register_image.this);
+        token=session.getToken();
 
         this.notice = (TextView) super.findViewById(R.id.regiser_termsOfService);
         this.setImage = (TextView) super.findViewById(R.id.set_user_image);
@@ -113,7 +112,7 @@ public class register_image extends AppCompatActivity {
             driver.setSite(driver_bundle.getString("address"));
         }else
         {
-            error_hint("程序错误！请联系管理员！");
+            commonUtil.error_hint("程序错误！请联系管理员！");
         }
 
         //服务条款
@@ -143,11 +142,13 @@ public class register_image extends AppCompatActivity {
             public void onClick(View v) {
                 if (IsSetImage==true)
                 {
-                    //上传头像
-                    register_uploadImage(Url_Image, path);
+                    //上传头像并跳转主页面
+                    register_uploadImage(url, path);
                 } else {
-                    //默认头像
-//                    register_finish(Url);
+                    // 跳转到主页面
+                    Intent intent = new Intent(register_image.this, mainpages.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -246,12 +247,7 @@ public class register_image extends AppCompatActivity {
 
         File file=new File(path);
         Map<String, String> params = new HashMap<String, String>();
-        params.put("machine_id", driver.getMachine_id());
-        params.put("password", driver.getPassword());
-        params.put("telephone", driver.getTelephone());
-        params.put("imageurl", driver.getImage_url());
-        params.put("setImage", "true");
-        params.put("tag", "M");
+        params.put("token", token);
 
         if (!file.exists()) {
             hideDialog();
@@ -260,7 +256,7 @@ public class register_image extends AppCompatActivity {
             return;
         } else if (!netUtil.checkNet(register_image.this)) {
             hideDialog();
-            error_hint("网络连接错误");
+            commonUtil.error_hint("网络连接错误");
             return;
         }else {
             OkHttpUtils.post()
@@ -284,12 +280,6 @@ public class register_image extends AppCompatActivity {
                                 if (status == 0) {
                                     String msg = jObj.getString("result");
                                     Log.e(TAG, "UploadImage response：" + msg);
-                                    String token = jObj.getString("token");
-                                    session.setLogin(true, token);
-                                    driver.setId(1);
-                                    driverDao.add(driver);
-
-                                    empty_hint(R.string.register_success);
                                     // 跳转到主页面
                                     Intent intent = new Intent(register_image.this, mainpages.class);
                                     startActivity(intent);
@@ -392,20 +382,6 @@ public class register_image extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }
-
-    //信息未输入提示
-    private void empty_hint(int in) {
-        Toast toast = Toast.makeText(register_image.this, getResources().getString(in), Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, -50);
-        toast.show();
-    }
-
-    //错误信息提示
-    private void error_hint(String str) {
-        Toast toast = Toast.makeText(register_image.this, str, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, -50);
-        toast.show();
     }
 
 }

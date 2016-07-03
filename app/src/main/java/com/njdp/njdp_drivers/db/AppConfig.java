@@ -10,9 +10,11 @@ public class AppConfig {
 
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 
-    public static String URL_GET_VERIFYCODE = URL_IP+"http://218.12.43.229:81/sendMessage";// 获取手机验证码 url
+    public static String URL_GET_VERIFYCODE = URL_IP+"sendMessage";// 获取手机验证码 url
 
-    public static String URL_REGISTER = URL_IP+"db_xskq/register1.php";// 注册 url
+    public static String URL_VERIFY_MACHINE_ID = URL_IP+"machineIDVerify";// 验证农机id url
+
+    public static String URL_REGISTER = URL_IP+"machineRegister";// 注册 url
 
     public static String URL_GETPASSWORD1= URL_IP+"db_xskq/forget_password_isAccess.php";// 找回密码1 url
 

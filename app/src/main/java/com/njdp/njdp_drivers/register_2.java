@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -15,10 +16,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.njdp.njdp_drivers.db.AppConfig;
+import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
+import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.CheckedOutputStream;
 
 public class register_2 extends Activity implements View.OnClickListener{
     private EditText text_user_name=null;
@@ -31,6 +46,7 @@ public class register_2 extends Activity implements View.OnClickListener{
     private static final String TAG = register_2.class.getSimpleName();
     private ProgressDialog pDialog;
     private NetUtil netUtil;
+    private CommonUtil commonUtil;
     private SessionManager session;
     private String name;
     private String address;
@@ -50,8 +66,10 @@ public class register_2 extends Activity implements View.OnClickListener{
         pDialog.setCancelable(false);
 
         netUtil=new NetUtil(this);
+        commonUtil=new CommonUtil(this);
         // Session manager
         session = new SessionManager(getApplicationContext());
+        token=session.getToken();
 
         text_user_name = (EditText) super.findViewById(R.id.user_name);
         text_user_address=(TextView) super.findViewById(R.id.user_site);
@@ -76,7 +94,7 @@ public class register_2 extends Activity implements View.OnClickListener{
         switch (v.getId())
         {
             case R.id.getback:
-                finish();
+//                finish();
                 break;
             case R.id.register_next:
                 checkInfo();
@@ -256,10 +274,80 @@ public class register_2 extends Activity implements View.OnClickListener{
             qq = text_user_qq.getText().toString().trim();
             weixn = text_user_weixin.getText().toString().trim();
             address = text_user_address.getText().toString().trim();
-            //上传服务器
-            //跳转界面
-            Intent intent = new Intent(register_2.this, register_image.class);
-            startActivity(intent);
+            register_user_info();
         }
     }
+
+    //提交个人信息
+    private void register_user_info(){
+
+        String tag_string_req = "req_register_driver";
+        pDialog.setMessage("正在提交个人信息，请等待......");
+        showDialog();
+        if(netUtil.checkNet(register_2.this)==false){
+            error_hint("网络连接错误");
+            hideDialog();
+            return;
+        } else {
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.URL_FIXPERSONINFO, mSuccessListener, mErrorListener) {
+                @Override
+                protected Map<String, String> getParams() {
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", token);
+                    params.put("person_qq", qq);
+                    params.put("person_weixin", weixn);
+                    params.put("person_name", name);
+                    params.put("person_address", address);
+                    return params;
+                }
+            };
+
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+    }
+
+
+    //响应服务器成功
+    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+
+        @Override
+        public void onResponse(String response) {
+            hideDialog();
+            Log.e(TAG, "Register Response: " + response.toString());
+
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG,errorMsg);
+                    Intent intent = new Intent(register_2.this, register_image.class);
+                    startActivity(intent);
+                } else {
+                    String err_status = jObj.getString("status");
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
+                    commonUtil.error_hint(errorMsg);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                empty_hint(R.string.vertify_error2);
+            }
+
+        }
+    };
+
+    //响应服务器失败
+    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            hideDialog();
+            Log.e(TAG, "Register UserInfo Error: " + error.getMessage());
+            error_hint(error.getMessage());
+        }
+    };
+
 }

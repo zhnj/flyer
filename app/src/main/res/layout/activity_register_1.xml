@@ -55,7 +55,7 @@ tools:context="com.njdp.njdp_drivers.register_1">
             android:background="@drawable/login_edit_changecolor"
             android:drawableLeft="@drawable/user_machine_id"
             android:hint="农机编号"
-            android:maxLength="16"
+            android:maxLength="11"
             android:inputType="number"
             />
         <View
@@ -63,6 +63,20 @@ tools:context="com.njdp.njdp_drivers.register_1">
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
+        <EditText
+            style="@style/Register_VertifyInput_style"
+            android:id="@+id/verification_code"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_vpn_key_white_24dp"
+            android:hint="验证码"
+            android:maxLength="6"
+            android:inputType="number"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             style="@style/Register_style"

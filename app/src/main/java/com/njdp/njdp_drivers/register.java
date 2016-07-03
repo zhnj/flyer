@@ -41,7 +41,7 @@ public class register extends Activity {
 //    private EditText text_user_qq=null;
 //    private EditText text_user_weixin=null;
     private EditText text_user_telephone=null;
-    private EditText text_verification_code=null;
+//    private EditText text_verification_code=null;
     private Button btn_verification_code=null;
     private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
@@ -51,6 +51,7 @@ public class register extends Activity {
 //    private ProgressDialog pDialog;
     private NetUtil netUtil;
     private CommonUtil commonUtil;
+    private ProgressDialog pDialog;
 //    private SessionManager session;
 //    private String name;
 //    private String machine_id;
@@ -66,6 +67,8 @@ public class register extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
         netUtil=new NetUtil(register.this);
         commonUtil=new CommonUtil(register.this);
 //        pDialog = new ProgressDialog(this);
@@ -79,7 +82,7 @@ public class register extends Activity {
 //        text_user_qq=(EditText) super.findViewById(R.id.user_qq);
 //        text_user_weixin=(EditText) super.findViewById(R.id.user_weixin);
         text_user_telephone = (EditText) super.findViewById(R.id.user_telephone);
-        text_verification_code = (EditText) super.findViewById(R.id.verification_code);
+//        text_verification_code = (EditText) super.findViewById(R.id.verification_code);
         btn_verification_code=(Button) super.findViewById(R.id.register_get_verification_code);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
         btn_back=(ImageButton) super.findViewById(R.id.getback);
@@ -99,37 +102,36 @@ public class register extends Activity {
 
                 if (isempty(R.id.user_telephone)) {
                     empty_hint(R.string.err_phone2);
-                } else if (isempty(R.id.verification_code)) {
-                    empty_hint(R.string.err_verification_code2);
                 } else if (mValidation.validate() == true) {
 //                    name = text_user_name.getText().toString().trim();
 //                    machine_id = text_user_machine_id.getText().toString().trim();
 //                    password = text_user_password.getText().toString().trim();
                     telephone = text_user_telephone.getText().toString().trim();
-                    t_verify_code = text_verification_code.getText().toString().trim();
-                    if(!TextUtils.isEmpty(verify_code)) {
-                        if (verify_code.equals(t_verify_code)) {
-                            register_next();
-                        } else {
-                            error_hint("验证码错误！");
-                        }
-                    }else {
-                        commonUtil.error_hint("程序错误，请联系管理员！");
-                    }
+//                    t_verify_code = text_verification_code.getText().toString().trim();
+//                    if(!TextUtils.isEmpty(verify_code)) {
+//                        if (verify_code.equals(t_verify_code)) {
+//                            register_next();
+//                        } else {
+//                            error_hint("验证码错误！");
+//                        }
+//                    }else {
+//                        commonUtil.error_hint("程序错误，请联系管理员！");
+//                    }
+                    get_VerifyCode();
                 }
             }
         });
 
         //点击获取验证码按钮,，没填手机号提示，填了以后，发送短信，按钮60s倒计时，禁用60s
-        btn_verification_code.setOnClickListener(new View.OnClickListener(){
+        btn_verification_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isempty(R.id.user_telephone)) {
                     empty_hint(R.string.err_phone2);
-                } else if(verification_code_Validation.validate()==true){
+                } else if (verification_code_Validation.validate() == true) {
                     get_VerifyCode();
                     //按钮60s倒计时，禁用60s
-                    TimeCount time_CountDown = new TimeCount(60000,1000,btn_verification_code,register.this);
+                    TimeCount time_CountDown = new TimeCount(60000, 1000, btn_verification_code, register.this);
                     time_CountDown.start();
                     empty_hint(R.string.vertify_hint);
                 }
@@ -198,18 +200,20 @@ public class register extends Activity {
     private void get_VerifyCode(){
 
         String tag_string_req = "req_register_driver_VerifyCode";
-
+        pDialog.setMessage("正在获取验证码，请等待......");
+        showDialog();
         if(netUtil.checkNet(register.this)==false){
+            hideDialog();
             error_hint("网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.GET,
+            StringRequest strReq = new StringRequest(Request.Method.POST,
                     AppConfig.URL_GET_VERIFYCODE, vertifySuccessListener, mErrorListener) {
                 @Override
                 protected Map<String, String> getParams() {
 
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("telephone", telephone);
+                    params.put("phone", telephone);
                     return params;
                 }
             };
@@ -221,7 +225,7 @@ public class register extends Activity {
 
     private void register_next()
     {
-        Intent intent = new Intent(register.this, register_image.class);
+        Intent intent = new Intent(register.this, register_1.class);
         Bundle driver_bundle = new Bundle();
         driver_bundle.putString("telephone", text_user_telephone.getText().toString());
 //        driver_bundle.putString("name", text_user_name.getText().toString());
@@ -237,14 +241,16 @@ public class register extends Activity {
 
         @Override
         public void onResponse(String response) {
-            Log.d(TAG, "Register Response: " + response.toString());
+            Log.e(TAG, "Register Response: " + response.toString());
+            hideDialog();
 
             try {
                 JSONObject jObj = new JSONObject(response);
                 int status = jObj.getInt("status");
                 if (status==0) {
                     //服务器返回的验证码
-                    verify_code=jObj.getString("verify_code");
+//                    verify_code=jObj.getString("verify_code");
+                    register_next();
                 } else {
                     empty_hint(R.string.vertify_error1);
                     String errorMsg = jObj.getString("result");
@@ -263,6 +269,7 @@ public class register extends Activity {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.e(TAG, "Register Telephone Error: " + error.getMessage());
+            hideDialog();
             error_hint(error.getMessage());
         }
     };
@@ -280,7 +287,7 @@ public class register extends Activity {
     //注册表单验证
     private void form_verification(final Activity activity){
         mValidation.addValidation(activity, R.id.user_telephone,"^1[3-9]\\d{9}+$", R.string.err_phone);
-        mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
+//        mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
 //        mValidation.addValidation(activity, R.id.user_name, "^[\\u4e00-\\u9fa5]+$", R.string.err_name);
 //        mValidation.addValidation(activity, R.id.user_machine_id,"\\d{11}+$", R.string.err_machine_id);
 //        mValidation.addValidation(activity, R.id.user_qq,"[1-9][0-9]{4,14}",R.string.err_qq);
@@ -307,7 +314,7 @@ public class register extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) &&!TextUtils.isEmpty(text_verification_code.getText())) {
+                if (s.length() > 0) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -317,28 +324,28 @@ public class register extends Activity {
             }
         });
 
-        text_verification_code.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText())) {
-                    btn_register_next.setClickable(true);
-                    btn_register_next.setEnabled(true);
-                } else {
-                    btn_register_next.setEnabled(false);
-                    btn_register_next.setClickable(false);
-                }
-            }
-        });
+//        text_verification_code.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_telephone.getText())) {
+//                    btn_register_next.setClickable(true);
+//                    btn_register_next.setEnabled(true);
+//                } else {
+//                    btn_register_next.setEnabled(false);
+//                    btn_register_next.setClickable(false);
+//                }
+//            }
+//        });
 
 //        text_user_name.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -489,5 +496,15 @@ public class register extends Activity {
         public void onClick(View v) {
             finish();
         }
+    }
+
+    //ProgressDialog显示与隐藏
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }
