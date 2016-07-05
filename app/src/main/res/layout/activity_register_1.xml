@@ -55,7 +55,7 @@ tools:context="com.njdp.njdp_drivers.register_1">
             android:background="@drawable/login_edit_changecolor"
             android:drawableLeft="@drawable/user_machine_id"
             android:hint="农机编号"
-            android:maxLength="11"
+            android:maxLength="12"
             android:inputType="number"
             />
         <View

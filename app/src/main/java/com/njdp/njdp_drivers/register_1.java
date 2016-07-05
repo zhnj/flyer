@@ -120,7 +120,7 @@ public class register_1 extends Activity implements View.OnClickListener{
 
     //注册表单验证
     private void form_verification(final Activity activity) {
-        mValidation.addValidation(activity, R.id.user_machine_id, "\\d{11}+$", R.string.err_machine_id);
+        mValidation.addValidation(activity, R.id.user_machine_id, "\\d{12}+$", R.string.err_machine_id);
         mValidation.addValidation(activity, R.id.user_password, "^[A-Za-z0-9_]{5,15}+$", R.string.err_password);
     }
 
