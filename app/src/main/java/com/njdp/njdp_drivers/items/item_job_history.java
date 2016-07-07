@@ -100,7 +100,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         format2= new SimpleDateFormat("yyyy-MM-dd");
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();

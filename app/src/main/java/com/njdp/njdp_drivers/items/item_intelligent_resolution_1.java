@@ -99,7 +99,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
 
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();

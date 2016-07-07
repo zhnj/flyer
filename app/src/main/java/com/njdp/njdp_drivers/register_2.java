@@ -68,7 +68,7 @@ public class register_2 extends Activity implements View.OnClickListener{
         netUtil=new NetUtil(this);
         commonUtil=new CommonUtil(this);
         // Session manager
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager();
         token=session.getToken();
 
         text_user_name = (EditText) super.findViewById(R.id.user_name);

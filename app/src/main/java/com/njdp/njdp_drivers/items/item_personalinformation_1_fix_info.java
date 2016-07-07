@@ -95,7 +95,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
 
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         token=sessionManager.getToken();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);

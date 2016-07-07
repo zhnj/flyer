@@ -11,6 +11,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.baidu.mapapi.SDKInitializer;
 import com.njdp.njdp_drivers.items.LocationService;
+import com.yolanda.nohttp.Logger;
+import com.yolanda.nohttp.NoHttp;
 
 public class AppController extends Application {
     public static final String TAG = AppController.class.getSimpleName();
@@ -27,6 +29,13 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+
+        NoHttp.initialize(this);
+
+        Logger.setTag("NoHttp_Print");
+        Logger.setDebug(true);// 开始NoHttp的调试模式, 这样就能看到请求过程和日志
+
+        SessionManager.getInstance();
         //地图
         locationService = new LocationService(getApplicationContext());
         mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);

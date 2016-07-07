@@ -164,7 +164,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 
         netUtil=new NetUtil(mainMenu);
 
-        sessionManager=new SessionManager(mainMenu);
+        sessionManager=new SessionManager();
 
         gson=new Gson();
 

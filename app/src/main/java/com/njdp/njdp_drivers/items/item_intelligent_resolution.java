@@ -178,7 +178,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         mainMenu.clearFieldData();//清空缓存的农田数据
 
         fieldInfoDao=new FieldInfoDao(mainMenu);
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
@@ -497,7 +497,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //            Log.e(TAG,e.toString());
 //        }
 //        if( (fieldInfos.size()<1)||( mainMenu.fieldInfoPosts.size()<1)){
-//            commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
+//            commonUtil.error_hint_short("未搜索到符合要求的农田信息，请重新设置搜索条件！");
 //        }else
 //        {
 //            //存储到本地库
@@ -529,7 +529,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //       showDialog();
 //
 //        if (!netUtil.checkNet(mainMenu)) {
-//            commonUtil.error_hint("网络连接错误");
+//            commonUtil.error_hint_short("网络连接错误");
 //            hideDialog();
 //        } else {
 //            startTime = "2016-04-01";
@@ -592,7 +592,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //                                if (status == 1) {
 //                                    String errorMsg = jObj.getString("result");
 //                                    Log.e(TAG, "Token 错误:" + errorMsg);
-//                                    commonUtil.error_hint("密钥失效，请重新登录");
+//                                    commonUtil.error_hint_short("密钥失效，请重新登录");
 //                                    //清空数据，重新登录
 //                                    netUtil.clearSession(mainMenu);
 //                                    Intent intent = new Intent(mainMenu, login.class);
@@ -624,7 +624,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //                                    ///////////////////////////农田信息，包括经纬度/////////////////////////////////
 //
 //                                    if ((fieldInfos.size() < 1) || (mainMenu.fieldInfoPosts.size() < 1)) {
-//                                        commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
+//                                        commonUtil.error_hint_short("未搜索到符合要求的农田信息，请重新设置搜索条件！");
 //                                    } else {
 //                                        //存储到本地库
 //                                        saveFieldInfo(fieldInfoDao, fieldInfos);
@@ -635,17 +635,17 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //
 //                                    String errorMsg = jObj.getString("result");
 //                                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-//                                    commonUtil.error_hint("服务器数据错误1：response错误:" + errorMsg);
+//                                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
 //                                }
 //                            } catch (JSONException e) {
 //                                // JSON error
 //                                Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
-//                                commonUtil.error_hint("服务器数据错误2：response错误:" + e.getMessage());
+//                                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
 //                            }catch (Exception e)
 //                            {
 //                                // JSON error
 //                                Log.e(TAG, "3 服务器数据错误：response错误:" + e.getMessage());
-//                                commonUtil.error_hint("服务器数据错误3：response错误:" + e.getMessage());
+//                                commonUtil.error_hint_short("服务器数据错误3：response错误:" + e.getMessage());
 //                            }
 //                        }
 //                    });
@@ -812,7 +812,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         //按距离的排序好的农田
                         arrangeField();
                         Log.e(TAG, "数据加载完成");
-//                        commonUtil.error_hint("数据加载完成");
+//                        commonUtil.error_hint_short("数据加载完成");
                     }
                 } else {
                     String errorMsg = jObj.getString("result");

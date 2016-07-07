@@ -94,7 +94,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
         telephoneValidation.addValidation(edit_telephone, "^1[3-9]\\d{9}+$", "手机号格式不正确");
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         token=sessionManager.getToken();

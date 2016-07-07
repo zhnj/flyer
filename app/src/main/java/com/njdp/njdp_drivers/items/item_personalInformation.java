@@ -130,7 +130,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_5_personalinformation, null);
 
         driverDao=new DriverDao(getActivity());
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         token=sessionManager.getToken();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
@@ -361,7 +361,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //                    @Override
 //                    public void onError(Call call, Exception e) {
 //                        Log.e(TAG, "获取用户头像失败" + e.getMessage());
-//                        commonUtil.error_hint("获取用户头像失败");
+//                        commonUtil.error_hint_short("获取用户头像失败");
 //                    }
 //
 //                    @Override

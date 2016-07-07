@@ -83,7 +83,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         deploySize=mainMenu.basicDeployRess.size();
         Log.e(TAG, "总方案数：" + deploySize);
 
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
@@ -435,7 +435,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 }else if(status==0){
                     String msg=jObj.getString("result");
                     Log.e(TAG, msg+"---上传选择方案成功");
-//                    commonUtil.error_hint("上传选择方案成功");
+//                    commonUtil.error_hint_short("上传选择方案成功");
 
                 } else {
 

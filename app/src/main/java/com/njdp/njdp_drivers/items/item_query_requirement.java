@@ -132,7 +132,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         mainMenu.clearFieldData();//清空缓存的农田数据
 
         fieldInfoDao=new FieldInfoDao(mainMenu);
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
@@ -565,7 +565,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 //                        //按距离的排序好的农田
 //                        arrangeField();
 //                        mainMenu.addBackFragment(new item_query_requirement_1());//跳转执行查找
-//                        commonUtil.error_hint("数据加载完成");
+//                        commonUtil.error_hint_short("数据加载完成");
 //                    }
                 } else {
 

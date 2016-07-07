@@ -176,7 +176,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         {
             Log.e(TAG,e.toString());
         }
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         token=sessionManager.getToken();

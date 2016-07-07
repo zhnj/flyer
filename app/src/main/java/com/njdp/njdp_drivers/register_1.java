@@ -79,7 +79,7 @@ public class register_1 extends Activity implements View.OnClickListener{
         driverDao=new DriverDao(register_1.this);
         commonUtil=new CommonUtil(register_1.this);
         netUtil=new NetUtil(register_1.this);
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager();
 
         text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
         text_user_password = (EditText) super.findViewById(R.id.user_password);

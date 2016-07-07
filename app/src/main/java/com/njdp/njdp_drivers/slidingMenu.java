@@ -99,7 +99,7 @@ public class slidingMenu extends AppCompatActivity
         pDialog.setCancelable(false);
         driverDao=new DriverDao(getApplicationContext());
         savedFieldInfoDao=new SavedFieldInfoDao(getApplicationContext());
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager();
         commonUtil=new CommonUtil(slidingMenu.this);
         netUtil=new NetUtil(slidingMenu.this);
 

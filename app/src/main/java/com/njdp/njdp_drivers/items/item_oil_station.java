@@ -71,7 +71,7 @@ public class item_oil_station extends Fragment implements View.OnClickListener  
 
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
-        sessionManager=new SessionManager(mainMenu);
+        sessionManager=new SessionManager();
         gson=new Gson();
 
         token=sessionManager.getToken();

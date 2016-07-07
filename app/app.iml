@@ -72,14 +72,12 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.basgeekball/awesome-validation/1.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.gabrielemariotti.cards/cardslib-cards/2.1.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.github.gabrielemariotti.cards/cardslib-core/2.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.squareup/android-times-square/1.6.5/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.yolanda.nohttp/nohttp/1.0.4/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.zhy/okhttputils/2.4.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
@@ -108,16 +106,15 @@
     <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="awesome-validation-1.1" level="project" />
     <orderEntry type="library" exported="" name="httpclient-android-4.3.5.1" level="project" />
-    <orderEntry type="library" exported="" name="cardslib-core-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_util_v3_7_1" level="project" />
+    <orderEntry type="library" exported="" name="nohttp-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="guava-18.0" level="project" />
     <orderEntry type="library" exported="" name="ormlite-core-4.49-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_search_v3_7_1" level="project" />
     <orderEntry type="library" exported="" name="lbsCoreSDK" level="project" />
     <orderEntry type="library" exported="" name="BaiduNaviSDK_3.1.1" level="project" />
-    <orderEntry type="library" exported="" name="cardslib-cards-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_cloud_v3_7_1" level="project" />
     <orderEntry type="library" exported="" name="android-times-square-1.6.5" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
@@ -128,7 +125,6 @@
     <orderEntry type="library" exported="" name="BaiduHUDSDK_2.0" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_map_v3_7_1" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
-    <orderEntry type="library" exported="" name="cardview-v7-22.1.1" level="project" />
     <orderEntry type="module" module-name="MultiImageSelector" exported="" />
     <orderEntry type="module" module-name="AndroidBootstrap" exported="" />
     <orderEntry type="library" exported="" name="org.apache.http.legacy-android-23" level="project" />

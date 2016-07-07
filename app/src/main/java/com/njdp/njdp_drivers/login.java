@@ -3,7 +3,6 @@ package com.njdp.njdp_drivers;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -11,27 +10,27 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+//import com.android.volley.Request;
+//import com.android.volley.Response;
+//import com.android.volley.VolleyError;
+//import com.android.volley.toolbox.StringRequest;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
-import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
-import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.LruBitmapCache;
-import com.njdp.njdp_drivers.db.SQLiteHandler;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.njdp.njdp_drivers.util.CommonUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
+import com.yolanda.nohttp.rest.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +62,7 @@ public class login extends Activity {
     private NetUtil netUtil;
     private CommonUtil commonUtil;
     private int first_KeyBack = 0;
+    private static int FLAG_LOGIN=11101000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class login extends Activity {
 
         netUtil=new NetUtil(login.this);
         commonUtil =new CommonUtil(login.this);
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager();
         driverDao=new DriverDao(login.this);
         driver=new Driver();
 
@@ -163,62 +163,36 @@ public class login extends Activity {
         startActivity(intent);
     }
 
-    //checkLogin 验证帐号密码
-    public void checkLogin(final Driver driver) {
 
-        String tag_string_req = "req_login";
-
-        pDialog.setMessage("正在登录 ...");
-        showDialog();
-
+    private void checkLogin(final Driver driver)
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("fm_username", driver.getMachine_id());
+        params.put("fm_password", driver.getPassword());
+        params.put("fm_tag", "M");
+        com.yolanda.nohttp.rest.Request<JSONObject> strReq= NoHttp.createJsonObjectRequest(url, RequestMethod.POST);
+        strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
         if (netUtil.checkNet(login.this) == false) {
             hideDialog();
-            error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-
-            //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    url, mSuccessListener, mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("fm_username", driver.getMachine_id());
-                    params.put("fm_password", driver.getPassword());
-                    params.put("fm_tag", "M");
-
-                    return netUtil.checkParams(params);
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_LOGIN, strReq, new login_request());
         }
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
-
-    //响应服务器成功
-    private Response.Listener<String> mSuccessListener = new Response.Listener<String>() {
+    private class login_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
 
         @Override
-        public void onResponse(String response) {
-            Log.i("tagconvertstr", "["+response+"]");
-            Log.d(TAG, "Login Response: " + response.toString());
-            hideDialog();
+        public void onSucceed(int what, Response<JSONObject> response) {
 
             try {
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
                 int status = jObj.getInt("status");
 
                 // Check for error node in json
@@ -229,54 +203,33 @@ public class login extends Activity {
                     driver.setId(1);
                     driverDao.add(driver);
 
-                    //缓存用户信息
-//                    JSONObject user = jObj.getJSONObject("User");
-//                    String imageurl= user.getString("imageurl");
-//                    Bitmap bitmap = loadImage.getBitmap(imageurl);
-//                    nutil.saveBitmap(login.this, bitmap);
-//                    driver.setImage_url(path);
-
-                    error_hint("登录成功！");
+                    commonUtil.error_hint_short("登录成功！");
                     Intent intent = new Intent(login.this, mainpages.class);
                     startActivity(intent);
                     finish();
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
-                empty_hint(R.string.connect_error);
+                commonUtil.error_hint2_short(R.string.connect_error);
                 // JSON error
                 e.printStackTrace();
                 Log.e(TAG,"Json error：response错误！" + e.getMessage());
             }
         }
-    };
-
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener = new Response.ErrorListener()  {
 
         @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "Login Error: " + error.getMessage());
-            error_hint("服务器连接失败");
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Login Error: " + exception.getMessage());
+            commonUtil.error_hint_short("服务器连接失败");
+        }
+
+        @Override
+        public void onFinish(int what) {
             hideDialog();
         }
-    };
-
-    //错误信息提示1
-    private void error_hint(String str){
-        Toast toast = Toast.makeText(login.this, str, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,-50);
-        toast.show();
-    }
-
-    //错误信息提示2
-    private void empty_hint(int in){
-        Toast toast = Toast.makeText(login.this, getResources().getString(in), Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,-50);
-        toast.show();
     }
 
     //输入是否为空，判断是否禁用按钮
@@ -286,13 +239,15 @@ public class login extends Activity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0)&& !TextUtils.isEmpty(text_password.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_password.getText())) {
                     login_check.setClickable(true);
                     login_check.setEnabled(true);
                 } else {
@@ -306,13 +261,15 @@ public class login extends Activity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0)&& !TextUtils.isEmpty(text_username.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_username.getText())) {
                     login_check.setClickable(true);
                     login_check.setEnabled(true);
                 } else {
@@ -321,5 +278,17 @@ public class login extends Activity {
                 }
             }
         });
+    }
+
+
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

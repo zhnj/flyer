@@ -156,7 +156,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
             Log.e(TAG,e.toString());
         };
 
-        sessionManager=new SessionManager(getActivity());
+        sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         token=sessionManager.getToken();

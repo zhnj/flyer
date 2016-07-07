@@ -151,7 +151,7 @@ public class NetUtil {
     public void clearSession(Context context)
     {
         //清空session数据
-        new SessionManager(context).setLogin(false,"");
+        new SessionManager().setLogin(false,"");
         //清空sqlliter数据
         DriverDao driverDao=new DriverDao(context);
         FieldInfoDao fieldInfoDao=new FieldInfoDao(context);

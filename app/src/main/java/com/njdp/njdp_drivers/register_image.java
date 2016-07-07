@@ -90,7 +90,7 @@ public class register_image extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        session = new SessionManager(getApplicationContext());// Session manager
+        session = new SessionManager();// Session manager
         driverDao=new DriverDao(register_image.this);
         commonUtil=new CommonUtil(register_image.this);
         netUtil=new NetUtil(register_image.this);
@@ -307,7 +307,7 @@ public class register_image extends AppCompatActivity {
 //        showDialog();
 //
 //        if (netUtil.checkNet(register_image.this) == false) {
-//            error_hint("网络连接错误");
+//            error_hint_short("网络连接错误");
 //            return;
 //        }else {
 //            StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -354,7 +354,7 @@ public class register_image extends AppCompatActivity {
 //                    // Error occurred in registration. Get the error
 //                    String errorMsg = jObj.getString("error_msg");
 //                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-//                    commonUtil.error_hint( errorMsg);
+//                    commonUtil.error_hint_short( errorMsg);
 //                }
 //            } catch (JSONException e) {
 //                empty_hint(R.string.register_error2);

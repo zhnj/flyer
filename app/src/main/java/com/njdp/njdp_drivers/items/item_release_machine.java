@@ -209,7 +209,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         pDialog.setCancelable(false);
 
         url = AppConfig.URL_RELEASE;
-        sessionManager = new SessionManager(mainMenu);
+        sessionManager = new SessionManager();
         token = sessionManager.getToken();
         commonUtil = new CommonUtil(mainMenu);
         netUtil = new NetUtil(mainMenu);
@@ -293,7 +293,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
 //                datePickerPop.dismiss();
 //                break;
 //            case R.id.getHelp:
-//                commonUtil.error_hint("请选择作业起止日期！");
+//                commonUtil.error_hint_short("请选择作业起止日期！");
 //                break;
             default:
                 break;

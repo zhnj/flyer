@@ -112,10 +112,10 @@ public class register extends Activity {
 //                        if (verify_code.equals(t_verify_code)) {
 //                            register_next();
 //                        } else {
-//                            error_hint("验证码错误！");
+//                            error_hint_short("验证码错误！");
 //                        }
 //                    }else {
-//                        commonUtil.error_hint("程序错误，请联系管理员！");
+//                        commonUtil.error_hint_short("程序错误，请联系管理员！");
 //                    }
                     get_VerifyCode();
                 }

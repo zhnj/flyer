@@ -70,7 +70,7 @@ public class get_password2 extends AppCompatActivity {
 
         commonUtil =new CommonUtil(get_password2.this);
         netUtil=new NetUtil(get_password2.this);
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager();
         url= AppConfig.URL_LOGIN;
 
         //设置头像本地存储路径

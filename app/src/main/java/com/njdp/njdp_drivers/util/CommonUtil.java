@@ -31,21 +31,28 @@ public class CommonUtil {
         this.context = context;
     }
 
-    //错误信息提示
-    public void error_hint(String str){
+    //错误信息提示1
+    public void error_hint_short(String str){
         Toast toast = Toast.makeText(context, str, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, -50);
         toast.show();
     }
 
-    //信息未输入提示
+    //错误信息提示2
+    public void error_hint_long(String str){
+        Toast toast = Toast.makeText(context, str, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, -50);
+        toast.show();
+    }
+
+    //信息未输入提示1
     public void error_hint2_short(int in){
         Toast toast = Toast.makeText(context, context.getResources().getString(in), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER,0,-50);
         toast.show();
     }
 
-    //信息未输入提示
+    //信息未输入提示2
     public void error_hint2_long(int in){
         Toast toast = Toast.makeText(context, context.getResources().getString(in), Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER,0,-50);
@@ -131,7 +138,7 @@ public class CommonUtil {
             fOut.close();
         } catch (Exception e) {
             Log.e(TAG, "保存失败:" + e.getMessage());
-            error_hint("头像保存失败！请重试");
+            error_hint_short("头像保存失败！请重试");
             return false;
         }
         return true;
@@ -162,7 +169,7 @@ public class CommonUtil {
             fOut.close();
         } catch (Exception e) {
             Log.e(TAG, "保存失败:" + e.getMessage());
-            error_hint("头像保存失败！请重试");
+            error_hint_short("头像保存失败！请重试");
             return false;
         }
         return true;

@@ -1,24 +1,32 @@
 package com.njdp.njdp_drivers.db;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 public class SessionManager {
+
+    private static SessionManager sessionManager;
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
 
-    // Shared Preferences
-    SharedPreferences pref;
+    /**
+     * 是否是测试环境.
+     */
+    public static final boolean DEBUG = false;
 
-    SharedPreferences.Editor editor;
-    Context _context;
+    // Shared Preferences
+    private SharedPreferences pref;
+
+    private SharedPreferences.Editor editor;
+//    private static Context _context;
 
     // Shared pref mode
-    int PRIVATE_MODE = 0;
+//    private int PRIVATE_MODE = 0;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "NjdpLogin";
+    private static final String PREF_NAME = "NjdpSession";
 
     private static final String KEY_IS_LOGGEDIN = "isLoginIn";
 
@@ -37,9 +45,8 @@ public class SessionManager {
     private static final String WORK_TIME="work_time";
     private static final String REMARK="remark";
 
-    public SessionManager(Context context) {
-        this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+    public SessionManager() {
+        pref = AppController.getInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
@@ -79,8 +86,7 @@ public class SessionManager {
     }
 
     //清空发布历史
-    public void clearReleaseHistory()
-    {
+    public void clearReleaseHistory() {
         editor.putBoolean(RELEASE_FLAG, false);
     }
 
@@ -93,7 +99,7 @@ public class SessionManager {
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
     }
 
-    public String getToken(){
+    public String getToken() {
         return pref.getString(TOKEN_TAG, "");
     }
 
@@ -121,8 +127,54 @@ public class SessionManager {
         return pref.getString(MACHINE_TYPE, "");
     }
 
+    public static SessionManager getInstance() {
+        if (sessionManager == null)
+            sessionManager = new SessionManager();
+        return sessionManager;
+    }
+
     public boolean getReleaseFlag() {
         return pref.getBoolean(RELEASE_FLAG, false);
+    }
+
+    public void putInt(String key, int value) {
+        editor.putInt(key, value).commit();
+    }
+
+    public int getInt(String key, int defValue) {
+        return pref.getInt(key, defValue);
+    }
+
+    public void putString(String key, String value) {
+        editor.putString(key, value).commit();
+    }
+
+    public String getString(String key, String defValue) {
+        return pref.getString(key, defValue);
+    }
+
+    public void putBoolean(String key, boolean value) {
+        editor.putBoolean(key, value).commit();
+    }
+
+    public boolean getBoolean(String key, boolean defValue) {
+        return pref.getBoolean(key, defValue);
+    }
+
+    public void putLong(String key, long value) {
+        editor.putLong(key, value).commit();
+    }
+
+    public long getLong(String key, long defValue) {
+        return pref.getLong(key, defValue);
+    }
+
+    public void putFloat(String key, float value) {
+        editor.putFloat(key, value).commit();
+    }
+
+    public float getFloat(String key, float defValue) {
+        return pref.getFloat(key, defValue);
     }
 
 }

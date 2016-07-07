@@ -180,7 +180,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
         netUtil=new NetUtil(mainMenu);
 
-        sessionManager=new SessionManager(mainMenu);
+        sessionManager=new SessionManager();
         token=sessionManager.getToken();
 
         try {
@@ -629,7 +629,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         }
         public void onGetDrivingRouteResult(DrivingRouteResult result) {
             if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-//                commonUtil.error_hint("抱歉，未找到结果");
+//                commonUtil.error_hint_short("抱歉，未找到结果");
                 Log.d(TAG, "抱歉，未找到结果");
 
                 //驾车路径规划失败，则画直线,现在不起用
