@@ -164,6 +164,7 @@ public class login extends Activity {
     }
 
 
+    //登录
     private void checkLogin(final Driver driver)
     {
         Map<String, String> params = new HashMap<String, String>();
@@ -182,6 +183,7 @@ public class login extends Activity {
         }
     }
 
+    //登录访问服务器监听
     private class login_request implements OnResponseListener<JSONObject> {
         @Override
         public void onStart(int what) {
