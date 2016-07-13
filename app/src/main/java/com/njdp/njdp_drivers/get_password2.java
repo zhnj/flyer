@@ -51,7 +51,7 @@ public class get_password2 extends AppCompatActivity {
     private AwesomeValidation password_Validation=new AwesomeValidation(ValidationStyle.BASIC);
     private static final String TAG = register.class.getSimpleName();
     private ProgressDialog pDialog;
-    private SessionManager session;
+//    private SessionManager session;
 
     private LruBitmapCache loadImage=new LruBitmapCache();
     private String url;
@@ -73,7 +73,7 @@ public class get_password2 extends AppCompatActivity {
 
         commonUtil =new CommonUtil(get_password2.this);
         netUtil=new NetUtil(get_password2.this);
-        session = new SessionManager();
+//        session = new SessionManager();
         gson=new Gson();
         url= AppConfig.URL_GETPASSWORD2;
 
