@@ -23,15 +23,14 @@ public class TimeCount extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinished) {
         btn.setEnabled(false);//设置不能点击
-        btn.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));
         btn.setText(millisUntilFinished / 1000 + "秒后可重新获取");//设置倒计时时间
-        btn.setTextColor(Color.BLACK);//倒计时，文字显示为黑色
+        btn.setTextColor(Color.GRAY);//倒计时，文字显示为灰色
 
     }
     @Override
     public void onFinish() {
         btn.setText("重新获取验证码");
-        btn.setTextColor(Color.GRAY);//倒计时，文字显示为黑色
+        btn.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));//倒计结束时，文字显示为白色
         btn.setEnabled(true);
 
     }

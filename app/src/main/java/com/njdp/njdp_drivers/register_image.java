@@ -112,7 +112,7 @@ public class register_image extends AppCompatActivity {
             driver.setSite(driver_bundle.getString("address"));
         }else
         {
-            commonUtil.error_hint("程序错误！请联系管理员！");
+            commonUtil.error_hint_short("程序错误！请联系管理员！");
         }
 
         //服务条款
@@ -251,12 +251,12 @@ public class register_image extends AppCompatActivity {
 
         if (!file.exists()) {
             hideDialog();
-            commonUtil.error_hint("头像图片不存在!请重新选择！");
+            commonUtil.error_hint_short("头像图片不存在!请重新选择！");
             IsSetImage=false;
             return;
         } else if (!netUtil.checkNet(register_image.this)) {
             hideDialog();
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         }else {
             OkHttpUtils.post()

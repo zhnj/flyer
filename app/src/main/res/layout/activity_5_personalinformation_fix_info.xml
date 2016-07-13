@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin5"
             android:layout_alignParentRight="true"
-            bootstrap:bootstrapBrand="primary"
+            bootstrap:bootstrapBrand="secondary"
             bootstrap:bootstrapSize="lg"
             bootstrap:buttonMode="regular"
             bootstrap:showOutline="false"

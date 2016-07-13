@@ -43,7 +43,6 @@ import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
 public class item_personalinformation_1_fix_info extends Fragment implements View.OnClickListener {
     private slidingMenu mainMenu;
-    private DrawerLayout menu;
     private EditText edt_fix_input;
     private TextView t_fix_hint;
     private TextView t_fix_title;
@@ -93,7 +92,6 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         view.findViewById(R.id.fix_save_change).setOnClickListener(this);
 
         mainMenu=(slidingMenu)getActivity();
-        menu=mainMenu.drawer;
 
         sessionManager=new SessionManager();
         token=sessionManager.getToken();
@@ -158,7 +156,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
     private void check_fix_info()//检测输入的信息
     {
         if(commonUtil.isempty(edt_fix_input)){
-            commonUtil.error_hint("请输入完整的信息");
+            commonUtil.error_hint_short("请输入完整的信息");
         }else {
             if (fixValidation.validate()) {
                 Log.e(TAG, "检测通过："+mainMenu.fix_info);
@@ -173,7 +171,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         String tag_string_req = "req_fix_info";
         if (netUtil.checkNet(mainMenu) == false) {
             mainMenu.hideDialog();
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
             //服务器请求
@@ -205,7 +203,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -235,11 +233,11 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("保存失败,请重试");
+                    commonUtil.error_hint_short("保存失败,请重试");
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "2 Json error：response错误" + e.getMessage());
-                commonUtil.error_hint("保存失败,请重试" );
+                commonUtil.error_hint_short("保存失败,请重试" );
             }
         }
     }

@@ -197,9 +197,8 @@ public class login extends Activity {
                 JSONObject jObj=response.get();
                 int status = jObj.getInt("status");
 
-                // Check for error node in json
                 if (status==0) {
-                    // Create Login session
+
                     String token=jObj.getString("result");
                     session.setLogin(true,token);
                     driver.setId(1);

@@ -350,7 +350,7 @@ public class slidingMenu extends AppCompatActivity
 
         if (netUtil.checkNet(slidingMenu.this) == false) {
 //            hideDialog();
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
 
@@ -388,7 +388,7 @@ public class slidingMenu extends AppCompatActivity
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(slidingMenu.this);
                     Intent intent = new Intent(slidingMenu.this, login.class);
@@ -445,7 +445,7 @@ public class slidingMenu extends AppCompatActivity
 
         @Override
         public void onErrorResponse(VolleyError error) {
-//            hideDialog();
+            hideDialog();
             netUtil.testVolley(error);
             Log.e(TAG, "3 ConncectService Error错误!");
             Log.e("GET-ERROR", error.getMessage(), error);
@@ -453,7 +453,7 @@ public class slidingMenu extends AppCompatActivity
                 byte[] htmlBodyBytes = error.networkResponse.data;
                 Log.e("GET-ERROR", new String(htmlBodyBytes), error);
             } catch (Exception e){}
-            commonUtil.error_hint("服务器连接失败！");
+            commonUtil.error_hint_short("服务器连接失败！");
         }
     };
 

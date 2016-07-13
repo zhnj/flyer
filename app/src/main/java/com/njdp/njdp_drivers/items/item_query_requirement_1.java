@@ -508,7 +508,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -556,7 +556,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             LatLng ll = new LatLng(Double.valueOf(GPS_latitude),Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            commonUtil.error_hint("自动定位成功");
+            commonUtil.error_hint_short("自动定位成功");
         } else{
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
             try {
@@ -566,10 +566,10 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                         curlocation.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
-                commonUtil.error_hint("自动定位成功");
+                commonUtil.error_hint_short("自动定位成功");
             }catch (Exception e)
             {
-                commonUtil.error_hint("自动定位失败，请重试！");
+                commonUtil.error_hint_short("自动定位失败，请重试！");
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
         }

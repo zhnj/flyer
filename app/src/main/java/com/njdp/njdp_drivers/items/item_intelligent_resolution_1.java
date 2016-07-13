@@ -242,7 +242,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     });
 
                 }else {
-                    commonUtil.error_hint("未获取到农田信息，请返回上一个界面重新选择！");
+                    commonUtil.error_hint_short("未获取到农田信息，请返回上一个界面重新选择！");
                 }
                 return convertView;
             }
@@ -353,7 +353,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
                     initDeployInfo();
                 }else {
-                    commonUtil.error_hint("您还没有选择作业地点，请选择！");
+                    commonUtil.error_hint_short("您还没有选择作业地点，请选择！");
                 }
                 break;
             default:
@@ -370,7 +370,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         mainMenu.showDialog();
 
         if (!netUtil.checkNet(mainMenu)) {
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             mainMenu.hideDialog();
         } else {
             //服务器请求
@@ -429,7 +429,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -454,7 +454,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
 
                     String errorMsg = jObj.getString("error_msg");
                     Log.e(TAG, "Json error:json错误：" + errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
 

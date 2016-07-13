@@ -24,6 +24,7 @@
     <dimen name="padding10">10dp</dimen>
     <dimen name="padding15">15dp</dimen>
     <dimen name="padding20">20dp</dimen>
+    <dimen name="padding25">25dp</dimen>
 
     <dimen name="height20">20dp</dimen>
     <dimen name="height25">25dp</dimen>

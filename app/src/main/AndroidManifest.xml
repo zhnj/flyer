@@ -170,7 +170,7 @@
         </Fragment>
 
         <activity
-            android:name=".items.item_personalinformation_2_fix_site"
+            android:name=".items.item_personalinformation_2_fix_password"
             android:label="@string/title_activity_item_personalinformation_2_fix_site"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>

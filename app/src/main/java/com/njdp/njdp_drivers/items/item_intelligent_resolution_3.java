@@ -368,7 +368,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                     gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
                 }
             } catch (Exception e) {
-                commonUtil.error_hint("定位失败请重试");
+                commonUtil.error_hint_short("定位失败请重试");
                 Log.e(TAG, e.toString());
             }
 
@@ -950,7 +950,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -1003,7 +1003,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 Log.e(TAG, "百度定位成功");
             }catch (Exception e)
             {
-                commonUtil.error_hint("自动定位失败，请重试！");
+                commonUtil.error_hint_short("自动定位失败，请重试！");
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
         }

@@ -23,17 +23,18 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.njdp.njdp_drivers.changeDefault.TimeCount;
 import com.njdp.njdp_drivers.db.AppConfig;
-import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import me.nereo.multi_image_selector.bean.Image;
 
 public class get_password extends AppCompatActivity {
 
@@ -49,18 +50,24 @@ public class get_password extends AppCompatActivity {
     private ProgressDialog pDialog;
     private CommonUtil commonUtil ;
     private NetUtil netUtil;
+    private String url;
+    private String url_code;
+    private static int FLAG_GETPASSWORD1=11101002;
+    private static int FLAG_GETVERIFYCODE=11101001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_password);
+        url=AppConfig.URL_GETPASSWORD1;
+        url_code=AppConfig.URL_GET_VERIFYCODE;
 
         verification_code_Validation.addValidation(get_password.this, R.id.user_telephone, "^1[3-9]\\d{9}+$", R.string.err_phone);
 
         this.getPassword_next =(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.btn_getPassword_next);
         this. btn_verification_code=(Button) super.findViewById(R.id.btn_get_verificationCode);
         this.text_telephone =(EditText) super.findViewById(R.id.user_telephone);
-        this.text_user_license_plater =(EditText) super.findViewById(R.id.user_username);
+//        this.text_user_license_plater =(EditText) super.findViewById(R.id.user_username);
         this.text_VerificationCcode =(EditText) super.findViewById(R.id.user_VerifyCode);
         this.btn_back=(ImageButton)super.findViewById(R.id.getBack);
 
@@ -72,7 +79,6 @@ public class get_password extends AppCompatActivity {
         commonUtil =new CommonUtil(get_password.this);
         netUtil=new NetUtil(get_password.this);
 
-        // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
@@ -82,108 +88,80 @@ public class get_password extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (commonUtil.isempty(text_telephone)) {
-                    commonUtil.error_hint("手机号不能为空");
+                    commonUtil.error_hint_short("手机号不能为空");
                 } else if (verification_code_Validation.validate() ==true) {
-                    String username= text_telephone.getText().toString().trim();
-                    String telephone= text_user_license_plater.getText().toString().trim();
+//                    String username= text_telephone.getText().toString().trim();
+                    String telephone= text_telephone.getText().toString().trim();
+                    get_VerifyCode(telephone);
                     //按钮60s倒计时，禁用60s
                     TimeCount time_CountDown = new TimeCount(60000, 1000, btn_verification_code,get_password.this);
                     time_CountDown.start();
-                    empty_hint(R.string.vertify_hint);
                 }
             }
         });
 
         btn_back.setOnClickListener(new backClickListener());
+        getPassword_next.setOnClickListener(new nextClickLIstener());
 
     }
 
     //获取验证码
-    private void get_VerifyCode(){
-
-        String tag_string_req = "req_register_driver_VerifyCode";
-
-        if(netUtil.checkNet(get_password.this) == false) {
-            commonUtil.error_hint( "网络连接错误");
+    private void get_VerifyCode(String telephone){
+        com.yolanda.nohttp.rest.Request<JSONObject> req_get_verifyCode= NoHttp.createJsonObjectRequest(url_code, RequestMethod.POST);
+        req_get_verifyCode.add("phone",telephone);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(get_password.this) == false) {
+            hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_REGISTER, vertifySuccessListener, mErrorListener) {
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("license_plater", text_user_license_plater.getText().toString().trim());
-                    params.put("telephone", text_telephone.getText().toString().trim());
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_GETVERIFYCODE, req_get_verifyCode, new verifyCode_request());
         }
     }
 
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
-
+    //获取验证码访问服务器监听
+    private class verifyCode_request implements OnResponseListener<JSONObject> {
         @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "Register Error: " + error.getMessage());
-            commonUtil.error_hint( "服务器连接失败");
-            hideDialog();
+        public void onStart(int what) {
+            showDialog();
         }
-    };
-
-    //验证码响应服务器成功
-    private Response.Listener<String> vertifySuccessListener =new Response.Listener<String>() {
 
         @Override
-        public void onResponse(String response) {
-            Log.d(TAG, "Register Response: " + response.toString());
-            hideDialog();
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
 
             try {
-                JSONObject jObj = new JSONObject(response);
-                boolean error = jObj.getBoolean("error");
-                if (!error) {
-                    //服务器返回的验证码
-                    verify_code=jObj.getString("verify_code");
+                JSONObject jObj=response.get();
+                int status = jObj.getInt("status");
+
+                if (status==0) {
+                    String errorMsg=jObj.getString("result");
+                    Log.e(TAG, "发送成功：" + errorMsg);
+                    commonUtil.error_hint2_long(R.string.vertify_hint);
                 } else {
-                    // Error occurred in registration. Get the error
-                    String errorMsg = jObj.getString("error_msg");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint( errorMsg);
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误1:" + errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
+                commonUtil.error_hint2_short(R.string.connect_error);
+                // JSON error
                 e.printStackTrace();
-                empty_hint(R.string.vertify_error2);
+                Log.e(TAG,"Json error：response错误2" + e.getMessage());
             }
-
         }
-    };
 
-    //跳转到设置新密码页面
-    public void getPassword_next(View v){
-        String t_verify_code= text_VerificationCcode.getText().toString().trim();
-        if((verify_code!=null)&&(verify_code!=""))
-        {
-            if (verify_code.equals(t_verify_code)) {
-                Intent intent = new Intent(get_password.this, get_password2.class);
-                Bundle get_driverr_bundle = new Bundle();
-                get_driverr_bundle.putString("license_plater", text_user_license_plater.getText().toString());
-                get_driverr_bundle.putString("telephone", text_telephone.getText().toString());
-                get_driverr_bundle.putBoolean("isDriver", true);
-                intent.putExtra("driver_access", get_driverr_bundle);
-                startActivity(intent);
-            } else {
-                commonUtil.error_hint( "验证码错误！");
-            }
-        }else
-        {
-            commonUtil.error_hint("请验证手机号，获取验证码！");
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Login Error: " + exception.getMessage());
+            commonUtil.error_hint_short("服务器连接失败");
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
         }
     }
+
 
     //输入是否为空，判断是否禁用按钮
     private void editTextIsNull(){
@@ -201,7 +179,7 @@ public class get_password extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_license_plater.getText()) && !TextUtils.isEmpty(text_VerificationCcode.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_VerificationCcode.getText())) {
                     getPassword_next.setClickable(true);
                     getPassword_next.setEnabled(true);
                 } else {
@@ -211,28 +189,28 @@ public class get_password extends AppCompatActivity {
             }
         });
 
-        text_user_license_plater.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_telephone.getText()) && !TextUtils.isEmpty(text_VerificationCcode.getText())) {
-                    getPassword_next.setClickable(true);
-                    getPassword_next.setEnabled(true);
-                } else {
-                    getPassword_next.setEnabled(false);
-                    getPassword_next.setClickable(false);
-                }
-            }
-        });
+//        text_user_license_plater.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if ((s.length() > 0) && !TextUtils.isEmpty(text_telephone.getText()) && !TextUtils.isEmpty(text_VerificationCcode.getText())) {
+//                    getPassword_next.setClickable(true);
+//                    getPassword_next.setEnabled(true);
+//                } else {
+//                    getPassword_next.setEnabled(false);
+//                    getPassword_next.setClickable(false);
+//                }
+//            }
+//        });
 
         text_VerificationCcode.addTextChangedListener(new TextWatcher() {
             @Override
@@ -247,7 +225,7 @@ public class get_password extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_telephone.getText()) && !TextUtils.isEmpty(text_user_license_plater.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_telephone.getText())) {
                     getPassword_next.setClickable(true);
                     getPassword_next.setEnabled(true);
                 } else {
@@ -256,23 +234,16 @@ public class get_password extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
     }
-
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }
-
-    //信息未输入提示
-    private void empty_hint(int in){
-        Toast toast = Toast.makeText(get_password.this, getResources().getString(in), Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, -50);
-        toast.show();
     }
 
     //返回监听
@@ -282,5 +253,78 @@ public class get_password extends AppCompatActivity {
             finish();
         }
     }
+
+    //下一步，验证验证码跳转监听
+    private class nextClickLIstener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            if (!commonUtil.isempty(text_VerificationCcode)) {
+                String telephone = text_telephone.getText().toString().trim();
+                String verifyCode = text_VerificationCcode.getText().toString().trim();
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("phone", telephone);
+                params.put("code", verifyCode);
+                com.yolanda.nohttp.rest.Request<JSONObject> req_get_verifyCode = NoHttp.createJsonObjectRequest(url, RequestMethod.POST);
+                req_get_verifyCode.add(params);
+                RequestQueue requestQueue = NoHttp.newRequestQueue();
+                if (netUtil.checkNet(get_password.this) == false) {
+                    hideDialog();
+                    commonUtil.error_hint_short("网络连接错误");
+                    return;
+                } else {
+                    requestQueue.add(FLAG_GETPASSWORD1, req_get_verifyCode, new verify_code_request());
+                }
+            } else {
+                commonUtil.error_hint_short("请填写验证码！");}
+        }
+    }
+
+    //验证验证码访问服务器监听
+    private class verify_code_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                int status = jObj.getInt("status");
+
+                if (status==0) {
+                    String errorMsg=jObj.getString("result");
+                    Log.d(TAG, "验证码验证成功：" + errorMsg);
+                    Intent intent = new Intent(get_password.this, get_password2.class);
+                    Bundle get_driverr_bundle = new Bundle();
+                    get_driverr_bundle.putString("telephone", text_telephone.getText().toString());
+                    intent.putExtra("driver_access", get_driverr_bundle);
+                    startActivity(intent);
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误1:" + errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
+                }
+            } catch (JSONException e) {
+                commonUtil.error_hint2_short(R.string.connect_error);
+                e.printStackTrace();
+                Log.e(TAG,"Json error：response错误2:" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "VerifyCode Error: " + exception.getMessage());
+            commonUtil.error_hint_short("服务器连接失败");
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
 
 }

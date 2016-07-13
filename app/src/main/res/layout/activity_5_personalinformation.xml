@@ -125,22 +125,22 @@
         <TextView
             style="@style/personalinformation_left"
             android:text="地区" />
-            <TextView
-                android:id="@+id/input_driver_region"
-                style="@style/personalinformation_right"
-                android:text="河北省保定市徐水县"/>
+        <TextView
+            android:id="@+id/input_driver_region"
+            style="@style/personalinformation_right"
+            android:text="河北省保定市徐水县"/>
     </LinearLayout>
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/login_out"
-        android:layout_width="wrap_content"
+    <View
+        style="@style/personalinformation_line1"/>
+    <TextView
+        style="@style/personalinformation_left"
+        android:id="@+id/settings"
+        android:drawableLeft="@drawable/ic_settings_white_24dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin30"
-        android:layout_gravity="center_horizontal"
-        android:text="退出登录"
-        bootstrap:bootstrapBrand="danger"
-        bootstrap:bootstrapSize="lg"
-        bootstrap:buttonMode="regular"
-        bootstrap:showOutline="false"
-        bootstrap:roundedCorners="true" />
+        android:text="设置"
+        android:textSize="@dimen/font20"/>
+    <View
+        style="@style/personalinformation_line1"/>
 
 </LinearLayout>

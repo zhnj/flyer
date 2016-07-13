@@ -228,7 +228,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                     gohere.routeplanToNavi();
 
                 }else{
-                    commonUtil.error_hint("请选择作业地点！");
+                    commonUtil.error_hint_short("请选择作业地点！");
                 }
                 break;
             default:
@@ -488,7 +488,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -540,7 +540,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 GPS_longitude = String.valueOf(curlocation.getLongitude());
             }catch (Exception e)
             {
-                commonUtil.error_hint("自动定位失败，请重试！");
+                commonUtil.error_hint_short("自动定位失败，请重试！");
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
         }

@@ -360,7 +360,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         showDialog();
 
         if (netUtil.checkNet(mainMenu) == false) {
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             hideDialog();
             return;
         } else {
@@ -398,14 +398,14 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
                     SysCloseActivity.getInstance().exit();
                 } else if (status == 0) {
                     Log.e(TAG,"农机信息发布成功");
-                    commonUtil.error_hint("农机信息发布成功");
+                    commonUtil.error_hint_short("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
                     sessionManager.setReleaseHistory(true,s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
@@ -416,7 +416,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -19,7 +19,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
@@ -74,6 +76,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private TextView t_weixin;
     private TextView t_qq;
     private TextView t_region;
+    private TextView btn_setting;
     private DriverDao driverDao;
     private NetUtil netUtil;
     private Driver driver;
@@ -109,7 +112,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         view.findViewById(R.id.driver_weixin).setOnClickListener(this);
         view.findViewById(R.id.driver_qq).setOnClickListener(this);
         view.findViewById(R.id.driver_region).setOnClickListener(this);
-        view.findViewById(R.id.login_out).setOnClickListener(this);
+//        view.findViewById(R.id.login_out).setOnClickListener(this);
+        view.findViewById(R.id.settings).setOnClickListener(this);
         this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
         this.l_machine_id=(LinearLayout)view.findViewById(R.id.driver_machine_id);
         this.l_telephone=(LinearLayout)view.findViewById(R.id.driver_telephone);
@@ -208,11 +212,14 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 break;
             case R.id.driver_region:
                 break;
-            case R.id.login_out:
-                Log.e(TAG, "退出登录");
-                netUtil.clearSession(mainMenu);
-                mainMenu.backLogin();
-                SysCloseActivity.getInstance().exit();
+//            case R.id.login_out:
+//                Log.e(TAG, "退出登录");
+//                netUtil.clearSession(mainMenu);
+//                mainMenu.backLogin();
+//                SysCloseActivity.getInstance().exit();
+//                break;
+            case R.id.settings:
+                mainMenu.addBackFragment(new item_personalinformation_setting());
                 break;
             default:
                 break;
@@ -252,7 +259,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
         if (netUtil.checkNet(mainMenu) == false) {
             mainMenu.hideDialog();
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
 
@@ -262,7 +269,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
                 @Override
                 protected Map<String, String> getParams() {
-                    // Posting parameters to login url
+
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("token", token);
 
@@ -270,7 +277,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 }
             };
 
-            // Adding request to request queue
             AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
     }
@@ -291,7 +297,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     Intent intent = new Intent(mainMenu, login.class);

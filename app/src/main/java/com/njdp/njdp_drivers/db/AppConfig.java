@@ -4,9 +4,9 @@ public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 测试 url
 
-//    public static String URL_IP="http://218.12.43.229:81/";//服务器地址
+//    public static String URL_IP="http://218.12.43.229:81/";//服务器地址1
 
-    public static String URL_IP="http://211.68.180.9:88/";//服务器地址
+    public static String URL_IP="http://211.68.180.9:88/";//服务器地址2
 
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 
@@ -16,9 +16,9 @@ public class AppConfig {
 
     public static String URL_REGISTER = URL_IP+"machineRegister";// 注册 url
 
-    public static String URL_GETPASSWORD1= URL_IP+"db_xskq/forget_password_isAccess.php";// 找回密码1 url
+    public static String URL_GETPASSWORD1= URL_IP+"forgetPassword";// 找回密码1 url
 
-    public static String URL_GETPASSWORD2= URL_IP+"db_xskq/forget_password_finish.php";// 找回密码2 url
+    public static String URL_GETPASSWORD2= URL_IP+"changePassword";// 找回密码2 url
 
     public static String URL_RELEASE= URL_IP+"app/farmMachine/store";//农机发布
 
@@ -41,6 +41,8 @@ public class AppConfig {
     public static String URL_FIXPERSONINFO= URL_IP+"app/userInfo";//修改个人信息
 
     public static String URL_REPAIRE=URL_IP+"app/repairStation/index";//维修站
+
+    public static String URL_FIXPASSWORD=URL_IP+"resetPassword";//修改密码
 
 
 }

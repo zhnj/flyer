@@ -175,7 +175,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 datePickerPop.dismiss();
                 break;
             case R.id.getHelp:
-                commonUtil.error_hint("请选择作业起止日期！");
+                commonUtil.error_hint_short("请选择作业起止日期！");
                 break;
         }
     }
@@ -189,7 +189,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         Log.e(TAG,token);
         String tag_string_req = "req_JobHistory";
         if (!netUtil.checkNet(mainMenu)) {
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             hideDialog();
         } else {
             listData.clear();
@@ -231,7 +231,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Token 错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -240,7 +240,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
 
                     String result = jObj.getString("result");
                     Log.e(TAG, result);
-                    commonUtil.error_hint("数据加载完成");
+                    commonUtil.error_hint_short("数据加载完成");
                     listData=gson.fromJson(result,new TypeToken<ArrayList<JobHistory>>() {}.getType());
                     if(listData.size()>=1){no_item.setVisibility(View.GONE);}//数据条数为0,提示作业历史
                     for(int i=0;i<listData.size();i++)
@@ -268,18 +268,18 @@ public class item_job_history extends Fragment implements View.OnClickListener{
                     no_item.setVisibility(View.VISIBLE);
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("服务器数据错误1：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
                 }
             } catch (JSONException e) {
 
                 no_item.setVisibility(View.VISIBLE);
                 Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误2：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
             } catch (Exception e) {
 
                 no_item.setVisibility(View.VISIBLE);
                 Log.e(TAG, "3 服务器数据错误：response错误:" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误3：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误3：response错误:" + e.getMessage());
             }
 
         }
@@ -291,7 +291,7 @@ public class item_job_history extends Fragment implements View.OnClickListener{
         public void onErrorResponse(VolleyError volleyError) {
             no_item.setVisibility(View.VISIBLE);
             hideDialog();
-            commonUtil.error_hint("服务器连接失败！");
+            commonUtil.error_hint_short("服务器连接失败！");
             netUtil.testVolley(volleyError);
             Log.e(TAG, "4 ConncectService Error错误!");
             Log.e("GET-ERROR", volleyError.getMessage(), volleyError);

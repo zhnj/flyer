@@ -159,7 +159,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
                         confirmPopShow();
                     }
                 }else{
-                    commonUtil.error_hint("手机号不能为空!");
+                    commonUtil.error_hint_short("手机号不能为空!");
                 }
                 break;
             case R.id.btn_cancel:
@@ -178,7 +178,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
     {
         String tag_string_req = "req_ServerObject";
         if (!netUtil.checkNet(mainMenu)) {
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             hideDialog();
         } else {
 
@@ -220,7 +220,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Token 错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -228,22 +228,22 @@ public class item_service_object extends Fragment implements View.OnClickListene
                 } else if (status == 0) {
                     String Msg = jObj.getString("result");
                     Log.e(TAG, Msg);
-                    commonUtil.error_hint("服务对象设置成功");
+                    commonUtil.error_hint_short("服务对象设置成功");
                     mainMenu.finish();//设置成功后，退出界面
                 } else {
 
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("服务器数据错误1：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
                 }
             } catch (JSONException e) {
 
                 Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误2：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
             } catch (Exception e) {
 
                 Log.e(TAG, "3 服务器数据错误：response错误:" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误3：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误3：response错误:" + e.getMessage());
             }
         }
     }
@@ -259,7 +259,7 @@ public class item_service_object extends Fragment implements View.OnClickListene
                 byte[] htmlBodyBytes = error.networkResponse.data;
                 Log.e("GET-ERROR", new String(htmlBodyBytes), error);
             } catch (Exception e){}
-            commonUtil.error_hint("服务器连接失败！");
+            commonUtil.error_hint_short("服务器连接失败！");
             hideDialog();
         }
     };

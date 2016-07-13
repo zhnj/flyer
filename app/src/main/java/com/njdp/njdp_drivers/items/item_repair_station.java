@@ -263,7 +263,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
                     }
                 } catch (Exception e) {
-                    commonUtil.error_hint("定位失败请重试！");
+                    commonUtil.error_hint_short("定位失败请重试！");
                     Log.e(TAG, e.toString());
                 }
                 break;
@@ -282,7 +282,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
 //        showDialog();
 
         if(!netUtil.checkNet(mainMenu)){
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
 //            hideDialog();
         }else {
             //服务器请求
@@ -340,7 +340,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     if (status == 1) {
                         String errorMsg = jObj.getString("result");
                         Log.e(TAG, "Json error：response错误:" + errorMsg);
-                        commonUtil.error_hint("密钥失效，请重新登录");
+                        commonUtil.error_hint_short("密钥失效，请重新登录");
                         //清空数据，重新登录
                         netUtil.clearSession(mainMenu);
                         mainMenu.backLogin();
@@ -366,7 +366,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                         markRepairStation(repairInfos);
 
                     } else {
-                        commonUtil.error_hint("其它位置错误");
+                        commonUtil.error_hint_short("其它位置错误");
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -667,7 +667,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -715,7 +715,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     Double.valueOf(GPS_longitude));
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
-            commonUtil.error_hint("GPS定位成功");
+            commonUtil.error_hint_short("GPS定位成功");
             initRepairStationInfo(sl_area, token);
         } else {
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
@@ -730,7 +730,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                 initRepairStationInfo(sl_area, token);
             }catch (Exception e)
             {
-                commonUtil.error_hint("自动定位失败，请重试！");
+                commonUtil.error_hint_short("自动定位失败，请重试！");
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
         }
@@ -997,7 +997,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         if (listItem.get(tellindex).get("ItemPhone") == null || "".equals((listItem.get(tellindex).get("ItemPhone")))) {
-                            commonUtil.error_hint("无联系电话或联系电话错误");
+                            commonUtil.error_hint_short("无联系电话或联系电话错误");
                         } else {
                             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listItem.get(tellindex).get("ItemPhone")));
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1018,7 +1018,7 @@ public class item_repair_station extends Fragment implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         if (listItem.get(qqindex).get("ItemQQ") == null || "".equals(listItem.get(qqindex).get("ItemQQ"))) {
-                            commonUtil.error_hint("无QQ号或QQ号错误");
+                            commonUtil.error_hint_short("无QQ号或QQ号错误");
                         } else {
                             String url = "mqqwpa://im/chat?chat_type=wpa&uin=" + listItem.get(qqindex).get("ItemQQ");
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));

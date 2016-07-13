@@ -98,13 +98,13 @@ public class NetUtil {
                                 ISCONNECTED = false;
                                 String errorMsg = jObj.getString("error_msg");
                                 Log.e(TAG,errorMsg);
-                                commonUtil.error_hint( "服务器连接失败");
+                                commonUtil.error_hint_short( "服务器连接失败");
                             }
                         } catch (JSONException e) {
                             ISCONNECTED = false;
                             e.printStackTrace();
                             Log.e(TAG, "Json error：response错误！" + e.getMessage());
-                            commonUtil.error_hint("服务器连接失败");
+                            commonUtil.error_hint_short("服务器连接失败");
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -112,7 +112,7 @@ public class NetUtil {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Connect Error: " + error.getMessage());
-                commonUtil.error_hint("服务器连接失败");
+                commonUtil.error_hint_short("服务器连接失败");
             }
         }) {
             @Override

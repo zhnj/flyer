@@ -330,7 +330,7 @@ public class register_2 extends Activity implements View.OnClickListener{
                     String err_status = jObj.getString("status");
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

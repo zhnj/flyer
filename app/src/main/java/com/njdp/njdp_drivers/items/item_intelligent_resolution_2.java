@@ -233,7 +233,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                         }catch (Exception e)
                         {
                             Log.e(TAG, "导航失败，错误：" + e.toString() );
-                            commonUtil.error_hint("请重新选择");
+                            commonUtil.error_hint_short("请重新选择");
                         }
                     }
 
@@ -386,7 +386,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         mainMenu.showDialog();
 
         if(!netUtil.checkNet(mainMenu)){
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             mainMenu.hideDialog();
         }else {
             //服务器请求
@@ -427,7 +427,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -441,12 +441,12 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
 
                     String errorMsg = jObj.getString("error_msg");
                     Log.e(TAG, "服务器数据错误1：Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("服务器数据错误1"+errorMsg);
+                    commonUtil.error_hint_short("服务器数据错误1" + errorMsg);
                 }
             } catch (JSONException e) {
                 // JSON error
                 Log.e(TAG, "服务器数据错误2：" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误1" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误1" + e.getMessage());
             }
         }
     };

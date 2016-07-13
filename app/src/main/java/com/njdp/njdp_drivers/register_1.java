@@ -29,6 +29,10 @@ import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +61,7 @@ public class register_1 extends Activity implements View.OnClickListener{
     private String password;
     private String verify_code;
     private String token;
+    private static int FLAG_REGISTER_1=11101005;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,42 +257,59 @@ public class register_1 extends Activity implements View.OnClickListener{
     //注册
     private void register_user(){
 
-        String tag_string_req = "req_register_driver";
-        if(netUtil.checkNet(register_1.this)==false){
-            error_hint("网络连接错误");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone", telephone);
+        params.put("machine_id", machine_id);
+        params.put("password", password);
+        params.put("code", verify_code);
+        com.yolanda.nohttp.rest.Request<JSONObject> strReq= NoHttp.createJsonObjectRequest(AppConfig.URL_REGISTER, RequestMethod.POST);
+        strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(register_1.this) == false) {
             hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_REGISTER, mSuccessListener, mErrorListener) {
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("phone", telephone);
-                    params.put("machine_id", machine_id);
-                    params.put("password", password);
-                    params.put("code", verify_code);
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_REGISTER_1, strReq, new register_request());
         }
+
+//        String tag_string_req = "req_register_driver";
+//        if(netUtil.checkNet(register_1.this)==false){
+//            error_hint("网络连接错误");
+//            hideDialog();
+//            return;
+//        } else {
+//            StringRequest strReq = new StringRequest(Request.Method.POST,
+//                    AppConfig.URL_REGISTER, mSuccessListener, mErrorListener) {
+//                @Override
+//                protected Map<String, String> getParams() {
+//
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    params.put("phone", telephone);
+//                    params.put("machine_id", machine_id);
+//                    params.put("password", password);
+//                    params.put("code", verify_code);
+//                    return params;
+//                }
+//            };
+//
+//            // Adding request to request queue
+//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+//        }
     }
 
-
-    //响应服务器成功
-    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+    //注册访问拂去其监听
+    private class register_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
 
         @Override
-        public void onResponse(String response) {
-            hideDialog();
-            Log.e(TAG, "Register Response: " + response.toString());
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
 
             try {
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
                 int status = jObj.getInt("status");
                 if (status==0) {
                     token=jObj.getString("result");
@@ -303,15 +325,61 @@ public class register_1 extends Activity implements View.OnClickListener{
                     String err_status = jObj.getString("status");
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
                 empty_hint(R.string.vertify_error2);
             }
-
         }
-    };
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Register1 Error: " + exception.getMessage());
+            commonUtil.error_hint_short("服务器连接失败");
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
+//    //响应服务器成功
+//    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+//
+//        @Override
+//        public void onResponse(String response) {
+//            hideDialog();
+//            Log.e(TAG, "Register Response: " + response.toString());
+//
+//            try {
+//                JSONObject jObj = new JSONObject(response);
+//                int status = jObj.getInt("status");
+//                if (status==0) {
+//                    token=jObj.getString("result");
+//                    session.setLogin(true,token);
+//                    driver.setId(1);
+//                    driver.setMachine_id(machine_id);
+//                    driver.setPassword(password);
+//                    driverDao.add(driver);
+//                    Intent intent = new Intent(register_1.this, register_2.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    String err_status = jObj.getString("status");
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
+//                    commonUtil.error_hint_short(errorMsg);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                empty_hint(R.string.vertify_error2);
+//            }
+//
+//        }
+//    };
+//
 
     //响应服务器失败
     private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
@@ -370,7 +438,7 @@ public class register_1 extends Activity implements View.OnClickListener{
                     String err_status = jObj.getString("status");
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

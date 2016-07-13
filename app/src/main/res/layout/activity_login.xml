@@ -30,7 +30,7 @@
         <EditText
             style="@style/Login_Input"
             android:id="@+id/user_username"
-            android:hint="请输入农机编号"
+            android:hint="请输入农机编号，或手机号"
             android:inputType="number"
             android:textColorHint="@color/whiteFont"
             android:textColor="@color/whiteFont"
@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_visibility_off_white_24dp"
             android:layout_marginBottom="@dimen/margin5"
+            android:layout_marginRight="@dimen/margin5"
             android:layout_alignBottom="@+id/user_password"
             android:layout_alignRight="@+id/user_password"
             android:layout_alignEnd="@+id/user_password" />
@@ -88,7 +89,6 @@
         style="@style/Login_Bottom"
         android:id="@+id/login_bottom">
         <Button
-            android:visibility="gone"
             style="@style/Login_BtnForgetPassword"
             android:id="@+id/forget_password"
             android:onClick="get_password"

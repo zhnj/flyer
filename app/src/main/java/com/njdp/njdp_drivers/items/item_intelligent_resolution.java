@@ -374,7 +374,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 if((!GPS_latitude.equals("1.1"))&&(!GPS_longitude.equals("1.1"))) {
                     Search();
                 }else {
-                    commonUtil.error_hint("定位失败,请点击点位按钮！");
+                    commonUtil.error_hint_short("定位失败,请点击点位按钮！");
                 }
                 break;
             case R.id.jobDate:
@@ -386,7 +386,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 datePickerPop.dismiss();
                 break;
             case R.id.getHelp:
-                commonUtil.error_hint("请选择作业起止日期！");
+                commonUtil.error_hint_short("请选择作业起止日期！");
                 break;
             case R.id.get_start:
                 hintPopup.dismiss();
@@ -511,7 +511,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 //        //////////////////////////////////////////测试数据test////////////////////////////////////
 
         if( mainMenu.selectedFieldInfo.size()<1){
-            commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
+            commonUtil.error_hint_short("未搜索到符合要求的农田信息，请重新设置搜索条件！");
         }else {
             pDialog.setMessage("正在准备数据，请等待 ...");
             showDialog();
@@ -667,7 +667,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             mainMenu.showDialog();
 
             if (!netUtil.checkNet(mainMenu)) {
-                commonUtil.error_hint("网络连接错误");
+                commonUtil.error_hint_short("网络连接错误");
                 mainMenu.hideDialog();
             } else {
                 mainMenu.clearFieldData();//清空缓存的农田数据
@@ -718,7 +718,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         String tag_string_req = "req_init";
 
         if (!netUtil.checkNet(mainMenu)) {
-            commonUtil.error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
         } else {
             mainMenu.clearFieldData();//清空缓存的农田数据
             //服务器请求
@@ -767,7 +767,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -804,7 +804,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     ///////////////////////////农田信息，包括经纬度/////////////////////////////////
 
                     if( (fieldInfos.size()<1)||( mainMenu.fieldInfoPosts.size()<1)){
-                        commonUtil.error_hint("未搜索到符合要求的农田信息，请重新设置搜索条件！");
+                        commonUtil.error_hint_short("未搜索到符合要求的农田信息，请重新设置搜索条件！");
                     }else
                     {
                         //存储到本地库
@@ -817,12 +817,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint(errorMsg);
+                    commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 // JSON error
                 Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
-                commonUtil.error_hint("服务器数据错误2：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
             }
         }
     }
@@ -867,7 +867,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint("密钥失效，请重新登录");
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -944,7 +944,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 }
             }catch (Exception e)
             {
-                commonUtil.error_hint("自动定位失败，请重试！");
+                commonUtil.error_hint_short("自动定位失败，请重试！");
                 hideDialog();
                 Log.e(TAG, "Location Error:" + "自动定位失败" + e.getMessage());
             }
