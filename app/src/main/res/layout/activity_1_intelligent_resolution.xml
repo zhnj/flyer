@@ -119,6 +119,6 @@
             android:layout_marginLeft="@dimen/margin5"
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font20"
-            android:text="智能规划"/>
+            android:text="去这里"/>
     </RelativeLayout>
 </RelativeLayout>
