@@ -52,6 +52,7 @@
         <activity
             android:name=".login"
             android:label="@string/app_name1"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,69 +63,86 @@
         <activity
             android:name=".register"
             android:label="@string/title_activity_register"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".register_TermsofService"
             android:label="@string/title_activity_register__termsof_service"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".get_password"
             android:label="@string/title_activity_get_password"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".get_password2"
             android:label="@string/title_activity_get_password2"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mainpages"
             android:label="@string/title_activity_mainpages"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".slidingMenu"
             android:label="@string/title_activity_sliding_menu"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <Fragment
             android:name=".items.item_release_machine"
             android:label="@string/title_activity_item_release_machine"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_intelligent_resolution"
             android:label="@string/title_activity_1_intelligent_resolution"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_intelligent_resolution_1"
             android:label="@string/title_activity_1_intelligent_resolution_1"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_intelligent_resolution_2"
             android:label="@string/title_activity_1_intelligent_resolution_2"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_intelligent_resolution_3"
             android:label="@string/title_activity_1_intelligent_resolution_3"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_query_requirement"
             android:label="@string/title_activity_item_query_requirement"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_repair_station"
             android:label="@string/title_activity_2_repair_station"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <Fragment
             android:name=".items.item_personalInformation"
             android:label="@string/title_activity_5_personal_information"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
-        <Fragment android:name=".items.item_service_object" >
+        <Fragment android:name=".items.item_service_object"
+            android:configChanges="orientation|keyboardHidden">
         </Fragment>
-        <Fragment android:name=".items.item_oil_station" >
+        <Fragment android:name=".items.item_oil_station"
+            android:configChanges="orientation|keyboardHidden">
         </Fragment>
 
         <activity
             android:name=".register_image"
             android:label="@string/title_activity_register_image"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- 照片选择 -->
@@ -151,40 +169,50 @@
             android:label="@string/title_activity_bndguide"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <Fragment android:name=".items.item_job_history" >
+        <Fragment android:name=".items.item_job_history"
+            android:configChanges="orientation|keyboardHidden">
         </Fragment>
         <Fragment
             android:name=".items.item_query_requirement_1"
             android:label="@string/title_activity_item_query_requirement_1"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
         </Fragment>
         <Fragment
             android:name=".items.item_intelligent_resolution_4"
             android:label="@string/title_activity_item__intelligent_resolution_4"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
         </Fragment>
         <Fragment
             android:name=".items.item_personalinformation_1_fix_info"
-            android:label="@string/title_activity_item_personalinformation_fix_info_1_fix_info"
+            android:label="@string/title_activity_item_personalinformation_fix_info"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
         </Fragment>
 
-        <activity
+        <Fragment
             android:name=".items.item_personalinformation_2_fix_password"
-            android:label="@string/title_activity_item_personalinformation_2_fix_site"
+            android:label="@string/title_activity_item_personalinformation_fix_password"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+        </Fragment>
         <activity
             android:name=".select_province"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".select_city" >
+        <activity android:name=".select_city"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
-        <activity android:name=".select_county" >
+        <activity android:name=".select_county"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
-        <activity android:name=".register_1" >
+        <activity android:name=".register_1"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
-        <activity android:name=".register_2" >
+        <activity android:name=".register_2"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
     </application>
 

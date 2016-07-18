@@ -3,6 +3,7 @@ package com.njdp.njdp_drivers.items;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -222,8 +223,8 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 if(sl_site!=0) {
                     double gps_longitude = navigationDeploy.get(sl_site-1).getLongitude();//经度
                     double gps_latitude=navigationDeploy.get(sl_site-1).getLatitude();//纬度
-                    Log.i("aaaaaaaa","sssssss");
-                    //导航
+                    Log.i("导航开始-----","地点："+sites[sl_site]+"，经度："+String.valueOf(gps_longitude)+"，维度："+String.valueOf(gps_latitude));
+                    //开始导航
                     GohereListener gohere =  new GohereListener(gps_longitude,gps_latitude);
                     gohere.routeplanToNavi();
 
@@ -233,6 +234,19 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            //land
+        }
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            //port
         }
     }
 

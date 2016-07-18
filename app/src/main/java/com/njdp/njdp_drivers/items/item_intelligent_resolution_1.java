@@ -1,6 +1,7 @@
 package com.njdp.njdp_drivers.items;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -358,6 +359,19 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            //land
+        }
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            //port
         }
     }
 

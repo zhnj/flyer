@@ -4,9 +4,9 @@ public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 测试 url
 
-//    public static String URL_IP="http://218.12.43.229:81/";//服务器地址1
+    public static String URL_IP="http://218.12.43.229:81/";//厅里服务器地址1
 
-    public static String URL_IP="http://211.68.180.9:88/";//服务器地址2
+//    public static String URL_IP="http://211.68.180.9:88/";//学校服务器地址2
 
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 
@@ -23,6 +23,8 @@ public class AppConfig {
     public static String URL_RELEASE= URL_IP+"app/farmMachine/store";//农机发布
 
     public static String URL_MACHINELOCATION= URL_IP+"app/getMachineLocation";//获取农机位置，经纬度
+
+    public static String URL_AROUNDMACHINE= URL_IP+"aapp/searchAroundMachine";//查询固定点周围农机的位置
 
     public static String URL_GETFIELD= URL_IP+"app/basicDeploy/store";//查询农田
 

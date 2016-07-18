@@ -3,6 +3,7 @@ package com.njdp.njdp_drivers.items;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -58,10 +59,15 @@ import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.login;
+import com.njdp.njdp_drivers.mainpages;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.squareup.timessquare.CalendarPickerView;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,7 +117,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private boolean sl_area_flag=false;
     private boolean sl_type_flag=false;
     private ProgressDialog pDialog;
-    private String url;//服务器地址
+    private String url;//农田信息服务器地址
+    private String gps_url;//农机位置服务器地址
+    private String around_url;//周围农机服务器地址
+    private static int FLAG_AROUNDMACHINE=11101006;
+    private static int FLAG_GPSLOCATION=11101007;
+    private static int FLAG_INITFIELDINFO=11101008;
+
     private String sl_area="50";
 //    private String sl_type="小麦";
     private SessionManager sessionManager;
@@ -136,6 +148,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
+    private com.yolanda.nohttp.rest.Request<JSONObject> around_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> location_strReq;
 //    private MapView mMapView = null;
     private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
@@ -185,6 +199,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         format = new SimpleDateFormat("yyyy年MM月dd日");
         format2= new SimpleDateFormat("yyyy-MM-dd");
         url=AppConfig.URL_GETFIELD;
+        gps_url=AppConfig.URL_MACHINELOCATION;
+        around_url=AppConfig.URL_AROUNDMACHINE;
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
@@ -345,7 +361,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //西廉良村，河北大学，东站,保定站,植物园
         //Double[][] numthree = new Double[][]{{38.885335516312644, 115.44805233879083}, {38.86858730724386, 115.51474000000007}, {38.86430366154974, 115.60169999999994},
         //{38.86317366367406, 115.47990000000006}, {38.914613417728475, 115.4850954388619}};
-        Log.i("nnnnnnnnnnnnnnnnnn", String.valueOf(mainMenu.selectedFieldInfo.size()));
+        Log.d("nnnnnnnnnnnnnnnnnn", String.valueOf(mainMenu.selectedFieldInfo.size()));
         //this.markRepairStation(mainMenu.selectedFieldInfo);
         LatLng cenpt = new LatLng(29.806651,121.606983);
         MapStatus mMapStatus = new MapStatus.Builder()
@@ -522,136 +538,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         }
     }
 
-    //获取农田数据
-//    private void initFieldInfo(final String area) {
-//
-//       pDialog.setMessage("正在加载 ...");
-//       showDialog();
-//
-//        if (!netUtil.checkNet(mainMenu)) {
-//            commonUtil.error_hint_short("网络连接错误");
-//            hideDialog();
-//        } else {
-//            startTime = "2016-04-01";
-//            endTime = "2016-05-01";
-//            //服务器请求
-//            Log.e(TAG, machine_id);
-//            Log.e(TAG, token);
-//            Log.e(TAG, area);
-//            Log.e(TAG, startTime);
-//            Log.e(TAG, endTime);
-//            Log.e(TAG, GPS_longitude);
-//            Log.e(TAG, GPS_latitude);
-//
-//            Map<String, String> params = new HashMap<String, String>();
-//            Map<String, String> params2 = new HashMap<String, String>();
-//            params.put("machine_id", machine_id);
-//            params.put("token",token);
-//            params.put("deploy_range", area);
-//            params.put("deploy_startdate", startTime);
-//            params.put("deploy_finishdate", endTime);
-//            params.put("Machine_longitude", GPS_longitude);
-//            params.put("Machine_Latitude", GPS_latitude);
-//            params2=netUtil.checkParams(params);
-//
-//            OkHttpUtils.post()
-//                    .url("http://172.28.145.4:8888/db_xskq/login.php")
-//                    .params(params)
-//                    .build()
-//                    .writeTimeOut(20000)
-//                    .readTimeOut(20000)
-//                    .connTimeOut(20000)
-//                    .execute(new Callback() {
-//
-//                        //xml格式数据解析
-//                        @Override
-//                        public Object parseNetworkResponse(okhttp3.Response response) throws Exception {
-//                            return null;
-//                        }
-//
-//                        //连接服务器错误
-//                        @Override
-//                        public void onError(Call call, Exception e) {
-//
-//                            Log.e(TAG, "GetFieldInfo Connect Error: " + e.getMessage());
-//                            commonUtil.error_hint2_short(R.string.connect_error);
-//                            hideDialog();
-//                        }
-//
-//                        //Json数据解析
-//                        @Override
-//                        public void onResponse(Object response) {
-//
-//                            hideDialog();
-//                            try {
-////                                String json = gson.toJson(response);
-//                                String json = response.toString();
-//                                Log.d(TAG, "AreaInit Response: " + json);
-//                                JSONObject jObj = new JSONObject(json);
-//                                int status = jObj.getInt("status");
-//                                if (status == 1) {
-//                                    String errorMsg = jObj.getString("result");
-//                                    Log.e(TAG, "Token 错误:" + errorMsg);
-//                                    commonUtil.error_hint_short("密钥失效，请重新登录");
-//                                    //清空数据，重新登录
-//                                    netUtil.clearSession(mainMenu);
-//                                    Intent intent = new Intent(mainMenu, login.class);
-//                                    startActivity(intent);
-//                                    mainMenu.finish();
-//                                } else if (status == 0) {
-//
-//                                    deploy_id = jObj.getString("deploy_id");
-//                                    norm_id = jObj.getString("norm_id");
-//                                    Log.e(TAG, "deploy_id：" + deploy_id);
-//                                    Log.e(TAG, "deploy_id：" + norm_id);
-//                                    sessionManager.setUserTag(deploy_id, norm_id);
-//                                    ///////////////////////////农田信息，包括经纬度/////////////////////////////////
-//                                    JSONArray s_post = jObj.getJSONArray("machine_farm_d");
-//                                    JSONArray s_info = jObj.getJSONArray("farms");
-//                                    Log.e(TAG, String.valueOf(s_post.length()));
-//                                    Log.e(TAG, String.valueOf(s_info.length()));
-//
-//                                    String s_t = jObj.getString("farms");
-//                                    String s_p = jObj.getString("machine_farm_d");
-//                                    List<FieldInfo> fieldInfos = gson.fromJson(s_t, new TypeToken<List<FieldInfo>>() {
-//                                    }.getType());//存储农田信息
-//                                    mainMenu.fieldInfoPosts = gson.fromJson(s_p, new TypeToken<List<FieldInfoPost>>() {
-//                                    }.getType());//存储距离信息
-//                                    Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
-//                                    Log.e(TAG, fieldInfos.get(1).getCropLand_site());
-//
-//
-//                                    ///////////////////////////农田信息，包括经纬度/////////////////////////////////
-//
-//                                    if ((fieldInfos.size() < 1) || (mainMenu.fieldInfoPosts.size() < 1)) {
-//                                        commonUtil.error_hint_short("未搜索到符合要求的农田信息，请重新设置搜索条件！");
-//                                    } else {
-//                                        //存储到本地库
-//                                        saveFieldInfo(fieldInfoDao, fieldInfos);
-//                                        //按距离的排序好的农田
-//                                        arg_FieldInfos = arrangeField();
-//                                    }
-//                                } else {
-//
-//                                    String errorMsg = jObj.getString("result");
-//                                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-//                                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
-//                                }
-//                            } catch (JSONException e) {
-//                                // JSON error
-//                                Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
-//                                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
-//                            }catch (Exception e)
-//                            {
-//                                // JSON error
-//                                Log.e(TAG, "3 服务器数据错误：response错误:" + e.getMessage());
-//                                commonUtil.error_hint_short("服务器数据错误3：response错误:" + e.getMessage());
-//                            }
-//                        }
-//                    });
-//        }
-//
-//    }
 
 
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
@@ -821,47 +707,128 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 }
             } catch (JSONException e) {
                 // JSON error
-                Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
+                Log.e(TAG, "服务器数据错误2：response错误:" + e.getMessage());
                 commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
             }
         }
     }
     ////////////////////////////////////获取农田信息////////////////////////////////////////////////
 
-
-
-    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
-    public void gps_MachineLocation(final String machine_id,final int i_dialog_flag) {
-        showDialog_flag=i_dialog_flag;
-        Log.e(TAG,"传入"+String.valueOf(i_dialog_flag));
-        Log.e(TAG,"赋值"+String.valueOf(showDialog_flag));
-        String tag_string_req = "req_GPS";
-        //服务器请求
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
-
-            @Override
-            protected Map<String, String> getParams() {
-
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("machine_id", machine_id);
-                params.put("token", token);
-
-                return netUtil.checkParams(params);
-            }
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    //获取农机周围的农机的经纬度
+    private void get_AroundMachines(final double longitude,final double latitude)
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("longitude", String.valueOf(longitude));
+        params.put("latitude", String.valueOf(latitude));
+        Log.e(TAG, "周围农机-发送的数据：" + gson.toJson(params));
+        around_strReq= NoHttp.createJsonObjectRequest(around_url, RequestMethod.POST);
+        around_strReq.add(params);
+//        around_strReq.addHeader("content-disposition","form-data");
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_AROUNDMACHINE, around_strReq, new aroundMachine_request());
+        }
     }
 
-    private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
-    {
+    //获取周围农机访问服务器监听
+    private class aroundMachine_request implements OnResponseListener<JSONObject> {
         @Override
-        public void onResponse(String response) {
+        public void onStart(int what) {
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
             try {
-                Log.e(TAG, "GPS Response: " + response);
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
+///接口获取不到数据        ？？？？？
+// //////////////////////////////////////////////测试数据///////////////////////////////////////////
+//                String testData="{\"status\":0,\"result\":[{\"distance\":7.735,\"Machine_longitude\":\"115.457054\",\"Machine_Latitude\":\"38.921061\"},{\"distance\":7.737,\"Machine_longitude\":\"115.457091\",\"Machine_Latitude\":\"38.921087\"},{\"distance\":7.741,\"Machine_longitude\":\"115.457004\",\"Machine_Latitude\":\"38.921103\"},{\"distance\":7.742,\"Machine_longitude\":\"115.457008\",\"Machine_Latitude\":\"38.921116\"},{\"distance\":7.745,\"Machine_longitude\":\"115.456518\",\"Machine_Latitude\":\"38.920990\"},{\"distance\":7.746,\"Machine_longitude\":\"115.457127\",\"Machine_Latitude\":\"38.921192\"},{\"distance\":7.746,\"Machine_longitude\":\"115.457135\",\"Machine_Latitude\":\"38.921188\"},{\"distance\":7.752,\"Machine_longitude\":\"115.457099\",\"Machine_Latitude\":\"38.921240\"},{\"distance\":7.756,\"Machine_longitude\":\"115.457065\",\"Machine_Latitude\":\"38.921265\"},{\"distance\":7.756,\"Machine_longitude\":\"115.457071\",\"Machine_Latitude\":\"38.921266\"},{\"distance\":7.757,\"Machine_longitude\":\"115.457355\",\"Machine_Latitude\":\"38.921369\"},{\"distance\":7.758,\"Machine_longitude\":\"115.457087\",\"Machine_Latitude\":\"38.921296\"},{\"distance\":7.758,\"Machine_longitude\":\"115.457140\",\"Machine_Latitude\":\"38.921308\"},{\"distance\":7.759,\"Machine_longitude\":\"115.456990\",\"Machine_Latitude\":\"38.921276\"},{\"distance\":7.761,\"Machine_longitude\":\"115.457051\",\"Machine_Latitude\":\"38.921314\"},{\"distance\":7.761,\"Machine_longitude\":\"115.457083\",\"Machine_Latitude\":\"38.921321\"},{\"distance\":7.765,\"Machine_longitude\":\"115.457009\",\"Machine_Latitude\":\"38.921335\"},{\"distance\":7.767,\"Machine_longitude\":\"115.457148\",\"Machine_Latitude\":\"38.921400\"},{\"distance\":7.769,\"Machine_longitude\":\"115.457151\",\"Machine_Latitude\":\"38.921423\"},{\"distance\":7.771,\"Machine_longitude\":\"115.456985\",\"Machine_Latitude\":\"38.921383\"},{\"distance\":7.771,\"Machine_longitude\":\"115.457079\",\"Machine_Latitude\":\"38.921415\"},{\"distance\":7.774,\"Machine_longitude\":\"115.457034\",\"Machine_Latitude\":\"38.921433\"},{\"distance\":7.776,\"Machine_longitude\":\"115.457090\",\"Machine_Latitude\":\"38.921471\"},{\"distance\":7.777,\"Machine_longitude\":\"115.457094\",\"Machine_Latitude\":\"38.921483\"},{\"distance\":7.778,\"Machine_longitude\":\"115.457032\",\"Machine_Latitude\":\"38.921470\"},{\"distance\":7.779,\"Machine_longitude\":\"115.457068\",\"Machine_Latitude\":\"38.921486\"},{\"distance\":7.783,\"Machine_longitude\":\"115.455867\",\"Machine_Latitude\":\"38.921156\"},{\"distance\":7.783,\"Machine_longitude\":\"115.457024\",\"Machine_Latitude\":\"38.921518\"},{\"distance\":7.783,\"Machine_longitude\":\"115.457051\",\"Machine_Latitude\":\"38.921521\"},{\"distance\":7.785,\"Machine_longitude\":\"115.455859\",\"Machine_Latitude\":\"38.921172\"},{\"distance\":7.786,\"Machine_longitude\":\"115.455842\",\"Machine_Latitude\":\"38.921171\"},{\"distance\":7.786,\"Machine_longitude\":\"115.455857\",\"Machine_Latitude\":\"38.921184\"},{\"distance\":7.786,\"Machine_longitude\":\"115.455866\",\"Machine_Latitude\":\"38.921180\"},{\"distance\":7.786,\"Machine_longitude\":\"115.457044\",\"Machine_Latitude\":\"38.921553\"},{\"distance\":7.787,\"Machine_longitude\":\"115.455848\",\"Machine_Latitude\":\"38.921187\"},{\"distance\":7.787,\"Machine_longitude\":\"115.455855\",\"Machine_Latitude\":\"38.921186\"},{\"distance\":7.787,\"Machine_longitude\":\"115.455870\",\"Machine_Latitude\":\"38.921195\"},{\"distance\":7.787,\"Machine_longitude\":\"115.455898\",\"Machine_Latitude\":\"38.921207\"},{\"distance\":7.788,\"Machine_longitude\":\"115.455856\",\"Machine_Latitude\":\"38.921196\"}]}";
+//                JSONObject jObj=new JSONObject(testData);
+// //////////////////////////////////////////测试数据///////////////////////////////////////////////
+
+                Log.e(TAG, "周围的农机-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    JSONArray aroundMData=jObj.getJSONArray("result");
+                    for(int i=0;i<aroundMData.length();i++)
+                    {
+                        JSONObject location=(JSONObject)aroundMData.get(i);
+                        Double longitude=location.getDouble("Machine_longitude");
+                        Double latitude=location.getDouble("Machine_Latitude");
+                        Log.e(TAG,"("+String.valueOf(longitude)+","+String.valueOf(latitude)+")");
+                        //标记到地图上
+                    }
+
+//                    commonUtil.error_hint_short("登录成功！");
+//                    Machine_longitude
+//                            Machine_Latitude
+                } else if(status==1){
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "密钥失效：" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                }else{
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误1：" + errorMsg);
+//                    commonUtil.error_hint_short(errorMsg);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e(TAG,"Json error：response错误2" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "服务器连接失败Around Machine Error: " + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
+    }
+
+    private void gps_MachineLocation(final String machine_id,final int i_dialog_flag) {
+        showDialog_flag=i_dialog_flag;
+        Log.e(TAG, "传入" + String.valueOf(i_dialog_flag));
+        Log.e(TAG, "赋值" + String.valueOf(showDialog_flag));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("machine_id", machine_id);
+        params.put("token", token);
+//        Log.e(TAG, "GPS位置发送的数据：" + gson.toJson(params));
+        location_strReq= NoHttp.createJsonObjectRequest(gps_url, RequestMethod.POST);
+        location_strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_GPSLOCATION, location_strReq, new gpsLocation_request());
+        }
+    }
+
+    //从服务器获取农机经纬度监听
+    private class gpsLocation_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj = response.get();
+                Log.e(TAG, "GPS位置接收的数据: " + jObj.toString());
                 int status = jObj.getInt("status");
 
                 if (status == 1) {
@@ -895,16 +862,17 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 isGetLocation();
             }
         }
-    }
 
-    private class locationErrorListener implements  Response.ErrorListener//定位服务器响应失败
-    {
         @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "ConnectService Error: " + error.getMessage());
-            netUtil.testVolley(error);
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "服务器连接失败 GPS Location Error: " + exception.getMessage());
             text_gps_flag = true;
             isGetLocation();
+        }
+
+        @Override
+        public void onFinish(int what) {
+
         }
     }
 
@@ -950,7 +918,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         }
     }
-    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
 
 
     //农田信息存入本地数据库
@@ -1019,7 +986,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     }
 
     ////////////////////////////地图代码开始//////////////////////////////////
-    class mListener implements BDLocationListener {
+    private class mListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -1075,7 +1042,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     //标记农田,参数经纬度
     private void markRepairStation(List<FieldInfo> fieldInfos) {
         //清楚覆盖物Marker,重新加载
-        mBaiduMap.clear();
+        try {
+            mBaiduMap.clear();
+        }catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,e.toString());}
 
         Integer[] marks = new Integer[]{R.drawable.s1, R.drawable.s2, R.drawable.s3, R.drawable.s4, R.drawable.s5,
                 R.drawable.s6, R.drawable.s7, R.drawable.s8, R.drawable.s9, R.drawable.s10,R.drawable.s11, R.drawable.s12,
@@ -1115,8 +1086,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             //添加覆盖物鼠标点击事件
             mBaiduMap.setOnMarkerClickListener(new markerClicklistener());
         }
-
-        mMapView.refreshDrawableState();
+        try {
+            mMapView.refreshDrawableState();
+        }catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,e.toString());}
     }
 
 
@@ -1130,45 +1104,49 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
          */
         @Override
         public boolean onMarkerClick(Marker marker) {
-            final FieldInfo fieldInfo = (FieldInfo) marker.getExtraInfo().get("fieldInfo");
-            InfoWindow infoWindow;
+            if(marker==centreMarker) {
 
-            //构造弹出layout
-            LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
-            View markerpopwindow = inflater.inflate(R.layout.markerpopwindow, null);
+            }else {
+                final FieldInfo fieldInfo = (FieldInfo) marker.getExtraInfo().get("fieldInfo");
+                InfoWindow infoWindow;
 
-            TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
-            String markinfo = "位置:"+fieldInfo.getVillage()+"\n"+
-                    "电话:" + fieldInfo.getUser_name() + "\n" +
-                    "面积:" + fieldInfo.getArea_num() + "\n" +
-                    "单价:"+fieldInfo.getUnit_price()+"\n"+
-                    "开始时间:" + fieldInfo.getStart_time()+"\n"+
-                    "结束时间:"+fieldInfo.getEnd_time();
-            Log.i("markinfo", markinfo);
-            tv.setText(markinfo);
+                //构造弹出layout
+                LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
+                View markerpopwindow = inflater.inflate(R.layout.markerpopwindow, null);
+
+                TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
+                String markinfo = "位置:" + fieldInfo.getVillage() + "\n" +
+                        "电话:" + fieldInfo.getUser_name() + "\n" +
+                        "面积:" + fieldInfo.getArea_num() + "\n" +
+                        "单价:" + fieldInfo.getUnit_price() + "\n" +
+                        "开始时间:" + fieldInfo.getStart_time() + "\n" +
+                        "结束时间:" + fieldInfo.getEnd_time();
+                Log.i("markinfo", markinfo);
+                tv.setText(markinfo);
 
 
-            ImageButton tellBtn = (ImageButton) markerpopwindow.findViewById(R.id.markerphone);
-            tellBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            });
+                ImageButton tellBtn = (ImageButton) markerpopwindow.findViewById(R.id.markerphone);
+                tellBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
 
-            LatLng ll = marker.getPosition();
-            //将marker所在的经纬度的信息转化成屏幕上的坐标
-            Point p = mBaiduMap.getProjection().toScreenLocation(ll);
-            p.y -= 90;
-            LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
-            //初始化infoWindow，最后那个参数表示显示的位置相对于覆盖物的竖直偏移量，这里也可以传入一个监听器
-            infoWindow = new InfoWindow(markerpopwindow, llInfo, 0);
-            mBaiduMap.showInfoWindow(infoWindow);//显示此infoWindow
-            //让地图以备点击的覆盖物为中心
-            MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(ll);
-            mBaiduMap.setMapStatus(status);
+                LatLng ll = marker.getPosition();
+                //将marker所在的经纬度的信息转化成屏幕上的坐标
+                Point p = mBaiduMap.getProjection().toScreenLocation(ll);
+                p.y -= 90;
+                LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
+                //初始化infoWindow，最后那个参数表示显示的位置相对于覆盖物的竖直偏移量，这里也可以传入一个监听器
+                infoWindow = new InfoWindow(markerpopwindow, llInfo, 0);
+                mBaiduMap.showInfoWindow(infoWindow);//显示此infoWindow
+                //让地图以备点击的覆盖物为中心
+                MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.setMapStatus(status);
+            }
             return true;
         }
     }
@@ -1193,12 +1171,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private class centreMap implements BaiduMap.OnMapStatusChangeListener{
         @Override
         public void onMapStatusChangeStart(MapStatus mapStatus) {
-            updateMapState(mapStatus);
+//            updateMapState(mapStatus);
         }
 
         @Override
         public void onMapStatusChange(MapStatus mapStatus) {
-            updateMapState(mapStatus);
+//            updateMapState(mapStatus);
         }
 
         @Override
@@ -1213,6 +1191,13 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         /**获取经纬度*/
         centre_latitude = mCenterLatLng.latitude;
         centre_longitude = mCenterLatLng.longitude;
+        try{
+        around_strReq.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,e.toString());
+        }
+        get_AroundMachines(centre_longitude,centre_latitude);
         if(centreMarker!=null) {
             centreMarker.remove();
         }
@@ -1293,6 +1278,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         }
     }
 
+    //popupWindow销毁时监听
     private class datePickerDismiss implements PopupWindow.OnDismissListener
     {
         @Override
@@ -1311,7 +1297,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             pDialog.dismiss();
     }
 
-    private class hintPopDisListener implements PopupWindow.OnDismissListener//发布按钮弹出时监听dismiss后背景变回原样
+    //发布按钮弹出时监听dismiss后背景变回原样
+    private class hintPopDisListener implements PopupWindow.OnDismissListener
     {
         @Override
         public void onDismiss() {
@@ -1330,5 +1317,16 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));
     }
 
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+        //land
+        }
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+        //port
+        }
+    }
 }

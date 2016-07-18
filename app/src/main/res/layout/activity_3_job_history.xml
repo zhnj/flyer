@@ -74,7 +74,7 @@
             android:text="查询"
             android:layout_marginLeft="@dimen/margin5"
             android:layout_marginRight="@dimen/margin5"
-            bootstrap:bootstrapBrand="primary"
+            bootstrap:bootstrapBrand="secondary"
             bootstrap:bootstrapSize="sm"
             bootstrap:buttonMode="regular"
             bootstrap:showOutline="false"

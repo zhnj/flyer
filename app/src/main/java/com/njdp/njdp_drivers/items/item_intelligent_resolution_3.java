@@ -2,6 +2,7 @@ package com.njdp.njdp_drivers.items;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -177,22 +178,20 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
         savedFieldInfoDao=new SavedFieldInfoDao(getActivity());
-
         netUtil=new NetUtil(mainMenu);
-
+        commonUtil=new CommonUtil(mainMenu);
         sessionManager=new SessionManager();
         token=sessionManager.getToken();
 
-        try {
-            navigationDeploy.addAll(savedFieldInfoDao.allFieldInfo());
-        }catch (Exception e){
-            Log.e(TAG,e.toString());
-        };
+        if((navigationDeploy!=null)&&(navigationDeploy.size()>0)) {
+            navigationDeploy.clear();
+        }
+        navigationDeploy.addAll(savedFieldInfoDao.allFieldInfo());
         for(int i=0;i<navigationDeploy.size();i++)
         {
-            Log.e(TAG,String.valueOf(navigationDeploy.get(i).getLatitude()));
-            Log.e(TAG,String.valueOf(navigationDeploy.get(i).getLongitude()));
-            Log.e(TAG,String.valueOf(navigationDeploy.get(i).getUser_name()));
+            Log.e(TAG,"作业地点："+String.valueOf(navigationDeploy.get(i).getCropLand_site())+"，位置："+
+                    "("+String.valueOf(navigationDeploy.get(i).getLongitude())+","+
+                    String.valueOf(navigationDeploy.get(i).getLatitude())+")");
         }
 
         commonUtil=new CommonUtil(mainMenu);
@@ -204,7 +203,6 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 //        mMapView = (MapView)view.findViewById(R.id.diaopeimapView);
         mMapView = (TextureMapView)view.findViewById(R.id.diaopeimapView);
         mMapView.showScaleControl(true);
-
         mBaiduMap = mMapView.getMap();
 
 
@@ -318,6 +316,19 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         super.onResume();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            //land
+        }
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            //port
+        }
+    }
+
     //清空储存的方案数据
     private void replanClearDeploy()
     {
@@ -348,7 +359,9 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
             Log.e(TAG,"方案作业地点删除"+String.valueOf(i+1)+"次");
             if(i==count-1)
             {
-                navigationDeploy.clear();
+                if((navigationDeploy!=null)&&(navigationDeploy.size()>0)) {
+                    navigationDeploy.clear();
+                }
                 mainMenu.getSupportFragmentManager().popBackStack();
             }
         }
