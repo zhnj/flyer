@@ -729,6 +729,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         Log.e(TAG, "周围农机-发送的数据：" + gson.toJson(params));
         around_strReq= NoHttp.createJsonObjectRequest(around_url, RequestMethod.POST);
         around_strReq.add(params);
+        around_strReq.addHeader("Content-Type", "application/x-www-form-urlencoded");
 //        around_strReq.addHeader("content-disposition","form-data");
         RequestQueue requestQueue = NoHttp.newRequestQueue();
         if (netUtil.checkNet(mainMenu) == false) {
