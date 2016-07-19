@@ -1,7 +1,6 @@
 package com.njdp.njdp_drivers.items;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -19,17 +18,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
@@ -40,7 +33,6 @@ import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -58,8 +50,6 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
-import com.njdp.njdp_drivers.login;
-import com.njdp.njdp_drivers.mainpages;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
@@ -117,13 +107,18 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private boolean sl_area_flag=false;
     private boolean sl_type_flag=false;
     private ProgressDialog pDialog;
-    private String url;//农田信息服务器地址
+    ////////////////////////访问服务器变量///////////////////////////////
+    private String initField_url;//农田信息服务器地址
     private String gps_url;//农机位置服务器地址
     private String around_url;//周围农机服务器地址
     private static int FLAG_AROUNDMACHINE=11101006;
     private static int FLAG_GPSLOCATION=11101007;
     private static int FLAG_INITFIELDINFO=11101008;
-
+    private com.yolanda.nohttp.rest.Request<JSONObject> initField_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> initField_strReq_;
+    private com.yolanda.nohttp.rest.Request<JSONObject> around_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> location_strReq;
+    ////////////////////////访问服务器变量///////////////////////////////
     private String sl_area="50";
 //    private String sl_type="小麦";
     private SessionManager sessionManager;
@@ -148,8 +143,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
     ////////////////////////地图变量//////////////////////////
-    private com.yolanda.nohttp.rest.Request<JSONObject> around_strReq;
-    private com.yolanda.nohttp.rest.Request<JSONObject> location_strReq;
 //    private MapView mMapView = null;
     private TextureMapView mMapView = null;
     private BaiduMap mBaiduMap = null;
@@ -198,7 +191,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         gson=new Gson();
         format = new SimpleDateFormat("yyyy年MM月dd日");
         format2= new SimpleDateFormat("yyyy-MM-dd");
-        url=AppConfig.URL_GETFIELD;
+        initField_url =AppConfig.URL_GETFIELD;
         gps_url=AppConfig.URL_MACHINELOCATION;
         around_url=AppConfig.URL_AROUNDMACHINE;
         token=sessionManager.getToken();
@@ -540,114 +533,116 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
 
 
-    ////////////////////////////////////获取农田信息////////////////////////////////////////////////
+   //代提示的获取农田数据
     private void initFieldInfo(final String area)
     {
-        try {
-            fieldInfos.clear();
-            mainMenu.fieldInfoPosts.clear();
-        }catch (Exception e){}
+//        try {
+//            fieldInfos.clear();
+//            mainMenu.fieldInfoPosts.clear();
+//        }catch (Exception e){}
+        if((fieldInfos!=null)&&(fieldInfos.size()>0)) {
+            fieldInfos.clear();}
+        if((mainMenu.fieldInfoPosts!=null)&&(mainMenu.fieldInfoPosts.size()>0)){
+            mainMenu.fieldInfoPosts.clear();}
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("machine_id", machine_id);
+        params.put("token", token);
+        params.put("deploy_range", area);//需要按照实际范围变动
+        params.put("deploy_startdate", startTime);
+        params.put("deploy_finishdate", endTime);
+        params.put("Machine_longitude", GPS_longitude);
+        params.put("Machine_Latitude", GPS_latitude);
+        Log.e(TAG, "查找周围农田-提交数据：" + machine_id + "," + token + "," +
+                area + "," + startTime + "," + endTime + "," +
+                GPS_longitude + "," + GPS_latitude);
+        initField_strReq=NoHttp.createJsonObjectRequest(initField_url, RequestMethod.POST);
+        initField_strReq.add(params);
+        initField_strReq.setConnectTimeout(15*1000);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
 
-            String tag_string_req = "req_init";
-            mainMenu.pDialog.setMessage("正在载入 ...");
-            mainMenu.showDialog();
+        mainMenu.pDialog.setMessage("正在载入 ...");
+        mainMenu.showDialog();
 
-            if (!netUtil.checkNet(mainMenu)) {
-                commonUtil.error_hint_short("网络连接错误");
-                mainMenu.hideDialog();
-            } else {
-                mainMenu.clearFieldData();//清空缓存的农田数据
-                //服务器请求
-                Log.e(TAG, machine_id);
-                Log.e(TAG, token);
-                Log.e(TAG, area);
-                Log.e(TAG, startTime);
-                Log.e(TAG, endTime);
-                Log.e(TAG, GPS_longitude);
-                Log.e(TAG, GPS_latitude);
+        if (!netUtil.checkNet(mainMenu)) {
+            commonUtil.error_hint_short("网络连接错误");
+            mainMenu.hideDialog();
+        } else {
+            mainMenu.clearFieldData();//清空缓存的农田数据
+            requestQueue.add(FLAG_INITFIELDINFO, initField_strReq, new init_request());
+            //            String tag_string_req = "req_init";
+            //服务器请求
+//                Log.e(TAG,"查找周围农田-提交数据："+machine_id+","+token+","+
+//                        area+","+ startTime+","+endTime+","+
+//                        GPS_longitude+","+GPS_latitude);
 
-                StringRequest strReq = new StringRequest(Request.Method.POST,
-                        url, new initSuccessListener(), mainMenu.mErrorListener) {
 
-                    @Override
-                    protected Map<String, String> getParams() {
-
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("machine_id", machine_id);
-                        params.put("token", token);
-                        params.put("deploy_range", area);//需要按照实际范围变动
-                        params.put("deploy_startdate", startTime);
-                        params.put("deploy_finishdate", endTime);
-                        params.put("Machine_longitude", GPS_longitude);
-                        params.put("Machine_Latitude", GPS_latitude);
-
-                        return netUtil.checkParams(params);
-                    }
-                };
-                strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
-                // Adding request to request queue
-                AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-            }
+//                StringRequest strReq = new StringRequest(Request.Method.POST,
+//                        initField_url, new initSuccessListener(), mainMenu.mErrorListener) {
+//
+//                    @Override
+//                    protected Map<String, String> getParams() {
+//
+//                        Map<String, String> params = new HashMap<String, String>();
+//                        params.put("machine_id", machine_id);
+//                        params.put("token", token);
+//                        params.put("deploy_range", area);//需要按照实际范围变动
+//                        params.put("deploy_startdate", startTime);
+//                        params.put("deploy_finishdate", endTime);
+//                        params.put("Machine_longitude", GPS_longitude);
+//                        params.put("Machine_Latitude", GPS_latitude);
+//
+//                        return netUtil.checkParams(params);
+//                    }
+//                };
+//                strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+//                // Adding request to request queue
+//                AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
+    }
 
-    private void _initFieldInfo(final String area)//不带提示的获取数据
+    //不带提示的获取农田数据
+    private void _initFieldInfo(final String area)
     {
-        try {
-            fieldInfos.clear();
-            mainMenu.fieldInfoPosts.clear();
-        }catch (Exception e){}
-
-        try{
-            mainMenu.selectedFieldInfo.clear();
-        } catch (Exception e){}
-
-        String tag_string_req = "req_init";
+        if((fieldInfos!=null)&&(fieldInfos.size()>0)) {
+            fieldInfos.clear();}
+        if((mainMenu.fieldInfoPosts!=null)&&(mainMenu.fieldInfoPosts.size()>0)){
+            mainMenu.fieldInfoPosts.clear();}
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("machine_id", machine_id);
+        params.put("token", token);
+        params.put("deploy_range", area);//需要按照实际范围变动
+        params.put("deploy_startdate", startTime);
+        params.put("deploy_finishdate", endTime);
+        params.put("Machine_longitude", GPS_longitude);
+        params.put("Machine_Latitude", GPS_latitude);
+        Log.e(TAG, "查找周围农田-提交数据：" + machine_id + "," + token + "," +
+                area + "," + startTime + "," + endTime + "," +
+                GPS_longitude + "," + GPS_latitude);
+        initField_strReq_=NoHttp.createJsonObjectRequest(initField_url, RequestMethod.POST);
+        initField_strReq_.add(params);
+        initField_strReq_.setConnectTimeout(15*1000);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
 
         if (!netUtil.checkNet(mainMenu)) {
             commonUtil.error_hint_short("网络连接错误");
         } else {
             mainMenu.clearFieldData();//清空缓存的农田数据
-            //服务器请求
-            Log.e(TAG, machine_id);
-            Log.e(TAG, token);
-            Log.e(TAG, area);
-            Log.e(TAG, startTime);
-            Log.e(TAG, endTime);
-            Log.e(TAG, GPS_longitude);
-            Log.e(TAG, GPS_latitude);
-
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    url, new initSuccessListener(), mainMenu.mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("machine_id", machine_id);
-                    params.put("token", token);
-                    params.put("deploy_range", area);//需要按照实际范围变动
-                    params.put("deploy_startdate", startTime);
-                    params.put("deploy_finishdate", endTime);
-                    params.put("Machine_longitude", GPS_longitude);
-                    params.put("Machine_Latitude", GPS_latitude);
-
-                    return netUtil.checkParams(params);
-                }
-            };
-            strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_INITFIELDINFO, initField_strReq_, new init_request());
         }
     }
 
-    private class initSuccessListener implements Response.Listener<String>//获取农田信息数据响应服务器成功
-    {
+    //获取农田信息访问服务器监听
+    private class init_request implements OnResponseListener<JSONObject> {
         @Override
-        public void onResponse(String response) {
-            Log.e(TAG, "AreaInit Response: " + response);
-            mainMenu.hideDialog();
+        public void onStart(int what) {
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
             try {
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
+                Log.e(TAG,"获取农田信息接收的数据："+jObj.toString());
                 int status = jObj.getInt("status");
                 if (status==1)
                 {
@@ -659,7 +654,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     mainMenu.backLogin();
                     SysCloseActivity.getInstance().exit();
                 }else if(status==0){
-
                     deploy_id=jObj.getString("deploy_id");
                     norm_id=jObj.getString("norm_id");
                     sessionManager.setUserTag(deploy_id, norm_id);
@@ -702,17 +696,28 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     }
                 } else {
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    Log.e(TAG, "Json error：json返回的数据错误:" + errorMsg);
                     commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
                 // JSON error
-                Log.e(TAG, "服务器数据错误2：response错误:" + e.getMessage());
-                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
+                Log.e(TAG, "Json error：json解析错误" + e.getMessage());
+                commonUtil.error_hint2_short(R.string.connect_error);
             }
         }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "服务器连接失败Around Machine Error: " + exception.getMessage());
+            commonUtil.error_hint2_short(R.string.connect_error);
+        }
+
+        @Override
+        public void onFinish(int what) {
+            mainMenu.hideDialog();
+        }
     }
-    ////////////////////////////////////获取农田信息////////////////////////////////////////////////
+
 
     //获取农机周围的农机的经纬度
     private void get_AroundMachines(final double longitude,final double latitude)
@@ -797,6 +802,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         }
     }
 
+    //获取农机经纬度
     private void gps_MachineLocation(final String machine_id,final int i_dialog_flag) {
         showDialog_flag=i_dialog_flag;
         Log.e(TAG, "传入" + String.valueOf(i_dialog_flag));

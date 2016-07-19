@@ -36,6 +36,10 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -62,6 +66,9 @@ import okhttp3.Call;
 public class item_intelligent_resolution_1 extends Fragment implements View.OnClickListener {
 
     private static final String TAG = item_intelligent_resolution_1.class.getSimpleName();
+    private String deploy_url;//获取智能调度方案服务器地址
+    private static int FLAG_GETDEPLOY=11101009;
+    private com.yolanda.nohttp.rest.Request<JSONObject> getDeploy_strReq;
     private ExpandableListView expandableListView;
     private slidingMenu mainMenu;
     private DrawerLayout menu;
@@ -75,7 +82,6 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private String token;
     private String deploy_id;
     private String norm_id;
-    private String url;
     private int deploySize;
     private List<FieldInfoPost> allFieldInfoPost=new ArrayList<FieldInfoPost>();
     private List<FieldInfoPost> selectedFieldInfoPost=new ArrayList<FieldInfoPost>();
@@ -108,7 +114,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         token=sessionManager.getToken();
         deploy_id=sessionManager.getDeployId();
         norm_id=sessionManager.getNormId();
-        url=AppConfig.URL_BASICDEPLOY;
+        deploy_url=AppConfig.URL_BASICDEPLOY;
         for(int i=0;i< mainMenu.selectedFieldInfo.size();i++)
         {
             checkState.put(i,true);
@@ -375,72 +381,85 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         }
     }
 
-    //////////////////////////获取智能调度方案//////////////////////////////////////
+    //获取智能调度方案
     private void initDeployInfo()
     {
-        String tag_string_req = "req_initDeploy";
+        Map<String, String> params = new HashMap<String, String>();
+        for(int i=0;i<selectedFieldInfoPost.size();i++)
+        {
+            params.put("farm_distance["+selectedFieldInfoPost.get(i).getFarm_id()+"]", selectedFieldInfoPost.get(i).getDistance());
+            Log.e(TAG, gson.toJson(selectedFieldInfoPost.get(i)));
+        }
+        params.put("deploy_id",deploy_id);
+        params.put("norm_id",norm_id);
+        params.put("token", token);
+        Log.e(TAG, "获取方案发送的数据：" + gson.toJson(params));
 
-        mainMenu.pDialog.setMessage("正在计算，请稍候 ......");
-        mainMenu.showDialog();
+        getDeploy_strReq= NoHttp.createJsonObjectRequest(deploy_url, RequestMethod.POST);
+        getDeploy_strReq.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        getDeploy_strReq.setConnectTimeout(15 * 1000);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
 
         if (!netUtil.checkNet(mainMenu)) {
             commonUtil.error_hint_short("网络连接错误");
             mainMenu.hideDialog();
         } else {
-            //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    url, initSuccessListener, mainMenu.mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-
-                    Log.e(TAG,deploy_id);
-                    Log.e(TAG,norm_id);
-                    Log.e(TAG,token);
-                    for(int i=0;i<selectedFieldInfoPost.size();i++)
-                    {
-                        params.put("farm_distance["+selectedFieldInfoPost.get(i).getFarm_id()+"]", selectedFieldInfoPost.get(i).getDistance());
-                        Log.e(TAG, gson.toJson(selectedFieldInfoPost.get(i)));
-                    }
-                    params.put("deploy_id",deploy_id);
-                    params.put("norm_id",norm_id);
-                    params.put("token",token);
-
-                    Log.e(TAG,gson.toJson(params));
-                    return netUtil.checkParams(params);
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers=new HashMap<String,String>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded");
-//                    return super.getHeaders();
-                    return headers;
-                }
-            };
-
-            strReq.setRetryPolicy(new DefaultRetryPolicy(60 * 1000, 1, 1.0f));
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_GETDEPLOY, getDeploy_strReq, new getDeploy_request());
+            //        String tag_string_req = "req_initDeploy";
+//            //服务器请求
+//            StringRequest strReq = new StringRequest(Request.Method.POST,
+//                    deploy_url, initSuccessListener, mainMenu.mErrorListener) {
+//
+//                @Override
+//                protected Map<String, String> getParams() {
+//
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    for(int i=0;i<selectedFieldInfoPost.size();i++)
+//                    {
+//                        params.put("farm_distance["+selectedFieldInfoPost.get(i).getFarm_id()+"]", selectedFieldInfoPost.get(i).getDistance());
+//                        Log.e(TAG, gson.toJson(selectedFieldInfoPost.get(i)));
+//                    }
+//                    params.put("deploy_id",deploy_id);
+//                    params.put("norm_id",norm_id);
+//                    params.put("token", token);
+//                    Log.e(TAG, "获取方案发送的数据：" + gson.toJson(params));
+//                    return netUtil.checkParams(params);
+//                }
+//
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    Map<String, String> headers=new HashMap<String,String>();
+//                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+////                    return super.getHeaders();
+//                    return headers;
+//                }
+//            };
+//
+//            strReq.setRetryPolicy(new DefaultRetryPolicy(60 * 1000, 1, 1.0f));
+//            // Adding request to request queue
+//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
-
     }
 
-   //获取方案数据响应服务器成功
-    private Response.Listener<String> initSuccessListener = new Response.Listener<String>() {
+    //获取智能调度方案访问服务器监听
+    private class getDeploy_request implements OnResponseListener<JSONObject>
+    {
+        @Override
+        public void onStart(int what) {
+            mainMenu.pDialog.setMessage("正在计算，请稍候 ......");
+            mainMenu.showDialog();
+        }
 
         @Override
-        public void onResponse(String response) {
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
 
-            mainMenu.hideDialog();
             try {
-                Log.e(TAG, "DeployInit Response: " + response);
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
+                Log.e(TAG,"获取智能调度方案接收的数据："+jObj.toString());
                 int status = jObj.getInt("status");
 
-                if (status == 1) {
+                if (status==1)
+                {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
                     commonUtil.error_hint_short("密钥失效，请重新登录");
@@ -448,8 +467,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
                     SysCloseActivity.getInstance().exit();
-                } else if (status == 0) {
-
+                }else if(status==0){
                     String deployInfo = jObj.getString("result");//方案JSON
 
                     ////////////////////方案放入集合，暂时存储/////////////////////////////
@@ -467,18 +485,80 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 } else {
 
                     String errorMsg = jObj.getString("error_msg");
-                    Log.e(TAG, "Json error:json错误：" + errorMsg);
+                    Log.e(TAG, "Json error:json返回的数据有错误：" + errorMsg);
                     commonUtil.error_hint_short(errorMsg);
                 }
             } catch (JSONException e) {
 
-                //SON error
                 e.printStackTrace();
-                Log.e(TAG, "Json error:json错误：" + e.getMessage());
+                Log.e(TAG, "Json error:json解析错误：" + e.getMessage());
                 commonUtil.error_hint2_short(R.string.connect_error);
             }
         }
-    };
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "服务器连接失败Around Machine Error: " + exception.getMessage());
+            commonUtil.error_hint2_short(R.string.connect_error);
+        }
+
+        @Override
+        public void onFinish(int what) {
+            mainMenu.hideDialog();
+        }
+    }
+
+//   //获取方案数据响应服务器成功
+//    private Response.Listener<String> initSuccessListener = new Response.Listener<String>() {
+//
+//        @Override
+//        public void onResponse(String response) {
+//
+//            mainMenu.hideDialog();
+//            try {
+//                Log.e(TAG, "DeployInit Response: " + response);
+//                JSONObject jObj = new JSONObject(response);
+//                int status = jObj.getInt("status");
+//
+//                if (status == 1) {
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+//                    commonUtil.error_hint_short("密钥失效，请重新登录");
+//                    //清空数据，重新登录
+//                    netUtil.clearSession(mainMenu);
+//                    mainMenu.backLogin();
+//                    SysCloseActivity.getInstance().exit();
+//                } else if (status == 0) {
+//
+//                    String deployInfo = jObj.getString("result");//方案JSON
+//
+//                    ////////////////////方案放入集合，暂时存储/////////////////////////////
+//                    mainMenu.basicDeployRess.clear();//清空存储方案集合
+//                    mainMenu.basicDeployRess = gson.fromJson(deployInfo, new TypeToken<List<BasicDeployRes>>() {
+//                    }.getType());
+//                    deploySize = mainMenu.basicDeployRess.size();
+//                    Log.e(TAG,String.valueOf(deploySize));
+//                    ////////////////////方案放入集合，暂时存储////////////////////////////
+//
+//                    saveDeploy(deploySize);//数据存入临时数据集合deploy1,deploy2,deploy3,deploy4,deploy5
+//
+//                    //跳转选择方案界面
+//                    mainMenu.addBackFragment(new item_intelligent_resolution_2());
+//                } else {
+//
+//                    String errorMsg = jObj.getString("error_msg");
+//                    Log.e(TAG, "Json error:json错误：" + errorMsg);
+//                    commonUtil.error_hint_short(errorMsg);
+//                }
+//            } catch (JSONException e) {
+//
+//                //SON error
+//                e.printStackTrace();
+//                Log.e(TAG, "Json error:json错误：" + e.getMessage());
+//                commonUtil.error_hint2_short(R.string.connect_error);
+//            }
+//        }
+//    };
     ////////////////////////////获取智能调度方案//////////////////////////////////////
 
 
