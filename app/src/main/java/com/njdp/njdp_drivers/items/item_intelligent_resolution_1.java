@@ -40,8 +40,6 @@ import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.RequestQueue;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +59,6 @@ import bean.BasicDeployRes;
 import bean.FieldInfo;
 import bean.FieldInfoList;
 import bean.FieldInfoPost;
-import okhttp3.Call;
 
 public class item_intelligent_resolution_1 extends Fragment implements View.OnClickListener {
 

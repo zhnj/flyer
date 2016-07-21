@@ -24,16 +24,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-    }
-    useLibrary 'org.apache.http.legacy'
+//    packagingOptions {
+//        exclude 'META-INF/DEPENDENCIES'
+//        exclude 'META-INF/LICENSE'
+//        exclude 'META-INF/NOTICE'
+//        exclude 'META-INF/LICENSE.txt'
+//        exclude 'META-INF/NOTICE.txt'
+//        exclude 'META-INF/notice.txt'
+//        exclude 'META-INF/license.txt'
+//    }
+//    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -54,13 +54,13 @@ dependencies {
     compile files('libs/ormlite-android-4.49-SNAPSHOT.jar')
     compile project(':AndroidBootstrap')
     compile project(':MultiImageSelector')
-    compile('org.apache.httpcomponents:httpmime:4.3.6') {
-        exclude module: 'httpclient'
-    }
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.okio:okio:1.7.0'
-    compile 'com.zhy:okhttputils:2.4.1'
+//    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+//        exclude module: 'httpclient'
+//    }
+//    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+//    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+//    compile 'com.squareup.okio:okio:1.7.0'
+//    compile 'com.zhy:okhttputils:2.4.1'
     compile files('libs/BaiduHUDSDK_2.0.jar')
     compile files('libs/baidumapapi_base_v3_7_1.jar')
     compile files('libs/baidumapapi_cloud_v3_7_1.jar')

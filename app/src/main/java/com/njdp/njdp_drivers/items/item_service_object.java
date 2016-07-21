@@ -36,17 +36,12 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.Call;
-import okio.BufferedSource;
 
 public class item_service_object extends Fragment implements View.OnClickListener {
     private slidingMenu mainMenu;

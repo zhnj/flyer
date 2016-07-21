@@ -38,9 +38,9 @@ import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.RequestQueue;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
-import com.zhy.http.okhttp.callback.StringCallback;
+//import com.zhy.http.okhttp.OkHttpUtils;
+//import com.zhy.http.okhttp.callback.Callback;
+//import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ import java.util.Map;
 
 import bean.Driver;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
-import okhttp3.Call;
+//import okhttp3.Call;
 
 public class register_image extends AppCompatActivity {
 
