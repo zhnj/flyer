@@ -41,9 +41,14 @@
     <string name="register_error3">头像上传失败，请重试！</string>
     <string name="register_error4">注册信息不匹配，请检查注册信息！</string>
     <string name="login_error">登录失败,连接服务器错误</string>
-    <string name="connect_error">连接服务器错误</string>
     <string name="net_error">网络连接错误</string>
     <string name="exit_notice">再按一次退出智慧农机，退出后，您将无法享受智慧农机平台提供的优质服务</string>
+    <string name="connect_service_key_err1">密钥失效</string>
+    <string name="connect_service_key_err2">密钥失效，请重新登录</string>
+    <string name="connect_error">连接服务器错误</string>
+    <string name="connect_service_err1">Json error1：response返回的数据错误</string>
+    <string name="connect_service_err2">Json error2：response数据解析错误</string>
+    <string name="connect_service_err3">服务器连接失败</string>
 
     <string name="jobStart">开始日期：</string>
     <string name="jobEnd">结束日期：</string>

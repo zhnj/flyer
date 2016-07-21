@@ -26,12 +26,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.changeDefault.NewClickableSpan;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.FileBinary;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -75,25 +81,26 @@ public class register_image extends AppCompatActivity {
     private static final String TAG = register.class.getSimpleName();
     private File tempFile;
     private String path;//用户头像路径
-    private Gson gson = new Gson();
+    private Gson gson;
     private boolean imageError;
     private boolean error;
+    private static int FLAG_FIXINFO=11102000;
+    private String fixInfo_url;//修改个人信息服务器地址
+    private com.yolanda.nohttp.rest.Request<JSONObject>fixInfo_strReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_image);
 
-        //修改
-        url=AppConfig.URL_FIXPERSONINFO;
-        // Progress dialog
+        fixInfo_url=AppConfig.URL_FIXPERSONINFO;
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
         session = new SessionManager();// Session manager
         driverDao=new DriverDao(register_image.this);
         commonUtil=new CommonUtil(register_image.this);
         netUtil=new NetUtil(register_image.this);
+        gson = new Gson();
         token=session.getToken();
 
         this.notice = (TextView) super.findViewById(R.id.regiser_termsOfService);
@@ -243,11 +250,7 @@ public class register_image extends AppCompatActivity {
     private void register_uploadImage(String url,String path) {
 
         pDialog.setMessage("即将完成注册 ...");
-        showDialog();
-
         File file=new File(path);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("token", token);
 
         if (!file.exists()) {
             hideDialog();
@@ -258,44 +261,77 @@ public class register_image extends AppCompatActivity {
             hideDialog();
             commonUtil.error_hint_short("网络连接错误");
             return;
-        }else {
-            OkHttpUtils.post()
-                    .addFile("person_photo", "userimage.png", file)
-                    .url(url)
-                    .params(params)
-                    .addHeader("content-disposition","form-data")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            Log.e(TAG, "3 Register Connect Error: " + e.getMessage());
-                        }
-
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.e(TAG, "UploadImage:" + response);
-                                JSONObject jObj = new JSONObject(response);
-                                int status = jObj.getInt("status");
-                                if (status == 0) {
-                                    String msg = jObj.getString("result");
-                                    Log.e(TAG, "UploadImage response：" + msg);
-                                    // 跳转到主页面
-                                    Intent intent = new Intent(register_image.this, mainpages.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    String errorMsg = jObj.getString("result");
-                                    Log.e(TAG, "1 Register error：response错误：" + errorMsg);
-                                }
-                            } catch (Exception e) {
-                                Log.e(TAG, "2 Json error：response错误： " + e.getMessage());
-                            }
-                        }
-                    });
+        }else{
+            fix_iamge(file);
         }
     }
 
+    //上传用户头像
+    private void fix_iamge(File file)
+    {
+        fixInfo_strReq= NoHttp.createJsonObjectRequest(fixInfo_url, RequestMethod.POST);
+        fixInfo_strReq.add("token", token);
+        fixInfo_strReq.add("person_photo",new FileBinary(file));
+        fixInfo_strReq.addHeader("content-disposition","form-data");
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(this) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_FIXINFO, fixInfo_strReq, new fixUserImage_request());
+        }
+    }
+
+    //上传用户头像访问服务器监听
+    private class fixUserImage_request implements OnResponseListener<JSONObject>
+    {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                Log.e(TAG, "上传用户头像-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    String msg=jObj.getString("result");
+                    Log.e(TAG, "上传用户头像成功：" + msg);
+                } else if(status==1){
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1) + errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
+                    //清空数据，重新登录
+                    netUtil.clearSession(register_image.this);
+                    Intent intent = new Intent(register_image.this, login.class);
+                    finish();
+                    startActivity(intent);
+                    SysCloseActivity.getInstance().exit();
+                }else{
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Upload UserImage Error："+getResources().getString(R.string.connect_service_err1)+ errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + errorMsg);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Upload UserImage Error：" + getResources().getString(R.string.connect_service_err2) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Upload UserImage Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
 
 //    //不上传头像注册注册
 //    private void register_finish(String url) {

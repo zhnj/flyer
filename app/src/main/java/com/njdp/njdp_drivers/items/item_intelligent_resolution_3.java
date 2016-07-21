@@ -63,6 +63,7 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
@@ -75,6 +76,10 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,6 +107,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     private int count;
     private int deploy_tag;
     private CommonUtil commonUtil;
+    private Gson gson;
     private String token;
     private SessionManager sessionManager;
     private String machine_id;//机器ID
@@ -109,6 +115,9 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     private boolean text_gps_flag = false;//GPS定位是否成功
+    private static int FLAG_GPSLOCATION=11101007;
+    private String gps_url;//农机位置服务器地址
+    private com.yolanda.nohttp.rest.Request<JSONObject> location_strReq;
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -180,8 +189,10 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         savedFieldInfoDao=new SavedFieldInfoDao(getActivity());
         netUtil=new NetUtil(mainMenu);
         commonUtil=new CommonUtil(mainMenu);
+        gson=new Gson();
         sessionManager=new SessionManager();
         token=sessionManager.getToken();
+        gps_url=AppConfig.URL_MACHINELOCATION;
 
         if((navigationDeploy!=null)&&(navigationDeploy.size()>0)) {
             navigationDeploy.clear();
@@ -930,40 +941,41 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     //////////////////////////////////////////////////////////////
 
 
-    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    //从服务器获取农机经纬度
     public void gps_MachineLocation(final String machine_id) {
-        String tag_string_req = "req_GPS";
-        //服务器请求
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
-
-            @Override
-            protected Map<String, String> getParams() {
-
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("machine_id", machine_id);
-                params.put("token", token);
-
-                return netUtil.checkParams(params);
-            }
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("machine_id", machine_id);
+        params.put("token", token);
+        Log.e(TAG, "GPS位置发送的数据：" + gson.toJson(params));
+        location_strReq= NoHttp.createJsonObjectRequest(gps_url, RequestMethod.POST);
+        location_strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_GPSLOCATION, location_strReq, new gpsLocation_request());
+        }
     }
-    private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
-    {
+
+    //从服务器获取农机经纬度监听
+    private class gpsLocation_request implements OnResponseListener<JSONObject> {
         @Override
-        public void onResponse(String response) {
-            Log.d(TAG, "AreaInit Response: " + response);
+        public void onStart(int what) {
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
             try {
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj = response.get();
+                Log.e(TAG, "GPS位置接收的数据: " + jObj.toString());
                 int status = jObj.getInt("status");
 
                 if (status == 1) {
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1) + errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
@@ -980,27 +992,28 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                     isGetLocation();
                 } else {
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "GPSLocation Error:" + errorMsg);
+                    Log.e(TAG, "GPS Location Error："+getResources().getString(R.string.connect_service_err1)+ errorMsg);
                     text_gps_flag = true;
                     isGetLocation();
                 }
             } catch (JSONException e) {
                 // JSON error
-                Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
+                Log.e(TAG, "GPS Location Error"+getResources().getString(R.string.connect_service_err2)+ e.getMessage());
                 text_gps_flag = true;
                 isGetLocation();
             }
         }
-    }
 
-    private class locationErrorListener implements  Response.ErrorListener//定位服务器响应失败
-    {
         @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "ConnectService Error: " + error.getMessage());
-            netUtil.testVolley(error);
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "GPS Location Error：" + getResources().getString(R.string.connect_service_err3)+exception.getMessage());
             text_gps_flag = true;
             isGetLocation();
+        }
+
+        @Override
+        public void onFinish(int what) {
+
         }
     }
 

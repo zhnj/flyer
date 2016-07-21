@@ -35,9 +35,15 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.FileBinary;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,6 +95,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private String path_post;
     private String token;
     private String netImageUrl;
+    private static int FLAG_FIXINFO=11102000;
+    private String fixInfo_url;//修改个人信息服务器地址
+    private com.yolanda.nohttp.rest.Request<JSONObject>fixInfo_strReq;
 
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
     private int crop = 300;// 裁剪大小
@@ -139,6 +148,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
+        fixInfo_url=AppConfig.URL_FIXPERSONINFO;
         imageLoader=AppController.getInstance().getImageLoader();
         imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
 
@@ -356,45 +366,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         Bitmap mbitmap=Bitmap.createBitmap(title_Image.getDrawingCache());
         title_Image.setDrawingCacheEnabled(false);
         showDriverData(driver,mbitmap);
-//        OkHttpUtils
-//                .get()
-//                .url(AppConfig.URL_IP + url)
-//                .build()
-//                .connTimeOut(20 * 000)
-//                .readTimeOut(20 * 1000)
-//                .writeTimeOut(20*1000)
-//                .execute(new BitmapCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e) {
-//                        Log.e(TAG, "获取用户头像失败" + e.getMessage());
-//                        commonUtil.error_hint_short("获取用户头像失败");
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Bitmap image) {
-//                        Log.e(TAG, "获取用户头像成功");
-//                        if(image!=null) {
-//                            showDriverData(driver, image);
-//                        }
-//                    }
-//                });
-//        try {
-//            okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();//获取请求对象
-//            ResponseBody body = client.newCall(request).execute().body();//获取响应体
-//            InputStream in = body.byteStream();//获取流
-//            Bitmap bitmap = BitmapFactory.decodeStream(in);//转化为bitmap
-//            Message msg = Message.obtain();//使用Hanlder发送消息
-//
-//            msg.what = SUCCESS;
-//            msg.obj = bitmap;
-//            handler.sendMessage(msg);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            //失败
-//            Message msg = Message.obtain();
-//            msg.what = ERROR;
-//            handler.sendMessage(msg);
-//        }
     }
 
     private void showDriverData(Driver driver,Bitmap mbitmap)//显示用户基本信息和头像
@@ -484,38 +455,96 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
     }
 
-    private void fix_iamge(File file)//上传照片
+    private void fix_iamge(File file)//上传用户头像
     {
-        OkHttpUtils.post()
-                .url( AppConfig.URL_FIXPERSONINFO)
-                .addParams("token", token)
-                .addFile("person_photo", "userimage.png",file)
-                .addHeader("content-disposition","form-data")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        Log.e(TAG, "3 Connect Error: " + e.getMessage());
-                    }
+        fixInfo_strReq= NoHttp.createJsonObjectRequest(fixInfo_url, RequestMethod.POST);
+        fixInfo_strReq.add("token", token);
+        fixInfo_strReq.add("person_photo",new FileBinary(file));
+        fixInfo_strReq.addHeader("content-disposition","form-data");
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_FIXINFO, fixInfo_strReq, new fixUserImage_request());
+        }
+//        OkHttpUtils.post()
+//                .url( AppConfig.URL_FIXPERSONINFO)
+//                .addParams("token", token)
+//                .addFile("person_photo", "userimage.png",file)
+//                .addHeader("content-disposition","form-data")
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e) {
+//                        Log.e(TAG, "3 Connect Error: " + e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            Log.e(TAG, "UploadImage:" + response);
+//                            JSONObject jObj = new JSONObject(response);
+//                            int status = jObj.getInt("status");
+//                            if (status == 0) {
+//                                String msg=jObj.getString("result");
+//                                Log.e(TAG, "UploadImage response：" + msg);
+//                            } else {
+//                                String errorMsg = jObj.getString("result");
+//                                Log.e(TAG, "1 Json error：response错误：" + errorMsg);
+//                            }
+//                        } catch (Exception e) {
+//                            Log.e(TAG, "2 Json error：response错误： " + e.getMessage());
+//                        }
+//                    }
+//                });
+    }
 
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.e(TAG, "UploadImage:" + response);
-                            JSONObject jObj = new JSONObject(response);
-                            int status = jObj.getInt("status");
-                            if (status == 0) {
-                                String msg=jObj.getString("result");
-                                Log.e(TAG, "UploadImage response：" + msg);
-                            } else {
-                                String errorMsg = jObj.getString("result");
-                                Log.e(TAG, "1 Json error：response错误：" + errorMsg);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "2 Json error：response错误： " + e.getMessage());
-                        }
-                    }
-                });
+    private class fixUserImage_request implements OnResponseListener<JSONObject>//上传用户头像访问服务器监听
+    {
+        @Override
+        public void onStart(int what) {
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                Log.e(TAG, "上传用户头像-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    String msg=jObj.getString("result");
+                    Log.e(TAG, "上传用户头像成功：" + msg);
+                } else if(status==1){
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1) + errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                }else{
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Upload UserImage Error："+getResources().getString(R.string.connect_service_err1)+ errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + errorMsg);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Upload UserImage Error：" + getResources().getString(R.string.connect_service_err2) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Upload UserImage Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
     }
 
     private void setTextFix()//完成修改后，显示到界面

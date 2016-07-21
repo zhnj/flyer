@@ -37,6 +37,10 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +71,9 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
     private NetUtil netUtil;
     private Gson gson;
     private String token;
-    private String url;//服务器地址
+    private static int FLAG_UPLOADDEPLOY=11101010;
+    private String uploadDeploy_url;//上传选择方案服务器地址
+    private com.yolanda.nohttp.rest.Request<JSONObject> uploadDeploy_strReq;
     private String plan_id;
     private SavedFieldInfoDao saveFieldInfoDao;
     private List<FieldInfo> deployFieldInfo=new ArrayList<FieldInfo>();//选择的调配方案对应的农田信息
@@ -89,7 +95,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
         token=sessionManager.getToken();
-        url= AppConfig.URL_UPLOADDEPLOY;
+        uploadDeploy_url= AppConfig.URL_UPLOADDEPLOY;
 
         saveFieldInfoDao=new SavedFieldInfoDao(getActivity());
         expandableListView = (ExpandableListView)view.findViewById(R.id.intelligent_deploy_expand);
@@ -391,79 +397,72 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         }
     }
 
-    ////////////////////////////上传选择方案/////////////////////////////////////
+    //传选择方案
     private void uploadDeploy()
     {
-        String tag_string_req = "req_init";
-
-        mainMenu.pDialog.setMessage("正在准备导航，请等待 ...");
-        mainMenu.showDialog();
-
-        if(!netUtil.checkNet(mainMenu)){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token", token);
+        params.put("plan_id", plan_id);
+        Log.e(TAG, "上传选择方案发送的数据：" + gson.toJson(params));
+        uploadDeploy_strReq= NoHttp.createJsonObjectRequest(uploadDeploy_url, RequestMethod.POST);
+        uploadDeploy_strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
             commonUtil.error_hint_short("网络连接错误");
-            mainMenu.hideDialog();
-        }else {
-            //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.PUT,
-                    url, initSuccessListener,mainMenu.mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("token", token);
-                    params.put("plan_id", plan_id);
-
-                    return netUtil.checkParams(params);
-                }
-            };
-
-            strReq.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            return;
+        } else {
+            requestQueue.add(FLAG_UPLOADDEPLOY, uploadDeploy_strReq, new uploadDeploy_request());
         }
-
     }
 
-    //上传选择方案响应服务器成功
-    private Response.Listener<String> initSuccessListener = new Response.Listener<String>() {
+    //传选择方案访问服务器监听
+    private class uploadDeploy_request implements OnResponseListener<JSONObject>
+    {
+        @Override
+        public void onStart(int what) {
+
+        }
 
         @Override
-        public void onResponse(String response) {
-            mainMenu.hideDialog();
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
             try {
-
-                Log.e(TAG, "AreaInit Response: " + response);
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj = response.get();
+                Log.e(TAG, "上传选择方案接收的数据: " + jObj.toString());
                 int status = jObj.getInt("status");
 
-                if (status==1)
-                {
+                if (status == 1) {
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1)+ errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
                     //清空数据，重新登录
                     netUtil.clearSession(mainMenu);
                     mainMenu.backLogin();
                     SysCloseActivity.getInstance().exit();
-                }else if(status==0){
-                    String msg=jObj.getString("result");
-                    Log.e(TAG, msg+"---上传选择方案成功");
-//                    commonUtil.error_hint_short("上传选择方案成功");
-
-                } else {
-
-                    String errorMsg = jObj.getString("error_msg");
-                    Log.e(TAG, "服务器数据错误1：Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("服务器数据错误1" + errorMsg);
+                } else if (status == 0) {
+                    String msg = jObj.getString("result");
+                    Log.e(TAG, msg + "上传选择方案成功："+msg);
+                }else{
+                    String msg = jObj.getString("result");
+                    Log.e(TAG, "Upload Deploy Error："+getResources().getString(R.string.connect_service_err1)+ msg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + msg);
                 }
             } catch (JSONException e) {
-                // JSON error
-                Log.e(TAG, "服务器数据错误2：" + e.getMessage());
-                commonUtil.error_hint_short("服务器数据错误1" + e.getMessage());
+                Log.e(TAG, "Upload Deploy Error："+getResources().getString(R.string.connect_service_err2)+ e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
             }
         }
-    };
-    ////////////////////////////上传选择方案///////////////////////////////////
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Upload Deploy Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
+    }
+
 
 }
