@@ -49,6 +49,8 @@
     <string name="connect_service_err1">Json error1：response返回的数据错误</string>
     <string name="connect_service_err2">Json error2：response数据解析错误</string>
     <string name="connect_service_err3">服务器连接失败</string>
+    <string name="user_image_err">获取图片失败</string>
+    <string name="user_image_success">获取图片成功</string>
 
     <string name="jobStart">开始日期：</string>
     <string name="jobEnd">结束日期：</string>

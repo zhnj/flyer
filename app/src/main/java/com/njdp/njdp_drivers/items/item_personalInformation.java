@@ -1,13 +1,15 @@
 package com.njdp.njdp_drivers.items;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+//import android.os.Handler;
+//import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,11 +21,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.StringRequest;
+//import com.android.volley.DefaultRetryPolicy;
+//import com.android.volley.Response;
+//import com.android.volley.VolleyError;
+//import com.android.volley.toolbox.ImageLoader;
+//import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
@@ -31,13 +33,13 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.SessionManager;
-import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.yolanda.nohttp.FileBinary;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.CacheMode;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.RequestQueue;
 //import com.zhy.http.okhttp.OkHttpUtils;
@@ -53,9 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import bean.Driver;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -67,6 +67,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     private slidingMenu mainMenu;
     private DrawerLayout menu;
+    private ProgressDialog pDialog;
     private String TAG=item_personalInformation.class.getSimpleName();
     private View parentView;//主View
     private com.njdp.njdp_drivers.CircleMenu.CircleImageView title_Image;
@@ -89,15 +90,21 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private CommonUtil commonUtil;
     private Gson gson;
     private SessionManager sessionManager;
-    private ImageLoader imageLoader;
-    private ImageLoader.ImageListener imageListener;
+//    private ImageLoader imageLoader;
+//    private ImageLoader.ImageListener imageListener;
     private String path;
     private String path_post;
     private String token;
     private String netImageUrl;
-    private static int FLAG_FIXINFO=11102000;
+    private Bitmap userImageBitmap;
+    private static int FLAG_USERIMAGE=11102002;
+    private static int FLAG_GETINFO=11102000;
+    private static int FLAG_FIXINFO=11102001;
+    private String getInfo_url;//获取个人信息服务器地址
     private String fixInfo_url;//修改个人信息服务器地址
-    private com.yolanda.nohttp.rest.Request<JSONObject>fixInfo_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> getInfo_strReq;
+    private com.yolanda.nohttp.rest.Request<Bitmap> getUserImage_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> fixInfo_strReq;
 
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
     private int crop = 300;// 裁剪大小
@@ -141,6 +148,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
         parentView = LayoutInflater.from(mainMenu).inflate(R.layout.activity_5_personalinformation, null);
+        pDialog = new ProgressDialog(mainMenu);
+        pDialog.setCancelable(false);
 
         driverDao=new DriverDao(getActivity());
         sessionManager=new SessionManager();
@@ -148,9 +157,10 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
+        getInfo_url=AppConfig.URL_QUERYPERSONINFO;
         fixInfo_url=AppConfig.URL_FIXPERSONINFO;
-        imageLoader=AppController.getInstance().getImageLoader();
-        imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
+//        imageLoader=AppController.getInstance().getImageLoader();
+//        imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
 
         try {
             driver = driverDao.getDriver(1);
@@ -168,16 +178,16 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
                     title_Image.setImageBitmap(commonUtil.zoomBitmap(bitmap,300,300));
                 }else {
-                    intiData(driver);
+                    getUserInfo();
                 }
             }catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG,e.toString());
             }
         }else {
-            intiData(driver);
+            getUserInfo();
         }
-        intiData(driver);
+        getUserInfo();
         setTextFix();//修改后，显示修改后的信息
         return view;
     }
@@ -259,85 +269,85 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        });
 //    }
 
-    //初始化用户信息
-    private void intiData(final Driver driver) {
-
-        String tag_string_req = "req_login";
-
-        mainMenu.pDialog.setMessage("正在载入数据 ...");
-        mainMenu.showDialog();
-
-        if (netUtil.checkNet(mainMenu) == false) {
-            mainMenu.hideDialog();
-            commonUtil.error_hint_short("网络连接错误");
-            return;
-        } else {
-
-            //服务器请求
-            StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
-                    AppConfig.URL_QUERYPERSONINFO, new mSuccessListener(), mainMenu.mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("token", token);
-
-                    return netUtil.checkParams(params);
-                }
-            };
-
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        }
-    }
-
-    //初始化用户信息响应服务器成功
-    private class mSuccessListener implements Response.Listener<String>{
-
-        @Override
-        public void onResponse(String response) {
-            mainMenu.hideDialog();
-
-            try {
-                Log.e(TAG, "PersonalInformation Response: " + response.toString());
-                JSONObject jObj = new JSONObject(response);
-                int status = jObj.getInt("status");
-
-                if (status==1) {
-
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("密钥失效，请重新登录");
-                    //清空数据，重新登录
-                    netUtil.clearSession(mainMenu);
-                    Intent intent = new Intent(mainMenu, login.class);
-                    startActivity(intent);
-                    mainMenu.finish();
-                } else if(status==0){
-
-                    JSONObject s_driver = jObj.getJSONObject("result");
-                    netImageUrl=s_driver.getString("person_photo");
-                    driver.setName(s_driver.getString("person_name"));
-                    driver.setTelephone(s_driver.getString("person_phone"));
-                    driver.setWechart(s_driver.getString("person_weixin"));
-                    driver.setQQ(s_driver.getString("person_qq"));
-                    driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
-                    driver.setId(1);
-                    path=null;
-                    path=commonUtil.imageTempFile();
-                    driver.setImage_url(path);//设置头像本地存储路径
-                    getImage(AppConfig.URL_IP + netImageUrl);
-
-                } else {
-
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "1 Json error：获取用户数据失败-response错误:" + errorMsg);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "2 Json error：获取用户数据失败-response错误" + e.getMessage());
-            }
-        }
-    };
+//    //初始化用户信息
+//    private void intiData(final Driver driver) {
+//
+//        String tag_string_req = "req_login";
+//
+//        mainMenu.pDialog.setMessage("正在载入数据 ...");
+//        mainMenu.showDialog();
+//
+//        if (netUtil.checkNet(mainMenu) == false) {
+//            mainMenu.hideDialog();
+//            commonUtil.error_hint_short("网络连接错误");
+//            return;
+//        } else {
+//
+//            //服务器请求
+//            StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+//                    AppConfig.URL_QUERYPERSONINFO, new mSuccessListener(), mainMenu.mErrorListener) {
+//
+//                @Override
+//                protected Map<String, String> getParams() {
+//
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    params.put("token", token);
+//
+//                    return netUtil.checkParams(params);
+//                }
+//            };
+//
+//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+//        }
+//    }
+//
+//    //初始化用户信息响应服务器成功
+//    private class mSuccessListener implements Response.Listener<String>{
+//
+//        @Override
+//        public void onResponse(String response) {
+//            mainMenu.hideDialog();
+//
+//            try {
+//                Log.e(TAG, "PersonalInformation Response: " + response.toString());
+//                JSONObject jObj = new JSONObject(response);
+//                int status = jObj.getInt("status");
+//
+//                if (status==1) {
+//
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+//                    commonUtil.error_hint_short("密钥失效，请重新登录");
+//                    //清空数据，重新登录
+//                    netUtil.clearSession(mainMenu);
+//                    Intent intent = new Intent(mainMenu, login.class);
+//                    startActivity(intent);
+//                    mainMenu.finish();
+//                } else if(status==0){
+//
+//                    JSONObject s_driver = jObj.getJSONObject("result");
+//                    netImageUrl=s_driver.getString("person_photo");
+//                    driver.setName(s_driver.getString("person_name"));
+//                    driver.setTelephone(s_driver.getString("person_phone"));
+//                    driver.setWechart(s_driver.getString("person_weixin"));
+//                    driver.setQQ(s_driver.getString("person_qq"));
+//                    driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
+//                    driver.setId(1);
+//                    path=null;
+//                    path=commonUtil.imageTempFile();
+//                    driver.setImage_url(path);//设置头像本地存储路径
+//                    getImage(AppConfig.URL_IP + netImageUrl);
+//
+//                } else {
+//
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, "1 Json error：获取用户数据失败-response错误:" + errorMsg);
+//                }
+//            } catch (JSONException e) {
+//                Log.e(TAG, "2 Json error：获取用户数据失败-response错误" + e.getMessage());
+//            }
+//        }
+//    };
 
 
 //    private void initFixPopup()//初始化修改信息弹窗
@@ -349,6 +359,13 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 //        fix_popup.setBackgroundDrawable(new ColorDrawable(0x55000000));
 //    }
 
+
+    @Override
+    public void onDestroy() {
+        commonUtil.destroyBitmap(userImageBitmap);//销毁bitmap
+        super.onDestroy();
+    }
+
     private void showDriverInfo(Driver driver)//只显示用户基本信息
     {
         t_name.setText(driver.getName());
@@ -359,19 +376,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_region.setText(driver.getSite_0());
     }
 
-    private void getImage(String url)//获取用户头像
+    private void showDriverData(Driver driver)//显示用户基本信息和头像
     {
-        imageLoader.get(url, imageListener, 300, 300);
-        title_Image.setDrawingCacheEnabled(true);
-        Bitmap mbitmap=Bitmap.createBitmap(title_Image.getDrawingCache());
-        title_Image.setDrawingCacheEnabled(false);
-        showDriverData(driver,mbitmap);
-    }
-
-    private void showDriverData(Driver driver,Bitmap mbitmap)//显示用户基本信息和头像
-    {
-        commonUtil.saveBitmap_noCrop(mainMenu, mbitmap);//保存到本地
-        title_Image.setImageBitmap(commonUtil.zoomBitmap(mbitmap, 300, 300));//裁剪
         driverDao.update(driver);
         t_name.setText(driver.getName());
         t_machine_id.setText(driver.getMachine_id());
@@ -379,7 +385,6 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite_0());
-        commonUtil.destroyBitmap(mbitmap);
     }
 
     @Override
@@ -442,7 +447,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         Bundle bundle = picdata.getExtras();
         if (null != bundle) {
             Bitmap mBitmap = bundle.getParcelable("data");
-            boolean tag= commonUtil.saveBitmap(mainMenu, mBitmap);
+            boolean tag= commonUtil.saveBitmap(mBitmap);
             if(tag)
             {
                 title_Image.setImageBitmap(mBitmap);
@@ -452,6 +457,125 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 title_Image.setImageDrawable(ContextCompat.getDrawable(mainMenu,R.drawable.turnplate_center));
                 //上传失败，默认头像
             }
+        }
+    }
+
+    private void getUserInfo()//获取用户基本信息
+    {
+        pDialog.setMessage("正在载入数据 ...");
+        getInfo_strReq= NoHttp.createJsonObjectRequest(getInfo_url, RequestMethod.POST);
+        getInfo_strReq.add("token", token);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_GETINFO, getInfo_strReq, new getUserInfo_request());
+        }
+    }
+
+    private class getUserInfo_request implements OnResponseListener<JSONObject>//获取用户基本信息访问服务器监听
+    {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                Log.e(TAG, "获取用户基本信息-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    JSONObject s_driver = jObj.getJSONObject("result");
+                    netImageUrl=s_driver.getString("person_photo");
+                    driver.setName(s_driver.getString("person_name"));
+                    driver.setTelephone(s_driver.getString("person_phone"));
+                    driver.setWechart(s_driver.getString("person_weixin"));
+                    driver.setQQ(s_driver.getString("person_qq"));
+                    driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
+                    driver.setId(1);
+                    showDriverData(driver);//显示个人信息
+                    path=null;
+                    path=commonUtil.imageTempFile();
+                    driver.setImage_url(path);//设置头像本地存储路径
+                    getImage(AppConfig.URL_IP + netImageUrl);//从服务器获取个人头像图片
+                } else if(status==1){
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1) + errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                }else{
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Get UserInfo Error："+getResources().getString(R.string.connect_service_err1)+ errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + errorMsg);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Get UserInfo Error：" + getResources().getString(R.string.connect_service_err2) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Get UserInfo Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
+    private void getImage(String url)//获取用户头像
+    {
+//        imageLoader.get(url, imageListener, 300, 300);
+//        title_Image.setDrawingCacheEnabled(true);
+//        Bitmap mbitmap=Bitmap.createBitmap(title_Image.getDrawingCache());
+//        title_Image.setDrawingCacheEnabled(false);
+//        title_Image.setImageBitmap(mbitmap);
+//        showDriverData(driver);
+        getUserImage_strReq = NoHttp.createImageRequest(url);
+        getUserImage_strReq.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_USERIMAGE, getUserImage_strReq, new getUserImage_request());
+        }
+    }
+
+    private class getUserImage_request implements OnResponseListener<Bitmap> //获取用户头像访问服务器监听
+    {
+        @Override
+        public void onStart(int what) {
+
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<Bitmap> response) {
+            Log.e(TAG, getResources().getString(R.string.user_image_success));
+            userImageBitmap = commonUtil.zoomBitmap(response.get(), 300, 300);//裁剪
+            title_Image.setImageBitmap(userImageBitmap);//显示头像图片
+            commonUtil.saveBitmap_noCrop(userImageBitmap);//保存到本地
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Get UserImage Error："+getResources().getString(R.string.user_image_err) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.user_image_err) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
         }
     }
 
@@ -565,6 +689,16 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             }
             mainMenu.change_info_flag=false;
         }
+    }
+
+    public void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    public void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

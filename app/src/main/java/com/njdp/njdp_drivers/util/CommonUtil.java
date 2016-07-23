@@ -115,7 +115,7 @@ public class CommonUtil {
     }
 
     //保存照片到本地,不裁剪
-    public boolean saveBitmap_noCrop(Context context,Bitmap mBitmap) {
+    public boolean saveBitmap_noCrop(Bitmap mBitmap) {
         File file=getPath();
         File tempFile=null;
         FileOutputStream fOut;
@@ -145,7 +145,7 @@ public class CommonUtil {
     }
 
     //保存照片到本地
-    public boolean saveBitmap(Context context,Bitmap mBitmap) {
+    public boolean saveBitmap(Bitmap mBitmap) {
         File file=getPath();
         File tempFile=null;
         Bitmap bitmap = zoomBitmap(mBitmap, 400, 400);

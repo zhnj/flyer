@@ -237,7 +237,7 @@ public class register_image extends AppCompatActivity {
         Bundle bundle = picdata.getExtras();
         if (null != bundle) {
             Bitmap mBitmap = bundle.getParcelable("data");
-            boolean tag= commonUtil.saveBitmap(register_image.this, mBitmap);
+            boolean tag= commonUtil.saveBitmap(mBitmap);
             if(tag)
             {
                 userImage.setImageBitmap(mBitmap);
