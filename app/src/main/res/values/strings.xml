@@ -51,6 +51,7 @@
     <string name="connect_service_err3">服务器连接失败</string>
     <string name="user_image_err">获取图片失败</string>
     <string name="user_image_success">获取图片成功</string>
+    <string name="verify_code_err">获取验证码失败，请重试</string>
 
     <string name="jobStart">开始日期：</string>
     <string name="jobEnd">结束日期：</string>

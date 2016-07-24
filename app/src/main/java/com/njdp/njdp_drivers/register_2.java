@@ -27,6 +27,10 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +59,9 @@ public class register_2 extends Activity implements View.OnClickListener{
     private String token;
     private int address_select_flag=0;
     private int CODE_SELECT_SITE=101;
+    private static int FLAG_REGISTER_INFO=11101005;
+    private String fixInfo_url;//修改个人信息服务器地址
+    private com.yolanda.nohttp.rest.Request<JSONObject> fixInfo_strReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,8 @@ public class register_2 extends Activity implements View.OnClickListener{
         // Session manager
         session = new SessionManager();
         token=session.getToken();
+        fixInfo_url=AppConfig.URL_FIXPERSONINFO;
+
 
         text_user_name = (EditText) super.findViewById(R.id.user_name);
         text_user_address=(TextView) super.findViewById(R.id.user_site);
@@ -281,73 +290,107 @@ public class register_2 extends Activity implements View.OnClickListener{
     //提交个人信息
     private void register_user_info(){
 
-        String tag_string_req = "req_register_driver";
-        pDialog.setMessage("正在提交个人信息，请等待......");
-        showDialog();
-        if(netUtil.checkNet(register_2.this)==false){
-            error_hint("网络连接错误");
+        pDialog.setMessage("正在上传个人信息.......");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token", token);
+        params.put("person_qq", qq);
+        params.put("person_weixin", weixn);
+        params.put("person_name", name);
+        params.put("person_address", address);
+        fixInfo_strReq= NoHttp.createJsonObjectRequest(fixInfo_url, RequestMethod.POST);
+        fixInfo_strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(register_2.this) == false) {
             hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_FIXPERSONINFO, mSuccessListener, mErrorListener) {
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("token", token);
-                    params.put("person_qq", qq);
-                    params.put("person_weixin", weixn);
-                    params.put("person_name", name);
-                    params.put("person_address", address);
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_REGISTER_INFO, fixInfo_strReq, new register_info_request());
         }
     }
 
-
-    //响应服务器成功
-    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+    //注册访问服务器监听
+    private class register_info_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
 
         @Override
-        public void onResponse(String response) {
-            hideDialog();
-            Log.e(TAG, "Register Response: " + response.toString());
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
 
             try {
-                JSONObject jObj = new JSONObject(response);
+                JSONObject jObj=response.get();
                 int status = jObj.getInt("status");
                 if (status==0) {
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG,errorMsg);
+                    Log.e(TAG, "Register2 个人信息上传成功："+errorMsg);
                     Intent intent = new Intent(register_2.this, register_image.class);
                     startActivity(intent);
                 } else {
-                    String err_status = jObj.getString("status");
                     String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
-                    commonUtil.error_hint_short(errorMsg);
+                    Log.e(TAG, "错误代码：" + status + "---" + errorMsg);
+                    Log.e(TAG, "Register2 Error："+getResources().getString(R.string.connect_service_err1)+
+                            "错误代码" + String.valueOf(status)+ "," +errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + errorMsg);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                empty_hint(R.string.vertify_error2);
+                Log.e(TAG, "Register2 Error：" + getResources().getString(R.string.connect_service_err2) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
             }
-
         }
-    };
 
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
         @Override
-        public void onErrorResponse(VolleyError error) {
-            hideDialog();
-            Log.e(TAG, "Register UserInfo Error: " + error.getMessage());
-            error_hint(error.getMessage());
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Get UserInfo Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
         }
-    };
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
+//    //响应服务器成功
+//    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+//
+//        @Override
+//        public void onResponse(String response) {
+//            hideDialog();
+//            Log.e(TAG, "Register Response: " + response.toString());
+//
+//            try {
+//                JSONObject jObj = new JSONObject(response);
+//                int status = jObj.getInt("status");
+//                if (status==0) {
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG,errorMsg);
+//                    Intent intent = new Intent(register_2.this, register_image.class);
+//                    startActivity(intent);
+//                } else {
+//                    String err_status = jObj.getString("status");
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
+//                    commonUtil.error_hint_short(errorMsg);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                empty_hint(R.string.vertify_error2);
+//            }
+//
+//        }
+//    };
+
+//    //响应服务器失败
+//    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//            hideDialog();
+//            Log.e(TAG, "Register UserInfo Error: " + error.getMessage());
+//            error_hint(error.getMessage());
+//        }
+//    };
 
 }

@@ -61,7 +61,12 @@ public class register_1 extends Activity implements View.OnClickListener{
     private String password;
     private String verify_code;
     private String token;
-    private static int FLAG_REGISTER_1=11101005;
+    private static int FLAG_REGISTER=11101005;
+    private static int FLAG_MACHINEVERIFY=11101010;
+    private String register_url;
+    private String machineVerify_url;
+    private com.yolanda.nohttp.rest.Request<JSONObject> register_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> machineVerify_strReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,8 @@ public class register_1 extends Activity implements View.OnClickListener{
         commonUtil=new CommonUtil(register_1.this);
         netUtil=new NetUtil(register_1.this);
         session = new SessionManager();
+        register_url=AppConfig.URL_REGISTER;
+        machineVerify_url=AppConfig.URL_VERIFY_MACHINE_ID;
 
         text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
         text_user_password = (EditText) super.findViewById(R.id.user_password);
@@ -262,43 +269,19 @@ public class register_1 extends Activity implements View.OnClickListener{
         params.put("machine_id", machine_id);
         params.put("password", password);
         params.put("code", verify_code);
-        com.yolanda.nohttp.rest.Request<JSONObject> strReq= NoHttp.createJsonObjectRequest(AppConfig.URL_REGISTER, RequestMethod.POST);
-        strReq.add(params);
+        register_strReq= NoHttp.createJsonObjectRequest(register_url, RequestMethod.POST);
+        register_strReq.add(params);
         RequestQueue requestQueue = NoHttp.newRequestQueue();
         if (netUtil.checkNet(register_1.this) == false) {
             hideDialog();
             commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-            requestQueue.add(FLAG_REGISTER_1, strReq, new register_request());
+            requestQueue.add(FLAG_REGISTER, register_strReq, new register_request());
         }
-
-//        String tag_string_req = "req_register_driver";
-//        if(netUtil.checkNet(register_1.this)==false){
-//            error_hint("网络连接错误");
-//            hideDialog();
-//            return;
-//        } else {
-//            StringRequest strReq = new StringRequest(Request.Method.POST,
-//                    AppConfig.URL_REGISTER, mSuccessListener, mErrorListener) {
-//                @Override
-//                protected Map<String, String> getParams() {
-//
-//                    Map<String, String> params = new HashMap<String, String>();
-//                    params.put("phone", telephone);
-//                    params.put("machine_id", machine_id);
-//                    params.put("password", password);
-//                    params.put("code", verify_code);
-//                    return params;
-//                }
-//            };
-//
-//            // Adding request to request queue
-//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-//        }
     }
 
-    //注册访问拂去其监听
+    //注册访问服务器监听
     private class register_request implements OnResponseListener<JSONObject> {
         @Override
         public void onStart(int what) {
@@ -345,8 +328,68 @@ public class register_1 extends Activity implements View.OnClickListener{
         }
     }
 
-//    //响应服务器成功
-//    private Response.Listener<String> mSuccessListener =new Response.Listener<String>() {
+    //验证农机id
+    private void verify_machine_id(){
+        pDialog.setMessage("正在提交注册申请，请等待......");
+        machineVerify_strReq= NoHttp.createJsonObjectRequest(machineVerify_url, RequestMethod.POST);
+        machineVerify_strReq.add("machine_id", machine_id);
+        Log.e(TAG, "验证农机MachineID-接收的数据：" + machine_id);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(register_1.this) == false) {
+            hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_MACHINEVERIFY, machineVerify_strReq, new machineVerify_request());
+        }
+    }
+
+    //验证农机id访问服务器监听
+    private class machineVerify_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                Log.e(TAG, "验证农机MachineID-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "验证MachineID成功："+errorMsg);
+                    register_user();
+                } else {
+                    String err_status = jObj.getString("status");
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Register1 MachineVerify Error："+getResources().getString(R.string.connect_service_err1)+ String.valueOf(err_status)+" "+errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + errorMsg);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Register1 MachineVerify Error：" + getResources().getString(R.string.connect_service_err2) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Register1 MachineVerify Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
+
+//    //验证农机响应服务器成功
+//    private Response.Listener<String> verifySuccessListener =new Response.Listener<String>() {
 //
 //        @Override
 //        public void onResponse(String response) {
@@ -357,15 +400,9 @@ public class register_1 extends Activity implements View.OnClickListener{
 //                JSONObject jObj = new JSONObject(response);
 //                int status = jObj.getInt("status");
 //                if (status==0) {
-//                    token=jObj.getString("result");
-//                    session.setLogin(true,token);
-//                    driver.setId(1);
-//                    driver.setMachine_id(machine_id);
-//                    driver.setPassword(password);
-//                    driverDao.add(driver);
-//                    Intent intent = new Intent(register_1.this, register_2.class);
-//                    startActivity(intent);
-//                    finish();
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, errorMsg);
+//                    register_user();
 //                } else {
 //                    String err_status = jObj.getString("status");
 //                    String errorMsg = jObj.getString("result");
@@ -379,73 +416,5 @@ public class register_1 extends Activity implements View.OnClickListener{
 //
 //        }
 //    };
-//
-
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            hideDialog();
-            Log.e(TAG, "Register UserInfo Error: " + error.getMessage());
-            error_hint(error.getMessage());
-        }
-    };
-
-    //验证农机id
-    private void verify_machine_id(){
-
-        String tag_string_req = "req_register_driver";
-        pDialog.setMessage("正在提交注册申请，请等待......");
-        showDialog();
-        if(netUtil.checkNet(register_1.this)==false){
-            error_hint("网络连接错误");
-            hideDialog();
-            return;
-        } else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_VERIFY_MACHINE_ID, verifySuccessListener, mErrorListener) {
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("machine_id", machine_id);
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        }
-    }
-
-
-    //验证农机响应服务器成功
-    private Response.Listener<String> verifySuccessListener =new Response.Listener<String>() {
-
-        @Override
-        public void onResponse(String response) {
-            hideDialog();
-            Log.e(TAG, "Register Response: " + response.toString());
-
-            try {
-                JSONObject jObj = new JSONObject(response);
-                int status = jObj.getInt("status");
-                if (status==0) {
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, errorMsg);
-                    register_user();
-                } else {
-                    String err_status = jObj.getString("status");
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "错误代码："+err_status+"---"+errorMsg);
-                    commonUtil.error_hint_short(errorMsg);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                empty_hint(R.string.vertify_error2);
-            }
-
-        }
-    };
 
 }

@@ -26,6 +26,10 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.OnResponseListener;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,15 +44,14 @@ public class register extends Activity {
 //    private EditText text_user_address=null;
 //    private EditText text_user_qq=null;
 //    private EditText text_user_weixin=null;
-    private EditText text_user_telephone=null;
 //    private EditText text_verification_code=null;
+    private EditText text_user_telephone=null;
     private Button btn_verification_code=null;
     private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
     private AwesomeValidation verification_code_Validation=new AwesomeValidation(ValidationStyle.BASIC);
     private AwesomeValidation mValidation=new AwesomeValidation(ValidationStyle.BASIC);
     private static final String TAG = register.class.getSimpleName();
-//    private ProgressDialog pDialog;
     private NetUtil netUtil;
     private CommonUtil commonUtil;
     private ProgressDialog pDialog;
@@ -57,10 +60,13 @@ public class register extends Activity {
 //    private String machine_id;
 //    private String password;
 //    private String address;
-    private String telephone;
-    private String t_verify_code;
-    private String verify_code;
+//    private String t_verify_code;
+//    private String verify_code;
 //    private int address_select_flag=0;
+    private String telephone;
+    private String verifyCode_url;
+    private static int FLAG_VERIFYCODE=11101011;
+    private com.yolanda.nohttp.rest.Request<JSONObject> verifyCode_strReq;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +77,18 @@ public class register extends Activity {
         pDialog.setCancelable(false);
         netUtil=new NetUtil(register.this);
         commonUtil=new CommonUtil(register.this);
-//        pDialog = new ProgressDialog(this);
-//        pDialog.setCancelable(false);
-//        session = new SessionManager(getApplicationContext());
+        verifyCode_url=AppConfig.URL_GET_VERIFYCODE;
 
+//        session = new SessionManager(getApplicationContext());
 //        text_user_name = (EditText) super.findViewById(R.id.user_name);
 //        text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
 //        text_user_password = (EditText) super.findViewById(R.id.user_password);
 //        text_user_address=(TextView) super.findViewById(R.id.user_site);
 //        text_user_qq=(EditText) super.findViewById(R.id.user_qq);
 //        text_user_weixin=(EditText) super.findViewById(R.id.user_weixin);
-        text_user_telephone = (EditText) super.findViewById(R.id.user_telephone);
 //        text_verification_code = (EditText) super.findViewById(R.id.verification_code);
+
+        text_user_telephone = (EditText) super.findViewById(R.id.user_telephone);
         btn_verification_code=(Button) super.findViewById(R.id.register_get_verification_code);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
         btn_back=(ImageButton) super.findViewById(R.id.getback);
@@ -101,12 +107,12 @@ public class register extends Activity {
             public void onClick(View v) {
 
                 if (isempty(R.id.user_telephone)) {
-                    empty_hint(R.string.err_phone2);
+                    commonUtil.error_hint2_short(R.string.err_phone2);
                 } else if (mValidation.validate() == true) {
+                    telephone = text_user_telephone.getText().toString().trim();
 //                    name = text_user_name.getText().toString().trim();
 //                    machine_id = text_user_machine_id.getText().toString().trim();
 //                    password = text_user_password.getText().toString().trim();
-                    telephone = text_user_telephone.getText().toString().trim();
 //                    t_verify_code = text_verification_code.getText().toString().trim();
 //                    if(!TextUtils.isEmpty(verify_code)) {
 //                        if (verify_code.equals(t_verify_code)) {
@@ -127,13 +133,13 @@ public class register extends Activity {
             @Override
             public void onClick(View v) {
                 if (isempty(R.id.user_telephone)) {
-                    empty_hint(R.string.err_phone2);
+                    commonUtil.error_hint2_short(R.string.err_phone2);
                 } else if (verification_code_Validation.validate() == true) {
                     get_VerifyCode();
                     //按钮60s倒计时，禁用60s
                     TimeCount time_CountDown = new TimeCount(60000, 1000, btn_verification_code, register.this);
                     time_CountDown.start();
-                    empty_hint(R.string.vertify_hint);
+                    commonUtil.error_hint2_short(R.string.vertify_hint);
                 }
             }
         });
@@ -182,49 +188,93 @@ public class register extends Activity {
         return bl;
     }
 
-    //信息未输入提示
-    private void empty_hint(int in){
-        Toast toast = Toast.makeText(register.this, getResources().getString(in), Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,-50);
-        toast.show();
-    }
-
-    //错误信息提示
-    private void error_hint(String str){
-        Toast toast = Toast.makeText(register.this, str, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,-50);
-        toast.show();
-    }
-
     //获取验证码
     private void get_VerifyCode(){
-
-        String tag_string_req = "req_register_driver_VerifyCode";
-        pDialog.setMessage("正在获取验证码，请等待......");
-        showDialog();
-        if(netUtil.checkNet(register.this)==false){
+        pDialog.setMessage("正在提交注册申请，请等待......");
+        verifyCode_strReq= NoHttp.createJsonObjectRequest(verifyCode_url, RequestMethod.POST);
+        verifyCode_strReq.add("phone", telephone);
+        Log.e(TAG,"获取验证码-发送的数据："+telephone);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(register.this) == false) {
             hideDialog();
-            error_hint("网络连接错误");
+            commonUtil.error_hint_short("网络连接错误");
             return;
         } else {
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_GET_VERIFYCODE, vertifySuccessListener, mErrorListener) {
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("phone", telephone);
-                    return params;
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            requestQueue.add(FLAG_VERIFYCODE, verifyCode_strReq, new verifyCode_request());
         }
     }
 
-    private void register_next()
-    {
+    //获取验证码访问服务器监听
+    private class verifyCode_request implements OnResponseListener<JSONObject> {
+        @Override
+        public void onStart(int what) {
+            showDialog();
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+
+            try {
+                JSONObject jObj=response.get();
+                Log.e(TAG, "获取验证码-接收的数据：" + jObj.toString());
+                int status = jObj.getInt("status");
+                if (status==0) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "获取验证码成功："+errorMsg);
+                    register_next();
+                } else {
+                    String err_status = jObj.getString("status");
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Get VerifyCode Error："+getResources().getString(R.string.verify_code_err)+ String.valueOf(err_status)+" "+errorMsg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.verify_code_err) + errorMsg);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Get VerifyCode Error：" + getResources().getString(R.string.verify_code_err) + e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.verify_code_err) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Get VerifyCode Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+            hideDialog();
+        }
+    }
+
+//    //获取验证码
+//    private void get_VerifyCode(){
+//
+//        String tag_string_req = "req_register_driver_VerifyCode";
+//        pDialog.setMessage("正在获取验证码，请等待......");
+//        showDialog();
+//        if(netUtil.checkNet(register.this)==false){
+//            hideDialog();
+//            error_hint("网络连接错误");
+//            return;
+//        } else {
+//            StringRequest strReq = new StringRequest(Request.Method.POST,
+//                    AppConfig.URL_GET_VERIFYCODE, vertifySuccessListener, mErrorListener) {
+//                @Override
+//                protected Map<String, String> getParams() {
+//
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    params.put("phone", telephone);
+//                    return params;
+//                }
+//            };
+//
+//            // Adding request to request queue
+//            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+//        }
+//    }
+
+    private void register_next() {
         Intent intent = new Intent(register.this, register_1.class);
         Bundle driver_bundle = new Bundle();
         driver_bundle.putString("telephone", text_user_telephone.getText().toString());
@@ -236,43 +286,43 @@ public class register extends Activity {
         startActivity(intent);
     }
 
-    //验证码响应服务器成功
-    private Response.Listener<String> vertifySuccessListener =new Response.Listener<String>() {
-
-        @Override
-        public void onResponse(String response) {
-            Log.e(TAG, "Register Response: " + response.toString());
-            hideDialog();
-
-            try {
-                JSONObject jObj = new JSONObject(response);
-                int status = jObj.getInt("status");
-                if (status==0) {
-                    //服务器返回的验证码
-//                    verify_code=jObj.getString("verify_code");
-                    register_next();
-                } else {
-                    empty_hint(R.string.vertify_error1);
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, errorMsg);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                empty_hint(R.string.vertify_error2);
-            }
-
-        }
-    };
-
-    //响应服务器失败
-    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "Register Telephone Error: " + error.getMessage());
-            hideDialog();
-            error_hint(error.getMessage());
-        }
-    };
+//    //验证码响应服务器成功
+//    private Response.Listener<String> vertifySuccessListener =new Response.Listener<String>() {
+//
+//        @Override
+//        public void onResponse(String response) {
+//            Log.e(TAG, "Register Response: " + response.toString());
+//            hideDialog();
+//
+//            try {
+//                JSONObject jObj = new JSONObject(response);
+//                int status = jObj.getInt("status");
+//                if (status==0) {
+//                    //服务器返回的验证码
+////                    verify_code=jObj.getString("verify_code");
+//                    register_next();
+//                } else {
+//                     commonUtil.error_hint2_short(R.string.vertify_error1);
+//                    String errorMsg = jObj.getString("result");
+//                    Log.e(TAG, errorMsg);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                 commonUtil.error_hint2_short(R.string.vertify_error2);
+//            }
+//
+//        }
+//    };
+//
+//    //响应服务器失败
+//    private Response.ErrorListener mErrorListener= new Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//            Log.e(TAG, "Register Telephone Error: " + error.getMessage());
+//            hideDialog();
+//            error_hint(error.getMessage());
+//        }
+//    };
 
 //    //ProgressDialog显示与隐藏
 //    private void showDialog() {
