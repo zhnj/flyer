@@ -62,10 +62,10 @@ public class SessionManager {
     }
 
     //缓存状态信息
-    public void setUserTag(String deploy_id,String norm_id) {
+    public void setUserTag(String deploy_id) {
 
         editor.putString(DEPLOY_ID, deploy_id);
-        editor.putString(NORM_ID, norm_id);
+//        editor.putString(NORM_ID, norm_id);
         editor.putBoolean(HINT_FLAG, false); //智能调度不再出现提示
         editor.commit();
 

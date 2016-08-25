@@ -30,6 +30,7 @@ import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
+import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.login;
@@ -79,6 +80,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
     private String token;
     private String deploy_id;
     private String norm_id;
+    private String machine_id;
     private int deploySize;
     private List<FieldInfoPost> allFieldInfoPost=new ArrayList<FieldInfoPost>();
     private List<FieldInfoPost> selectedFieldInfoPost=new ArrayList<FieldInfoPost>();
@@ -110,8 +112,15 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         fieldInfoDao=new FieldInfoDao(mainMenu);
         token=sessionManager.getToken();
         deploy_id=sessionManager.getDeployId();
-        norm_id=sessionManager.getNormId();
+//        norm_id=sessionManager.getNormId();
+        try {
+            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            Log.e(TAG, machine_id);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
         deploy_url=AppConfig.URL_BASICDEPLOY;
+
         for(int i=0;i< mainMenu.selectedFieldInfo.size();i++)
         {
             checkState.put(i,true);
@@ -388,7 +397,8 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
             Log.e(TAG, gson.toJson(selectedFieldInfoPost.get(i)));
         }
         params.put("deploy_id",deploy_id);
-        params.put("norm_id",norm_id);
+        params.put("machine_id",machine_id);
+//        params.put("norm_id",norm_id);
         params.put("token", token);
         Log.e(TAG, "获取方案发送的数据：" + gson.toJson(params));
 

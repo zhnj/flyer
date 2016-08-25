@@ -655,8 +655,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     SysCloseActivity.getInstance().exit();
                 }else if(status==0){
                     deploy_id=jObj.getString("deploy_id");
-                    norm_id=jObj.getString("norm_id");
-                    sessionManager.setUserTag(deploy_id, norm_id);
+//                    norm_id=jObj.getString("norm_id");
+                    sessionManager.setUserTag(deploy_id);
                     ///////////////////////////农田信息，包括经纬度/////////////////////////////////
 
 
