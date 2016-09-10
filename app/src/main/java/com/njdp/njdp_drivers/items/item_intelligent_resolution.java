@@ -719,7 +719,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     }
 
 
-    //获取农机周围的农机的经纬度
+    //获取农机周围的农机
     private void get_AroundMachines(final double longitude,final double latitude)
     {
         Map<String, String> params = new HashMap<String, String>();

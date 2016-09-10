@@ -254,7 +254,7 @@ public class get_password extends AppCompatActivity {
         }
     }
 
-    //下一步，验证验证码跳转监听
+    //下一步按钮点击监听，验证验证码跳转到第二步
     private class nextClickLIstener implements View.OnClickListener{
         @Override
         public void onClick(View v) {

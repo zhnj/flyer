@@ -73,9 +73,9 @@ public class SessionManager {
     }
 
     //缓存发布历史
-    public void setReleaseHistory(boolean isReleased,final String machine_type,final String crop_type,final String work_time,final String remark) {
+    public void setReleaseHistory(final String machine_type,final String crop_type,final String work_time,final String remark) {
 
-        editor.putBoolean(RELEASE_FLAG, isReleased);
+        editor.putBoolean(RELEASE_FLAG, true);
         editor.putString(MACHINE_TYPE, machine_type);
         editor.putString(CROP_TYPE, crop_type);
         editor.putString(WORK_TIME, work_time);
@@ -90,9 +90,13 @@ public class SessionManager {
         editor.putBoolean(RELEASE_FLAG, false);
     }
 
+    public boolean getReleaseFlag() {
+        return pref.getBoolean(RELEASE_FLAG, false);
+    }
+
     public boolean getHintFlag()
     {
-        return pref.getBoolean(HINT_FLAG, true);
+        return pref.getBoolean(HINT_FLAG, false);
     }
 
     public boolean isLoginIn(){
@@ -131,10 +135,6 @@ public class SessionManager {
         if (sessionManager == null)
             sessionManager = new SessionManager();
         return sessionManager;
-    }
-
-    public boolean getReleaseFlag() {
-        return pref.getBoolean(RELEASE_FLAG, false);
     }
 
     public void putInt(String key, int value) {

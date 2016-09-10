@@ -408,7 +408,7 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     commonUtil.error_hint_short("农机信息发布成功");
                     ll_history.setVisibility(View.VISIBLE);
                     noRelease.setVisibility(View.GONE);
-                    sessionManager.setReleaseHistory(true,s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
+                    sessionManager.setReleaseHistory(s_machine_type,transfer_s__machine_cropType(s_machine_cropType),workTime,remark);
                     tvr_cropType.setText(transfer_s__machine_cropType(s_machine_cropType));
                     tvr_machineType.setText(s_machine_type);
                     tvr_workTime.setText(workTime);

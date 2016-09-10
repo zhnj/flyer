@@ -397,7 +397,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         }
     }
 
-    //传选择方案
+    //上传传选择方案
     private void uploadDeploy()
     {
         Map<String, String> params = new HashMap<String, String>();
