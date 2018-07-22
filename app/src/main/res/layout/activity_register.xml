@@ -35,18 +35,24 @@
         android:layout_below="@+id/register_top">
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:id="@+id/user_verification_code"
             >
+            <View
+                style="@style/Register_HorizontalLine_style"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                />
             <EditText
                 style="@style/Register_style"
-                android:id="@+id/user_telephone"
+                android:id="@+id/phone"
                 android:textCursorDrawable="@drawable/login_cursor"
                 android:background="@drawable/login_edit_changecolor"
                 android:drawableLeft="@drawable/ic_phone_iphone_white_24dp"
                 android:hint="手机号"
                 android:maxLength="11"
                 android:inputType="phone"
+                android:layout_below="@+id/user_machine_id"
                 />
             <View
                 android:visibility="gone"
@@ -80,13 +86,13 @@
             bootstrap:roundedCorners="true"/>
     </LinearLayout>
 </RelativeLayout>
-<!--<EditText-->
-<!--style="@style/Register_VertifyInput_style"-->
-<!--android:id="@+id/verification_code"-->
-<!--android:textCursorDrawable="@drawable/login_cursor"-->
-<!--android:background="@drawable/login_edit_changecolor"-->
-<!--android:drawableLeft="@drawable/ic_vpn_key_white_24dp"-->
-<!--android:hint="验证码"-->
-<!--android:maxLength="6"-->
-<!--android:inputType="number"-->
+    <!--<EditText-->
+    <!--style="@style/Register_VertifyInput_style"-->
+    <!--android:id="@+id/verification_code"-->
+    <!--android:textCursorDrawable="@drawable/login_cursor"-->
+    <!--android:background="@drawable/login_edit_changecolor"-->
+    <!--android:drawableLeft="@drawable/ic_vpn_key_white_24dp"-->
+    <!--android:hint="验证码"-->
+    <!--android:maxLength="6"-->
+    <!--android:inputType="number"-->
     <!--/>-->

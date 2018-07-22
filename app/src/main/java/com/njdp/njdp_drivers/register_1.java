@@ -43,9 +43,9 @@ import java.util.Map;
 import bean.Driver;
 
 public class register_1 extends Activity implements View.OnClickListener{
-    private EditText text_user_machine_id=null;
-    private EditText text_user_password=null;
-    private EditText text_verification_code=null;
+    private EditText text_sfzh=null;
+    private EditText text_password=null;
+    private EditText text_code=null;
     private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
     private AwesomeValidation mValidation=new AwesomeValidation(ValidationStyle.BASIC);
@@ -93,9 +93,9 @@ public class register_1 extends Activity implements View.OnClickListener{
         register_url=AppConfig.URL_REGISTER;
         machineVerify_url=AppConfig.URL_VERIFY_MACHINE_ID;
 
-        text_user_machine_id= (EditText) super.findViewById(R.id.user_machine_id);
-        text_user_password = (EditText) super.findViewById(R.id.user_password);
-        text_verification_code = (EditText) super.findViewById(R.id.verification_code);
+        text_sfzh= (EditText) super.findViewById(R.id.sfzh);
+        text_password = (EditText) super.findViewById(R.id.password);
+        text_code = (EditText) super.findViewById(R.id.code);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
         btn_back=(ImageButton) super.findViewById(R.id.getback);
         btn_back.setOnClickListener(new backClickListener());
@@ -139,7 +139,7 @@ public class register_1 extends Activity implements View.OnClickListener{
     //输入是否为空，判断是否禁用按钮
     private void editTextIsNull(){
 
-        text_user_machine_id.addTextChangedListener(new TextWatcher() {
+        text_sfzh.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -152,8 +152,8 @@ public class register_1 extends Activity implements View.OnClickListener{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_password.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_password.getText())
+                        && !TextUtils.isEmpty(text_code.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -163,7 +163,7 @@ public class register_1 extends Activity implements View.OnClickListener{
             }
         });
 
-        text_user_password.addTextChangedListener(new TextWatcher() {
+        text_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -176,8 +176,8 @@ public class register_1 extends Activity implements View.OnClickListener{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_machine_id.getText())
-                        && !TextUtils.isEmpty(text_verification_code.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_sfzh.getText())
+                        && !TextUtils.isEmpty(text_code.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -187,7 +187,7 @@ public class register_1 extends Activity implements View.OnClickListener{
             }
         });
 
-        text_verification_code.addTextChangedListener(new TextWatcher() {
+        text_code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -200,8 +200,8 @@ public class register_1 extends Activity implements View.OnClickListener{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((s.length() > 0) && !TextUtils.isEmpty(text_user_machine_id.getText())
-                        && !TextUtils.isEmpty(text_user_password.getText())) {
+                if ((s.length() > 0) && !TextUtils.isEmpty(text_sfzh.getText())
+                        && !TextUtils.isEmpty(text_password.getText())) {
                     btn_register_next.setClickable(true);
                     btn_register_next.setEnabled(true);
                 } else {
@@ -247,16 +247,16 @@ public class register_1 extends Activity implements View.OnClickListener{
     //验证表单输入信息
     private void checkInfo()
     {
-        if (isempty(R.id.user_machine_id)) {
+        if (isempty(R.id.sfzh)) {
             empty_hint(R.string.err_machine_id_2);
-        } else if (isempty(R.id.verification_code)) {
+        } else if (isempty(R.id.code)) {
             empty_hint(R.string.err_verification_code2);
-        }  else if(isempty(R.id.user_password)){
+        }  else if(isempty(R.id.password)){
             empty_hint(R.string.err_password2);
         } else if (mValidation.validate() == true) {
-            machine_id = text_user_machine_id.getText().toString().trim();
-            password = text_user_password.getText().toString().trim();
-            verify_code=text_verification_code.getText().toString().trim();
+            machine_id = text_sfzh.getText().toString().trim();
+            password = text_password.getText().toString().trim();
+            verify_code=text_code.getText().toString().trim();
             verify_machine_id();//验证农机id，并上传服务器注册
         }
     }

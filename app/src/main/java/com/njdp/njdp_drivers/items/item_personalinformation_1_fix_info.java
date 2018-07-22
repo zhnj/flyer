@@ -116,6 +116,13 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
             case 4:
                 fixValidation.addValidation(edt_fix_input, "[1-9][0-9]{4,14}", getResources().getString(R.string.err_qq));
                 break;
+            case 5:
+                fixValidation.addValidation(edt_fix_input, "^[男女]$", getResources().getString(R.string.err_sex));
+                break;
+            case 6:
+                fixValidation.addValidation(edt_fix_input, "(^\\d{15}$)|(^\\d{17}([0-9]|X)$)", getResources().getString(R.string.err_sfzh));
+                break;
+
         }
         return view;
     }
@@ -141,9 +148,22 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                         Log.e(TAG, "weixin:" +fix_params.get("person_weixin"));
                         break;
                     case 4:
-                        fix_params.put("person_qq:", mainMenu.fix_info);
+                        fix_params.put("person_qq", mainMenu.fix_info);
                         Log.e(TAG, "qq:" + fix_params.get("person_qq"));
                         break;
+                    case 5:
+                        fix_params.put("person_Sex", mainMenu.fix_info);
+                        Log.e(TAG, "sex:" + fix_params.get("person_Sex"));
+                        break;
+                    case 6:
+                        fix_params.put("person_sfzh", mainMenu.fix_info);
+                        Log.e(TAG, "sfzh:" + fix_params.get("person_sfzh"));
+                        break;
+                    case 7:
+                        fix_params.put("person_comid", mainMenu.fix_info);
+                        Log.e(TAG, "personcomid:" + fix_params.get("person_comid"));
+                        break;
+
                 }
                 check_fix_info();
                 break;
@@ -181,6 +201,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                 @Override
                 protected Map<String, String> getParams() {
                     Log.e(TAG,gson.toJson(netUtil.checkParams(fix_params)));
+
                     return netUtil.checkParams(fix_params);
                 }
             };
@@ -226,6 +247,16 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                         case 4:
                             driver.setQQ(mainMenu.fix_info);
                             break;
+                        case 5:
+                            driver.setSex(mainMenu.fix_info);
+                            break;
+                        case 6:
+                            driver.setSfzh(mainMenu.fix_info);
+                            break;
+                        case 7:
+                            driver.setPersoncomid(mainMenu.fix_info);
+                            break;
+
                     }
                     driverDao.update(driver);
                     mainMenu.getSupportFragmentManager().popBackStack();

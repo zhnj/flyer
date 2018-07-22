@@ -146,10 +146,14 @@
                 <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
-        <!-- 地图密钥 -->
+        <!-- 地图密钥
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="9Q2nk7finsWtuoMsoNcYTFRkUWfBzRWS" />
+            -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="qfar0ChZsa59Abhgl9gLQmkQjs5B8Bbk" />
 
         <activity
             android:name=".items.BNDGuideActivity"

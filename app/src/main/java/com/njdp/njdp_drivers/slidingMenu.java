@@ -41,6 +41,7 @@ import com.njdp.njdp_drivers.items.item_job_history;
 import com.njdp.njdp_drivers.items.item_oil_station;
 import com.njdp.njdp_drivers.items.item_personalInformation;
 import com.njdp.njdp_drivers.items.item_query_requirement;
+import com.njdp.njdp_drivers.items.item_query_requirement_1;
 import com.njdp.njdp_drivers.items.item_release_machine;
 import com.njdp.njdp_drivers.items.item_repair_station;
 import com.njdp.njdp_drivers.items.item_service_object;
@@ -298,7 +299,7 @@ public class slidingMenu extends AppCompatActivity
                 addOrShowFragment(item2);
                 break;
             case 2:
-                item3 = new item_query_requirement();
+                item3 = new item_query_requirement_1();
                 addOrShowFragment(item3);
                 break;
             case 3:

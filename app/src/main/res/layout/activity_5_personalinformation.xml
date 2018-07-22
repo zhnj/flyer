@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -45,102 +47,246 @@
         android:orientation="vertical"
         android:gravity="bottom">
         <com.njdp.njdp_drivers.CircleMenu.CircleImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/information_div_title_image"
             circleImageView:civ_border_width="2dp"
             circleImageView:civ_border_color="#ffffff"/>
     </LinearLayout>
 
-    <LinearLayout
-       android:id="@+id/driver_name"
-       style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="姓名" />
-            <TextView
-                android:id="@+id/input_driver_name"
-                style="@style/personalinformation_right"
-                android:text="周二"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line"/>
-    <LinearLayout
-        android:id="@+id/driver_machine_id"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="农机编号" />
-            <TextView
-                android:id="@+id/input_driver_licence_plate"
-                style="@style/personalinformation_right"
-                android:text="1301000301"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line"/>
-    <LinearLayout
-        android:id="@+id/driver_telephone"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="手机号" />
-            <TextView
-                android:id="@+id/input_driver_telephone"
-                style="@style/personalinformation_right"
-                android:text="15888956866"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line"/>
-    <LinearLayout
-        android:id="@+id/driver_weixin"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="微信号" />
-        <TextView
-            android:id="@+id/input_driver_weixin"
-            style="@style/personalinformation_right"
-            android:text="weixin880"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line"/>
-    <LinearLayout
-        android:id="@+id/driver_qq"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="QQ" />
-        <TextView
-            android:id="@+id/input_driver_qq"
-            style="@style/personalinformation_right"
-            android:text="26560206"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line1"/>
 
-    <LinearLayout
-        android:id="@+id/driver_region"
-        style="@style/personalinformation_linearlayout">
-        <TextView
-            style="@style/personalinformation_left"
-            android:text="地区" />
-        <TextView
-            android:id="@+id/input_driver_region"
-            style="@style/personalinformation_right"
-            android:text="河北省保定市徐水县"/>
-    </LinearLayout>
-    <View
-        style="@style/personalinformation_line1"/>
-    <TextView
-        style="@style/personalinformation_left"
-        android:id="@+id/settings"
-        android:drawableLeft="@drawable/ic_settings_white_24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="设置"
-        android:textSize="@dimen/font20"/>
-    <View
-        style="@style/personalinformation_line1"/>
+    <ScrollView
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        android:fadingEdge="vertical">
+        <LinearLayout
+            style="@style/Register_Div"
+            android:id="@+id/register_div"
+            android:orientation="vertical"
+            android:layout_below="@+id/register_image_top"
+            android:layout_marginTop="3dp"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/driver_name"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="姓名" />
+                <TextView
+                    android:id="@+id/input_driver_name"
+                    style="@style/personalinformation_right"
+                    android:text="周二"/>
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+            <!--性别  -->
+            <LinearLayout
+                android:id="@+id/driver_sex"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="性别" />
+                <TextView
+                    android:id="@+id/input_driver_sex"
+                    style="@style/personalinformation_right"
+                    android:text="男"/>
+
+                <!-- <RadioGroup
+                     android:id="@+id/radioGroup"
+                     android:gravity="center"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     style="@style/personalinformation_right">
+
+                     <RadioButton
+                         android:id="@+id/btnMan"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="男"
+                         android:checked="true"
+                         android:layout_marginLeft="15dp" />
+                     <RadioButton
+                         android:id="@+id/btnWoman"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="女"
+                         android:layout_marginLeft="10dp" />
+                 </RadioGroup>
+                 -->
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+
+            <!--农机编号 -->
+
+            <LinearLayout
+
+                android:id="@+id/driver_machine_id"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="农机编号" />
+                <TextView
+                    android:id="@+id/input_driver_licence_plate"
+                    style="@style/personalinformation_right"
+                    android:text="1301000301"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+            <!--身份证号 -->
+            <LinearLayout
+
+                android:id="@+id/driver_personsfzh"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="身份证号" />
+                <TextView
+                    android:id="@+id/input_person_sfzh"
+                    style="@style/personalinformation_right"
+                    android:text="130102198710050448"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+            <LinearLayout
+
+                android:id="@+id/driver_telephone"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="手机号" />
+                <TextView
+                    android:id="@+id/input_driver_telephone"
+                    style="@style/personalinformation_right"
+                    android:text="15888956866"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+            <!--所属飞服公司 -->
+            <LinearLayout
+
+                android:id="@+id/driver_personcomid"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="飞服公司" />
+                <Spinner
+
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/sp_person_comid"
+                    android:gravity="center"
+
+                    />
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+            <!--耕地面积 -->
+            <LinearLayout
+
+                android:id="@+id/driver_farmlandarea"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="耕地面积" />
+                <TextView
+                    android:id="@+id/input_farmland_area"
+                    style="@style/personalinformation_center"
+                    android:text="亩"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+
+            <LinearLayout
+
+                android:id="@+id/driver_weixin"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="微信号" />
+                <TextView
+                    android:id="@+id/input_driver_weixin"
+                    style="@style/personalinformation_right"
+                    android:text="weixin880"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line"/>
+            <LinearLayout
+
+                android:id="@+id/driver_qq"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="QQ" />
+                <TextView
+                    android:id="@+id/input_driver_qq"
+                    style="@style/personalinformation_right"
+                    android:text="26560206"/>
+
+            </LinearLayout>
+            <View
+                style="@style/personalinformation_line1"/>
+
+            <LinearLayout
+
+                android:id="@+id/driver_region"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="地区" />
+                <TextView
+                    android:id="@+id/input_driver_region"
+                    style="@style/personalinformation_right"
+                    android:text="河北省保定市徐水县"/>
+            </LinearLayout>
+
+            <!--<LinearLayout
+                style="@style/Register_Div"
+                android:id="@+id/register_div"
+                android:orientation="vertical"
+                android:layout_below="@+id/register_image_top"
+                android:layout_marginTop="3dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/selected_White">  -->
+
+            <View
+                style="@style/personalinformation_line1"/>
+
+            <TextView
+                style="@style/personalinformation_left"
+                android:id="@+id/settings"
+                android:drawableLeft="@drawable/ic_settings_white_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置"
+                android:textSize="@dimen/font20"/>
+
+
+            <View
+                style="@style/personalinformation_line1"/>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
+
+

@@ -4,7 +4,7 @@ public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 二教实验室网线网络，本机服务器测试url
 
-    public static String URL_IP="http://218.12.43.229:81/";//省厅服务器地址
+    public static String URL_IP="http://211.68.183.50:88/";//测试服务器
 
 //    public static String URL_IP="http://211.68.180.9:88/";//学校服务器地址
 
@@ -26,9 +26,13 @@ public class AppConfig {
 
     public static String URL_AROUNDMACHINE= URL_IP+"app/searchAroundMachine";//查询固定点周围农机的位置
 
-    public static String URL_GETFIELD= URL_IP+"app/basicDeploy/store";//查询农田
+    //public static String URL_GETFIELD= URL_IP+"app/Deploy/store";//查询农田
 
-    public static String URL_BASICDEPLOY= URL_IP+"app/execDeploy";//智能调配
+    //public static String URL_BASICDEPLOY= URL_IP+"app/execDeploy";//智能调配uav
+
+    public static String URL_GETFIELD= URL_IP+"app/uavDeploy/store";//查询农田
+
+    public static String URL_BASICDEPLOY= URL_IP+"app/uavDeploy/execDeploy";//智能调配uav
 
     public static String URL_UPLOADDEPLOY= URL_IP+"app/deployChoice";//选择方案上传
 
@@ -45,6 +49,17 @@ public class AppConfig {
     public static String URL_REPAIRE=URL_IP+"app/repairStation/index";//维修站
 
     public static String URL_FIXPASSWORD=URL_IP+"resetPassword";//修改密码
+
+
+    ///////////////////无人机修改
+    public static String URL_searchFarmlands=URL_IP+"app/farmMachine/searchFarmlands";//周边可用农田
+    //飞机服务公司信息
+    public static String URL_findFlyComByUser="http://211.68.183.50:8088/Mobile/UAV/findFlyComByUser";
+    //天气数据
+    public static String URL_WeatherData=URL_IP+"app/getWeather";
+
+    public static String URL_UAV_listCompanys="http://211.68.183.50:8088/Mobile/UAV/listCompanys";//所有无人机公司列表
+    public static String URL_PREFERE=URL_IP+"UAV-platform/mvc/mobile/myUav/addPreference";//添加偏好信息
 
 
 }

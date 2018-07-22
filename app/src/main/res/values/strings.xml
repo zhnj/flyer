@@ -106,6 +106,10 @@
         <item>离线数据管理</item>
         <item>自定义图层</item>
     </string-array>
+    <string name="err_sfzh">请输入15-18位的身份证号！</string>
+    <string name="err_sfzhe2">身份证号不能为空</string>
+    <string name="err_sex">请输入性别</string>
+    <string name="err_sex2">性别不能为空</string>
     <string name="search_start">搜索</string>
     <string name="search_tips">离线检索需要使用"导航离线数据下载"demo下载数据之后才能正常使用！检索范围固定为广东省-深圳市，其他城市请修改demo源代码。</string>
     <string name="antigeo_tips">离线反geo需要使用"导航离线数据下载"demo下载数据之后才能正常使用！</string>
@@ -189,4 +193,5 @@
         <string name="title_activity_item_personalinformation_fix_password">
         item_personalinformation_fix_password
     </string>
+
 </resources>

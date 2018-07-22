@@ -8,6 +8,9 @@
     android:orientation="vertical"
     android:background="@drawable/main_bg"
     tools:context="com.njdp.njdp_drivers.items.item_query_requirement">
+
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,10 +67,16 @@
             android:id="@+id/area"
             android:background="@drawable/arrow_down"
             style="@style/spinner_style_require"></Spinner>
-        <Spinner
-            android:id="@+id/type"
-            android:background="@drawable/arrow_down"
-            style="@style/spinner_style_require"></Spinner>
+        <AutoCompleteTextView
+            android:id="@+id/autoQueryCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font14"
+            android:textColor="#FFFFFF"
+            android:hint="请输入中心点进行搜索"
+           />
+
+
         <RadioGroup
             android:visibility="gone"
             android:id="@+id/ck_crop"

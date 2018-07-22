@@ -1,8 +1,10 @@
 package com.njdp.njdp_drivers.items;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -12,11 +14,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -24,6 +29,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -34,9 +43,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -48,6 +59,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -58,6 +70,11 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
+import com.baidu.mapapi.search.sug.SuggestionResult;
+import com.baidu.mapapi.search.sug.SuggestionSearch;
+import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.baidu.navisdk.adapter.BNOuterLogUtil;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
@@ -66,6 +83,7 @@ import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter_up_white_1;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
@@ -76,6 +94,10 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.squareup.timessquare.CalendarPickerView;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.rest.RequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,6 +106,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -98,19 +121,30 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private slidingMenu mainMenu;
     private DrawerLayout menu;
     private SessionManager sessionManager;
+    private com.beardedhen.androidbootstrap.BootstrapButton hintButton;
+    private WindowManager.LayoutParams lp;
+    private ArrayAdapter areaAdapter;//c查找范围
     private CommonUtil commonUtil;
     private NetUtil netUtil;
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
     private Button countInfo;
     private Button pop_countInfo;
+    private Button btn_search;//查找按钮
     private SimpleDateFormat format;
     private SimpleDateFormat format2;
+    private String startTime;
+    private String endTime;
     private String token;
     private String machine_id;
     private ProgressDialog pDialog;
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
+
+    private String com_longitude="1.1";//无人机飞机公司地址
+    private String com_latitude="1.1";//
+
+    private String sl_area="1000";//查找范围
     private boolean text_gps_flag = false;//GPS定位是否成功
     private List<FieldInfo> fieldInfos=new ArrayList<FieldInfo>();//农田信息
     private View parentView;//主View
@@ -120,11 +154,26 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private String telephone;
     private double nav_longitude;
     private double nav_latitude;
+    private double centre_longitude;//地图中间经度
+    private double centre_latitude;//地图中间维度
+
+    private Gson gson;
+    private String url=AppConfig.URL_searchFarmlands;//服务器地址，获取
+    private AutoCompleteTextView autoQuery;//用户输入查找中心点
+    private ArrayAdapter<String> sugAdapter = null;
+    private List<SuggestionResult.SuggestionInfo> allSuggestions;
+    private int load_Index = 0;
+    private PoiSearch mPoiSearch = null;
+    private SuggestionSearch mSuggestionSearch = null;
     ////////////////////////地图变量//////////////////////////
 //    private MapView mMapView = null;
     private MapView mMapView=null;
     private BaiduMap mBaiduMap = null;
     private boolean isFristLocation = true;
+    private BitmapDescriptor centreBitmap;//中心覆盖物的图标
+    private Marker centreMarker;
+    private String weatherData="";
+    private Marker pointmarker;
     /**
      * 当前定位的模式
      */
@@ -149,25 +198,56 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     public static final String ROUTE_PLAN_NODE = "routePlanNode";
     private String mSDCardPath = null;
     ////////////////////////地图变量//////////////////////////
+    ///////////////////////////////////日期选择器变量/////////////////////
+    private TextView t_startDate;
+    private TextView t_endDate;
+    private CalendarPickerView calendarPickerView;
+    private View dateView;//日期选择View
+    private PopupWindow datePickerPop;//日期选择器弹出
+    private boolean popup_flag=false;//日期选择器是否弹出的标志
+    private ArrayList<Date> dates = new ArrayList<Date>();//选择的起始日期
+    ///////////////////////////////////日期选择器变量/////////////////////
+    private Date first_date;
+    ////////////////////////////////////操作提示/////////////////////////
+    private PopupWindow hintPopup;
+    private View hintView;//操作提示View
+    ////////////////////////////////////操作提示/////////////////////////
+
+    private String centerName;
+    private Spinner sp_area;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        View view=inflater.inflate(R.layout.activity_2_query_requirement_1,container,
-                false);
-
+        View view=inflater.inflate(R.layout.activity_2_query_requirement_1,container,false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
         view.findViewById(R.id.my_location).setOnClickListener(this);
+        view.findViewById(R.id.btn_search).setOnClickListener(this);
+        view.findViewById(R.id.jobDate).setOnClickListener(this);
+        view.findViewById(R.id.arrange_button).setOnClickListener(this);
+
+
+
+
+
+        sp_area=(Spinner)view.findViewById(R.id.area);
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
+
+        //获取权限
+        //requestAllPower();
+
+
+        t_startDate=(TextView)view.findViewById(R.id.startDate);
+        t_endDate=(TextView)view.findViewById(R.id.endDate);
 
         countInfo=(Button)view.findViewById(R.id.infos);
         countInfo.setOnClickListener(this);
         countInfo.setText("共找到"+String.valueOf(mainMenu.selectedFieldInfo.size())+"块农田，点击查看");
 
         format = new SimpleDateFormat("yyyy-MM-dd");
-        format2 = new SimpleDateFormat("yyyy/M/d");
+        format2 = new SimpleDateFormat("yyyy/MM/d");
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
             Log.e(TAG, machine_id);
@@ -179,6 +259,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         sessionManager=new SessionManager();
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
+        gson=new Gson();
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
@@ -339,10 +420,23 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         pop_countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
 
 
+        dateView = mainMenu.getLayoutInflater().inflate(R.layout.datepicker, null);
+        dateInit();//日期选择初始化
+        initDatePicker();//日历选择器监听
+        dateView.findViewById(R.id.getBack).setOnClickListener(this);
+        dateView.findViewById(R.id.getHelp).setOnClickListener(this);
+        hintButton=(com.beardedhen.androidbootstrap.BootstrapButton)dateView.findViewById(R.id.hintButton);
+        calendarPickerView.setOnDateSelectedListener(new clDateSelectedListener());//选一个范围的日期
+        calendarPickerView.setCellClickInterceptor(new clCellClick());//选一天的日期
+
+        hintView = mainMenu.getLayoutInflater().inflate(R.layout.intelligent_pop, null);
+        initHintPopup();
+        hintView.findViewById(R.id.get_start).setOnClickListener(this);
+        hintPopup.setOnDismissListener(new hintPopDisListener());
         //////////////////////////地图代码////////////////////////////
         //获取农机并获取农机经纬度
         try {
-            machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            machine_id = sessionManager.getUserId();
             if(machine_id!=null){
                 //根据农机IP向服务器请求获取农机经纬度
                 gps_MachineLocation(machine_id);//获取GPS位置,经纬度信息
@@ -359,6 +453,8 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         mMapView.showScaleControl(true);
 
         mBaiduMap = mMapView.getMap();
+        mBaiduMap.setOnMapStatusChangeListener(new centreMap());
+        centreBitmap= BitmapDescriptorFactory.fromResource(R.drawable.ic_set_location);//构建中心覆盖物Marker图标
 
         // 改变地图状态
         //MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(14.0f);
@@ -386,6 +482,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         mBaiduMap.setMyLocationEnabled(true);
         locationService.start();// 定位SDK
 
+        //在地图上添加农田数据
         markRepairStation(mainMenu.selectedFieldInfo);
         /////////////////地图代码结束////////////////////////
 
@@ -401,11 +498,164 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         /*
         * 导航用结束
         * */
+        // 初始化搜索模块，注册搜索事件监听
+        this.autoQuery= (AutoCompleteTextView) view.findViewById(R.id.query_query_autoCompleteTextView_2);
+        this.autoQuery.setText(centerName);
+        this.autoQuery.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GPS_longitude=String.valueOf(allSuggestions.get(position).pt.longitude);//GPS经度
+                GPS_latitude=String.valueOf(allSuggestions.get(position).pt.latitude);
+
+            }
+        });
+
+        mSuggestionSearch = SuggestionSearch.newInstance();
+        mSuggestionSearch.setOnGetSuggestionResultListener(new OnGetSuggestionResultListener(){
+            @Override
+            public void onGetSuggestionResult(SuggestionResult res) {
+
+                if (res == null || res.getAllSuggestions() == null) {
+                    return;
+                }
+                sugAdapter.clear();
+                allSuggestions=res.getAllSuggestions();
+                for (SuggestionResult.SuggestionInfo info : allSuggestions) {
+                    if (info.key != null) {
+                        sugAdapter.add(info.key);
+
+                    }
+
+                }
+                sugAdapter.notifyDataSetChanged();
+            }
+        });
+        sugAdapter = new ArrayAdapter<String>(mainMenu,android.R.layout.simple_dropdown_item_1line);
+        autoQuery.setAdapter(sugAdapter);
+        autoQuery.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 0) {
+                    return;
+                }
+                String city = "保定";
+                /**
+                 * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
+                 */
+                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
 
+        //下拉菜单选择项初始化
+        //范围
+        areaAdapter= new SpinnerAdapter_up_white_1(mainMenu,getResources().getStringArray(R.array.area));
+        sp_area.setAdapter(areaAdapter);
+        sp_area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                sl_area = sp_area.getSelectedItem().toString();
+                Log.e(TAG, "选择的距离：" + sl_area);
+                switch (sl_area)
+                {
+                    case "50公里":
+                        sl_area="50";
+                        //查找，刷新
+                        initFieldInfo();
+                        break;
+                    case "80公里":
+                        sl_area="80";
+                        //查找，刷新
+                        initFieldInfo();
+                        break;
+                    case "100公里":
+                        sl_area="100";
+                        //查找，刷新
+                        initFieldInfo();
+                        break;
+                    case "全部":
+                        sl_area="1000";
+                        //查找，刷新
+                        initFieldInfo();
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return view;
     }
+    public void requestAllPower() {
+        if (ContextCompat.checkSelfPermission(mainMenu,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(mainMenu,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(mainMenu,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
+    }
+    //起始日期，终止日期初始化
+    private void dateInit()
+    {
 
+        SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+        Calendar calendar = Calendar.getInstance();
+        Date defaultStartDate=calendar.getTime();
+        calendar.add(calendar.DATE, 1);
+        Date defaultEndDate=calendar.getTime();
+        t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(defaultStartDate));
+        t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(defaultEndDate));//显示默认的起止年月日
+        startTime=format2.format(defaultStartDate);
+        endTime=format2.format(defaultEndDate);
+        /*
+        SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat format2= new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(format2.parse(startTime)));
+            t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(format2.parse(endTime)));//显示默认的起止年月日
+        }
+        catch(Exception e)
+        {}
+        */
+    }
+
+    //初始化日期选择器popupWindow
+    private void initDatePicker() {
+        Calendar maxDate=Calendar.getInstance();
+        maxDate.add(Calendar.MONTH, 2);
+        calendarPickerView=(CalendarPickerView)dateView.findViewById(R.id.calendarDatePicker);
+        calendarPickerView.init(new Date(), maxDate.getTime())
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
+        datePickerPop = new PopupWindow(dateView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        datePickerPop.setAnimationStyle(R.style.slideAnimation_bottom);
+        datePickerPop.setOutsideTouchable(true);
+        datePickerPop.setOnDismissListener(new datePickerDismiss());
+
+    }
+    //popupWindow销毁时监听
+    private class datePickerDismiss implements PopupWindow.OnDismissListener
+    {
+        @Override
+        public void onDismiss() {
+            initDatePicker();
+        }
+    }
     //监听返回按键
     @Override
     public void onResume() {
@@ -471,22 +721,262 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                 btn_pop_flag=false;
                 btn_popup.dismiss();
                 break;
+            case R.id.jobDate:
+                popup_flag=true;
+                datePickerPop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.btn_search:
+                //查找，刷新
+                initFieldInfo();
+                LatLng llS = new LatLng(Double.parseDouble(GPS_latitude),
+                        Double.parseDouble(GPS_longitude));
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(llS);
+                mBaiduMap.animateMapStatus(u);
+                break;
+            case R.id.arrange_button:
+                LatLng ll = new LatLng(Double.parseDouble(com_latitude),
+                        Double.parseDouble(com_longitude));
+                MapStatusUpdate u1 = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u1);
+                break;
         }
     }
+    private void initFieldInfo()
+    {
+        String tag_string_req = "req_init";
+        mainMenu.pDialog.setMessage("正在查询 ...");
+        mainMenu.showDialog();
+
+        if (!netUtil.checkNet(mainMenu)) {
+            commonUtil.error_hint_short("网络连接错误");
+            mainMenu.hideDialog();
+        } else {
+            //服务器请求
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    url, new initSuccessListener(), mainMenu.mErrorListener) {
+
+                @Override
+                protected Map<String, String> getParams() {
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", token);
+                    params.put("Search_range",sl_area);//需要按照实际范围变动
+                    params.put("crops_kind", "FSY");//作业状态
+                    params.put("start_date", startTime);
+                    params.put("end_date", endTime);
+                    params.put("Machine_longitude", GPS_longitude);
+                    params.put("Machine_Latitude", GPS_latitude);
+                    Log.e(TAG,gson.toJson(params));
+
+                    return netUtil.checkParams(params);
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+                    return headers;
+                }
+            };
+            strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+    }
+
+    private class initSuccessListener implements Response.Listener<String>//获取农田信息数据响应服务器成功
+    {
+        @Override
+        public void onResponse(String response) {
+            Log.e(TAG, "AreaInit Response: " + response);
+            mainMenu.hideDialog();
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+                if (status==1)
+                {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                }else if(status==0){
+                    mainMenu.clearFieldData();//清空缓存的农田数据
+                    ///////////////////////////农田信息，包括经纬度/////////////////////////////////
+
+                    /////////////////////////////////测试有多少个农田信息///////////////////////////
+//                    JSONArray s_post=jObj.getJSONArray("machine_farm_d");
+                    JSONArray s_info=jObj.getJSONArray("result");
+//                    Log.e(TAG, String.valueOf(s_post.length()));
+                    Log.e(TAG, String.valueOf(s_info.length()));
+                    /////////////////////////////////测试有多少个农田信息///////////////////////////
+                    try {
+                        mainMenu.selectedFieldInfo.clear();
+//                        fieldInfos.clear();
+                    }catch (Exception e){}
+//                    try {
+//                        mainMenu.fieldInfoPosts.clear();
+//                    }catch (Exception e){}
+                    String s_t=jObj.getString("result");
+//                    String s_p=jObj.getString("machine_farm_d");
+//                    List<FieldInfo> fieldInfos=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
+                    mainMenu.selectedFieldInfo=gson.fromJson(s_t,new TypeToken<List<FieldInfo>>() {}.getType());//存储农田信息
+//                    mainMenu.fieldInfoPosts=gson.fromJson(s_p,new TypeToken<List<FieldInfoPost>>() {}.getType());//存储距离信息
+                    try {
+                        Log.e(TAG, mainMenu.fieldInfoPosts.get(1).getDistance());
+//                        Log.e(TAG, fieldInfos.get(0).getCropLand_site());
+                    }catch (Exception e)
+                    {
+                        Log.e(TAG,"没有获取到数据"+e.getMessage());
+                    }
+
+                    ///////////////////////////农田信息，包括经纬度/////////////////////////////////
+
+                    if(mainMenu.selectedFieldInfo.size()<1){
+                        commonUtil.error_hint_short("未查询到符合要求的农田信息，请重新查询！");
+                        countInfo.setText("共找到" + 0 + "块农田，点击关闭");
+                        //清楚覆盖物Marker,重新加载
+                        mBaiduMap.clear();
+                    }else{
+                        //mainMenu.addBackFragment(new item_query_requirement_1());
+                        markRepairStation(mainMenu.selectedFieldInfo);
+                        countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
+                    }
+//                    else
+//                    {
+//                        //存储到本地库
+//                        saveFieldInfo(fieldInfoDao,fieldInfos);
+//                        //按距离的排序好的农田
+//                        arrangeField();
+//                        mainMenu.addBackFragment(new item_query_requirement_1());//跳转执行查找
+//                        commonUtil.error_hint_short("数据加载完成");
+//                    }
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
+                }
+            } catch (JSONException e) {
+                // JSON error
+                Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
+            }
+        }
+    }
+    ////////////////////////////////////获取天气数据////////////////////////////////////////////////
+    private class initWeatherSuccessListener implements Response.Listener<String>//获取天气信息数据响应服务器成功
+    {
+        @Override
+        public void onResponse(String response) {
+            Log.e(TAG, "WeatherData Response: " + response);
+            mainMenu.hideDialog();
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status==1)
+                {
+                    String errorMsg = jObj.getString("message");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                }else if(status==0){
+
+
+                    weatherData="";
+                    JSONArray s_info=jObj.getJSONArray("message");
+//                    Log.e(TAG, String.valueOf(s_post.length()));
+                    for(int i=0;i<s_info.length();i++)
+                    {
+                        JSONObject obj = s_info.getJSONObject(i);
+                        if(obj.getString("type").contains("雨") || obj.getString("type").contains("风") )
+                        {
+                            weatherData = weatherData+obj.getString("date").substring(5)+" "+obj.getString("type")+" 风力"+obj.getString("windrage")+"级\n";
+
+                        }
+                    }
+                    if(weatherData.length()>4)
+                        weatherData=weatherData.substring(0,weatherData.length()-1);
+                    Log.e(TAG, String.valueOf(s_info.length()));
+                    final FieldInfo fieldInfo = (FieldInfo) pointmarker.getExtraInfo().get("fieldInfo");
+                    InfoWindow infoWindow;
+
+                    //构造弹出layout
+                    LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
+                    View markerpopwindow = inflater.inflate(R.layout.markerpopwindow, null);
+
+                    TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
+                    String markinfo = "位置:"+fieldInfo.getVillage()+"\n"+
+                            "电话:" + fieldInfo.getUser_name() + "\n" +
+                            "面积:" + fieldInfo.getArea_num() + "\n" +
+                            "单价:"+fieldInfo.getUnit_price()+"\n"+
+                            "开始时间:" + fieldInfo.getStart_time()+"\n"+
+                            "结束时间:"+fieldInfo.getEnd_time()+"\n\n"+weatherData;
+                    Log.i("markinfo", markinfo);
+                    tv.setText(markinfo);
+
+                    ImageButton tellBtn = (ImageButton) markerpopwindow.findViewById(R.id.markerphone);
+                    tellBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    });
+
+                    LatLng ll = pointmarker.getPosition();
+                    //将marker所在的经纬度的信息转化成屏幕上的坐标
+                    Point p = mBaiduMap.getProjection().toScreenLocation(ll);
+                    p.y -= -10;
+                    LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
+                    //初始化infoWindow，最后那个参数表示显示的位置相对于覆盖物的竖直偏移量，这里也可以传入一个监听器
+                    infoWindow = new InfoWindow(markerpopwindow, llInfo, 0);
+                    mBaiduMap.showInfoWindow(infoWindow);//显示此infoWindow
+                    mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
+                        @Override
+                        public void onTouch(MotionEvent motionEvent) {
+                            mBaiduMap.hideInfoWindow();
+                        }
+                    });
+                    //让地图以备点击的覆盖物为中心
+                    MapStatusUpdate mapstatus = MapStatusUpdateFactory.newLatLng(ll);
+                    mBaiduMap.setMapStatus(mapstatus);
+
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("服务器数据错误1：response错误:" + errorMsg);
+                }
+            } catch (JSONException e) {
+                // JSON error
+                Log.e(TAG, "2 服务器数据错误：response错误:" + e.getMessage());
+                commonUtil.error_hint_short("服务器数据错误2：response错误:" + e.getMessage());
+            }
+        }
+    }
+
 
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
     public void gps_MachineLocation(final String machine_id) {
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
             @Override
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("machine_id", machine_id);
-                params.put("token", token);
+                params.put("fm_id", machine_id);
+                //params.put("token", token);
 
                 return netUtil.checkParams(params);
             }
@@ -516,9 +1006,13 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
-                    JSONObject location = jObj.getJSONObject("result");
-                    GPS_longitude = location.getString("x");
-                    GPS_latitude = location.getString("y");
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+                    com_longitude=GPS_longitude;//无人机飞机公司地址
+                    com_latitude=GPS_latitude;
+                    autoQuery.setText(location.getJSONObject(0).getString("com_name"));
+
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
@@ -548,6 +1042,15 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             isGetLocation();
         }
     }
+    private class weatherErrorListener implements  Response.ErrorListener//定位服务器响应失败
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(TAG, "ConnectService Error: " + error.getMessage());
+            netUtil.testVolley(error);
+
+        }
+    }
 
     //定位成功或者失败后的响应
     private void isGetLocation() {
@@ -557,6 +1060,8 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
             mBaiduMap.animateMapStatus(u);
             commonUtil.error_hint_short("自动定位成功");
+            //查找，刷新
+            initFieldInfo();
         } else{
             Log.e(TAG, "GPS自动定位失败,开启百度定位！");
             try {
@@ -567,6 +1072,8 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
                 commonUtil.error_hint_short("自动定位成功");
+                //查找，刷新
+                initFieldInfo();
             }catch (Exception e)
             {
                 commonUtil.error_hint_short("自动定位失败，请重试！");
@@ -684,6 +1191,8 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     //地图图标点击事件监听类
     class markerClicklistener implements BaiduMap.OnMarkerClickListener {
 
+
+
         /**
          * 地图 Marker 覆盖物点击事件监听函数
          *
@@ -691,51 +1200,46 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
          */
         @Override
         public boolean onMarkerClick(Marker marker) {
+            if("设为中心点".equals(marker.getTitle()))
+            {
+                GPS_longitude=String.valueOf(marker.getPosition().longitude);//GPS经度
+                GPS_latitude=String.valueOf(marker.getPosition().latitude);
+                //查找，刷新
+                initFieldInfo();
+                return false;
+            }
+            pointmarker=marker;
+            //从服务器请求天气数据
+            String tag_string_req = "req_weather_data";
             final FieldInfo fieldInfo = (FieldInfo) marker.getExtraInfo().get("fieldInfo");
-            InfoWindow infoWindow;
+            //服务器请求
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.URL_WeatherData, new initWeatherSuccessListener(), new weatherErrorListener()) {
 
-            //构造弹出layout
-            LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
-            View markerpopwindow = inflater.inflate(R.layout.markerpopwindow, null);
-
-            TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
-            String markinfo = "位置:"+fieldInfo.getVillage()+"\n"+
-                    "电话:" + fieldInfo.getUser_name() + "\n" +
-                    "面积:" + fieldInfo.getArea_num() + "\n" +
-                    "单价:"+fieldInfo.getUnit_price()+"\n"+
-                    "开始时间:" + fieldInfo.getStart_time()+"\n"+
-                    "结束时间:"+fieldInfo.getEnd_time();
-            Log.i("markinfo", markinfo);
-            tv.setText(markinfo);
-
-
-            ImageButton tellBtn = (ImageButton) markerpopwindow.findViewById(R.id.markerphone);
-            tellBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            });
+                protected Map<String, String> getParams() {
 
-            LatLng ll = marker.getPosition();
-            //将marker所在的经纬度的信息转化成屏幕上的坐标
-            Point p = mBaiduMap.getProjection().toScreenLocation(ll);
-            p.y -= 90;
-            LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
-            //初始化infoWindow，最后那个参数表示显示的位置相对于覆盖物的竖直偏移量，这里也可以传入一个监听器
-            infoWindow = new InfoWindow(markerpopwindow, llInfo, 0);
-            mBaiduMap.showInfoWindow(infoWindow);//显示此infoWindow
-            mBaiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
-                @Override
-                public void onTouch(MotionEvent motionEvent) {
-                    mBaiduMap.hideInfoWindow();
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("token", token);
+                    params.put("farmID", fieldInfo.getFarm_id());
+
+                    if(startTime.compareToIgnoreCase(fieldInfo.getStart_time().replace('-','/'))<0)
+                        params.put("timeStart", fieldInfo.getStart_time());
+                    else
+                        params.put("timeStart", startTime);
+
+                    if(endTime.compareToIgnoreCase(fieldInfo.getEnd_time().replace('-','/'))>0)
+                        params.put("timeEnd", fieldInfo.getEnd_time());
+                    else
+                        params.put("timeEnd", endTime);
+                    //params.put("token", token);
+
+                    return netUtil.checkParams(params);
                 }
-            });
-            //让地图以备点击的覆盖物为中心
-            MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(ll);
-            mBaiduMap.setMapStatus(status);
+            };
+
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
             return true;
         }
     }
@@ -754,9 +1258,6 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     }
 
     ////////////////////////////地图代码结束/////////////////////////////////
-
-
-
     private void initBtnPopup()//初始化信息弹窗
     {
         btn_popup = new PopupWindow(infoView, ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -970,4 +1471,144 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
     ////////////////////////////地图代码结束//////////////////////////
     //////////////////////////////////////////////////////////////
+    //监听地图的改变，改变中心的坐标
+    private class centreMap implements BaiduMap.OnMapStatusChangeListener{
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus) {
+//            updateMapState(mapStatus);
+        }
+
+        @Override
+        public void onMapStatusChange(MapStatus mapStatus) {
+//            updateMapState(mapStatus);
+        }
+
+        @Override
+        public void onMapStatusChangeFinish(MapStatus mapStatus) {
+            updateMapState(mapStatus);
+        }
+    }
+
+    //获取MapStatus的经纬度
+    private void updateMapState(MapStatus status) {
+        LatLng mCenterLatLng = status.target;
+        /**获取经纬度*/
+        centre_latitude = mCenterLatLng.latitude;
+        centre_longitude = mCenterLatLng.longitude;
+        try{
+            //
+           // around_strReq.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,e.toString());
+        }
+
+      //  this.GPS_longitude=String.valueOf(centre_longitude);//GPS经度
+        //this.GPS_latitude=String.valueOf(centre_latitude);//GPS纬度
+        //查找，刷新
+        //initFieldInfo();
+        if(centreMarker!=null) {
+            centreMarker.remove();
+        }
+        showMaker(centre_latitude, centre_longitude, centreBitmap);
+    }
+
+    //在（latitude,longitude）坐标处显示id为id_maker_icon的覆盖物
+    private void showMaker(double latitude,double longitude,BitmapDescriptor bitmap)
+    {
+        centreMarker=null;
+        LatLng point = new LatLng(latitude, longitude);
+
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        centreMarker = (Marker) mBaiduMap.addOverlay(option);
+        centreMarker.setTitle("设为中心点");
+    }
+
+    //日期选择单天监听
+    private class clCellClick implements CalendarPickerView.CellClickInterceptor
+    {
+        @Override
+        public boolean onCellClicked(Date date) {
+            int size = (calendarPickerView.getSelectedDates()).size();
+            if (size == 1) {
+                hintButton.setText("请选择作业结束日期");
+            }
+            if (first_date == null) {
+                hintButton.setText("请选择作业结束日期");
+            }
+            if(date==first_date)
+            {
+                String first_dateTime = format.format(date);
+                t_startDate.setText(getResources().getString(R.string.jobStart) + first_dateTime);
+                t_endDate.setText(getResources().getString(R.string.jobEnd) + first_dateTime);
+                startTime = format2.format(date);
+                endTime = format2.format(date);
+                dates.clear();
+                popup_flag=false;
+                first_date= null;
+                Log.e(TAG, "first_date清空了");
+                hintButton.setText("请选择作业开始日期");
+
+                datePickerPop.dismiss();
+            }
+            return false;
+        }
+    }
+    //日期选择器范围时间监听
+    private class clDateSelectedListener implements CalendarPickerView.OnDateSelectedListener
+    {
+        @Override
+        public void onDateSelected(Date date) {
+            first_date=date;
+            int size = (calendarPickerView.getSelectedDates()).size();
+            if (size >= 2) {
+                dates.addAll(calendarPickerView.getSelectedDates());
+                t_startDate.setText(getResources().getString(R.string.jobStart) + format.format(dates.get(0)));
+                t_endDate.setText(getResources().getString(R.string.jobEnd) + format.format(dates.get(size - 1)));
+                startTime = format2.format(dates.get(0));
+                endTime = format2.format(dates.get(size - 1));
+                dates.clear();
+                popup_flag=false;
+                first_date=null;
+                hintButton.setText("请选择作业开始日期");
+
+                datePickerPop.dismiss();
+            }
+        }
+
+        @Override
+        public void onDateUnselected(Date date) {
+
+        }
+    }
+
+
+    //发布按钮弹出时监听dismiss后背景变回原样
+    private class hintPopDisListener implements PopupWindow.OnDismissListener
+    {
+        @Override
+        public void onDismiss() {
+            mainMenu.hintPopup_flag=false;
+            lp.alpha = 1f;
+            mainMenu.getWindow().setAttributes(lp);
+        }
+    }
+
+    private void initHintPopup()//初始化提示信息弹窗
+    {
+        hintPopup = new PopupWindow(hintView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        hintPopup.setAnimationStyle(R.style.popWindow_fade);
+        hintPopup.setOutsideTouchable(false);
+        hintPopup.setBackgroundDrawable(new ColorDrawable(0x55000000));
+    }
+
+
+
+
+
 }

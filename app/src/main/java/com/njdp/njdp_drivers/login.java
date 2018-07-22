@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 //import com.android.volley.Response;
 //import com.android.volley.VolleyError;
 //import com.android.volley.toolbox.StringRequest;
+import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.DriverDao;
@@ -170,7 +171,8 @@ public class login extends Activity {
         Map<String, String> params = new HashMap<String, String>();
         params.put("fm_username", driver.getMachine_id());
         params.put("fm_password", driver.getPassword());
-        params.put("fm_tag", "M");
+        //params.put("fm_tag", "M");
+        params.put("fm_tag", "DRIVER111");
         com.yolanda.nohttp.rest.Request<JSONObject> strReq= NoHttp.createJsonObjectRequest(url, RequestMethod.POST);
         strReq.add(params);
         RequestQueue requestQueue = NoHttp.newRequestQueue();
@@ -201,6 +203,10 @@ public class login extends Activity {
 
                     String token=jObj.getString("result");
                     session.setLogin(true,token);
+
+                    session.setID(jObj.getString("fm_id"));
+                    String fm_ID=session.getUserId();
+
                     driver.setId(1);
                     driverDao.add(driver);
 
@@ -225,6 +231,7 @@ public class login extends Activity {
         public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
             Log.e(TAG, "Login Error: " + exception.getMessage());
             commonUtil.error_hint_short("服务器连接失败");
+
         }
 
         @Override

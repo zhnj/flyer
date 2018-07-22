@@ -2,6 +2,7 @@ package com.njdp.njdp_drivers.items;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,15 +11,23 @@ import android.net.Uri;
 import android.os.Bundle;
 //import android.os.Handler;
 //import android.os.Message;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 //import com.android.volley.DefaultRetryPolicy;
@@ -26,8 +35,12 @@ import android.widget.TextView;
 //import com.android.volley.VolleyError;
 //import com.android.volley.toolbox.ImageLoader;
 //import com.android.volley.toolbox.StringRequest;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SpinnerAdapter;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
@@ -55,10 +68,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bean.Driver;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+
+import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 //import okhttp3.Call;
 
 
@@ -77,6 +94,13 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private LinearLayout l_weixin;
     private LinearLayout l_qq;
     private LinearLayout l_region;
+    //新添加
+    private LinearLayout l_sex;
+    private LinearLayout l_personsfzh;
+    private LinearLayout l_personcomid;
+    //private LinearLayout l_populationnum;
+    //private LinearLayout l_farmlandarea;
+
     private TextView t_name;
     private TextView t_machine_id;
     private TextView t_telephone;
@@ -84,13 +108,19 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private TextView t_qq;
     private TextView t_region;
     private TextView btn_setting;
+    //新添加
+    private TextView t_sex;
+    private TextView t_personsfzh;
+    private Spinner t_personcomid=null;
+    private String[] uavInfo;
+
     private DriverDao driverDao;
     private NetUtil netUtil;
     private Driver driver;
     private CommonUtil commonUtil;
     private Gson gson;
     private SessionManager sessionManager;
-//    private ImageLoader imageLoader;
+    //    private ImageLoader imageLoader;
 //    private ImageLoader.ImageListener imageListener;
     private String path;
     private String path_post;
@@ -130,12 +160,24 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         view.findViewById(R.id.driver_region).setOnClickListener(this);
 //        view.findViewById(R.id.login_out).setOnClickListener(this);
         view.findViewById(R.id.settings).setOnClickListener(this);
+        //新添加
+        view.findViewById(R.id.driver_sex).setOnClickListener(this);
+        view.findViewById(R.id.driver_personsfzh).setOnClickListener(this);
+        view.findViewById(R.id.driver_personcomid).setOnClickListener(this);
+
+
         this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
         this.l_machine_id=(LinearLayout)view.findViewById(R.id.driver_machine_id);
         this.l_telephone=(LinearLayout)view.findViewById(R.id.driver_telephone);
         this.l_weixin=(LinearLayout)view.findViewById(R.id.driver_weixin);
         this.l_qq=(LinearLayout)view.findViewById(R.id.driver_qq);
         this.l_region=(LinearLayout)view.findViewById(R.id.driver_region);
+        //新添加
+        this.l_sex=(LinearLayout)view.findViewById(R.id.driver_sex);
+        this.l_personsfzh=(LinearLayout)view.findViewById(R.id.driver_personsfzh);
+        this.l_personcomid=(LinearLayout)view.findViewById(R.id.driver_personcomid);
+
+
         this.title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView) view.findViewById(R.id.information_div_title_image);
         this.t_name=(TextView) view.findViewById(R.id.input_driver_name);
         this.t_machine_id =(TextView) view.findViewById(R.id.input_driver_licence_plate);
@@ -144,6 +186,45 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         this.t_qq =(TextView) view.findViewById(R.id.input_driver_qq);
         this.t_region=(TextView) view.findViewById(R.id.input_driver_region);
         title_Image.setOnClickListener(this);
+        //新添加
+        this.t_sex=(TextView) view.findViewById(R.id.input_driver_sex);
+        this.t_personsfzh=(TextView) view.findViewById(R.id.input_person_sfzh);
+        this.t_personcomid= (Spinner) view.findViewById(R.id.sp_person_comid);
+
+
+        //给spinner添加事件
+        t_personcomid.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                final int pos = i;
+                String tag_string_req = "req_fix_info";
+                if (netUtil.checkNet(mainMenu) == false) {
+                    mainMenu.hideDialog();
+                    commonUtil.error_hint_short("网络连接错误");
+                    return;
+                } else {
+                    //服务器请求
+                    StringRequest strReq = new StringRequest(Request.Method.POST,
+                            AppConfig.URL_FIXPERSONINFO, new fixUploadSuccessListener(), mainMenu.mErrorListener) {
+
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("token", token);
+                            params.put("person_comid", uavInfo[pos].split("-")[0]);
+                            return netUtil.checkParams(params);
+                        }
+                    };
+
+                    // Adding request to request queue
+                    AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }});
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
@@ -188,10 +269,138 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             getUserInfo();
         }
         getUserInfo();
+        getUAVInfor();////从服务器获取飞机服务公司信息
         setTextFix();//修改后，显示修改后的信息
+
+
         return view;
     }
 
+    //从服务器获取飞机服务公司信息
+    public void getUAVInfor(){
+
+        String tag_string_req = "req_uav_com_info";
+        if (netUtil.checkNet(mainMenu) == false) {
+            mainMenu.hideDialog();
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            //服务器请求
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.URL_UAV_listCompanys, new fixSuccessListener(), mainMenu.mErrorListener) {
+
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    return netUtil.checkParams(params);
+                }
+            };
+
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+    }
+
+    private class fixUploadSuccessListener implements  Response.Listener<String>//信息修改成功响应
+    {
+        @Override
+        public void onResponse(String response) {
+            try {
+                Log.e("PersonalInfo fix_back",response);
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status==1) {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                } else if(status==0){
+
+                    String errorMsg=jObj.getString("result");
+                    Log.e(TAG, "修改结果：" + errorMsg);
+
+
+
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("保存失败,请重试");
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "2 Json error：response错误" + e.getMessage());
+                commonUtil.error_hint_short("保存失败,请重试" );
+            }
+        }
+    }
+    class fixSuccessListener implements Response.Listener<String>//信息修改成功响应
+    {
+        @Override
+        public void onResponse(String response) {
+            try {
+                Log.e("UAV company fix_back", response);
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status == 1) {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                } else if (status == 0) {
+
+
+                    JSONArray arr = jObj.getJSONArray("result");
+                    uavInfo = new String[arr.length()];
+                    for(int i=0;i<arr.length();i++)
+                    {
+                        uavInfo[i]=arr.getJSONObject(i).getString("id")+"-"+arr.getJSONObject(i).getString("com_name");
+                    }
+                    SpinnerAdapter adapter = new SpinnerAdapter(mainMenu,android.R.layout.simple_list_item_1,uavInfo);
+                    t_personcomid.setAdapter(adapter);
+                    for(int i =0;i<uavInfo.length;i++) {
+                        if(uavInfo[i].split("-")[0].equals(driver.getPersoncomid()))
+                            t_personcomid.setSelection(i);
+                    }
+
+                } else {
+
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("保存失败,请重试");
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "2 Json error：response错误" + e.getMessage());
+                commonUtil.error_hint_short("保存失败,请重试");
+            }
+        }
+    }
+
+    class SpinnerAdapter extends ArrayAdapter<String>{
+
+        public SpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull String[] objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = mainMenu.getLayoutInflater();
+            View view =inflater.inflate(R.layout.activity_personinfo_uav_companylist_layout,null);
+            TextView textView = (TextView)view.findViewById(R.id.uav_company_list);
+            textView.setText(uavInfo[position]);
+            return  textView;
+        }
+    }
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -241,10 +450,27 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             case R.id.settings:
                 mainMenu.addBackFragment(new item_personalinformation_setting());
                 break;
+            //新添加
+            case R.id.driver_sex:
+                mainMenu.fix_info_title="修改性别";
+                mainMenu.fix_info_flag=5;
+                mainMenu.t_fix_title="修改性别";
+                mainMenu.t_fix_hint="请输入性别";
+                mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
+                break;
+            case R.id.driver_personsfzh:
+                mainMenu.fix_info_title="修改身份证号";
+                mainMenu.fix_info_flag=6;
+                mainMenu.t_fix_title="修改身份证号";
+                mainMenu.t_fix_hint="请输入身份证号";
+                mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
+                break;
             default:
                 break;
         }
     }
+
+
 
 //    //监听返回按键
 //    @Override
@@ -374,6 +600,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite_0());
+        //新添加
+        t_sex.setText(driver.getSex());
+        t_personsfzh.setText(driver.getSfzh());
+
+
+
     }
 
     private void showDriverData(Driver driver)//显示用户基本信息和头像
@@ -385,6 +617,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_weixin.setText(driver.getWechart());
         t_qq.setText(driver.getQQ());
         t_region.setText(driver.getSite_0());
+        //新添加
+        t_sex.setText(driver.getSex());
+        t_personsfzh.setText(driver.getSfzh());
+
+
+
     }
 
     @Override
@@ -495,6 +733,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     driver.setTelephone(s_driver.getString("person_phone"));
                     driver.setWechart(s_driver.getString("person_weixin"));
                     driver.setQQ(s_driver.getString("person_qq"));
+                    //新添加
+                    driver.setSex(s_driver.getString("person_Sex"));
+                    driver.setSfzh(s_driver.getString("person_sfzh"));
+                    driver.setPersoncomid(s_driver.getString("person_comid"));//飞机服务公司
+
                     driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
                     driver.setId(1);
                     showDriverData(driver);//显示个人信息
@@ -685,6 +928,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     break;
                 case 4:
                     t_qq.setText(mainMenu.fix_info);
+                    break;
+                case 5:
+                    t_sex.setText(mainMenu.fix_info);
+                    break;
+                case 6:
+                    t_personsfzh.setText(mainMenu.fix_info);
                     break;
             }
             mainMenu.change_info_flag=false;

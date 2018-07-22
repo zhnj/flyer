@@ -30,12 +30,81 @@
             android:background="@drawable/ic_menu_white_48dp"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/query_requirement_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/requirement_arrange_top"
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/type"
+            android:visibility="gone"
+            style="@style/spinner_style_require"/>
+        <LinearLayout
+            android:id="@+id/jobDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/date_picker_background"
+            android:layout_margin="@dimen/margin5"
+            android:padding="@dimen/padding5">
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/padding5"
+                android:text="开始日期：2016年6月1日"
+                android:textSize="@dimen/font12"
+                android:textColor="@color/whiteFont"
+                android:background="@android:color/transparent" />
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:padding="@dimen/padding5"
+                android:text="结束日期：2016年6月8日"
+                android:textSize="@dimen/font12"
+                android:textColor="@color/whiteFont"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/requirement_arrange_query"
+        android:layout_below="@+id/query_requirement_div"
+        android:background="@drawable/main_title">
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+
+            android:text="查找"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <AutoCompleteTextView
+            android:id="@+id/query_query_autoCompleteTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btn_search"
+                      android:text="text"
+            android:textSize="16dp"
+            android:textColor="#FFFFFF"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/requirement_arrange_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/requirement_arrange_top"
-        android:layout_above="@+id/infos">
+        android:layout_below="@+id/requirement_arrange_query"
+        android:layout_above="@+id/intelligent_arrange_bottom"
+        >
         <com.baidu.mapapi.map.MapView
             android:id="@+id/bmapView"
             android:layout_width="match_parent"
@@ -46,17 +115,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_my_locationt"
+            android:layout_marginLeft="21dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/margin10"
-            android:layout_marginLeft="@dimen/margin20"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="21dp" />
+
     </RelativeLayout>
-    <Button
-        android:id="@+id/infos"
-        android:text="共找到13块田，点击查看"
+    <RelativeLayout
+        android:id="@+id/intelligent_arrange_bottom"
         android:layout_width="match_parent"
-        android:textColor="@color/whiteFont"
+        android:layout_height="40dp"
+
+        android:orientation="horizontal"
         android:background="@drawable/main_title"
-        android:layout_height="@dimen/height40"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+
+        >
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/area_arrow_up"
+            android:id="@+id/area"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/infos"
+            android:text="共找到13块田，点击查看"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/area"
+            android:layout_toLeftOf="@+id/arrange_button"
+            />
+        <Button
+            android:id="@+id/arrange_button"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/require_home"
+            android:textColor="@color/whiteFont"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+
+
 </RelativeLayout>

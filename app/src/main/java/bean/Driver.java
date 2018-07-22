@@ -39,6 +39,25 @@ public class Driver {
     private String site;
 
 
+
+    //新添加
+    @DatabaseField(columnName = "sex")
+    private String sex;
+    @DatabaseField(columnName = "sfzh")
+    private String sfzh;
+    @DatabaseField(columnName = "populationnum")
+    private String populationnum;
+
+    @DatabaseField(columnName = "personcomid")
+    private String personcomid;
+
+
+
+    @DatabaseField(columnName = "farmlandarea")
+    private String farmlandarea;
+
+
+
     public int getId() {
         return id;
     }
@@ -146,5 +165,24 @@ public class Driver {
     public void setSite(String site) {
         this.site = site;
     }
+    public String getSex() {     return sex;    }
+
+    public void setSex(String sex) {     this.sex = sex;    }
+
+    public String getSfzh() {     return sfzh;  }
+
+    public void setSfzh(String sfzh) {     this.sfzh = sfzh;  }
+
+    public String getPopulationnum() {       return populationnum;    }
+
+    public void setPopulationnum(String populationnum) { this.populationnum = populationnum;    }
+
+    public String getFarmlandarea() {    return farmlandarea;   }
+
+    public void setFarmlandarea(String farmlandarea) {  this.farmlandarea = farmlandarea;   }
+
+    public String getPersoncomid() {      return personcomid;    }
+
+    public void setPersoncomid(String personcomid) {     this.personcomid = personcomid;    }
 
 }

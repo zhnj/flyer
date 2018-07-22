@@ -31,7 +31,15 @@
         <item name="android:windowEnterAnimation">@anim/slide_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/slide_bottom_out</item>
     </style>
-
+    <!--个人信息表单.中间-->
+    <style name="personalinformation_center">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:textColor">#F5F5F5</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:gravity">center</item>
+    </style>
     <!--侧滑菜单项样式-->
     <style name="SlideMenuItem_style">
         <item name="android:layout_width">match_parent</item>

@@ -38,15 +38,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class register extends Activity {
-//    private EditText text_user_name=null;
+    //    private EditText text_user_name=null;
 //    private EditText text_user_machine_id=null;
 //    private EditText text_user_password=null;
 //    private EditText text_user_address=null;
 //    private EditText text_user_qq=null;
 //    private EditText text_user_weixin=null;
 //    private EditText text_verification_code=null;
-    private EditText text_user_telephone=null;
-    private Button btn_verification_code=null;
+    private EditText text_phone=null;
+    private Button btn_code=null;
     private ImageButton btn_back=null;
     private com.beardedhen.androidbootstrap.BootstrapButton btn_register_next=null;
     private AwesomeValidation verification_code_Validation=new AwesomeValidation(ValidationStyle.BASIC);
@@ -55,7 +55,7 @@ public class register extends Activity {
     private NetUtil netUtil;
     private CommonUtil commonUtil;
     private ProgressDialog pDialog;
-//    private SessionManager session;
+    //    private SessionManager session;
 //    private String name;
 //    private String machine_id;
 //    private String password;
@@ -88,8 +88,8 @@ public class register extends Activity {
 //        text_user_weixin=(EditText) super.findViewById(R.id.user_weixin);
 //        text_verification_code = (EditText) super.findViewById(R.id.verification_code);
 
-        text_user_telephone = (EditText) super.findViewById(R.id.user_telephone);
-        btn_verification_code=(Button) super.findViewById(R.id.register_get_verification_code);
+        text_phone = (EditText) super.findViewById(R.id.phone);
+        btn_code=(Button) super.findViewById(R.id.register_get_verification_code);
         btn_register_next=(com.beardedhen.androidbootstrap.BootstrapButton) super.findViewById(R.id.register_next);
         btn_back=(ImageButton) super.findViewById(R.id.getback);
         btn_back.setOnClickListener(new backClickListener());
@@ -109,7 +109,7 @@ public class register extends Activity {
                 if (isempty(R.id.user_telephone)) {
                     commonUtil.error_hint2_short(R.string.err_phone2);
                 } else if (mValidation.validate() == true) {
-                    telephone = text_user_telephone.getText().toString().trim();
+                    telephone = text_phone.getText().toString().trim();
 //                    name = text_user_name.getText().toString().trim();
 //                    machine_id = text_user_machine_id.getText().toString().trim();
 //                    password = text_user_password.getText().toString().trim();
@@ -129,7 +129,7 @@ public class register extends Activity {
         });
 
         //点击获取验证码按钮,，没填手机号提示，填了以后，发送短信，按钮60s倒计时，禁用60s
-        btn_verification_code.setOnClickListener(new View.OnClickListener() {
+        btn_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isempty(R.id.user_telephone)) {
@@ -137,7 +137,7 @@ public class register extends Activity {
                 } else if (verification_code_Validation.validate() == true) {
                     get_VerifyCode();
                     //按钮60s倒计时，禁用60s
-                    TimeCount time_CountDown = new TimeCount(60000, 1000, btn_verification_code, register.this);
+                    TimeCount time_CountDown = new TimeCount(60000, 1000, btn_code, register.this);
                     time_CountDown.start();
                     commonUtil.error_hint2_short(R.string.vertify_hint);
                 }
@@ -277,7 +277,7 @@ public class register extends Activity {
     private void register_next() {
         Intent intent = new Intent(register.this, register_1.class);
         Bundle driver_bundle = new Bundle();
-        driver_bundle.putString("telephone", text_user_telephone.getText().toString());
+        driver_bundle.putString("telephone", text_phone.getText().toString());
 //        driver_bundle.putString("name", text_user_name.getText().toString());
 //        driver_bundle.putString("password", text_user_password.getText().toString());
 //        driver_bundle.putString("machine_id", text_user_machine_id.getText().toString());
@@ -351,7 +351,7 @@ public class register extends Activity {
     //输入是否为空，判断是否禁用按钮
     private void editTextIsNull(){
 
-        text_user_telephone.addTextChangedListener(new TextWatcher() {
+        text_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

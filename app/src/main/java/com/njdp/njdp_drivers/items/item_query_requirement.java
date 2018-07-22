@@ -2,9 +2,13 @@ package com.njdp.njdp_drivers.items;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -21,6 +26,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -28,6 +34,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
+import com.baidu.mapapi.model.inner.GeoPoint;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.sug.SuggestionResult;
+import com.baidu.mapapi.search.sug.SuggestionSearch;
+import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
@@ -44,16 +59,20 @@ import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.squareup.timessquare.CalendarPickerView;
 
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import bean.FieldInfo;
@@ -65,7 +84,15 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private DrawerLayout menu;
     private com.beardedhen.androidbootstrap.BootstrapButton hintButton;
     private Spinner sp_area;
-    private Spinner sp_type;
+
+    private AutoCompleteTextView autoQuery;//用户输入查找中心点
+    private ArrayAdapter<String> sugAdapter = null;
+    private int load_Index = 0;
+    private PoiSearch mPoiSearch = null;
+    private SuggestionSearch mSuggestionSearch = null;
+    private List<SuggestionResult.SuggestionInfo> allSuggestions;
+
+    //private Spinner sp_type;
     private TextView t_startDate;
     private TextView t_endDate;
     private LinearLayout ll_hint;
@@ -103,7 +130,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private boolean sl_area_flag=false;
     private boolean sl_type_flag=false;
     private ProgressDialog pDialog;
-    private String url;//服务器地址
+    private String url=AppConfig.URL_searchFarmlands;//服务器地址
     private SessionManager sessionManager;
     private CommonUtil commonUtil;
     private NetUtil netUtil;
@@ -138,7 +165,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         gson=new Gson();
         format = new SimpleDateFormat("yyyy/M/d");
         format2= new SimpleDateFormat("yyyy-MM-dd");
-        url=AppConfig.URL_SEARCHFIELD;
+        //url=AppConfig.URL_SEARCHFIELD;
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
@@ -151,7 +178,10 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         this.ll_hint=(LinearLayout)view.findViewById(R.id.hint);
         this.t_startDate=(TextView)view.findViewById(R.id.startDate);
         this.t_endDate=(TextView)view.findViewById(R.id.endDate);
-        this.sp_type=(Spinner)view.findViewById(R.id.type);
+        //this.sp_type=(Spinner)view.findViewById(R.id.type);
+        this.autoQuery= (AutoCompleteTextView) view.findViewById(R.id.autoQueryCompleteTextView);
+
+        autoQuery.setEnabled(false);
         this.sp_area=(Spinner)view.findViewById(R.id.area);
         this.ck_wheat=(RadioButton)view.findViewById(R.id.selectWheat);
         this.ck_corn=(RadioButton)view.findViewById(R.id.selectCorn);
@@ -186,10 +216,59 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         sp_area.setOnItemSelectedListener(new areaListener());
         //农机服务类型
         typeAdapter= new SpinnerAdapter_white(mainMenu, getResources().getStringArray(R.array.machine_type));
-        sp_type.setAdapter(typeAdapter);
-        sp_type.setOnItemSelectedListener(new typeSelectedListener());
+        //sp_type.setAdapter(typeAdapter);
+        //sp_type.setOnItemSelectedListener(new typeSelectedListener());
 
+        // 初始化搜索模块，注册搜索事件监听
+        mSuggestionSearch = SuggestionSearch.newInstance();
+        mSuggestionSearch.setOnGetSuggestionResultListener(new OnGetSuggestionResultListener(){
+            @Override
+            public void onGetSuggestionResult(SuggestionResult res) {
 
+                if (res == null || res.getAllSuggestions() == null) {
+                    return;
+                }
+                sugAdapter.clear();
+                for (SuggestionResult.SuggestionInfo info : res.getAllSuggestions()) {
+                    if (info.key != null)
+                        sugAdapter.add(info.key);
+
+                }
+                sugAdapter.notifyDataSetChanged();
+            }
+        });
+        sugAdapter = new ArrayAdapter<String>(mainMenu,android.R.layout.simple_dropdown_item_1line);
+        this.autoQuery.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GPS_longitude=String.valueOf(allSuggestions.get(position).pt.longitude);//GPS经度
+                GPS_latitude=String.valueOf(allSuggestions.get(position).pt.latitude);
+
+            }
+        });
+
+        autoQuery.setAdapter(sugAdapter);
+        autoQuery.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 0) {
+                    return;
+                }
+                String city = "保定";
+                /**
+                 * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
+                 */
+                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+       gps_MachineLocation(sessionManager.getUserId());
+        //gps_MachineLocation(9+"");
         //获取machine_id
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
@@ -201,6 +280,35 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 
     }
 
+    /**
+     *
+     * 根据地址获取经纬度数据
+     * @param str
+     * @return
+     */
+    public GeoPoint getGeoPointBystr(String str) {
+        GeoPoint gpGeoPoint = null;
+        if (str!=null) {
+            Geocoder gc = new Geocoder(mainMenu, Locale.CHINA);
+            List<Address> addressList = null;
+            try {
+                addressList = gc.getFromLocationName(str, 1);
+                if (!addressList.isEmpty()) {
+                    Address address_temp = addressList.get(0);
+//计算经纬度
+                    double Latitude=address_temp.getLatitude()*1E6;
+                    double Longitude=address_temp.getLongitude()*1E6;
+                    System.out.println("经度："+Latitude);
+                    System.out.println("纬度："+Longitude);
+//生产GeoPoint
+                    gpGeoPoint = new GeoPoint((int)Latitude, (int)Longitude);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return gpGeoPoint;
+    }
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
@@ -278,11 +386,12 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void checkQuery()//检查查询信息信息
     {
         if (selectedType == 0) {
-            commonUtil.error_hint2_short(R.string.error_machineId3);
+            //commonUtil.error_hint2_short(R.string.error_machineId3);
         } else
         {
-            checkByType(selectedType);
+            //checkByType(selectedType);
         }
+        queryInfo();
     }
 
     private void checkByType(int selectedType)//根据农机服务类型,不同验证
@@ -361,28 +470,30 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         Log.e(TAG,token);
         Log.e(TAG,machine_id);
         Log.e(TAG, sl_area);
-        Log.e(TAG, s_machine_type);
-        Log.e(TAG, s_machine_cropType);
+       // Log.e(TAG, s_machine_type);
+       // Log.e(TAG, s_machine_cropType);
         Log.e(TAG, startTime);
         Log.e(TAG, endTime);
         Log.e(TAG, GPS_longitude);
         Log.e(TAG, GPS_latitude);
-        gps_MachineLocation(machine_id);
+
+        initFieldInfo();
     }
 
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    ///////////////////////////////////从服务器获取所在飞机服务公司的地址///////////////////////////////////////
     public void gps_MachineLocation(final String machine_id) {
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
             @Override
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("machine_id", machine_id);
-                params.put("token", token);
+                params.put("fm_id", machine_id);
+                //params.put("token", token);
 
                 return netUtil.checkParams(params);
             }
@@ -391,6 +502,8 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
+
 
     private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
     {
@@ -413,9 +526,10 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
-                    JSONObject location = jObj.getJSONObject("result");
-                    GPS_longitude = location.getString("x");
-                    GPS_latitude = location.getString("y");
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+                    autoQuery.setText(location.getJSONObject(0).getString("com_name"));
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
@@ -451,7 +565,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
     private void isGetLocation() {
         if (!text_gps_flag) {
             Log.e(TAG, "GPS自动定位成功");
-            initFieldInfo();
+            //initFieldInfo();
         } else {
             Log.e(TAG, "定位失败！");
             commonUtil.error_hint_short("查询失败,请重试");
@@ -480,7 +594,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("token", token);
                     params.put("Search_range", sl_area);//需要按照实际范围变动
-                    params.put("crops_kind", s_machine_cropType);
+                    params.put("crops_kind", "FSY");//作业状态
                     params.put("start_date", startTime);
                     params.put("end_date", endTime);
                     params.put("Machine_longitude", GPS_longitude);
@@ -556,7 +670,9 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     if(mainMenu.selectedFieldInfo.size()<1){
                         commonUtil.error_hint_short("未查询到符合要求的农田信息，请重新查询！");
                     }else{
-                        mainMenu.addBackFragment(new item_query_requirement_1());
+                        item_query_requirement_1 item_query= new item_query_requirement_1();
+                        //item_query.setAutoQuery(autoQuery.getText().toString(),startTime,endTime);
+                        mainMenu.addBackFragment(item_query);
                     }
 //                    else
 //                    {
@@ -752,7 +868,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             sl_type_flag = true;
             if(position!=0) {
-                s_machine_type = sp_type.getSelectedItem().toString();
+                //s_machine_type = sp_type.getSelectedItem().toString();
             }
             selectedType = position;
 //            if (position == 4) {

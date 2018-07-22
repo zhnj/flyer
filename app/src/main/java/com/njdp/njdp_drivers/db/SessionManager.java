@@ -32,6 +32,8 @@ public class SessionManager {
 
     private static final String TOKEN_TAG = "token";
 
+    private static final String USER_ID = "id";
+
     private static final String DEPLOY_ID = "deploy_id";
 
     private static final String NORM_ID = "norm_id";
@@ -61,6 +63,11 @@ public class SessionManager {
         Log.d(TAG, "User LoginState session modified!");
     }
 
+    public void setID(String id)
+    {
+        editor.putString(USER_ID, id);
+        editor.commit();
+    }
     //缓存状态信息
     public void setUserTag(String deploy_id) {
 
@@ -106,6 +113,11 @@ public class SessionManager {
     public String getToken() {
         return pref.getString(TOKEN_TAG, "");
     }
+
+    public String getUserId() {
+        return pref.getString(USER_ID, "");
+    }
+
 
     public String getDeployId(){
         return pref.getString(DEPLOY_ID, "");
