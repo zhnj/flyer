@@ -288,6 +288,7 @@ public class slidingMenu extends AppCompatActivity
                 break;
             case 1:
                 count=savedFieldInfoDao.countOfField();
+                /**
                 if(count>=1)
                 {
                     item2 = new item_intelligent_resolution_3();
@@ -296,6 +297,8 @@ public class slidingMenu extends AppCompatActivity
                 {
                     item2 = new item_intelligent_resolution();
                 }
+                 */
+                item2 = new item_intelligent_resolution();
                 addOrShowFragment(item2);
                 break;
             case 2:
