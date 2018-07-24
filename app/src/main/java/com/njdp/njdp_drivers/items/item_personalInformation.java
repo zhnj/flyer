@@ -196,7 +196,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         t_personcomid.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 final int pos = i;
+                driver.setPersoncomid(uavInfo[pos].split("-")[0]);
                 String tag_string_req = "req_fix_info";
                 if (netUtil.checkNet(mainMenu) == false) {
                     mainMenu.hideDialog();

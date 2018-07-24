@@ -218,8 +218,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //获取农机并获取农机经纬度
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
-            gps_MachineLocation(machine_id);
-            Log.e(TAG, machine_id);
+            gps_MachineLocation(sessionManager.getUserId());
+            Log.e(TAG, sessionManager.getUserId());
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
@@ -441,7 +441,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
         return view;
     }
-    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    ////////////////////////////////////从服务器获取飞机服务公司的名称和经纬度///////////////////////////////////////
     public void gps_MachineLocation(final String machine_id) {
         String tag_string_req = "req_GPS";
         //服务器请求
