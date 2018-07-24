@@ -24,7 +24,7 @@ public class AppController extends Application {
     //地图
     public LocationService locationService;
     public Vibrator mVibrator;
-
+    //建立一个请求队列
     public static RequestQueue queues;
     @Override
     public void onCreate() {
@@ -41,9 +41,7 @@ public class AppController extends Application {
         locationService = new LocationService(getApplicationContext());
         mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         SDKInitializer.initialize(getApplicationContext());
-        //实例化一个请求队列
         queues = Volley.newRequestQueue(getApplicationContext());
-
     }
 
     public static synchronized AppController getInstance() {

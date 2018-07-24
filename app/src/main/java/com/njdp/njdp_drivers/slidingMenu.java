@@ -1,11 +1,9 @@
 package com.njdp.njdp_drivers;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -20,24 +18,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.StringRequest;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
-import com.njdp.njdp_drivers.db.FieldInfoDao;
-import com.njdp.njdp_drivers.db.LruBitmapCache;
 import com.njdp.njdp_drivers.db.SavedFieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.item_intelligent_resolution;
 import com.njdp.njdp_drivers.items.item_intelligent_resolution_3;
-import com.njdp.njdp_drivers.items.item_job_history;
 import com.njdp.njdp_drivers.items.item_oil_station;
 import com.njdp.njdp_drivers.items.item_personalInformation;
 import com.njdp.njdp_drivers.items.item_query_requirement;
@@ -45,6 +35,7 @@ import com.njdp.njdp_drivers.items.item_query_requirement_1;
 import com.njdp.njdp_drivers.items.item_release_machine;
 import com.njdp.njdp_drivers.items.item_repair_station;
 import com.njdp.njdp_drivers.items.item_service_object;
+import com.njdp.njdp_drivers.items.jikai.item_job_history;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 import com.yolanda.nohttp.NoHttp;
@@ -57,17 +48,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import bean.BasicDeployRes;
 import bean.Driver;
 import bean.FieldInfo;
 import bean.FieldInfoPost;
-
-import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
 public class slidingMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -288,6 +274,7 @@ public class slidingMenu extends AppCompatActivity
                 break;
             case 1:
                 count=savedFieldInfoDao.countOfField();
+
                 if(count>=1)
                 {
                     item2 = new item_intelligent_resolution_3();
@@ -296,6 +283,8 @@ public class slidingMenu extends AppCompatActivity
                 {
                     item2 = new item_intelligent_resolution();
                 }
+
+
                 addOrShowFragment(item2);
                 break;
             case 2:

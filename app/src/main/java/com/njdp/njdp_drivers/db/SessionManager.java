@@ -188,5 +188,7 @@ public class SessionManager {
     public float getFloat(String key, float defValue) {
         return pref.getFloat(key, defValue);
     }
-
+    public String getTime(boolean b){
+        return pref.getString(b?"startTime":"endTime", "");
+    }
 }

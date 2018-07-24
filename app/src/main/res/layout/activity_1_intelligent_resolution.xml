@@ -75,8 +75,36 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/intelligent_arrange_query"
         android:layout_below="@+id/intelligent_arrange_div"
+        android:background="@drawable/main_title">
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+
+            android:text="查找"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <AutoCompleteTextView
+            android:id="@+id/query_query_autoCompleteTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btn_search"
+            android:text="text"
+            android:textSize="16dp"
+            android:textColor="#FFFFFF"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/intelligent_arrange_query"
         android:layout_above="@+id/intelligent_arrange_bottom">
         <com.baidu.mapapi.map.TextureMapView
             android:id="@+id/bmapView"

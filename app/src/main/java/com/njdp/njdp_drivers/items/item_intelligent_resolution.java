@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -18,11 +20,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
@@ -40,6 +47,11 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
+import com.baidu.mapapi.search.sug.SuggestionResult;
+import com.baidu.mapapi.search.sug.SuggestionSearch;
+import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
@@ -165,6 +177,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private Marker centreMarker;
     ////////////////////////地图变量//////////////////////////
 
+    private AutoCompleteTextView autoQuery;//用户输入查找中心点
+    private ArrayAdapter<String> sugAdapter = null;
+    private List<SuggestionResult.SuggestionInfo> allSuggestions;
+    private int load_Index = 0;
+    private PoiSearch mPoiSearch = null;
+    private SuggestionSearch mSuggestionSearch = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -200,6 +218,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         //获取农机并获取农机经纬度
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
+            gps_MachineLocation(machine_id);
             Log.e(TAG, machine_id);
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -210,6 +229,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         view.findViewById(R.id.my_location).setOnClickListener(this);
         view.findViewById(R.id.arrange_button).setOnClickListener(this);
         view.findViewById(R.id.jobDate).setOnClickListener(this);
+        view.findViewById(R.id.btn_search).setOnClickListener(this);
         t_startDate=(TextView)view.findViewById(R.id.startDate);
         t_endDate=(TextView)view.findViewById(R.id.endDate);
         sp_type=(Spinner)view.findViewById(R.id.type);
@@ -236,10 +256,65 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         calendarPickerView.setOnDateSelectedListener(new clDateSelectedListener());//选一个范围的日期
         calendarPickerView.setCellClickInterceptor(new clCellClick());//选一天的日期
 
+
         hintView = mainMenu.getLayoutInflater().inflate(R.layout.intelligent_pop, null);
         initHintPopup();
         hintView.findViewById(R.id.get_start).setOnClickListener(this);
         hintPopup.setOnDismissListener(new hintPopDisListener());
+        // 初始化搜索模块，注册搜索事件监听
+        this.autoQuery= (AutoCompleteTextView) view.findViewById(R.id.query_query_autoCompleteTextView_2);
+        this.autoQuery.setText("公司名称");
+        this.autoQuery.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GPS_longitude=String.valueOf(allSuggestions.get(position).pt.longitude);//GPS经度
+                GPS_latitude=String.valueOf(allSuggestions.get(position).pt.latitude);
+
+            }
+        });
+
+        mSuggestionSearch = SuggestionSearch.newInstance();
+        mSuggestionSearch.setOnGetSuggestionResultListener(new OnGetSuggestionResultListener(){
+            @Override
+            public void onGetSuggestionResult(SuggestionResult res) {
+
+                if (res == null || res.getAllSuggestions() == null) {
+                    return;
+                }
+                sugAdapter.clear();
+                allSuggestions=res.getAllSuggestions();
+                for (SuggestionResult.SuggestionInfo info : allSuggestions) {
+                    if (info.key != null) {
+                        sugAdapter.add(info.key);
+
+                    }
+
+                }
+                sugAdapter.notifyDataSetChanged();
+            }
+        });
+        sugAdapter = new ArrayAdapter<String>(mainMenu,android.R.layout.simple_dropdown_item_1line);
+        autoQuery.setAdapter(sugAdapter);
+        autoQuery.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 0) {
+                    return;
+                }
+                String city = "保定";
+                /**
+                 * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
+                 */
+                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
 
 
         //下拉菜单选择项初始化
@@ -366,7 +441,83 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
         return view;
     }
+    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    public void gps_MachineLocation(final String machine_id) {
+        String tag_string_req = "req_GPS";
+        //服务器请求
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("fm_id", machine_id);
+                //params.put("token", token);
+
+                return netUtil.checkParams(params);
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
+    {
+        @Override
+        public void onResponse(String response) {
+            Log.d(TAG, "AreaInit Response: " + response);
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status == 1) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "Json error：response错误:" + errorMsg);
+                    commonUtil.error_hint_short("密钥失效，请重新登录");
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                } else if (status == 0) {
+
+                    ///////////////////////////获取服务器农机，经纬度/////////////////////
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+
+                    autoQuery.setText(location.getJSONObject(0).getString("com_name"));
+
+                    ///////////////////////////获取服务器农机，经纬度/////////////////////
+
+                    text_gps_flag = false;
+                    isGetLocation();
+                } else {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, "GPSLocation Error:" + errorMsg);
+                    text_gps_flag = true;
+                    isGetLocation();
+                }
+            } catch (JSONException e) {
+                // JSON error
+                Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
+                text_gps_flag = true;
+                isGetLocation();
+            }
+        }
+    }
+
+    private class locationErrorListener implements  Response.ErrorListener//定位服务器响应失败
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(TAG, "ConnectService Error: " + error.getMessage());
+            netUtil.testVolley(error);
+            text_gps_flag = true;
+            isGetLocation();
+        }
+    }
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
@@ -399,6 +550,14 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 break;
             case R.id.get_start:
                 hintPopup.dismiss();
+            case R.id.btn_search:
+                //查找，刷新
+                gps_MachineLocation(machine_id,0);;
+                LatLng llS = new LatLng(Double.parseDouble(GPS_latitude),
+                        Double.parseDouble(GPS_longitude));
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(llS);
+                mBaiduMap.animateMapStatus(u);
+                break;
             default:
                 break;
         }
