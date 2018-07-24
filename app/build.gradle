@@ -42,6 +42,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.basgeekball:awesome-validation:1.1'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-11'
     //表单验证
     compile 'com.squareup:android-times-square:1.6.5@aar'
     //日期选择组件
@@ -71,4 +72,6 @@ dependencies {
     compile files('libs/BaiduNaviSDK_3.1.1.jar')
     compile files('libs/lbsCoreSDK.jar')
     compile files('libs/locSDK_6.23.jar')
+
+
 }

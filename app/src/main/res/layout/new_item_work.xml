@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+ >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_adapter"
+        android:textSize="18sp"
+        android:textColor="#444"
+        android:text="测试条目"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/fw_bt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_call"
+            android:elevation="0dp"
+            android:padding="8dp"
+            android:text="拨号" />
+
+        <Button
+            android:id="@+id/fw_bt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_send"
+            android:padding="8dp"
+            android:text="导航" />
+
+        <Button
+            android:id="@+id/fw_bt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_myplaces"
+            android:padding="8dp"
+            android:text="确认" />
+
+        <Button
+            android:id="@+id/fw_bt4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_delete"
+            android:padding="8dp"
+            android:text="删除" />
+    </LinearLayout>
+
+</LinearLayout>

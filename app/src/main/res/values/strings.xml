@@ -8,6 +8,7 @@
     <string name="title_activity_bndguide">BNDGuideActivity</string>
     <string name="title_activity_diao_pei">DiaoPeiActivity</string>
     <string name="title_activity_baidudthud">BaidudthudActivity</string>
+<string name="item_editor_machine">编辑页面</string>
 
     <string name="err_cropCheck">请选择作物类型或者耕地类型</string>
     <string name="serverObject_err_phone">手机号格式不正确</string>

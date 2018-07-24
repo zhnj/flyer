@@ -65,6 +65,8 @@ public class login extends Activity {
     private int first_KeyBack = 0;
     private static int FLAG_LOGIN=11101000;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
