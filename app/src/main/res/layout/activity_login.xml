@@ -21,71 +21,80 @@
             android:textColor="@color/whiteFont"
             android:id="@+id/login_top_title"/>
     </RelativeLayout>
+
     <RelativeLayout
-        style="@style/Login_Div"
         android:id="@+id/login_div"
+        style="@style/Login_Div"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/login_bottom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="80dp">
+        android:layout_marginBottom="137dp">
+
         <EditText
-            style="@style/Login_Input"
             android:id="@+id/user_username"
-            android:hint="请输入农机编号，或手机号"
-            android:inputType="number"
-            android:textColorHint="@color/Black"
-            android:textColor="@color/Black"
+            style="@style/Login_Input"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/login_border"
             android:drawableLeft="@drawable/ic_person_white_36dp"
             android:drawablePadding="@dimen/padding10"
-            android:textCursorDrawable="@drawable/login_cursor"
-            android:background="@drawable/login_border"
-            />
-        <EditText
-            style="@style/Login_Input"
-            android:id="@+id/user_password"
-            android:layout_marginTop="@dimen/margin15"
-            android:textCursorDrawable="@drawable/login_cursor"
-            android:background="@drawable/login_border"
-            android:layout_below="@id/user_username"
-            android:password="true"
-            android:hint="请输入密码"
-            android:textColorHint="@color/Black"
+            android:hint="请输入身份证号"
+            android:inputType="number"
             android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textCursorDrawable="@drawable/login_cursor" />
+
+        <EditText
+            android:id="@+id/user_password"
+            style="@style/Login_Input"
+            android:layout_below="@id/user_username"
+            android:layout_marginTop="@dimen/margin15"
+            android:background="@drawable/login_border"
             android:drawableLeft="@drawable/ic_lock_white_36dp"
             android:drawablePadding="@dimen/padding10"
+            android:hint="请输入密码"
             android:inputType="textPassword"
-            android:maxLength="16"/>
+            android:maxLength="16"
+            android:password="true"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textCursorDrawable="@drawable/login_cursor" />
+
         <ImageButton
             android:id="@+id/reveal_button"
-            android:onClick="revealClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_visibility_off_white_24dp"
+            android:layout_alignBottom="@+id/user_password"
+            android:layout_alignEnd="@+id/user_password"
+            android:layout_alignRight="@+id/user_password"
             android:layout_marginBottom="@dimen/margin5"
             android:layout_marginRight="@dimen/margin5"
-            android:layout_alignBottom="@+id/user_password"
-            android:layout_alignRight="@+id/user_password"
-            android:layout_alignEnd="@+id/user_password" />
+            android:background="@drawable/ic_visibility_off_white_24dp"
+            android:onClick="revealClick" />
+
         <ImageButton
             android:id="@+id/show_button"
-            android:onClick="showClick"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_visibility_white_24dp"
+            android:layout_alignBottom="@+id/user_password"
+            android:layout_alignEnd="@+id/user_password"
+            android:layout_alignRight="@+id/user_password"
             android:layout_marginBottom="@dimen/margin5"
             android:layout_marginRight="@dimen/margin5"
-            android:layout_alignBottom="@+id/user_password"
-            android:layout_alignRight="@+id/user_password"
-            android:layout_alignEnd="@+id/user_password" />
+            android:background="@drawable/ic_visibility_white_24dp"
+            android:onClick="showClick"
+            android:visibility="gone" />
+
         <ImageButton
             android:id="@+id/loginin_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_password"
-            android:background="@drawable/btn_login"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin50"
-            android:layout_centerHorizontal="true"/>
+            android:background="@drawable/btn_login" />
     </RelativeLayout>
     <RelativeLayout
         style="@style/Login_Bottom"

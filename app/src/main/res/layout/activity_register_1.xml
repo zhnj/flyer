@@ -6,7 +6,7 @@
     android:id="@+id/xksqapp_register_student"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/main_bg"
+    android:background="@drawable/main_bg_1"
     android:fitsSystemWindows="true"
     android:paddingTop="@dimen/padding20"
     tools:context="com.njdp.njdp_drivers.register_1">
@@ -55,8 +55,8 @@
             android:background="@drawable/login_edit_changecolor"
             android:drawableLeft="@drawable/user_machine_id"
             android:hint="身份证号"
-            android:maxLength="12"
-            android:inputType="number"
+            android:maxLength="18"
+            
             />
         <View
             style="@style/Register_HorizontalLine_style"

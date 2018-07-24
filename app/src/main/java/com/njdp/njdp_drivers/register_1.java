@@ -57,7 +57,8 @@ public class register_1 extends Activity implements View.OnClickListener{
     private SessionManager session;
     private Driver driver;
     private String telephone;
-    private String machine_id;
+    //private String machine_id;
+    private String sfzh;
     private String password;
     private String verify_code;
     private String token;
@@ -132,8 +133,8 @@ public class register_1 extends Activity implements View.OnClickListener{
 
     //注册表单验证
     private void form_verification(final Activity activity) {
-        mValidation.addValidation(activity, R.id.user_machine_id, "\\d{12}+$", R.string.err_machine_id);
-        mValidation.addValidation(activity, R.id.user_password, "^[A-Za-z0-9_]{5,15}+$", R.string.err_password);
+       // mValidation.addValidation(activity, R.id.user_machine_id, "\\d{12}+$", "请输入正确的身份证号");
+        //mValidation.addValidation(activity, R.id.user_password, "^[A-Za-z0-9_]{5,15}+$", R.string.err_password);
     }
 
     //输入是否为空，判断是否禁用按钮
@@ -254,10 +255,11 @@ public class register_1 extends Activity implements View.OnClickListener{
         }  else if(isempty(R.id.password)){
             empty_hint(R.string.err_password2);
         } else if (mValidation.validate() == true) {
-            machine_id = text_sfzh.getText().toString().trim();
+            sfzh = text_sfzh.getText().toString().trim();
             password = text_password.getText().toString().trim();
             verify_code=text_code.getText().toString().trim();
-            verify_machine_id();//验证农机id，并上传服务器注册
+            //verify_machine_id();//验证农机id，并上传服务器注册
+            register_user();//注册用户
         }
     }
 
@@ -266,7 +268,7 @@ public class register_1 extends Activity implements View.OnClickListener{
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("phone", telephone);
-        params.put("machine_id", machine_id);
+        params.put("sfzh", sfzh);
         params.put("password", password);
         params.put("code", verify_code);
         register_strReq= NoHttp.createJsonObjectRequest(register_url, RequestMethod.POST);
@@ -298,7 +300,8 @@ public class register_1 extends Activity implements View.OnClickListener{
                     token=jObj.getString("result");
                     session.setLogin(true,token);
                     driver.setId(1);
-                    driver.setMachine_id(machine_id);
+                    //driver.setMachine_id(machine_id);
+                    driver.setSfzh(sfzh);
                     driver.setPassword(password);
                     driverDao.add(driver);
                     Intent intent = new Intent(register_1.this, register_2.class);
@@ -329,6 +332,7 @@ public class register_1 extends Activity implements View.OnClickListener{
     }
 
     //验证农机id
+    /*
     private void verify_machine_id(){
         pDialog.setMessage("正在提交注册申请，请等待......");
         machineVerify_strReq= NoHttp.createJsonObjectRequest(machineVerify_url, RequestMethod.POST);
@@ -343,6 +347,7 @@ public class register_1 extends Activity implements View.OnClickListener{
             requestQueue.add(FLAG_MACHINEVERIFY, machineVerify_strReq, new machineVerify_request());
         }
     }
+
 
     //验证农机id访问服务器监听
     private class machineVerify_request implements OnResponseListener<JSONObject> {
@@ -386,7 +391,7 @@ public class register_1 extends Activity implements View.OnClickListener{
             hideDialog();
         }
     }
-
+*/
 
 //    //验证农机响应服务器成功
 //    private Response.Listener<String> verifySuccessListener =new Response.Listener<String>() {

@@ -14,7 +14,7 @@ public class AppConfig {
 
     public static String URL_VERIFY_MACHINE_ID = URL_IP+"machineIDVerify";// 验证农机id url
 
-    public static String URL_REGISTER = URL_IP+"machineRegister";// 注册 url
+    public static String URL_REGISTER = URL_IP+"flyerRegister";// 注册 url
 
     public static String URL_GETPASSWORD1= URL_IP+"forgetPassword";// 找回密码1 url
 

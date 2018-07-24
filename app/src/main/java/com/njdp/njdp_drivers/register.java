@@ -99,14 +99,14 @@ public class register extends Activity {
         editTextIsNull();
 
         form_verification(register.this);
-        verification_code_Validation.addValidation(register.this, R.id.user_telephone, "^1[3-9]\\d{9}+$", R.string.err_phone);
+        verification_code_Validation.addValidation(register.this, R.id.phone, "^1[3-9]\\d{9}+$", R.string.err_phone);
 
         //点击按钮时验证注册表单
         btn_register_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (isempty(R.id.user_telephone)) {
+                if (isempty(R.id.phone)) {
                     commonUtil.error_hint2_short(R.string.err_phone2);
                 } else if (mValidation.validate() == true) {
                     telephone = text_phone.getText().toString().trim();
@@ -132,7 +132,7 @@ public class register extends Activity {
         btn_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isempty(R.id.user_telephone)) {
+                if (isempty(R.id.phone)) {
                     commonUtil.error_hint2_short(R.string.err_phone2);
                 } else if (verification_code_Validation.validate() == true) {
                     get_VerifyCode();
@@ -336,7 +336,7 @@ public class register extends Activity {
 
     //注册表单验证
     private void form_verification(final Activity activity){
-        mValidation.addValidation(activity, R.id.user_telephone,"^1[3-9]\\d{9}+$", R.string.err_phone);
+        mValidation.addValidation(activity, R.id.phone,"^1[3-9]\\d{9}+$", R.string.err_phone);
 //        mValidation.addValidation(activity, R.id.verification_code,"\\d{6}+$", R.string.err_verification_code);
 //        mValidation.addValidation(activity, R.id.user_name, "^[\\u4e00-\\u9fa5]+$", R.string.err_name);
 //        mValidation.addValidation(activity, R.id.user_machine_id,"\\d{11}+$", R.string.err_machine_id);
