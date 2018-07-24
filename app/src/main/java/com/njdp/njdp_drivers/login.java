@@ -174,7 +174,7 @@ public class login extends Activity {
         params.put("fm_username", driver.getMachine_id());
         params.put("fm_password", driver.getPassword());
         //params.put("fm_tag", "M");
-        params.put("fm_tag", "FLYER");
+        params.put("fm_tag", "DRIVER111");
         com.yolanda.nohttp.rest.Request<JSONObject> strReq= NoHttp.createJsonObjectRequest(url, RequestMethod.POST);
         strReq.add(params);
         RequestQueue requestQueue = NoHttp.newRequestQueue();

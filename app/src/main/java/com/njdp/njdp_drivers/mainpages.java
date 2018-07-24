@@ -26,12 +26,12 @@ public class mainpages extends Activity {
 
     private CircleMenuLayout mCircleMenuLayout;
 
-    private String[] mItemTexts =new String[]{"我要发布","去哪儿好","需求查询","服务对象","历史作业","个人信息","维修站","加油站"};
+    private String[] mItemTexts =new String[]{"我要发布","去哪儿好","需求查询","历史作业","个人信息"};
     private int[] mItemImgs = new int[] {
-            R.drawable.ic_release, R.drawable.ic_intell_arrange,
-            R.drawable.ic_require, R.drawable.ic_server_object,
-            R.drawable.ic_job_history,R.drawable.ic_personal_info,
-            R.drawable.ic_repair_station, R.drawable.ic_oil_station};
+            R.drawable.ic_release_1, R.drawable.ic_intell_arrange_1,
+            R.drawable.ic_require_1,
+            R.drawable.ic_job_history_1,R.drawable.ic_personal_info_1
+            };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

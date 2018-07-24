@@ -5,7 +5,7 @@
     xmlns:circleImageView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/driver_main"
+    android:background="@drawable/main_bg_1"
     android:fitsSystemWindows="true"
     tools:context="com.njdp.njdp_drivers.mainpages">
         <com.njdp.njdp_drivers.CircleMenu.CircleMenuLayout
@@ -25,7 +25,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_centerInParent="true"
-
+                    android:src="@drawable/uav"
                     circleImageView:civ_border_width="2dp"
                     circleImageView:civ_border_color="#ffffff"/>
             </RelativeLayout>

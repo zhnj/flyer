@@ -204,20 +204,11 @@ public class slidingMenu extends AppCompatActivity
         } else if (id == R.id.item_3) {
             fragment = new item_query_requirement();
             addOrShowFragment(fragment);
-        } else if (id == R.id.item_4) {
-            fragment = new item_service_object();
-            addOrShowFragment(fragment);
-        } else if (id == R.id.item_5) {
+        }  else if (id == R.id.item_4) {
             fragment = new item_job_history();
             addOrShowFragment(fragment);
-        } else if (id == R.id.item_6) {
+        } else if (id == R.id.item_5) {
             fragment = new item_repair_station();
-            addOrShowFragment(fragment);
-        } else if (id == R.id.item_7) {
-            fragment = new item_oil_station();
-            addOrShowFragment(fragment);
-        }else if (id == R.id.item_8) {
-            fragment = new item_personalInformation();
             addOrShowFragment(fragment);
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -288,26 +279,15 @@ public class slidingMenu extends AppCompatActivity
                 item3 = new item_query_requirement_1();
                 addOrShowFragment(item3);
                 break;
-            case 3:
-                item4 = new item_service_object();
+           case 3:
+                item4 = new item_job_history();
                 addOrShowFragment(item4);
                 break;
             case 4:
-                item5 = new item_job_history();
+                item5 = new item_personalInformation();
                 addOrShowFragment(item5);
                 break;
-            case 5:
-                item6 = new item_personalInformation();
-                addOrShowFragment(item6);
-                break;
-            case 6:
-                item6 = new item_repair_station();
-                addOrShowFragment(item6);
-                break;
-            case 7:
-                item7 = new item_oil_station();
-                addOrShowFragment(item7);
-                break;
+
         }
     }
 
