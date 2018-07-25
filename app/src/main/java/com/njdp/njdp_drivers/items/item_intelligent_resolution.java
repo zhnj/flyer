@@ -1363,7 +1363,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             e.printStackTrace();
             Log.e(TAG,e.toString());
         }
-        get_AroundMachines(centre_longitude,centre_latitude);
+        //get_AroundMachines(centre_longitude,centre_latitude);  搜索周围农机  -wangchao注释
         if(centreMarker!=null) {
             centreMarker.remove();
         }
