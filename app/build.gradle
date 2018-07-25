@@ -4,9 +4,9 @@ android {
     signingConfigs {
         config {
             keyAlias 'zhnj-driver'
-            keyPassword 'zhnj-123456'
-            storeFile file('D:/360安全浏览器下载/zhnj_driver.jks')
-            storePassword 'zhnj-123456'
+            keyPassword 'android'
+            storeFile file('F:/androidstudio/nj_flyer.jks')
+            storePassword 'android'
         }
     }
     compileSdkVersion 25
