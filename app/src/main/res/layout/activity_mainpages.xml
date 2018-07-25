@@ -34,19 +34,21 @@
         -->
     <ImageButton
         android:id="@+id/imageButton_arrange"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="149dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="172dp"
         android:src="@drawable/ic_intell_arrange_1"
+        android:onClick="onDispatcher"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="onDispatcher"/>
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:id="@+id/imageButton_release"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_release_1"
@@ -57,6 +59,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_uav"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/uav"
@@ -69,6 +72,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_require"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -80,6 +84,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_history"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_job_history_1"
@@ -90,6 +95,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_personal"
+        android:background="#00000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_personal_info_1"

@@ -208,7 +208,7 @@ public class slidingMenu extends AppCompatActivity
             fragment = new item_job_history();
             addOrShowFragment(fragment);
         } else if (id == R.id.item_5) {
-            fragment = new item_repair_station();
+            fragment = new item_personalInformation();
             addOrShowFragment(fragment);
         }
         drawer.closeDrawer(GravityCompat.START);
