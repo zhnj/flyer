@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
+    android:background="@drawable/main_login"
     tools:context="com.njdp.njdp_drivers.items.item_personalinformation_1_fix_info">
     <RelativeLayout
         android:layout_width="match_parent"

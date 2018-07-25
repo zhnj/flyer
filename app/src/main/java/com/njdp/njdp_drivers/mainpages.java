@@ -40,6 +40,7 @@ public class mainpages extends Activity {
 
         commonUtil =new CommonUtil(mainpages.this);
 
+        /**
         mCircleMenuLayout = (CircleMenuLayout) findViewById(R.id.id_menulayout);
         mCircleMenuLayout.setMenuItemIconsAndTexts(mItemImgs, mItemTexts);
 
@@ -59,8 +60,39 @@ public class mainpages extends Activity {
 
             }
         });
+         */
     }
 
+
+    public void onDispatcher(View view)
+    {
+        int pos=-1;
+        switch (view.getId()) {
+            case R.id.imageButton_arrange:
+                pos = 1;
+                break;
+            case R.id.imageButton_release:
+                pos=0;
+                break;
+            case R.id.imageButton_require:
+                pos=2;
+                break;
+            case R.id.imageButton_history:
+                pos=3;
+                break;
+            case R.id.imageButton_personal:
+                pos=4;
+                break;
+            case R.id.imageButton_uav:
+                pos=6;
+                break;
+        }
+        Intent intent = new Intent(mainpages.this, slidingMenu.class);
+        Bundle index_bundle = new Bundle();
+        index_bundle.putInt("index", pos);
+        intent.putExtra("index_bundle", index_bundle);
+        startActivity(intent);
+    }
 //    //点击返回按钮，退出客户端界面，客户端后台运行
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {

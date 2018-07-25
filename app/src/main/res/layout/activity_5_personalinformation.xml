@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:background="@drawable/main_bg_1"
+    android:background="@drawable/main_bg"
     tools:context="com.njdp.njdp_drivers.items.item_personalInformation">
 
     <RelativeLayout

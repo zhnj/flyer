@@ -106,7 +106,7 @@
         <LinearLayout android:id="@id/content"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/main_bg">
+            android:background="@drawable/main_login">
 
             <LinearLayout
                 android:id="@+id/repair_station__layout2"

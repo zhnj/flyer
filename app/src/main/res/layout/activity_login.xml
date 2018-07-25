@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/main_bg"
+    android:background="@drawable/main_login"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layout_width="fill_parent"

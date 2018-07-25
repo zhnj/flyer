@@ -5,9 +5,10 @@
     xmlns:circleImageView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg_1"
+    android:background="@drawable/main_login"
     android:fitsSystemWindows="true"
     tools:context="com.njdp.njdp_drivers.mainpages">
+    <!--
         <com.njdp.njdp_drivers.CircleMenu.CircleMenuLayout
             android:id="@+id/id_menulayout"
             android:layout_width="wrap_content"
@@ -30,4 +31,70 @@
                     circleImageView:civ_border_color="#ffffff"/>
             </RelativeLayout>
         </com.njdp.njdp_drivers.CircleMenu.CircleMenuLayout>
+        -->
+    <ImageButton
+        android:id="@+id/imageButton_arrange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="149dp"
+        android:src="@drawable/ic_intell_arrange_1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onDispatcher"/>
+
+    <ImageButton
+        android:id="@+id/imageButton_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_release_1"
+        android:layout_alignTop="@+id/imageButton_arrange"
+        android:layout_centerHorizontal="true"
+        android:onClick="onDispatcher"
+        />
+
+    <ImageButton
+        android:id="@+id/imageButton_uav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uav"
+        android:layout_marginRight="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_alignTop="@+id/imageButton_release"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onDispatcher"/>
+
+    <ImageButton
+        android:id="@+id/imageButton_require"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/ic_require_1"
+        android:layout_below="@+id/imageButton_arrange"
+        android:layout_alignLeft="@+id/imageButton_arrange"
+        android:layout_alignStart="@+id/imageButton_arrange"
+        android:onClick="onDispatcher"/>
+
+    <ImageButton
+        android:id="@+id/imageButton_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_job_history_1"
+        android:layout_alignTop="@+id/imageButton_require"
+        android:layout_alignLeft="@+id/imageButton_release"
+        android:layout_alignStart="@+id/imageButton_release"
+        android:onClick="onDispatcher"/>
+
+    <ImageButton
+        android:id="@+id/imageButton_personal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_personal_info_1"
+        android:layout_alignTop="@+id/imageButton_history"
+        android:layout_alignLeft="@+id/imageButton_uav"
+        android:layout_alignStart="@+id/imageButton_uav"
+        android:onClick="onDispatcher"/>
 </RelativeLayout>

@@ -6,7 +6,7 @@
     android:id="@+id/xksqapp_register_student"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/main_bg_1"
+    android:background="@drawable/main_bg"
     android:fitsSystemWindows="true"
     android:paddingTop="@dimen/padding20"
     tools:context="com.njdp.njdp_drivers.register">
