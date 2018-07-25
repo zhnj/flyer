@@ -215,7 +215,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         token=sessionManager.getToken();
         pDialog = new ProgressDialog(mainMenu);
         pDialog.setCancelable(false);
-        //获取农机并获取农机经纬度
+        //获取飞机服务公司并获取公司经纬度
         try {
             machine_id = new DriverDao(mainMenu).getDriver(1).getMachine_id();
             gps_MachineLocation(sessionManager.getUserId());
@@ -286,9 +286,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 for (SuggestionResult.SuggestionInfo info : allSuggestions) {
                     if (info.key != null) {
                         sugAdapter.add(info.key);
-
                     }
-
                 }
                 sugAdapter.notifyDataSetChanged();
             }
@@ -315,8 +313,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             }
         });
 
-
-
         //下拉菜单选择项初始化
         //范围
         areaAdapter= new SpinnerAdapter_up_white_1(mainMenu,getResources().getStringArray(R.array.area));
@@ -331,19 +327,19 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 {
                     case "50公里":
                         sl_area="50";
-                        gps_MachineLocation(machine_id,1);
+                        initFieldInfo(sl_area);;
                         break;
                     case "80公里":
                         sl_area="80";
-                        gps_MachineLocation(machine_id,0);
+                        initFieldInfo(sl_area);;
                         break;
                     case "100公里":
                         sl_area="100";
-                        gps_MachineLocation(machine_id,0);
+                        initFieldInfo(sl_area);;
                         break;
                     case "全部":
                         sl_area="1000";
-                        gps_MachineLocation(machine_id,0);
+                        initFieldInfo(sl_area);;
                         break;
                 }
 
@@ -489,21 +485,27 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
 
                     autoQuery.setText(location.getJSONObject(0).getString("com_name"));
 
+                    LatLng cenpt = new LatLng(Double.parseDouble(GPS_longitude),Double.parseDouble(GPS_latitude));
+                    MapStatus mMapStatus = new MapStatus.Builder()
+                            .target(cenpt)
+                            .zoom(18)
+                            .build();
+                    initFieldInfo(sl_area);
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
-                    isGetLocation();
+                    //isGetLocation();
                 } else {
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "GPSLocation Error:" + errorMsg);
                     text_gps_flag = true;
-                    isGetLocation();
+                    //isGetLocation();
                 }
             } catch (JSONException e) {
                 // JSON error
                 Log.e(TAG, "GPSLocation Error,Json error：response错误:" + e.getMessage());
                 text_gps_flag = true;
-                isGetLocation();
+                //isGetLocation();
             }
         }
     }
@@ -552,7 +554,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 hintPopup.dismiss();
             case R.id.btn_search:
                 //查找，刷新
-                gps_MachineLocation(machine_id,0);;
+                initFieldInfo(sl_area);;;
                 LatLng llS = new LatLng(Double.parseDouble(GPS_latitude),
                         Double.parseDouble(GPS_longitude));
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(llS);
@@ -568,6 +570,10 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        LatLng llS = new LatLng(Double.parseDouble(GPS_latitude),
+                Double.parseDouble(GPS_longitude));
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(llS);
+        mBaiduMap.animateMapStatus(u);
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -1322,7 +1328,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     {
         @Override
         public void onClick(View v) {
-            gps_MachineLocation(machine_id,-1);//定位我的位置
+            initFieldInfo(sl_area);//定位我的位置
 //            GPS_latitude=String.valueOf(curlocation.getLatitude());
 //            GPS_longitude=String.valueOf( curlocation.getLongitude());
 //            LatLng ll = new LatLng(curlocation.getLatitude(),
@@ -1410,7 +1416,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 first_date= null;
                 Log.e(TAG, "first_date清空了");
                 hintButton.setText("请选择作业开始日期");
-                gps_MachineLocation(machine_id,0);
+                initFieldInfo(sl_area);
                 datePickerPop.dismiss();
             }
             return false;
@@ -1433,7 +1439,7 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 popup_flag=false;
                 first_date=null;
                 hintButton.setText("请选择作业开始日期");
-                gps_MachineLocation(machine_id,0);
+                initFieldInfo(sl_area);
                 datePickerPop.dismiss();
             }
         }
