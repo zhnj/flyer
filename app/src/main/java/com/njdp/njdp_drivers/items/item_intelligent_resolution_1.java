@@ -403,6 +403,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
         Log.e(TAG, "获取方案发送的数据：" + gson.toJson(params));
 
         getDeploy_strReq= NoHttp.createJsonObjectRequest(deploy_url, RequestMethod.POST);
+        getDeploy_strReq.add(params); //添加参数   wangchao 20180725
         getDeploy_strReq.addHeader("Content-Type", "application/x-www-form-urlencoded");
         getDeploy_strReq.setConnectTimeout(15 * 1000);
         RequestQueue requestQueue = NoHttp.newRequestQueue();
