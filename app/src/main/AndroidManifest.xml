@@ -199,6 +199,13 @@
         <activity
             android:name=".register_2">
         </activity>
+        <activity
+            android:name="com.njdp.njdp_drivers.items.jikai.Item_editor_machine"
+            android:label="@string/item_editor_machine"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".items.mywork.MyPart"
+            android:label="我的地块"/>
     </application>
 
 </manifest>
