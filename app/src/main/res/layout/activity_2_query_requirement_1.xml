@@ -55,7 +55,7 @@
                 android:padding="@dimen/padding5"
                 android:text="开始日期：2016年6月1日"
                 android:textSize="@dimen/font12"
-                android:textColor="@color/whiteFont"
+                android:textColor="#191970"
                 android:background="@android:color/transparent" />
             <TextView
                 android:id="@+id/endDate"
@@ -66,7 +66,7 @@
                 android:padding="@dimen/padding5"
                 android:text="结束日期：2016年6月8日"
                 android:textSize="@dimen/font12"
-                android:textColor="@color/whiteFont"
+                android:textColor="#191970"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
     </LinearLayout>
@@ -93,7 +93,7 @@
             android:layout_alignBottom="@+id/btn_search"
                       android:text="text"
             android:textSize="16dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:layout_toLeftOf="@+id/btn_search"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />

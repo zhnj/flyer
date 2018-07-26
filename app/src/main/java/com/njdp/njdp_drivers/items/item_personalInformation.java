@@ -162,7 +162,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         view.findViewById(R.id.settings).setOnClickListener(this);
         //新添加
         view.findViewById(R.id.driver_sex).setOnClickListener(this);
-        view.findViewById(R.id.driver_personsfzh).setOnClickListener(this);
+        //view.findViewById(R.id.driver_personsfzh).setOnClickListener(this);
         view.findViewById(R.id.driver_personcomid).setOnClickListener(this);
 
 

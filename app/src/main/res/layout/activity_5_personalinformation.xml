@@ -14,30 +14,31 @@
     tools:context="com.njdp.njdp_drivers.items.item_personalInformation">
 
     <RelativeLayout
+        android:id="@+id/information_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:id="@+id/information_top"
         android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/main_title">
+
         <TextView
             style="@style/Pages_Title"
-            android:text="我的农机"
-            />
+            android:text="个人信息" />
+
         <ImageButton
             android:id="@+id/getback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_chevron_left_white_48dp"
-            />
+            android:background="@drawable/ic_chevron_left_white_48dp" />
+
         <ImageButton
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_menu_white_48dp"
             android:layout_alignParentRight="true"
-            />
+            android:background="@drawable/ic_menu_white_48dp" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/information_div_title"
         android:layout_width="match_parent"
@@ -132,9 +133,11 @@
             <!--农机编号 -->
 
             <LinearLayout
-
+                android:visibility="invisible"
                 android:id="@+id/driver_machine_id"
-                style="@style/personalinformation_linearlayout">
+                android:layout_width="wrap_content"
+                android:layout_height="1sp"
+                >
 
                 <TextView
                     style="@style/personalinformation_left"
@@ -147,7 +150,9 @@
 
             </LinearLayout>
 
-            <View style="@style/personalinformation_line" />
+            <View style="@style/personalinformation_line"
+                android:visibility="invisible"
+                />
 
             <!--身份证号 -->
             <LinearLayout
@@ -269,6 +274,7 @@
             <LinearLayout
 
                 android:id="@+id/driver_region"
+                android:visibility="invisible"
                 style="@style/personalinformation_linearlayout">
 
                 <TextView

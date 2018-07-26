@@ -269,7 +269,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GPS_longitude=String.valueOf(allSuggestions.get(position).pt.longitude);//GPS经度
                 GPS_latitude=String.valueOf(allSuggestions.get(position).pt.latitude);
-
             }
         });
 
@@ -344,7 +343,6 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                 }
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
