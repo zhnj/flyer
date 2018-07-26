@@ -8,6 +8,8 @@ public class AppConfig {
 
 //    public static String URL_IP="http://211.68.180.9:88/";//学校服务器地址
 
+    public static String URL_IP_JAVA="http://211.68.183.50:8088/";//学校服务器地址
+
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 
     public static String URL_GET_VERIFYCODE = URL_IP+"sendMessage";// 获取手机验证码 url
@@ -34,7 +36,7 @@ public class AppConfig {
 
     public static String URL_BASICDEPLOY= URL_IP+"app/uavDeploy/execDeploy";//智能调配uav
 
-    public static String URL_UPLOADDEPLOY= URL_IP+"app/deployChoice";//选择方案上传
+    public static String URL_UPLOADDEPLOY= URL_IP_JAVA+"Mobile/UAV/deployChoice";//选择方案上传
 
     public static String URL_SEARCHFIELD= URL_IP+"app/farmMachine/searchFarmlands";//农田查询
 
@@ -61,9 +63,6 @@ public class AppConfig {
     public static String URL_UAV_listCompanys="http://211.68.183.50:8088/Mobile/UAV/listCompanys";//所有无人机公司列表
 
     public static String URL_PREFERE=URL_IP+"UAV-platform/mvc/mobile/myUav/addPreference";//添加偏好信息
-
-
-    public static String URL_IP_JAVA="http://211.68.183.50:8088/";//学校服务器地址
 
     public static String URL_GET_FAVORorADD=URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/addAndOver";//收藏地块
 
