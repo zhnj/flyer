@@ -48,7 +48,7 @@
             android:textColor="#FFFFFF"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
-            android:inputType="number"
+
             />
     </LinearLayout>
 
@@ -111,7 +111,7 @@
             android:textColor="#FFFFFF"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
-            android:inputType="number"
+
             />
     </LinearLayout>
     <LinearLayout

@@ -140,6 +140,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(context, "确认完成", Toast.LENGTH_SHORT).show();
+                        complate();
                     }
                 }, new Response.ErrorListener() {// 添加请求失败监听
                     @Override
@@ -174,7 +175,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                        delete(position);
+                        //delete(position);
                     }
 
                 });
@@ -232,6 +233,10 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         list.remove(index);
         notifyItemRemoved(index);
         notifyItemRangeChanged(0, list.size());
+    }
+    // 完成数据
+    public void complate() {
+        notifyDataSetChanged();
     }
     public static String stampToDate(long lt){
         String res;
