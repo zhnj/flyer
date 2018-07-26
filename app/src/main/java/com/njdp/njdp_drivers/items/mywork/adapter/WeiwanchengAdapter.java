@@ -23,6 +23,8 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.items.mywork.bean.CommentBean;
 import com.njdp.njdp_drivers.items.mywork.bean.WorkBean;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.ViewHolder> {
@@ -47,6 +49,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
     String address;
     String area;
     String price;
+    String date;
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //position为Adapter的位置，数据从list里面可以拿出来。
@@ -70,7 +73,13 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         }catch (Exception e){
             phone = "\n电话：[null]";
         }
-        String str = address+area+price+phone;
+        try {
+            date = "\n日期：" + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsStartTime())+"  至  "+stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsEndTime());
+        }catch (Exception e){
+            date = "\n日期：[null]";
+        }
+
+        String str = address+area+price+phone+date;
         holder.textView.setText(str);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +233,13 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         notifyItemRemoved(index);
         notifyItemRangeChanged(0, list.size());
     }
-
+    public static String stampToDate(long lt){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 }
 
 
