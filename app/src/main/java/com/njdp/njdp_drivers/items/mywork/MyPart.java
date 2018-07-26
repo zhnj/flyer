@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.items.jikai.New_item_intelligent_resolution_2;
 import com.njdp.njdp_drivers.items.mywork.adapter.MyPagerAdapter;
 import com.njdp.njdp_drivers.items.mywork.fragment.Frag_weiwancheng;
 import com.njdp.njdp_drivers.items.mywork.fragment.Frag_yishixiao;

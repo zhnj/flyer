@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,6 +32,7 @@ import com.njdp.njdp_drivers.items.item_intelligent_resolution_3;
 import com.njdp.njdp_drivers.items.item_personalInformation;
 import com.njdp.njdp_drivers.items.item_query_requirement;
 import com.njdp.njdp_drivers.items.item_query_requirement_1;
+import com.njdp.njdp_drivers.items.jikai.New_item_intelligent_resolution_2;
 import com.njdp.njdp_drivers.items.jikai.item_job_history;
 import com.njdp.njdp_drivers.items.jikai.item_release_machine;
 import com.njdp.njdp_drivers.util.CommonUtil;
@@ -284,7 +286,6 @@ public class slidingMenu extends AppCompatActivity
                 item5 = new item_personalInformation();
                 addOrShowFragment(item5);
                 break;
-
         }
     }
 

@@ -84,10 +84,10 @@ public class New_item_intelligent_resolution_2 extends Fragment implements View.
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
         token=sessionManager.getToken();
-        uploadDeploy_url= AppConfig.URL_UPLOADDEPLOY;
+        uploadDeploy_url= AppConfig.URL_DEPLOY;
 
         saveFieldInfoDao=new SavedFieldInfoDao(getActivity());
-        expandableListView = (ExpandableListView)view.findViewById(R.id.intelligent_deploy_expand);
+        expandableListView = (ExpandableListView)view.findViewById(R.id.plan_intelligent_deploy_expand);
         adapter=new BaseExpandableListAdapter() {
             @Override
             public int getGroupCount() {

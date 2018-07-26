@@ -56,10 +56,10 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
                     + "\n电话：" + sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
             phone = sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }else{
-            str = "地址：" + list.get(0).getFarmlandsInfo().getFarmlandsProvince() + list.get(0).getFarmlandsInfo().getFarmlandsCity() + list.get(0).getFarmlandsInfo().getFarmlandsCounty() + list.get(0).getFarmlandsInfo().getFarmlandsVillage()
-                    + "\n面积：" + list.get(0).getFarmlandsInfo().getFarmlandsArea()
-                    + "\n单价：" + list.get(0).getFarmlandsInfo().getFarmlandsUnitPrice()
-                    + "\n电话：" + list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+            str = "地址：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsProvince() + list.get(0).getFarmlandsInfo().getFarmlandsCity() + list.get(0).getFarmlandsInfo().getFarmlandsCounty() + list.get(0).getFarmlandsInfo().getFarmlandsVillage()
+                    + "\n面积：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsArea()
+                    + "\n单价：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsUnitPrice()
+                    + "\n电话：[无效数据控制]";//+ list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
             phone = list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }
 
