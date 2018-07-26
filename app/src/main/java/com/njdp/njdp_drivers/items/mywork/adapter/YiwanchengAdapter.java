@@ -25,11 +25,11 @@ import com.njdp.njdp_drivers.items.mywork.bean.WorkBean;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class YiwanchengAdapter extends RecyclerView.Adapter<YiwanchengAdapter.ViewHolder> {
     private List<WorkBean.ResultBean> list;
     private Context context;
 
-    public MyAdapter(Context context, List<WorkBean.ResultBean> list) {
+    public YiwanchengAdapter(Context context, List<WorkBean.ResultBean> list) {
         this.context = context;
         this.list = list;
 
@@ -38,7 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //给Adapter添加布局，bq把这个view传递给HoldView，让HoldView找到空间
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_work, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_yiwancheng_work, null);
         final ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -47,10 +47,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //position为Adapter的位置，数据从list里面可以拿出来。
-        String str = "地址：" + list.get(position).getFarmlandsInfo().getFarmlandsProvince() + list.get(position).getFarmlandsInfo().getFarmlandsCity() + list.get(position).getFarmlandsInfo().getFarmlandsCounty() + list.get(position).getFarmlandsInfo().getFarmlandsVillage()
-                + "\n面积：" + list.get(position).getFarmlandsInfo().getFarmlandsArea()
-                + "\n单价：" + list.get(position).getFarmlandsInfo().getFarmlandsUnitPrice()
-                + "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+        WorkBean.ResultBean sr = list.get(position);
+        String str;
+        if(sr.getFarmlandsInfo().getPersonInfoFarmerMachine()!=null){
+            str = "地址：" + sr.getFarmlandsInfo().getFarmlandsProvince() + sr.getFarmlandsInfo().getFarmlandsCity() + sr.getFarmlandsInfo().getFarmlandsCounty() + sr.getFarmlandsInfo().getFarmlandsVillage()
+                    + "\n面积：" + sr.getFarmlandsInfo().getFarmlandsArea()
+                    + "\n单价：" + sr.getFarmlandsInfo().getFarmlandsUnitPrice()
+                    + "\n电话：" + sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+            phone = sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+        }else{
+            str = "地址：" + list.get(0).getFarmlandsInfo().getFarmlandsProvince() + list.get(0).getFarmlandsInfo().getFarmlandsCity() + list.get(0).getFarmlandsInfo().getFarmlandsCounty() + list.get(0).getFarmlandsInfo().getFarmlandsVillage()
+                    + "\n面积：" + list.get(0).getFarmlandsInfo().getFarmlandsArea()
+                    + "\n单价：" + list.get(0).getFarmlandsInfo().getFarmlandsUnitPrice()
+                    + "\n电话：" + list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+            phone = list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+        }
         holder.textView.setText(str);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -20,7 +20,7 @@ import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
-import com.njdp.njdp_drivers.items.mywork.adapter.MyAdapter;
+import com.njdp.njdp_drivers.items.mywork.adapter.YiwanchengAdapter;
 import com.njdp.njdp_drivers.items.mywork.bean.WorkBean;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -30,7 +30,7 @@ import java.util.List;
 
 
 public class Frag_yiwancheng extends Fragment {
-    MyAdapter adapter;
+    YiwanchengAdapter adapter;
     RefreshLayout refreshLayout;
     View view;
     WorkBean workBean;
@@ -94,7 +94,7 @@ public class Frag_yiwancheng extends Fragment {
                 workBean = gson.fromJson(response, WorkBean.class);
                 if(workBean.isStates()){
                     resultBeanList = workBean.getResult();
-                    adapter = new MyAdapter(getContext(),resultBeanList);
+                    adapter = new YiwanchengAdapter(getContext(),resultBeanList);
                     rv.setAdapter(adapter);
                 }else {
                     Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();

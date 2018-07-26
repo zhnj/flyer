@@ -21,15 +21,15 @@ import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.items.mywork.bean.CommentBean;
-import com.njdp.njdp_drivers.items.mywork.bean.ShixiaoBean;
+import com.njdp.njdp_drivers.items.mywork.bean.WorkBean;
 
 import java.util.List;
 
-public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHolder> {
-    private List<ShixiaoBean.ResultBean> list;
+public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.ViewHolder> {
+    private List<WorkBean.ResultBean> list;
     private Context context;
 
-    public ShixiaoAdapter(Context context, List<ShixiaoBean.ResultBean> list) {
+    public WeiwanchengAdapter(Context context, List<WorkBean.ResultBean> list) {
         this.context = context;
         this.list = list;
 
@@ -38,7 +38,7 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //给Adapter添加布局，bq把这个view传递给HoldView，让HoldView找到空间
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_yishixiao_work, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_weiwancheng_work, null);
         final ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -47,7 +47,7 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //position为Adapter的位置，数据从list里面可以拿出来。
-        ShixiaoBean.ResultBean sr = list.get(position);
+        WorkBean.ResultBean sr = list.get(position);
         String str;
         if(sr.getFarmlandsInfo().getPersonInfoFarmerMachine()!=null){
             str = "地址：" + sr.getFarmlandsInfo().getFarmlandsProvince() + sr.getFarmlandsInfo().getFarmlandsCity() + sr.getFarmlandsInfo().getFarmlandsCounty() + sr.getFarmlandsInfo().getFarmlandsVillage()
@@ -62,7 +62,6 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
                     + "\n电话：" + list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
             phone = list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }
-
         holder.textView.setText(str);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,14 +193,14 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
 
 
     //下面两个方法提供给页面刷新和加载时调用
-    public void add(List<ShixiaoBean.ResultBean> addMessageList) {
+    public void add(List<WorkBean.ResultBean> addMessageList) {
         //增加数据
         int position = list.size();
         list.addAll(position, addMessageList);
         notifyItemInserted(position);
     }
 
-    public void refresh(List<ShixiaoBean.ResultBean> newList) {
+    public void refresh(List<WorkBean.ResultBean> newList) {
         //刷新数据
         list.clear();
         //list.clear();
