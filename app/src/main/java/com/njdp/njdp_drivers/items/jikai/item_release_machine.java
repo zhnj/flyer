@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.njdp.njdp_drivers.Job_preferencesActivity;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.MyRefAdapter;
 import com.njdp.njdp_drivers.db.AppConfig;
@@ -195,8 +196,8 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                     //mainMenu.finish();
                     break;
                 case R.id.drone_set:
-                    //Intent intent1 = new Intent(getContext(), Job_preferencesActivity.class);
-                    //getContext().startActivity(intent1);
+                    Intent intent1 = new Intent(getContext(), Job_preferencesActivity.class);
+                    getContext().startActivity(intent1);
                     break;
                 default:
                     break;
