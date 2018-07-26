@@ -43,7 +43,11 @@ public class Frag_weiwancheng extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.new_fragment_weiwancheng, container, false);
             refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
-            initData();
+            try {
+                initData();
+            }catch (Exception e){
+                Toast.makeText(getContext(),"连接服务器失败",Toast.LENGTH_SHORT).show();
+            }
             setPullRefresher();
         }
 
@@ -57,7 +61,11 @@ public class Frag_weiwancheng extends Fragment {
             public void onRefresh(RefreshLayout refreshlayout) {
                 //在这里执行上拉刷新时的具体操作(网络请求、更新UI等)
                 curr = 1;
-                getData(true);
+                try {
+                    getData(true);
+                }catch (Exception e){
+                    Toast.makeText(getContext(),"连接服务器失败",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -66,7 +74,11 @@ public class Frag_weiwancheng extends Fragment {
             public void onLoadMore(RefreshLayout refreshlayout) {
                 //模拟网络请求到的数据
                 curr += 1;
-                getData(false);
+                try {
+                    getData(false);
+                }catch (Exception e){
+                    Toast.makeText(getContext(),"连接服务器失败",Toast.LENGTH_SHORT).show();
+                }
                 //在这里执行下拉加载时的具体操作(网络请求、更新UI等)
 
             }
