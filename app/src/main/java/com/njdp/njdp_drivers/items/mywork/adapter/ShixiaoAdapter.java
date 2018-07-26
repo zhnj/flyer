@@ -68,7 +68,7 @@ public class ShixiaoAdapter extends RecyclerView.Adapter<ShixiaoAdapter.ViewHold
         try {
             phone = "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }catch (Exception e){
-            phone = "\n电话：[无效数据控制]";
+            phone = "\n电话：[null]";
         }
         String str = address+area+price+phone;
         holder.textView.setText(str);

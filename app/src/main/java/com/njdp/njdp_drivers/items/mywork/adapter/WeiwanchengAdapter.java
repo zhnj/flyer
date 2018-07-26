@@ -53,22 +53,22 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         try {
             address = "地址：" + list.get(position).getFarmlandsInfo().getFarmlandsProvince() + list.get(position).getFarmlandsInfo().getFarmlandsCity() + list.get(position).getFarmlandsInfo().getFarmlandsCounty() + list.get(position).getFarmlandsInfo().getFarmlandsVillage();
         }catch (Exception e){
-            address = "地址：[无效数据控制]";
+            address = "地址：[null]";
         }
         try {
             area = "\n面积：" + list.get(position).getFarmlandsInfo().getFarmlandsArea();
         }catch (Exception e){
-            area = "\n面积：[无效数据控制]";
+            area = "\n面积：[null]";
         }
         try {
             price = "\n单价：" + list.get(position).getFarmlandsInfo().getFarmlandsUnitPrice();
         }catch (Exception e){
-            price = "地址：[无效数据控制]";
+            price = "地址：[null]";
         }
         try {
             phone = "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }catch (Exception e){
-            phone = "\n电话：[无效数据控制]";
+            phone = "\n电话：[null]";
         }
         String str = address+area+price+phone;
         holder.textView.setText(str);
