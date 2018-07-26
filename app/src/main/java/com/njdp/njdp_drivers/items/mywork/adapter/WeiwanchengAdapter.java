@@ -140,7 +140,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(context, "确认完成", Toast.LENGTH_SHORT).show();
-                        complate();
+                        delete(position);
                     }
                 }, new Response.ErrorListener() {// 添加请求失败监听
                     @Override
@@ -234,10 +234,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         notifyItemRemoved(index);
         notifyItemRangeChanged(0, list.size());
     }
-    // 完成数据
-    public void complate() {
-        notifyDataSetChanged();
-    }
+
     public static String stampToDate(long lt){
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
