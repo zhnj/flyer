@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_login"
+    android:background="@drawable/main_bg"
     tools:context="com.njdp.njdp_drivers.items.item_personalinformation_1_fix_info">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font20"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:text="修改预留的QQ号"
             android:layout_toEndOf="@+id/fix_getback"
             android:layout_toRightOf="@+id/fix_getback"
@@ -56,12 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height30"
             android:inputType="text"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:background="@drawable/save_edit"
             android:textCursorDrawable="@drawable/login_cursor"/>
         <TextView
             android:id="@+id/fix_hint_info"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:textSize="@dimen/font16"
             android:text="请输入要修改的信息"
             android:layout_width="match_parent"
