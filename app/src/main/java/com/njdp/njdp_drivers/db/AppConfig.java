@@ -59,17 +59,25 @@ public class AppConfig {
     public static String URL_WeatherData=URL_IP+"app/getWeather";
 
     public static String URL_UAV_listCompanys="http://211.68.183.50:8088/Mobile/UAV/listCompanys";//所有无人机公司列表
+
     public static String URL_PREFERE=URL_IP+"UAV-platform/mvc/mobile/myUav/addPreference";//添加偏好信息
 
 
     public static String URL_IP_JAVA="http://211.68.183.50:8088/";//学校服务器地址
+
     public static String URL_GET_FAVORorADD=URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/addAndOver";//收藏地块
+
     public static String DRONE_DISPALY=URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/findMyUav";//无人机查看
+
     public static String DRONE_DELETE=URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/deleteUav";//删除无人机
 
     public static String DRONE_ADDorUPDATE=URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/addMyUav";//增加、修改无人机
-    public static String URL_MYJOB_PART= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWorkarchWork";//我的作业查询
+
+    public static String URL_MYJOB_PART= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/searchWork";//我的作业查询
+
     public static String URL_MYJOB_PART_DELETE= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/deleteWork";//我的作业查询
+
     public static String URL_MYJOB_PART_CHECK= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/addAndOver";//地块确认完成
-    public static String URL_MYJOB_PART_COMMENT= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWorkarchComment";//地块确认完成
+
+    public static String URL_MYJOB_PART_COMMENT= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/searchComment";//地块确认完成
  }
