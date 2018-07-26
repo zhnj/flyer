@@ -188,6 +188,11 @@ public class SessionManager {
     public float getFloat(String key, float defValue) {
         return pref.getFloat(key, defValue);
     }
+    public void setTime(String startTime,String endTime){
+        editor.putString("startTime",startTime);
+        editor.putString("endTime",endTime);
+        editor.commit();
+    }
     public String getTime(boolean b){
         return pref.getString(b?"startTime":"endTime", "");
     }

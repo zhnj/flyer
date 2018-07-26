@@ -26,8 +26,9 @@
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/whiteFont"
+                android:textColor="#191970"
                 android:textSize="@dimen/font18"
+
                 />
 
             <TextView
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin10"
                 android:text="13662621818"
-                android:textColor="@color/whiteFont"
+                android:textColor="#191970"
                 android:textSize="@dimen/font16" />
 
             <TextView
@@ -46,7 +47,7 @@
                 android:layout_marginTop="@dimen/margin10"
                 android:text="距您50公里"
                 android:drawableLeft="@drawable/ic_place_white_18dp"
-                android:textColor="@color/whiteFont"
+                android:textColor="#191970"
                 android:textSize="@dimen/font16"/>
         </LinearLayout>
     </LinearLayout>
@@ -64,7 +65,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_check_box_white_18dp"
             android:text="收藏地块"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:textSize="@dimen/font16" />
         <TextView
             android:id="@+id/field_getPhone"
@@ -73,7 +74,7 @@
             android:layout_marginTop="@dimen/margin10"
             android:text="拨打电话"
             android:drawableLeft="@drawable/ic_local_phone_white_18dp"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:textSize="@dimen/font16"/>
         <TextView
             android:id="@+id/field_navigation"
@@ -82,7 +83,7 @@
             android:layout_marginTop="@dimen/margin10"
             android:text="到这里去"
             android:drawableLeft="@drawable/ic_navigation_white_18dp"
-            android:textColor="@color/whiteFont"
+            android:textColor="#191970"
             android:textSize="@dimen/font16"/>
     </LinearLayout>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.njdp.njdp_drivers.items;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -18,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -90,6 +92,7 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
+import com.njdp.njdp_drivers.items.jikai.bean.WeatherBean;
 import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
@@ -319,9 +322,10 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                     Log.e(TAG, "农田序号:" + farmId);
 
                     if (convertView == null) {
-                        convertView = LayoutInflater.from(mainMenu).inflate(R.layout.expandablelistview_query_parent, null);
+                        convertView = LayoutInflater.from(mainMenu).inflate(R.layout.new_expandablelistview_query_parent, null);
                     }
                     LinearLayout textLayout = (LinearLayout) convertView.findViewById(R.id.expandParent_text);
+                    TextView favor = (TextView) convertView.findViewById(R.id.field_favor);
                     TextView tv4 = (TextView) convertView.findViewById(R.id.field_getPhone);
                     TextView tv5 = (TextView) convertView.findViewById(R.id.field_navigation);
                     try {
@@ -350,24 +354,174 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                             }
                         }
                     });
+                    favor.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String flyer_id = SessionManager.getInstance().getUserId();
+                            String farmland_id = fieldInfo.getFarm_id();
+                            String opration = "收藏";
+                            //定义一个url
+                            String url = AppConfig.URL_GET_FAVORorADD+"?flyer_id="+flyer_id+"&farmland_id="+farmland_id+"&opration="+opration;
+                            //定义一个StringRequest
+                            StringRequest request = new StringRequest(Request.Method.GET, url, new
+                                    Response.Listener<String>() {// 添加请求成功监听
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Toast.makeText(getContext(),response.contains("成功")?"收藏成功":(response.contains("已收藏")?"已收藏过":"收藏失败"),Toast.LENGTH_LONG).show();
+                                        }
+                                    }, new Response.ErrorListener() {// 添加请求失败监听
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getContext(),error.toString(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            // 设置请求的tag标签，便于在请求队列中寻找该请求
+                            request.setTag("lhdGet");
+                            // 添加到全局的请求队列
+                            AppController.getHttpQueues().add(request);
+                        }
+                    });
                     tv4.setOnClickListener(new View.OnClickListener() {//拨打电话
                         @Override
                         public void onClick(View v) {
-                            Log.i("dddddd",fieldInfo.getTelephone()+"ddddddddddd");
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            final String start_date = SessionManager.getInstance().getTime(true);
+                            final String end_date = SessionManager.getInstance().getTime(false);
+                            //POST网络请求
+                            String url=AppConfig.URL_Weather;
+                            //定义一个StringRequest
+                            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {// 添加请求成功监听
+                                @Override
+                                public void onResponse(String response) {
+                                    String weather = new String();
+                                    //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
+                                    //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
+                                    WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
+
+                                    for( int i = 0 ; i < weatherBean.getMessage().size() ; i++) {//内部不锁定，效率最高，但在多线程要考虑并发操作的问题。
+                                        String s = weatherBean.getMessage().get(i).getDate() + "的天气情况：\n       【" + weatherBean.getMessage().get(i).getType()+"】  风力强度："+weatherBean.getMessage().get(i).getWindrage()+"级";
+                                        weather += s+"\n";
+                                    }
+
+                                    showDialog(weather);
+                                    Log.i("weather",weather);
+
+                                }
+
+
+                            }, new Response.ErrorListener() {// 添加请求失败监听
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getContext(), "上传失败",Toast.LENGTH_LONG).show();
+                                }
+                            }){
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map = new HashMap<String,String>();
+                                    map.put("farmID",farmId);
+                                    map.put("timeStart",start_date);
+                                    map.put("timeEnd",end_date);
+                                    Log.i("farmId",farmId+start_date+end_date);
+                                    return map;
+                                }
+                            };
+                            // 设置请求的tag标签，便于在请求队列中寻找该请求
+                            request.setTag("post");
+                            // 添加到全局的请求队列
+                            AppController.getHttpQueues().add(request);
+
+
+                        }
+                        private void showDialog(String weather){
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+                            final AlertDialog.Builder normalDialog =
+                                    new AlertDialog.Builder(getContext());
+                            //normalDialog.setIcon(R.drawable.);
+                            normalDialog.setTitle("天气状况提醒：");
+                            normalDialog.setMessage(weather);
+                            normalDialog.setPositiveButton("继续",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //...To-do
+                                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + fieldInfo.getUser_name()));
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                    });
+                            normalDialog.setNegativeButton("取消",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //...To-do
+                                        }
+                                    });
+                            // 显示
+                            normalDialog.show();
                         }
                     });
+
                     tv5.setOnClickListener(new View.OnClickListener() {//开始导航
                         @Override
                         public void onClick(View v) {//导航
-                            Double longtitude=fieldInfo.getLongitude();
-                            Double latitude=fieldInfo.getLatitude();
+                            //弹出天气提醒
+                            final String start_date = SessionManager.getInstance().getTime(true);
+                            final String end_date = SessionManager.getInstance().getTime(false);
+                            //POST网络请求
+                            String url=AppConfig.URL_Weather;
+                            //定义一个StringRequest
+                            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {// 添加请求成功监听
+                                @Override
+                                public void onResponse(String response) {
+                                    String weather = new String();
+                                    //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
+                                    //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
+                                    WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
 
-                            //导航
-                            GohereListener gohere =  new GohereListener(longtitude,latitude);
-                            gohere.routeplanToNavi();
+                                    for( int i = 0 ; i < weatherBean.getMessage().size() ; i++) {//内部不锁定，效率最高，但在多线程要考虑并发操作的问题。
+                                        String s = weatherBean.getMessage().get(i).getDate() + "的天气情况：\n       【" + weatherBean.getMessage().get(i).getType()+"】  风力强度："+weatherBean.getMessage().get(i).getWindrage()+"级";
+                                        weather += s+"\n";
+                                    }
+
+                                    showDialog(weather);
+                                    Log.i("weather",weather);
+
+
+                                }
+
+
+                            }, new Response.ErrorListener() {// 添加请求失败监听
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getContext(), "上传失败",Toast.LENGTH_LONG).show();
+                                }
+                            }){
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map = new HashMap<String,String>();
+                                    map.put("farmID",farmId);
+                                    map.put("timeStart",start_date);
+                                    map.put("timeEnd",end_date);
+                                    Log.i("farmId",farmId+start_date+end_date);
+                                    return map;
+                                }
+                            };
+                            // 设置请求的tag标签，便于在请求队列中寻找该请求
+                            request.setTag("post");
+                            // 添加到全局的请求队列
+                            AppController.getHttpQueues().add(request);
+
+                            longtitude = fieldInfo.getLongitude();
+                            latitude = fieldInfo.getLatitude();
+
+
+
 
                             Log.i("jjjjjjjjjjj",String.valueOf(longtitude)+"ggg"+String.valueOf(latitude));
                         }
@@ -376,6 +530,39 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                     Log.e(TAG, "未知错误1：未获取到农田信息，请返回上一个界面重新选择！");
                 }
                 return convertView;
+            }
+
+            Double longtitude;
+            Double latitude;
+            private void showDialog(String weather){
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+                final AlertDialog.Builder normalDialog =
+                        new AlertDialog.Builder(getContext());
+                //normalDialog.setIcon(R.drawable.);
+                normalDialog.setTitle("天气状况提醒：");
+                normalDialog.setMessage(weather);
+                normalDialog.setPositiveButton("继续",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //导航
+                                GohereListener gohere =  new GohereListener(longtitude,latitude);
+                                gohere.routeplanToNavi();
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //...To-do
+                            }
+                        });
+                // 显示
+                normalDialog.show();
             }
 
             @Override

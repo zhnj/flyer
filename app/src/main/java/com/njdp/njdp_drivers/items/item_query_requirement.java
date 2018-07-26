@@ -429,6 +429,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
 
     private void queryInfo()//存储s_machine_cropType,并进行查询农田信息
     {
+        SessionManager.getInstance().setTime(startTime,endTime);
         switch (selectedType)
         {
             case 1:

@@ -80,4 +80,6 @@ public class AppConfig {
     public static String URL_MYJOB_PART_CHECK= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/addAndOver";//地块确认完成
 
     public static String URL_MYJOB_PART_COMMENT= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/searchComment";//地块确认完成
- }
+
+    public static String URL_Weather= URL_IP+"app/getWeather";//需求查询天气接口
+}
