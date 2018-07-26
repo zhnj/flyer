@@ -47,19 +47,18 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //position为Adapter的位置，数据从list里面可以拿出来。
-        WorkBean.ResultBean sr = list.get(position);
         String str;
-        if(sr.getFarmlandsInfo().getPersonInfoFarmerMachine()!=null){
-            str = "地址：" + sr.getFarmlandsInfo().getFarmlandsProvince() + sr.getFarmlandsInfo().getFarmlandsCity() + sr.getFarmlandsInfo().getFarmlandsCounty() + sr.getFarmlandsInfo().getFarmlandsVillage()
-                    + "\n面积：" + sr.getFarmlandsInfo().getFarmlandsArea()
-                    + "\n单价：" + sr.getFarmlandsInfo().getFarmlandsUnitPrice()
-                    + "\n电话：" + sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
-            phone = sr.getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+        if(list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine()!=null){
+            str = "地址：" + list.get(position).getFarmlandsInfo().getFarmlandsProvince() + list.get(position).getFarmlandsInfo().getFarmlandsCity() + list.get(position).getFarmlandsInfo().getFarmlandsCounty() + list.get(position).getFarmlandsInfo().getFarmlandsVillage()
+                    + "\n面积：" + list.get(position).getFarmlandsInfo().getFarmlandsArea()
+                    + "\n单价：" + list.get(position).getFarmlandsInfo().getFarmlandsUnitPrice()
+                    + "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+            phone = list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }else{
-            str = "地址：" + list.get(0).getFarmlandsInfo().getFarmlandsProvince() + list.get(0).getFarmlandsInfo().getFarmlandsCity() + list.get(0).getFarmlandsInfo().getFarmlandsCounty() + list.get(0).getFarmlandsInfo().getFarmlandsVillage()
-                    + "\n面积：" + list.get(0).getFarmlandsInfo().getFarmlandsArea()
-                    + "\n单价：" + list.get(0).getFarmlandsInfo().getFarmlandsUnitPrice()
-                    + "\n电话：" + list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
+            str = "地址：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsProvince() + list.get(0).getFarmlandsInfo().getFarmlandsCity() + list.get(0).getFarmlandsInfo().getFarmlandsCounty() + list.get(0).getFarmlandsInfo().getFarmlandsVillage()
+                    + "\n面积：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsArea()
+                    + "\n单价：[无效数据控制]"// + list.get(0).getFarmlandsInfo().getFarmlandsUnitPrice()
+                    + "\n电话：[无效数据控制]";//+ list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
             phone = list.get(0).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
         }
         holder.textView.setText(str);
