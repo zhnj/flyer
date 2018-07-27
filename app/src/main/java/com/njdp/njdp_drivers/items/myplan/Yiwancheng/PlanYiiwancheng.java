@@ -1,4 +1,4 @@
-package com.njdp.njdp_drivers.items.myplan.Weiwancheng;
+package com.njdp.njdp_drivers.items.myplan.Yiwancheng;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by Rock on 2018/7/27.
  */
 
-public class PlanWeiwancheng extends Fragment {
+public class PlanYiiwancheng extends Fragment {
     View view;
     RecyclerView rv;
     PlanBean planBean;
@@ -54,7 +54,7 @@ public class PlanWeiwancheng extends Fragment {
         rv = (RecyclerView) view.findViewById(R.id.plan_rv);
         layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
-        WwcAdapter adapter = new WwcAdapter(planBean.getResult());
+        YwcAdapter adapter = new YwcAdapter(planBean.getResult());
         rv.setAdapter(adapter);
 
     }
@@ -87,7 +87,7 @@ public class PlanWeiwancheng extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<String,String>();
-                map.put("type","0");
+                map.put("type","1");
                 map.put("user_id", SessionManager.getInstance().getUserId());
                 return map;
             }
