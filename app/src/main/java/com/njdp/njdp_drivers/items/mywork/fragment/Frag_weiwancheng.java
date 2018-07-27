@@ -103,14 +103,19 @@ public class Frag_weiwancheng extends Fragment {
                 rv = (RecyclerView) view.findViewById(R.id.recyclerView);
                 layoutManager = new LinearLayoutManager(getActivity());
                 rv.setLayoutManager(layoutManager);
-                workBean = gson.fromJson(response, WorkBean.class);
-                if(workBean.isStates()){
-                    resultBeanList = workBean.getResult();
-                    adapter = new WeiwanchengAdapter(getContext(),resultBeanList);
-                    rv.setAdapter(adapter);
-                }else {
-                    Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
+                try {
+                    workBean = gson.fromJson(response, WorkBean.class);
+                    if(workBean.isStates()){
+                        resultBeanList = workBean.getResult();
+                        adapter = new WeiwanchengAdapter(getContext(),resultBeanList);
+                        rv.setAdapter(adapter);
+                    }else {
+                        Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+
                 }
+
             }
         }, new Response.ErrorListener() {// 添加请求失败监听
             @Override
@@ -134,23 +139,31 @@ public class Frag_weiwancheng extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
             @Override
             public void onResponse(String response) {
-                workBean = gson.fromJson(response, WorkBean.class);
-                if(workBean.isStates()){
-                    resultBeanList = workBean.getResult();
-                    if (isRefresh) {
-                        adapter.refresh(resultBeanList);
-                        refreshLayout.finishRefresh(/*,false*/);
-                        //不传时间则立即停止刷新    传入false表示刷新失败
-                    } else {
-                        adapter.add(resultBeanList);
-                        refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
-                    }
-                }else{
-                    Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
-                    if (isRefresh) {
-                        refreshLayout.finishRefresh(/*,false*/);
+                try {
+                    workBean = gson.fromJson(response, WorkBean.class);
+                    if(workBean.isStates()){
+                        resultBeanList = workBean.getResult();
+                        if (isRefresh) {
+                            adapter.refresh(resultBeanList);
+                            refreshLayout.finishRefresh(/*,false*/);
+                            //不传时间则立即停止刷新    传入false表示刷新失败
+                        } else {
+                            adapter.add(resultBeanList);
+                            refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                        }
                     }else{
-                        refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                        Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
+                        if (isRefresh) {
+                            refreshLayout.finishRefresh(false);
+                        }else{
+                            refreshLayout.finishLoadMore(false);//不传时间则立即停止刷新    传入false表示加载失败
+                        }
+                    }
+                }catch (Exception e){
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh(false);
+                    }else{
+                        refreshLayout.finishLoadMore(false);//不传时间则立即停止刷新    传入false表示加载失败
                     }
                 }
             }
@@ -160,10 +173,10 @@ public class Frag_weiwancheng extends Fragment {
                 Toast.makeText(getContext(), "连接失败", Toast.LENGTH_LONG).show();
                 Log.i("url", error.toString());
                 if (isRefresh) {
-                    refreshLayout.finishRefresh(/*,false*/);
+                    refreshLayout.finishRefresh(false);
                     //不传时间则立即停止刷新    传入false表示刷新失败
                 } else {
-                    refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                    refreshLayout.finishLoadMore(false);//不传时间则立即停止刷新    传入false表示加载失败
                 }
             }
 

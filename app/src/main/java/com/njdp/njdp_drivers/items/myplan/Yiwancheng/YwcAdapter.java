@@ -57,8 +57,33 @@ public class YwcAdapter extends RecyclerView.Adapter<YwcAdapter.ViewHolder> {
         holder.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(parent.getContext(), PlanDetail.class);
-                parent.getContext().startActivity(intent);
+                //请求详细地块
+                String url;
+                String plan_id = list.get(position).getPlan_id();
+                url = AppConfig.URL_DEPLOY_DETAIL;
+                url = url + "?plan_id=" + plan_id;
+                Log.i("url", url);
+                //定义一个StringRequest
+                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("info", "详细方案信息"+response);
+                        Intent intent = new Intent(parent.getContext(), PlanDetail.class);
+                        intent.putExtra("detail",response);
+                        parent.getContext().startActivity(intent);
+                        //PlanDetailBean planDetailBean = new Gson().fromJson(response,PlanDetailBean.class);
+                    }
+                }, new Response.ErrorListener() {// 添加请求失败监听
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(parent.getContext(), "连接失败,检查网络", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+                // 设置请求的tag标签，便于在请求队列中寻找该请求
+                request.setTag("get");
+                // 添加到全局的请求队列
+                AppController.getHttpQueues().add(request);
             }
         });
 
@@ -68,6 +93,7 @@ public class YwcAdapter extends RecyclerView.Adapter<YwcAdapter.ViewHolder> {
     public int getItemCount() {
         return list!= null ? list.size() : 0;
     }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv;
         Button bt1;

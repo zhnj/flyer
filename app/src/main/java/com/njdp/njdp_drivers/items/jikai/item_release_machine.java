@@ -112,14 +112,18 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 rv = (RecyclerView) view.findViewById(R.id.recyclerView);
                 layoutManager = new LinearLayoutManager(getActivity());
                 rv.setLayoutManager(layoutManager);
-                droneBean = gson.fromJson(response, DroneBean.class);
-                if(droneBean.isStates()){
-                    resultBeanList = droneBean.getResult();
-                    Log.i("url", "resultBeanList"+resultBeanList.get(0).getMachineId());
-                    adapter = new MyRefAdapter(getContext(),resultBeanList);
-                    rv.setAdapter(adapter);
-                }else {
-                    Toast.makeText(getContext(),droneBean.getMsg(),Toast.LENGTH_SHORT).show();
+                try {
+                    droneBean = gson.fromJson(response, DroneBean.class);
+                    if(droneBean.isStates()){
+                        resultBeanList = droneBean.getResult();
+                        Log.i("url", "resultBeanList"+resultBeanList.get(0).getMachineId());
+                        adapter = new MyRefAdapter(getContext(),resultBeanList);
+                        rv.setAdapter(adapter);
+                    }else {
+                        Toast.makeText(getContext(),droneBean.getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+
                 }
             }
         }, new Response.ErrorListener() {// 添加请求失败监听
@@ -145,27 +149,32 @@ public class item_release_machine extends Fragment implements View.OnClickListen
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
             @Override
             public void onResponse(String response) {
-                droneBean = gson.fromJson(response, DroneBean.class);
-                if(droneBean.isStates()){
-                    resultBeanList = droneBean.getResult();
-                    Log.i("url", "before"+resultBeanList.get(0).getMachineId());
-                    if (isRefresh) {
-                        Log.i("url", "after"+resultBeanList.get(0).getMachineId());
-                        adapter.refresh(resultBeanList);
-                        refreshLayout.finishRefresh(/*,false*/);
-                        //不传时间则立即停止刷新    传入false表示刷新失败
-                    } else {
-                        adapter.add(resultBeanList);
-                        refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
-                    }
-                }else{
-                    Toast.makeText(getContext(),droneBean.getMsg(),Toast.LENGTH_SHORT).show();
-                    if (isRefresh) {
-                        refreshLayout.finishRefresh(/*,false*/);
+                try {
+                    droneBean = gson.fromJson(response, DroneBean.class);
+                    if(droneBean.isStates()){
+                        resultBeanList = droneBean.getResult();
+                        Log.i("url", "before"+resultBeanList.get(0).getMachineId());
+                        if (isRefresh) {
+                            Log.i("url", "after"+resultBeanList.get(0).getMachineId());
+                            adapter.refresh(resultBeanList);
+                            refreshLayout.finishRefresh(/*,false*/);
+                            //不传时间则立即停止刷新    传入false表示刷新失败
+                        } else {
+                            adapter.add(resultBeanList);
+                            refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                        }
                     }else{
-                        refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                        Toast.makeText(getContext(),droneBean.getMsg(),Toast.LENGTH_SHORT).show();
+                        if (isRefresh) {
+                            refreshLayout.finishRefresh(/*,false*/);
+                        }else{
+                            refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
+                        }
                     }
+                }catch (Exception e){
+
                 }
+
             }
         }, new Response.ErrorListener() {// 添加请求失败监听
             @Override

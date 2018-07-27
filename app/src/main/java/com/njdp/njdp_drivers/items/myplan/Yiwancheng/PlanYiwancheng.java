@@ -68,12 +68,12 @@ public class PlanYiwancheng extends Fragment {
             public void onResponse(String response) {
                 //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
                 try {
-                    Log.i("info",response);
+                    //Log.i("info",response);
                     planBean = new Gson().fromJson(response, PlanBean.class);
-                    Log.i("info", "size:"+String.valueOf(planBean.getResult().size()));
+                    //Log.i("info", "size:"+String.valueOf(planBean.getResult().size()));
                     initView(); //加载布局
                 }catch (Exception e){
-                    Log.i("info",response);
+                    //Log.i("info",response);
                 }
             }
 

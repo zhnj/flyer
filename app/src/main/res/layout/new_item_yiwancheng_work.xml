@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_adapter"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:lineSpacingMultiplier="1.5"
         android:textColor="#444"
         android:text="测试条目"/>
 

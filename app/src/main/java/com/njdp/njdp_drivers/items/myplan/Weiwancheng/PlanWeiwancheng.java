@@ -22,14 +22,8 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
-import com.njdp.njdp_drivers.items.myplan.farmLand;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +35,7 @@ public class PlanWeiwancheng extends Fragment {
     RecyclerView rv;
     PlanBean planBean;
     LinearLayoutManager layoutManager;//纵向线性布局
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,13 +69,13 @@ public class PlanWeiwancheng extends Fragment {
             public void onResponse(String response) {
                 //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
                 try {
-                    Log.i("info",response);
+                    Log.i("info","方案信息初始化"+response);
+
                     planBean = new Gson().fromJson(response, PlanBean.class);
-                    Log.i("info", "size:"+String.valueOf(planBean.getResult().size()));
 
                     initView(); //加载布局
                 }catch (Exception e){
-                    Log.i("info",response);
+                    //Log.i("info",response);
                 }
             }
 
