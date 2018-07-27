@@ -22,8 +22,14 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
+import com.njdp.njdp_drivers.items.myplan.farmLand;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,7 +69,7 @@ public class PlanWeiwancheng extends Fragment {
         //POST网络请求
         String url= AppConfig.URL_DEPLOY;
         //定义一个StringRequest
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {// 添加请求成功监听
+        final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {// 添加请求成功监听
             @Override
             public void onResponse(String response) {
                 //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
@@ -71,6 +77,7 @@ public class PlanWeiwancheng extends Fragment {
                     Log.i("info",response);
                     planBean = new Gson().fromJson(response, PlanBean.class);
                     Log.i("info", "size:"+String.valueOf(planBean.getResult().size()));
+
                     initView(); //加载布局
                 }catch (Exception e){
                     Log.i("info",response);
@@ -96,5 +103,6 @@ public class PlanWeiwancheng extends Fragment {
         request.setTag("post");
         // 添加到全局的请求队列
         AppController.getHttpQueues().add(request);
+
     }
 }

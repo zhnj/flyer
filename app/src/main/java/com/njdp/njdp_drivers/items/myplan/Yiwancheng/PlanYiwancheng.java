@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by Rock on 2018/7/27.
  */
 
-public class PlanYiiwancheng extends Fragment {
+public class PlanYiwancheng extends Fragment {
     View view;
     RecyclerView rv;
     PlanBean planBean;

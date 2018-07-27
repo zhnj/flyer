@@ -22,12 +22,14 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
 import com.njdp.njdp_drivers.items.myplan.PlanDetail;
+import com.njdp.njdp_drivers.items.myplan.farmLand;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -74,11 +76,9 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
             public void onClick(View v) {
                 //完成
                 String url;
-                String flyer_id = "";
-                String farmland_id = "";
-                String opration = "完成";
-                url = AppConfig.URL_MYJOB_PART_CHECK;
-                url = url + "?flyer_id=" + flyer_id + "&farmland_id=" + farmland_id + "&opration=" + opration;
+                String id = list.get(position).getPlan_id();
+                url = AppConfig.URL_DEPLOY_COMPLATE;
+                url = url + "?id=" + id;
                 Log.i("delurl", url);
                 //定义一个StringRequest
                 StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
@@ -98,8 +98,6 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
                 request.setTag("get");
                 // 添加到全局的请求队列
                 AppController.getHttpQueues().add(request);
-
-
 
             }
         });
@@ -165,4 +163,7 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
         notifyItemRangeChanged(0, list.size());
     }
 
+    public void jsonToObj(){
+
+    }
 }

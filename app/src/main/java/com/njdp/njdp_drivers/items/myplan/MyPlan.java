@@ -8,9 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.items.myplan.Weiwancheng.PlanWeiwancheng;
-import com.njdp.njdp_drivers.items.myplan.Yiwancheng.PlanYiiwancheng;
+import com.njdp.njdp_drivers.items.myplan.Yiwancheng.PlanYiwancheng;
 import com.njdp.njdp_drivers.items.mywork.adapter.MyPagerAdapter;
-import com.njdp.njdp_drivers.items.mywork.fragment.Frag_yiwancheng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class MyPlan extends AppCompatActivity {
     private void initFragment() {
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new PlanWeiwancheng());
-        mFragmentList.add(new PlanYiiwancheng());
+        mFragmentList.add(new PlanYiwancheng());
     }
 
     private void initTitile() {

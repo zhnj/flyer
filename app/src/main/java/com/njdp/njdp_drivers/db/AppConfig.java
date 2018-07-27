@@ -84,6 +84,8 @@ public class AppConfig {
 
     public static String URL_DEPLOY= URL_IP_JAVA+"Mobile/UAV/listMyDeploy";//我的方案列表
 
-    public static final String URL_MYJOB_PLAN_DELETE = URL_IP_JAVA+"Moblie/UAV/delMyDeploy";
+    public static String URL_MYJOB_PLAN_DELETE = URL_IP_JAVA+"Mobile/UAV/delMyDeply"; //删除我的方案
+
+    public static String URL_DEPLOY_COMPLATE= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/planOver";//完成方案
 
 }
