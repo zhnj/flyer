@@ -1,8 +1,11 @@
 package com.njdp.njdp_drivers.items.mywork.adapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,15 +33,16 @@ import java.util.List;
 public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.ViewHolder> {
     private List<WorkBean.ResultBean> list;
     private Context context;
+    ViewGroup parent;
 
     public WeiwanchengAdapter(Context context, List<WorkBean.ResultBean> list) {
         this.context = context;
         this.list = list;
-
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.parent = parent;
         //给Adapter添加布局，bq把这个view传递给HoldView，让HoldView找到空间
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_weiwancheng_work, null);
         final ViewHolder holder = new ViewHolder(view);
@@ -50,36 +54,37 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
     String area;
     String price;
     String date;
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //position为Adapter的位置，数据从list里面可以拿出来。
         try {
             address = "地址：" + list.get(position).getFarmlandsInfo().getFarmlandsProvince() + list.get(position).getFarmlandsInfo().getFarmlandsCity() + list.get(position).getFarmlandsInfo().getFarmlandsCounty() + list.get(position).getFarmlandsInfo().getFarmlandsVillage();
-        }catch (Exception e){
+        } catch (Exception e) {
             address = "地址：[null]";
         }
         try {
             area = "\n面积：" + list.get(position).getFarmlandsInfo().getFarmlandsArea();
-        }catch (Exception e){
+        } catch (Exception e) {
             area = "\n面积：[null]";
         }
         try {
             price = "\n单价：" + list.get(position).getFarmlandsInfo().getFarmlandsUnitPrice();
-        }catch (Exception e){
+        } catch (Exception e) {
             price = "地址：[null]";
         }
         try {
             phone = "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
-        }catch (Exception e){
+        } catch (Exception e) {
             phone = "\n电话：[null]";
         }
         try {
-            date = "\n日期：" + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsStartTime())+"  至  "+stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsEndTime());
-        }catch (Exception e){
+            date = "\n日期：" + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsStartTime()) + "  至  " + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsEndTime());
+        } catch (Exception e) {
             date = "\n日期：[null]";
         }
 
-        String str = address+area+price+phone+date;
+        String str = address + area + price + phone + date;
         holder.textView.setText(str);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +97,17 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //startActivity(intent);
+                if (ActivityCompat.checkSelfPermission(parent.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                parent.getContext().startActivity(intent);
             }
         });
         holder.bt2.setOnClickListener(new View.OnClickListener() {

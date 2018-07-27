@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.items.myplan.MyPlan;
 import com.njdp.njdp_drivers.items.mywork.MyPart;
 
 public class item_job_history extends Fragment{
@@ -22,7 +23,7 @@ public class item_job_history extends Fragment{
         view.findViewById(R.id.myjob_bt_plan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),New_item_intelligent_resolution_2.class);
+                Intent intent = new Intent(getActivity(),MyPlan.class);
                 startActivity(intent);
             }
         });

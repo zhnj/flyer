@@ -82,6 +82,12 @@ public class AppConfig {
 
     public static String URL_Weather= URL_IP+"app/getWeather";//需求查询天气接口
 
-    public static String URL_DEPLOY= URL_IP_JAVA+"Mobile/UAV/listMyDeploy";//需求查询天气接口
+    public static String URL_DEPLOY= URL_IP_JAVA+"Mobile/UAV/listMyDeploy";//我的方案列表
+
+    public static String URL_DEPLOY_DETAIL= URL_IP_JAVA+"Mobile/UAV/listMyDeployDetail"; //我的方案详细情况
+
+    public static String URL_MYJOB_PLAN_DELETE = URL_IP_JAVA+"Mobile/UAV/delMyDeply"; //删除我的方案
+
+    public static String URL_DEPLOY_COMPLATE= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/planOver";//完成方案
 
 }
