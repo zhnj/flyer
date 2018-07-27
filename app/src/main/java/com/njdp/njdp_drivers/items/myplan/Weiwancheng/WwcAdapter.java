@@ -23,6 +23,10 @@ import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
 import com.njdp.njdp_drivers.items.myplan.PlanDetail;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +58,9 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
         String cost = "\n估计成本："+list.get(position).getCost();
         String time = "\n作业时段："+list.get(position).getBeginDate()+" 至 "+list.get(position).getEndDate();
         holder.tv.setText(planid+income+cost+time);
+
+
+
 
         holder.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
