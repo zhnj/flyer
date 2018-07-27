@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.njdp.njdp_drivers" >
-
+    package="com.njdp.njdp_drivers"
+    android:versionCode="6"
+    android:versionName="3.1.1"
+    >
+<uses-sdk
+    android:maxSdkVersion="14"
+    android:targetSdkVersion="22"
+    />
     <!-- 联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

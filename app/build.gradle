@@ -9,12 +9,12 @@ android {
             storePassword 'android'
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.njdp.njdp_drivers"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }

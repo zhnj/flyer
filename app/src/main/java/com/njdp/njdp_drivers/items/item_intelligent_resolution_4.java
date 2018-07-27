@@ -1,8 +1,10 @@
 package com.njdp.njdp_drivers.items;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +53,7 @@ import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -194,6 +197,8 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
             Log.e(TAG, e.toString());
         }
 
+        //请求定位权限
+        //requestPower();
          /*
         * 导航用
         * */
@@ -210,7 +215,31 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
 
         return view;
     }
-
+    /**动态请求权限
+    public void requestPower() {
+        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (getActivity().shouldShowRequestPermissionRationale(
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            } else {
+                getActivity().requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+    }*/
+    /**动态请求权限
+    public void requestAllPower() {
+        if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (getActivity().shouldShowRequestPermissionRationale(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                getActivity().requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
+    }
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.getback:
@@ -223,7 +252,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 if(sl_site!=0) {
                     double gps_longitude = navigationDeploy.get(sl_site-1).getLongitude();//经度
                     double gps_latitude=navigationDeploy.get(sl_site-1).getLatitude();//纬度
-                    Log.i("导航开始-----","地点："+sites[sl_site]+"，经度："+String.valueOf(gps_longitude)+"，维度："+String.valueOf(gps_latitude));
+                    Log.e("导航开始-----","地点："+sites[sl_site]+"，经度："+String.valueOf(gps_longitude)+"，维度："+String.valueOf(gps_latitude));
                     //开始导航
                     GohereListener gohere =  new GohereListener(gps_longitude,gps_latitude);
                     gohere.routeplanToNavi();
@@ -474,14 +503,14 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_MACHINELOCATION, new locationSuccessListener(), new locationErrorListener()) {
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
             @Override
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("machine_id", machine_id);
-                params.put("token", token);
+                params.put("fm_id", sessionManager.getUserId());
+                //params.put("token", token);
 
                 return netUtil.checkParams(params);
             }
@@ -510,9 +539,9 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
-                    JSONObject location = jObj.getJSONObject("result");
-                    GPS_longitude = location.getString("x");
-                    GPS_latitude = location.getString("y");
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;

@@ -1,7 +1,9 @@
 package com.njdp.njdp_drivers.items;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -81,6 +83,7 @@ import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.RequestQueue;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -175,7 +178,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
 
 
-        View view = inflater.inflate(R.layout.activity_1_intelligent_resolution_3, container,
+            View view = inflater.inflate(R.layout.activity_1_intelligent_resolution_3, container,
                 false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
@@ -192,7 +195,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         gson=new Gson();
         sessionManager=new SessionManager();
         token=sessionManager.getToken();
-        gps_url=AppConfig.URL_MACHINELOCATION;
+        gps_url=AppConfig.URL_findFlyComByUser;
 
         if((navigationDeploy!=null)&&(navigationDeploy.size()>0)) {
             navigationDeploy.clear();
@@ -944,8 +947,8 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
     //从服务器获取农机经纬度
     public void gps_MachineLocation(final String machine_id) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("machine_id", machine_id);
-        params.put("token", token);
+        params.put("fm_id", sessionManager.getUserId());
+        //params.put("token", token);
         Log.e(TAG, "GPS位置发送的数据：" + gson.toJson(params));
         location_strReq= NoHttp.createJsonObjectRequest(gps_url, RequestMethod.POST);
         location_strReq.add(params);
@@ -983,9 +986,10 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 } else if (status == 0) {
 
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
-                    JSONObject location = jObj.getJSONObject("result");
-                    GPS_longitude = location.getString("x");
-                    GPS_latitude = location.getString("y");
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+
                     ///////////////////////////获取服务器农机，经纬度/////////////////////
 
                     text_gps_flag = false;
