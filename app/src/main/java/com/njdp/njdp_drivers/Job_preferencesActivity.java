@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
@@ -56,20 +57,44 @@ public class Job_preferencesActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        String url = "http://211.68.183.50:8088/UAV-platform/mvc/mobile/myUav/addPreference";
+        String url = AppConfig.URL_UAV_Preference;;
         url+= "?fmId="+SessionManager.getInstance().getUserId();
-//定义一个StringRequest
-        Log.i("url", url);
+        //定义一个StringRequest
+        Log.e("url", url);
         StringRequest request = new StringRequest(Request.Method.GET, url, new
                 Response.Listener<String>() {// 添加请求成功监听
 
                     @Override
                     public void onResponse(String response) {
-                        Gson gson = new Gson();
-                        InfoBean infoBean = gson.fromJson(response, InfoBean.class);
-                        text_uav_work_time.setText(infoBean.getResult().getUavWorkTime());
-                        Toast.makeText(Job_preferencesActivity.this, "网络访问成功"+response,
-                                Toast.LENGTH_LONG).show();
+
+                        Log.e("response", response);
+                        try {
+                            JSONObject jObj = new JSONObject(response);
+                            int status = jObj.getInt("states");
+                            if (status==1)
+                            {
+
+                                text_uav_work_time.setText(jObj.getJSONObject("result").getString("uavWorkTime"));
+                                text_uav_hotel_cost.setText(jObj.getJSONObject("result").getString("uavHotelCost"));
+                                text_uav_labor_cost.setText(jObj.getJSONObject("result").getString("uavLaborCost"));
+                                text_uav_run_fuel.setText(jObj.getJSONObject("result").getString("uavRunFuel"));
+                                text_uav_work_cost.setText(jObj.getJSONObject("result").getString("uavWorkCost"));
+                                text_uav_run_velocity.setText(jObj.getJSONObject("result").getString("uavRunVelocity"));
+                            }else {
+
+                                String errorMsg = jObj.getString("result");
+                                Log.e("重新登录", "Json error：response错误:" + errorMsg);
+
+                                SysCloseActivity.getInstance().exit();
+
+
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {// 添加请求失败监听
             @Override
@@ -87,7 +112,7 @@ public class Job_preferencesActivity extends AppCompatActivity {
     public class BtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//prefrence= NoHttp.createJsonObjectRequest(pre_url, RequestMethod.GET);
+                //prefrence= NoHttp.createJsonObjectRequest(pre_url, RequestMethod.GET);
             String work_time = text_uav_work_time.getText().toString().trim();
             String hotel_cost = text_uav_hotel_cost.getText().toString().trim();
             String labor_cost = text_uav_labor_cost.getText().toString().trim();
@@ -96,16 +121,32 @@ public class Job_preferencesActivity extends AppCompatActivity {
             String run_velocity = text_uav_run_velocity.getText().toString().trim();
             //定义一个url
             SessionManager sessionManager = new SessionManager();
-            String url = "http://211.68.183.50:8088/UAV-platform/mvc/mobile/myUav/addPreference";
-            url+= "?fmId="+sessionManager.getUserId();
-//定义一个StringRequest
+            String url = AppConfig.URL_UAV_ADD_OR_EDIT_Preference;
+            url+= "?fmId="+SessionManager.getInstance().getUserId()+"&";
+            url+= "uavRunVelocity="+run_velocity+"&";
+            url+= "uavRunFuel="+run_fuel+"&";
+            url+= "uavWorkTime="+work_time+"&";
+            url+= "uavWorkCost="+work_cost+"&";
+            url+= "uavLaborCost="+labor_cost+"&";
+            url+= "uavHotelCost="+hotel_cost;
+            //定义一个StringRequest
             StringRequest request = new StringRequest(Request.Method.GET, url, new
                     Response.Listener<String>() {// 添加请求成功监听
 
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(Job_preferencesActivity.this, "网络访问成功"+response,
-                                    Toast.LENGTH_LONG).show();
+                            try {
+                                JSONObject obj=new JSONObject(response);
+                                if(obj.getBoolean("states")==true)
+                                             Toast.makeText(Job_preferencesActivity.this, "偏好保存成功！",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                           catch (Exception e)
+                           {
+                               e.printStackTrace();
+                           }
+
+
                         }
                     }, new Response.ErrorListener() {// 添加请求失败监听
                 @Override

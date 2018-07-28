@@ -6,7 +6,7 @@
     android:id="@+id/xksqapp_register_student"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/main_login"
+    android:background="@drawable/main_bg"
     android:fitsSystemWindows="true"
     android:paddingTop="@dimen/padding20"
     tools:context="com.njdp.njdp_drivers.register_2">
@@ -31,6 +31,19 @@
         android:layout_marginRight="14dp"
         android:layout_marginEnd="14dp"
         android:layout_marginTop="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+        <TextView
+            style="@style/Register_style"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="作业时长：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavworktime"
@@ -39,16 +52,28 @@
             android:layout_marginLeft="5dp"
             android:hint="请输入作业时长"
             android:inputType="number"
+
             />
-        <View
-            style="@style/Register_HorizontalLine_style"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+        </LinearLayout>
+
 
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/Register_style"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="住宿成本：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavhotelcost"
@@ -57,11 +82,26 @@
             android:layout_marginLeft="5dp"
             android:hint="请输入住宿成本"
             android:inputType="number"
+
             />
+        </LinearLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/Register_style"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="人工成本：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavlaborcost"
@@ -71,10 +111,24 @@
             android:hint="请输入人工成本"
             android:inputType="number"
             />
+        </LinearLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/Register_style"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="运输油耗：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavrunfuel"
@@ -84,10 +138,24 @@
             android:hint="请输入运输油耗"
             android:inputType="number"
             />
+        </LinearLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/Register_style"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="作业成本：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavworkcost"
@@ -97,10 +165,24 @@
             android:hint="请输入作业成本"
             android:inputType="number"
             />
+        </LinearLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/Register_style"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="作业时长：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavrunvelocity"
@@ -110,22 +192,28 @@
             android:hint="请输入运输速度"
             android:inputType="number"
             />
+        </LinearLayout>
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            >
             <Button
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="保存"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
                 android:onClick="onClick"
-                />
+                android:layout_marginRight="119dp"
+                android:layout_marginEnd="119dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

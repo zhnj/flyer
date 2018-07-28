@@ -90,4 +90,7 @@ public class AppConfig {
 
     public static String URL_DEPLOY_COMPLATE= URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/planOver";//完成方案
 
+    public static String URL_UAV_Preference= URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/findPreference";//查询偏好的接口
+
+    public static String URL_UAV_ADD_OR_EDIT_Preference= URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/addPreference";//查询偏好的接口
 }
