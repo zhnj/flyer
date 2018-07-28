@@ -1380,6 +1380,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             {
                 GPS_longitude=String.valueOf(marker.getPosition().longitude);//GPS经度
                 GPS_latitude=String.valueOf(marker.getPosition().latitude);
+
                 //查找，刷新
                 initFieldInfo();
                 return false;
