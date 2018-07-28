@@ -81,11 +81,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-
+            android:textColor="#191970"
             android:text="查找"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/arrange_button"
+            android:layout_toStartOf="@+id/arrange_button" />
+        <Button
+            android:id="@+id/arrange_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#191970"
+            android:text="回公司"
+            android:layout_alignBaseline="@+id/btn_search"
+            android:layout_alignBottom="@+id/btn_search"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
         <AutoCompleteTextView
             android:id="@+id/query_query_autoCompleteTextView_2"
             android:layout_width="wrap_content"
@@ -148,18 +158,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/area"
-            android:layout_toLeftOf="@+id/arrange_button"
-            />
-        <Button
-            android:id="@+id/arrange_button"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/require_home"
-            android:textColor="@color/whiteFont"
 
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:textColor="#191970"
+            />
+
 
     </RelativeLayout>
 

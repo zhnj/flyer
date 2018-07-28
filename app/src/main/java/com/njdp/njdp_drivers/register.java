@@ -45,6 +45,7 @@ public class register extends Activity {
 //    private EditText text_user_qq=null;
 //    private EditText text_user_weixin=null;
 //    private EditText text_verification_code=null;
+
     private EditText text_phone=null;
     private Button btn_code=null;
     private ImageButton btn_back=null;
