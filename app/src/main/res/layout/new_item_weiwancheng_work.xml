@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#0000"
     android:padding="10dp"
  >
 
@@ -63,5 +64,10 @@
             android:padding="8dp"
             android:text="删除" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#444"
+        />
 
 </LinearLayout>

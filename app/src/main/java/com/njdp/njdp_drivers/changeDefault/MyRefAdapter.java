@@ -53,13 +53,13 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
                 + "\n作业能力：" + list.get(position).getWorkingAbility()
                 + "\n备注：" + list.get(position).getSchMachineRemark();
         holder.textView.setText(str);
-        holder.bt1.setOnClickListener(new View.OnClickListener() {
-            //查看 ， 跳转到一个新的页面进行信息查看
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        holder.bt1.setOnClickListener(new View.OnClickListener() {
+//            //查看 ， 跳转到一个新的页面进行信息查看
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         holder.bt2.setOnClickListener(new View.OnClickListener() {
             //修改 , 跳转到编辑页面进行修改
@@ -128,7 +128,6 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
             super(itemView);
             //根据onCreateViewHolder的HoldView所添加的xml布局找到空间
             textView = (TextView) itemView.findViewById(R.id.drone_tv);
-            bt1 = (Button) itemView.findViewById(R.id.drone_bt1);
             bt2 = (Button) itemView.findViewById(R.id.drone_bt2);
             bt3 = (Button) itemView.findViewById(R.id.drone_bt3);
         }
