@@ -17,7 +17,7 @@
         android:background="@drawable/main_title">
         <TextView
             style="@style/Pages_Title"
-            android:text="去哪儿好"
+            android:text="飞哪儿好"
             />
         <ImageButton
             android:id="@+id/getback"

@@ -230,10 +230,6 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         view.findViewById(R.id.jobDate).setOnClickListener(this);
         view.findViewById(R.id.arrange_button).setOnClickListener(this);
 
-
-
-
-
         sp_area=(Spinner)view.findViewById(R.id.area);
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
@@ -892,6 +888,8 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
             case R.id.infos:
                 btn_pop_flag=true;
                 btn_popup.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+                pop_countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
+
                 break;
             case R.id.pop_infos:
                 btn_pop_flag=false;

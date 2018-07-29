@@ -401,7 +401,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
     private void uploadDeploy()
     {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("token", token);
+        //params.put("token", token);
+        params.put("user_id",sessionManager.getUserId());
         params.put("plan_id", plan_id);
         Log.e(TAG, "上传选择方案发送的数据：" + gson.toJson(params));
         uploadDeploy_strReq= NoHttp.createJsonObjectRequest(uploadDeploy_url, RequestMethod.POST);
