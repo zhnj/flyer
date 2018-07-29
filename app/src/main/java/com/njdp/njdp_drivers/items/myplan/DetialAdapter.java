@@ -48,9 +48,28 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
         String income = "\n收入："+list.get(position).getIncome();
         String area = "\n面积："+list.get(position).getArea_num()+"亩";
         final String phone = "\n电话："+list.get(position).getFarmer_phone();
+        String result = "\n是否住宿：";//+list.get(position).getReturnStatus());
+        switch (list.get(position).getReturnStatus()){
+            case "1":
+                result+="是";
+                break;
+            case "2":
+                result+="否";
+                break;
+            case "3":
+                result+="是";
+                break;
+            case "4":
+                result+="否";
+                break;
+            default:
+                result="";
+                break;
+        }
         String date = "\n日期："+list.get(position).getBeginTime()+" 至 "+list.get(position).getEndTime();
 
-        str = id+address+income+area+phone+date;
+
+        str = id+address+income+area+phone+result+date;
         Log.i("info","str:"+str);
         holder.tv.setText(str);
 
