@@ -21,9 +21,9 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:paddingTop="@dimen/height30"
-        android:background="@drawable/sliding_bg"
-        app:itemTextColor="@color/whiteFont"
-        app:itemIconTint="@color/whiteFont"
+        android:background="@drawable/main_bg"
+        app:itemTextColor="#191970"
+        app:itemIconTint="#191970"
         app:menu="@menu/activity_sliding_menu_drawer">
     </android.support.design.widget.NavigationView>
 

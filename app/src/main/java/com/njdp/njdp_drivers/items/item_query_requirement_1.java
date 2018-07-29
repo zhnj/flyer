@@ -392,7 +392,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                 @Override
                                 public void onResponse(String response) {
                                     String weather = new String();
-                                    //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
                                     //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
                                     WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
 
@@ -412,14 +412,23 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getContext(), "上传失败",Toast.LENGTH_LONG).show();
                                 }
-                            }){
+                            })
+                            {
                                 @Override
                                 protected Map<String, String> getParams() throws AuthFailureError {
                                     Map<String,String> map = new HashMap<String,String>();
                                     map.put("farmID",farmId);
-                                    map.put("timeStart",start_date);
-                                    map.put("timeEnd",end_date);
-                                    Log.i("farmId",farmId+start_date+end_date);
+                                    if(startTime.compareToIgnoreCase(fieldInfo.getStart_time().replace('-','/'))<0)
+                                        map.put("timeStart", fieldInfo.getStart_time());
+                                    else
+                                        map.put("timeStart", startTime);
+
+                                    if(endTime.compareToIgnoreCase(fieldInfo.getEnd_time().replace('-','/'))>0)
+                                        map.put("timeEnd", fieldInfo.getEnd_time());
+                                    else
+                                        map.put("timeEnd", endTime);
+                                    map.put("token", token);
+                                    Log.e("farmId",farmId+start_date+end_date);
                                     return map;
                                 }
                             };
@@ -501,10 +510,19 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                 @Override
                                 protected Map<String, String> getParams() throws AuthFailureError {
                                     Map<String,String> map = new HashMap<String,String>();
+                                    map.put("token", token);
                                     map.put("farmID",farmId);
-                                    map.put("timeStart",start_date);
-                                    map.put("timeEnd",end_date);
-                                    Log.i("farmId",farmId+start_date+end_date);
+
+                                    if(startTime.compareToIgnoreCase(fieldInfo.getStart_time().replace('-','/'))<0)
+                                        map.put("timeStart", fieldInfo.getStart_time());
+                                    else
+                                        map.put("timeStart", startTime);
+
+                                    if(endTime.compareToIgnoreCase(fieldInfo.getEnd_time().replace('-','/'))>0)
+                                        map.put("timeEnd", fieldInfo.getEnd_time());
+                                    else
+                                        map.put("timeEnd", endTime);
+                                    Log.e("farmId",farmId+start_date+end_date);
                                     return map;
                                 }
                             };

@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="185dp"
         android:src="@drawable/ic_intell_arrange_1"
         android:onClick="onDispatcher"
         android:layout_alignParentTop="true"

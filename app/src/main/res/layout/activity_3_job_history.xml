@@ -35,22 +35,30 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_menu_white_48dp" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="120dp"
+        >
 
-    <Button
-    android:id="@+id/myjob_bt_plan"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:text="查看方案"
+    <ImageButton
+        android:id="@+id/myjob_bt_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
         android:background="#9999"
-        android:layout_weight="0.5" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"/>
-    <Button
+        android:src="@drawable/my_plan"
+
+        android:text="查看方案" />
+
+    <ImageButton
         android:id="@+id/myjob_bt_part"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
         android:background="#9999"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="查看地块"
-        android:layout_weight="0.5" />
+        android:src="@drawable/my_farmer"
+        android:text="查看地块" />
+    </LinearLayout>
 </LinearLayout>

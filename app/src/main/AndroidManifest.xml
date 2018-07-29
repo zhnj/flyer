@@ -215,7 +215,8 @@
         <activity android:name=".items.myplan.MyPlan"
             android:label="我的方案"/>
         <activity android:name=".Job_preferencesActivity"
-            android:label="无人机偏号设置"/>
+            android:label="无人机偏好"  android:theme="@style/AppTheme.NoActionBar"
+           />
         <activity android:name=".items.myplan.PlanDetail"
             android:label="我的方案详情"/>
     </application>
