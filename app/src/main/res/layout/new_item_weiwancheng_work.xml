@@ -41,7 +41,7 @@
             android:background="#00f3f3f4"
             android:drawableLeft="@android:drawable/ic_menu_send"
             android:padding="8dp"
-            android:text="评价" />
+            android:text="导航" />
 
         <Button
             android:id="@+id/fw_bt3"
