@@ -26,6 +26,7 @@
             android:background="@drawable/ic_chevron_left_white_48dp" />
         <ImageButton
             android:id="@+id/drone_set"
+            android:layout_marginRight="7dp"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
@@ -33,11 +34,13 @@
             android:layout_toLeftOf="@+id/drone_add"/>
         <ImageButton
             android:id="@+id/drone_add"
+            android:layout_marginRight="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/menu"
-            android:background="@android:drawable/ic_menu_add" />
+            android:background="@android:drawable/ic_menu_add"
+            android:layout_toLeftOf="@+id/menu"
+            android:layout_toStartOf="@+id/menu" />
         <ImageButton
             android:id="@+id/menu"
             android:layout_width="wrap_content"
