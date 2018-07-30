@@ -37,32 +37,39 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp">
 
         <ImageButton
             android:id="@+id/myjob_bt_plan"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="70dp"
-            android:layout_marginStart="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+
             android:background="#0000"
             android:scaleType="centerCrop"
-            android:src="@drawable/plan"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:src="@drawable/plan" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+
 
         <ImageButton
             android:id="@+id/myjob_bt_part"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="39dp"
-            android:layout_marginStart="39dp"
-            android:layout_toEndOf="@+id/myjob_bt_plan"
-            android:layout_toRightOf="@+id/myjob_bt_plan"
+
+            android:layout_centerHorizontal="true"
             android:background="#0000"
             android:scaleType="centerCrop"
             android:src="@drawable/part" />

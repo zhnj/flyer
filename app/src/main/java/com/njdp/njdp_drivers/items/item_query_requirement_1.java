@@ -494,7 +494,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                     }
 
                                     showDialog(weather);
-                                    Log.i("weather",weather);
+                                    //Log.i("weather",weather);
 
 
                                 }

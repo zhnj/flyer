@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_login"
+    android:background="@drawable/main_bg"
     android:paddingTop="@dimen/padding20"
     android:weightSum="1">
     <RelativeLayout
@@ -29,7 +29,7 @@
             android:text="无人机编号："
 
             android:gravity="right"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="18dp"/>
         <EditText
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:id="@+id/drone_et_id"
             android:layout_weight="4"
             android:textSize="18dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
 
@@ -57,7 +57,7 @@
             android:layout_weight="2"
             android:gravity="right"
             android:text="作业能力："
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textSize="18dp" />
 
         <EditText
@@ -67,7 +67,7 @@
             android:background="@drawable/login_edit_changecolor"
             android:inputType="number"
             android:id="@+id/drone_et_ability"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textCursorDrawable="@drawable/login_cursor"
             android:textSize="18dp" />
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:text="亩/分钟"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textSize="18dp" />
     </LinearLayout>
     <LinearLayout
@@ -92,7 +92,7 @@
             android:text="备注："
 
             android:gravity="right"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textSize="18dp"/>
         <EditText
             android:layout_width="0dp"
@@ -100,7 +100,7 @@
             android:id="@+id/drone_et_remark"
             android:layout_weight="4"
             android:textSize="18dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
 
@@ -123,13 +123,13 @@
             android:text="无人机型号："
             android:gravity="right"
             android:layout_weight="2"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textSize="18dp"/>
 
         <Spinner
             android:layout_weight="4"
             android:id="@+id/drone_spinner"
-            android:textColor="#FFFFFF"
+            android:textColor="#191970"
             android:textSize="18dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
