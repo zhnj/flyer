@@ -1027,13 +1027,13 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
                     if(mainMenu.selectedFieldInfo.size()<1){
                         commonUtil.error_hint_short("未查询到符合要求的农田信息，请重新查询！");
-                        countInfo.setText("共找到" + 0 + "块农田，点击关闭");
+                        countInfo.setText("共找到" + 0 + "块农田");
                         //清楚覆盖物Marker,重新加载
                         mBaiduMap.clear();
                     }else{
                         //mainMenu.addBackFragment(new item_query_requirement_1());
                         markRepairStation(mainMenu.selectedFieldInfo);
-                        countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击关闭");
+                        countInfo.setText("共找到" + String.valueOf(mainMenu.selectedFieldInfo.size()) + "块农田，点击查看");
                     }
 //                    else
 //                    {

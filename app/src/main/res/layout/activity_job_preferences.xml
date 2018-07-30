@@ -30,7 +30,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="14dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,10 +40,10 @@
         <TextView
             style="@style/Register_style"
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="作业时长：" />
+            android:text="作业时长（小时）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavworktime"
@@ -70,10 +70,10 @@
         <TextView
             style="@style/Register_style"
 
-            android:layout_width="wrap_content"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="住宿成本：" />
+            android:text="住宿成本（元/天）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavhotelcost"
@@ -98,10 +98,10 @@
         <TextView
             style="@style/Register_style"
 
-            android:layout_width="wrap_content"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="人工成本：" />
+            android:text="人工成本（元）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavlaborcost"
@@ -125,10 +125,10 @@
         <TextView
             style="@style/Register_style"
 
-            android:layout_width="wrap_content"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="运输油耗：" />
+            android:text="运输油耗（元/百公里）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavrunfuel"
@@ -152,10 +152,10 @@
         <TextView
             style="@style/Register_style"
 
-            android:layout_width="wrap_content"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="作业成本：" />
+            android:text="作业成本（元/亩）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavworkcost"
@@ -182,7 +182,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="作业时长：" />
+            android:text="运输速度（公里/小时）：" />
         <EditText
             style="@style/Register_style"
             android:id="@+id/uavrunvelocity"
