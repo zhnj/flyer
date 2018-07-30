@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,12 +43,13 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     Gson gson = new Gson();
     List<DroneBean.ResultBean> resultBeanList;
     View view;
-    private slidingMenu mainMenu;
     RecyclerView rv;
     LinearLayoutManager layoutManager;//纵向线性布局
     int curr;
     String url;
     MyRefAdapter adapter;
+    private DrawerLayout menu;
+    private slidingMenu mainMenu;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,8 +62,12 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 Toast.makeText(getContext(),"连接服务器失败",Toast.LENGTH_SHORT).show();
             }
             view.findViewById(R.id.drone_add).setOnClickListener(this);
-            view.findViewById(R.id.drone_back).setOnClickListener(this);
+            view.findViewById(R.id.getback).setOnClickListener(this);
             view.findViewById(R.id.drone_set).setOnClickListener(this);
+            view.findViewById(R.id.menu).setOnClickListener(this);
+            mainMenu=(slidingMenu)getActivity();
+            menu=mainMenu.drawer;
+
             setPullRefresher();
             mainMenu=(slidingMenu)getActivity();
         }
@@ -201,12 +208,15 @@ public class item_release_machine extends Fragment implements View.OnClickListen
                 case R.id.drone_add:
                     Intent intent = new Intent(getContext(), Item_editor_machine.class);
                     getContext().startActivity(intent);
-                case R.id.drone_back:
-                    //mainMenu.finish();
+                case R.id.getback:
+                    mainMenu.finish();
                     break;
                 case R.id.drone_set:
                     Intent intent1 = new Intent(getContext(), Job_preferencesActivity.class);
                     getContext().startActivity(intent1);
+                    break;
+                case R.id.menu:
+                    menu.openDrawer(Gravity.LEFT);
                     break;
                 default:
                     break;

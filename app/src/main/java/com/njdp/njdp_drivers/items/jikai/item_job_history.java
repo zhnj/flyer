@@ -3,18 +3,29 @@ package com.njdp.njdp_drivers.items.jikai;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.items.myplan.MyPlan;
 import com.njdp.njdp_drivers.items.mywork.MyPart;
+import com.njdp.njdp_drivers.slidingMenu;
 
-public class item_job_history extends Fragment{
+import static com.njdp.njdp_drivers.R.id.mainMenu;
+
+public class item_job_history extends Fragment implements View.OnClickListener {
     View view;
+    private DrawerLayout menu;
+    private slidingMenu mainMenu;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_3_job_history, container,false);
+        view.findViewById(R.id.getback).setOnClickListener(this);
+        view.findViewById(R.id.menu).setOnClickListener(this);
+        mainMenu=(slidingMenu)getActivity();
+        menu=mainMenu.drawer;
         initView();
         return view;
     }
@@ -36,7 +47,15 @@ public class item_job_history extends Fragment{
             }
         });
     }
-
-
-
+    public void onClick(View v)
+    {
+        switch (v.getId()) {
+            case R.id.getback:
+                mainMenu.finish();
+                break;
+            case R.id.menu:
+                menu.openDrawer(Gravity.LEFT);
+                break;
+        }
+    }
 }

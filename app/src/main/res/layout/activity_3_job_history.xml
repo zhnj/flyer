@@ -9,6 +9,7 @@
     tools:context="com.njdp.njdp_drivers.items.jikai.item_job_history"
     android:weightSum="1"
     android:background="@drawable/main_bg">
+
     <RelativeLayout
         android:id="@+id/release_top"
         android:layout_width="match_parent"
@@ -34,6 +35,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_menu_white_48dp" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

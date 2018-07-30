@@ -4,27 +4,37 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.View;
 
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.items.mywork.adapter.MyPagerAdapter;
 import com.njdp.njdp_drivers.items.mywork.fragment.Frag_weiwancheng;
 import com.njdp.njdp_drivers.items.mywork.fragment.Frag_yishixiao;
 import com.njdp.njdp_drivers.items.mywork.fragment.Frag_yiwancheng;
+import com.njdp.njdp_drivers.slidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPart extends AppCompatActivity {
+public class MyPart extends AppCompatActivity implements View.OnClickListener {
     private TabLayout mTb;
     private ViewPager mVp;
     private List<Fragment> mFragmentList;
     private List<String> mTitleList;
-
+    private DrawerLayout menu;
+    private slidingMenu mainMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_activity_layout_part);
+
+        findViewById(R.id.getback).setOnClickListener(this);
+        findViewById(R.id.menu).setOnClickListener(this);
+        mainMenu=new slidingMenu();
+        menu=mainMenu.drawer;
 
         //初始化控件
         initView();
@@ -63,5 +73,15 @@ public class MyPart extends AppCompatActivity {
         mTb = (TabLayout) findViewById(R.id.mTb);
         mVp = (ViewPager) findViewById(R.id.mVp);
     }
-
+    public void onClick(View v)
+    {
+        switch (v.getId()) {
+            case R.id.getback:
+                finish();
+                break;
+            case R.id.menu:
+                menu.openDrawer(Gravity.LEFT);
+                break;
+        }
+    }
 }

@@ -2,27 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@drawable/main_login"
+    android:paddingTop="@dimen/padding20"
     android:weightSum="1">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:id="@+id/job_preferences_top"
         android:background="@drawable/main_title">
-
         <TextView
             style="@style/Pages_Title"
-            android:text="我的无人机——编辑" />
-
-        <ImageButton
-            android:visibility="invisible"
-            android:id="@+id/drone_editor_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_chevron_left_white_36dp" />
-
+            android:text="无人机编辑"
+            />
     </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="20dp"

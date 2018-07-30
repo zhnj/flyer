@@ -88,12 +88,7 @@ public class Item_editor_machine extends AppCompatActivity {
     }
     private void initView() {
 
-        findViewById(R.id.drone_editor_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         //为dataList赋值，将下面这些数据添加到数据源中
         dataList = new ArrayList<String>();
