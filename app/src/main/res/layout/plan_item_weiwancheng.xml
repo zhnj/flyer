@@ -14,7 +14,7 @@
         android:id="@+id/pw_tv"
         android:textSize="16sp"
         android:lineSpacingMultiplier="1.5"
-        android:textColor="#444"
+        android:textColor="#000"
         android:text="测试条目"/>
 
     <LinearLayout
@@ -52,5 +52,9 @@
             android:padding="8dp"
             android:text="删除方案" />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#444"
+        />
 </LinearLayout>

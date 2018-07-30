@@ -23,7 +23,7 @@ public class MyPlan extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_activity_layout);
+        setContentView(R.layout.new_activity_layout_plan);
 
         //初始化控件
         initView();

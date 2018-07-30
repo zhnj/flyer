@@ -211,13 +211,17 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity android:name=".items.mywork.MyPart"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="我的地块"/>
         <activity android:name=".items.myplan.MyPlan"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="我的方案"/>
         <activity android:name=".Job_preferencesActivity"
-            android:label="无人机偏好"  android:theme="@style/AppTheme.NoActionBar"
+            android:label="无人机偏好"
+            android:theme="@style/AppTheme.NoActionBar"
            />
         <activity android:name=".items.myplan.PlanDetail"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="我的方案详情"/>
     </application>
 

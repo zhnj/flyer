@@ -7,16 +7,18 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_bg"
     android:orientation="vertical">
-
     <RelativeLayout
+        android:id="@+id/release_top"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/main_title">
 
         <TextView
             style="@style/Pages_Title"
-            android:text="我的无人机" />
+            android:text="我的无人机"
+            android:id="@+id/textView" />
 
         <ImageButton
             android:visibility="invisible"
@@ -39,10 +41,10 @@
             android:id="@+id/drone_set"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/padding5"
-            android:layout_toLeftOf="@id/drone_add"
-            android:background="@drawable/ic_settings_white_24dp" />
+            android:background="@drawable/ic_settings_white_24dp"
+            android:layout_alignBottom="@+id/textView"
+            android:layout_toLeftOf="@+id/drone_add"
+            android:layout_toStartOf="@+id/drone_add" />
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            android:background="#fff" />
+            />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

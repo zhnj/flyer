@@ -75,7 +75,7 @@ public class Frag_weiwancheng extends Fragment {
                 //模拟网络请求到的数据
                 curr += 1;
                 try {
-                    getData(true);
+                    getData(false);
                 }catch (Exception e){
                     Toast.makeText(getContext(),"连接服务器失败",Toast.LENGTH_SHORT).show();
                 }
