@@ -51,13 +51,13 @@
     <application
         android:name=".db.AppController"
         android:allowBackup="true"
-        android:icon="@drawable/uav"
-        android:label="智慧无人机"
+        android:icon="@drawable/logo"
+        android:label="我是飞手"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".login"
-            android:label="智慧无人机"
+            android:label="我是飞手"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
