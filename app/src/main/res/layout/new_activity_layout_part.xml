@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/main_bg">
+
     <RelativeLayout
         android:id="@+id/release_top"
         android:layout_width="match_parent"
@@ -25,11 +26,13 @@
 
         <ImageButton
             android:id="@+id/menu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_menu_white_48dp" />
     </RelativeLayout>
+
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
