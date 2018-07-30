@@ -19,6 +19,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
@@ -31,11 +35,22 @@ import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.njdp.njdp_drivers.R;
+import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
+import com.njdp.njdp_drivers.db.AppConfig;
+import com.njdp.njdp_drivers.db.AppController;
+import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.BNDGuideActivity;
+import com.njdp.njdp_drivers.util.NetUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.njdp.njdp_drivers.items.item_query_requirement_1.activityList;
 
@@ -47,6 +62,7 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
     private List<PlanDetailBean.ResultBean> list;
     ViewGroup parent;
     String str;
+    SessionManager sessionManager=new SessionManager();
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
     public DetialAdapter(List<PlanDetailBean.ResultBean> list) {
@@ -58,9 +74,77 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
         this.parent = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item_detail, null);
         ViewHolder holder = new ViewHolder(view);
+        gps_MachineLocation();
+        initNavi();
+
         return holder;
     }
+    ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
+    public void gps_MachineLocation() {
+        String tag_string_req = "req_GPS";
+        //服务器请求
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("fm_id", sessionManager.getUserId());
+                //params.put("token", token);
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private class locationSuccessListener implements Response.Listener<String>//获取农机位置响应服务器成功
+    {
+        @Override
+        public void onResponse(String response) {
+            Log.d("导航", "AreaInit Response: " + response);
+            try {
+                JSONObject jObj = new JSONObject(response);
+                int status = jObj.getInt("status");
+
+                if (status == 1) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e("导航", "Json error：response错误:" + errorMsg);
+
+                } else if (status == 0) {
+
+                    ///////////////////////////获取服务器农机，经纬度/////////////////////
+                    JSONArray location = jObj.getJSONArray("result");
+                    GPS_longitude = location.getJSONObject(0).getString("com_longitude");
+                    GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+
+                    ///////////////////////////获取服务器无人机公司，经纬度/////////////////////
+
+
+                } else {
+                    String errorMsg = jObj.getString("result");
+                    Log.e("导航", "GPSLocation Error:" + errorMsg);
+
+                }
+            } catch (JSONException e) {
+                // JSON error
+                Log.e("导航", "GPSLocation Error,Json error：response错误:" + e.getMessage());
+
+            }
+        }
+    }
+
+    private class locationErrorListener implements  Response.ErrorListener//定位服务器响应失败
+    {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("导航", "ConnectService Error: " + error.getMessage());
+
+
+        }
+    }
     @Override
     public void onBindViewHolder(DetialAdapter.ViewHolder holder, final int position) {
         String id = "作业地块"+(position+1);
@@ -252,7 +336,7 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
 
             @Override
             public void initStart() {
-//                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+               //Toast.makeText(, "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -265,7 +349,7 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
 
             @Override
             public void initFailed() {
-//                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+               //Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
 
             }
         }, null, ttsHandler, null);
