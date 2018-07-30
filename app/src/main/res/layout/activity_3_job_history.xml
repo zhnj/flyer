@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
-
     tools:context="com.njdp.njdp_drivers.items.jikai.item_job_history"
     android:weightSum="1"
     android:background="@drawable/main_bg">
@@ -38,27 +37,27 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:paddingTop="120dp"
-        >
+        android:orientation="vertical"
+    >
 
     <ImageButton
+        android:layout_marginTop="50dp"
         android:id="@+id/myjob_bt_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:background="#9999"
-        android:src="@drawable/my_plan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#495ca5f0"
+        android:src="@drawable/job_logo2"
+    />
 
-        android:text="查看方案" />
-
-    <ImageButton
-        android:id="@+id/myjob_bt_part"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:background="#9999"
-        android:src="@drawable/my_farmer"
-        android:text="查看地块" />
+        <ImageButton
+            android:layout_marginTop="30dp"
+            android:id="@+id/myjob_bt_part"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#495ca5f0"
+            android:src="@drawable/job_logo1"
+       />
     </LinearLayout>
 </LinearLayout>
