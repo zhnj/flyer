@@ -19,6 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
@@ -296,7 +303,64 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
             }
         }
     };
+    //监听地图的改变，改变中心的坐标
+    private class centreMap implements BaiduMap.OnMapStatusChangeListener{
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus) {
+//            updateMapState(mapStatus);
+        }
 
+        @Override
+        public void onMapStatusChange(MapStatus mapStatus) {
+//            updateMapState(mapStatus);
+        }
+
+        @Override
+        public void onMapStatusChangeFinish(MapStatus mapStatus) {
+            updateMapState(mapStatus);
+        }
+    }
+    private double centre_longitude;//地图中间经度
+    private double centre_latitude;//地图中间维度
+    private BitmapDescriptor centreBitmap;//中心覆盖物的图标
+    //获取MapStatus的经纬度
+    private void updateMapState(MapStatus status) {
+        LatLng mCenterLatLng = status.target;
+        /**获取经纬度*/
+        centre_latitude = mCenterLatLng.latitude;
+        centre_longitude = mCenterLatLng.longitude;
+        try{
+            //
+            // around_strReq.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //  this.GPS_longitude=String.valueOf(centre_longitude);//GPS经度
+        //this.GPS_latitude=String.valueOf(centre_latitude);//GPS纬度
+        //查找，刷新
+        //initFieldInfo();
+        if(centreMarker!=null) {
+            centreMarker.remove();
+        }
+        showMaker(centre_latitude, centre_longitude, centreBitmap);
+    }
+    private Marker centreMarker;
+    //在（latitude,longitude）坐标处显示id为id_maker_icon的覆盖物
+    private void showMaker(double latitude,double longitude,BitmapDescriptor bitmap)
+    {
+        centreMarker=null;
+        LatLng point = new LatLng(latitude, longitude);
+
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+        //在地图上添加Marker，并显示
+        centreMarker = (Marker) mBaiduMap.addOverlay(option);
+        centreMarker.setTitle("设为中心点");
+    }
+    private BaiduMap mBaiduMap = null;
     @Override
     public int getItemCount() {
         return list!= null ? list.size() : 0;
