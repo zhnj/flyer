@@ -143,7 +143,6 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private ProgressDialog pDialog;
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
-
     private String com_longitude="1.1";//无人机飞机公司地址
     private String com_latitude="1.1";//
 
@@ -1485,7 +1484,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     /*
     点击去这里按钮进行导航监听类
     * */
-    class GohereListener implements View.OnClickListener {
+    public class GohereListener implements View.OnClickListener {
         private Double latitude;
         private Double logtitude;
 

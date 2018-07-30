@@ -113,31 +113,36 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         holder.bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url;
-                int flyer_id = list.get(position).getFlyerId();
-                final int farmland_id = list.get(position).getFarmlandsInfo().getId();
-                String opration = "完成";
-                url = AppConfig.URL_MYJOB_PART_COMMENT;
-                url = url + "?flyer_id=" + flyer_id + "&farmlandId=" + farmland_id;
-                Log.i("delurl", url);
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        CommentBean cb = new Gson().fromJson(response,CommentBean.class);
-                        Toast.makeText(context, farmland_id+":"+cb.getFarmlandsPingjia(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                    }
 
-                });
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("get");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
+                Double longitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLongitude());
+                Double latitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLatitude());
+
+
+//                String url;
+//                int flyer_id = list.get(position).getFlyerId();
+//                final int farmland_id = list.get(position).getFarmlandsInfo().getId();
+//                String opration = "完成";
+//                url = AppConfig.URL_MYJOB_PART_COMMENT;
+//                url = url + "?flyer_id=" + flyer_id + "&farmlandId=" + farmland_id;
+//                Log.i("delurl", url);
+//                //定义一个StringRequest
+//                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
+//                    @Override
+//                    public void onResponse(String response) {
+//                        CommentBean cb = new Gson().fromJson(response,CommentBean.class);
+//                        Toast.makeText(context, farmland_id+":"+cb.getFarmlandsPingjia(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }, new Response.ErrorListener() {// 添加请求失败监听
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                });
+//                // 设置请求的tag标签，便于在请求队列中寻找该请求
+//                request.setTag("get");
+//                // 添加到全局的请求队列
+//                AppController.getHttpQueues().add(request);
             }
         });
         holder.bt3.setOnClickListener(new View.OnClickListener() {
