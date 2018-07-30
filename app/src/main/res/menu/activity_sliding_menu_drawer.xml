@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_1" android:icon="@drawable/ic_release"
+        android:id="@+id/item_1" android:icon="@drawable/ic_release_2"
         android:title="我的无人机" />
-    <item android:id="@+id/item_2" android:icon="@drawable/ic_intell_arrange"
+    <item android:id="@+id/item_2" android:icon="@drawable/ic_intell_arrange_2"
         android:title="飞哪儿好" />
-    <item android:id="@+id/item_3" android:icon="@drawable/ic_require"
+    <item android:id="@+id/item_3" android:icon="@drawable/ic_require_2"
         android:title="需求查询" />
-    <item android:id="@+id/item_4" android:icon="@drawable/ic_job_history"
+    <item android:id="@+id/item_4" android:icon="@drawable/ic_job_history_2"
         android:title="我的作业" />
-    <item android:id="@+id/item_5" android:icon="@drawable/ic_personal_info"
+    <item android:id="@+id/item_5" android:icon="@drawable/ic_personal_info_2"
         android:title="@string/item_9"/>
-    <item android:id="@+id/item_6" android:icon="@drawable/ic_server_object"
+    <item android:id="@+id/item_6" android:icon="@drawable/ic_server_object_2"
         android:title="怎么飞"/>
 
 </menu>
