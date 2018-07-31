@@ -352,7 +352,6 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //导航
-                        //添加导航代码
                         GohereListener gohere =  new GohereListener(longitude,latitude);
                         gohere.routeplanToNavi();
                     }
