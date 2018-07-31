@@ -66,6 +66,8 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
     private List<WorkBean.ResultBean> list;
     private Context context;
     ViewGroup parent;
+    Double longitude;
+    Double latitude;
     public static List<Activity> activityList = new LinkedList<Activity>();
     SessionManager sessionManager=new SessionManager();
     private String GPS_longitude="1.1";//GPS经度
@@ -222,7 +224,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onResponse(String response) {
                         String weather = new String();
-                        Toast.makeText(parent.getContext(), response,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(parent.getContext(), response,Toast.LENGTH_LONG).show();
                         //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
                         WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
 
@@ -230,6 +232,8 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                             String s = weatherBean.getMessage().get(i).getDate() + "的天气情况：\n       【" + weatherBean.getMessage().get(i).getType()+"】  风力强度："+weatherBean.getMessage().get(i).getWindrage()+"级";
                             weather += s+"\n";
                         }
+                        longitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLongitude());
+                        latitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLatitude());
 
                         showDialog(weather);
                         Log.i("weather",weather);
@@ -240,7 +244,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                 }, new Response.ErrorListener() {// 添加请求失败监听
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(parent.getContext(), "上传失败",Toast.LENGTH_LONG).show();
+                        Toast.makeText(parent.getContext(), "获取天气失败",Toast.LENGTH_LONG).show();
                     }
                 })
                 {
@@ -267,11 +271,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
 
 
 
-                Double longitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLongitude());
-                Double latitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLatitude());
-                //添加导航代码
-                GohereListener gohere =  new GohereListener(longitude,latitude);
-                gohere.routeplanToNavi();
+
 
             }
         });
@@ -352,8 +352,9 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //导航
-
-
+                        //添加导航代码
+                        GohereListener gohere =  new GohereListener(longitude,latitude);
+                        gohere.routeplanToNavi();
                     }
                 });
         normalDialog.setNegativeButton("取消",
