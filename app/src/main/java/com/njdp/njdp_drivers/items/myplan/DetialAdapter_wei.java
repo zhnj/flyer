@@ -35,12 +35,10 @@ import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.njdp.njdp_drivers.R;
-import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.BNDGuideActivity;
-import com.njdp.njdp_drivers.util.NetUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,19 +56,19 @@ import static com.njdp.njdp_drivers.items.item_query_requirement_1.activityList;
  * Created by Rock on 2018/7/28.
  */
 
-public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder> {
+public class DetialAdapter_wei extends RecyclerView.Adapter<DetialAdapter_wei.ViewHolder> {
     private List<PlanDetailBean.ResultBean> list;
     ViewGroup parent;
     String str;
     SessionManager sessionManager=new SessionManager();
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
-    public DetialAdapter(List<PlanDetailBean.ResultBean> list) {
+    public DetialAdapter_wei(List<PlanDetailBean.ResultBean> list) {
         this.list = list;
     }
 
     @Override
-    public DetialAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DetialAdapter_wei.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item_detail, null);
         ViewHolder holder = new ViewHolder(view);
@@ -146,7 +144,7 @@ public class DetialAdapter extends RecyclerView.Adapter<DetialAdapter.ViewHolder
         }
     }
     @Override
-    public void onBindViewHolder(DetialAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(DetialAdapter_wei.ViewHolder holder, final int position) {
         String id = "作业地块"+(position+1);
         String address = "\n地址："+list.get(position).getFarm_province()
                 +list.get(position).getFarm_city()

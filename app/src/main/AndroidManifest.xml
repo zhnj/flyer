@@ -220,7 +220,10 @@
             android:label="无人机偏好"
             android:theme="@style/AppTheme.NoActionBar"
            />
-        <activity android:name=".items.myplan.PlanDetail"
+        <activity android:name=".items.myplan.PlanDetail_wei"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="我的方案详情"/>
+        <activity android:name=".items.myplan.PlanDetail_yiwancheng"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="我的方案详情"/>
     </application>

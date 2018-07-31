@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,13 +17,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
-import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
-import com.njdp.njdp_drivers.items.myplan.PlanDetail;
+import com.njdp.njdp_drivers.items.myplan.PlanDetail_wei;
+import com.njdp.njdp_drivers.items.myplan.PlanDetail_yiwancheng;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Rock on 2018/7/27.
@@ -68,7 +65,7 @@ public class YwcAdapter extends RecyclerView.Adapter<YwcAdapter.ViewHolder> {
                     @Override
                     public void onResponse(String response) {
                         Log.i("info", "详细方案信息"+response);
-                        Intent intent = new Intent(parent.getContext(), PlanDetail.class);
+                        Intent intent = new Intent(parent.getContext(), PlanDetail_yiwancheng.class);
                         intent.putExtra("detail",response);
                         parent.getContext().startActivity(intent);
                         //PlanDetailBean planDetailBean = new Gson().fromJson(response,PlanDetailBean.class);

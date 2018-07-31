@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#295ca5f0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_tv"
+        android:textSize="16sp"
+        android:lineSpacingMultiplier="1.5"
+        android:textColor="#000"
+        android:text="测试条目"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/detail_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_call"
+            android:elevation="0dp"
+            android:padding="8dp"
+            android:text="拨号" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#444"
+        />
+</LinearLayout>

@@ -20,7 +20,7 @@ import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.myplan.PlanBean;
-import com.njdp.njdp_drivers.items.myplan.PlanDetail;
+import com.njdp.njdp_drivers.items.myplan.PlanDetail_wei;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +71,7 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
                     @Override
                     public void onResponse(String response) {
                         Log.i("info", "详细方案信息"+response);
-                        Intent intent = new Intent(parent.getContext(), PlanDetail.class);
+                        Intent intent = new Intent(parent.getContext(), PlanDetail_wei.class);
                         intent.putExtra("detail",response);
                         parent.getContext().startActivity(intent);
                         //PlanDetailBean planDetailBean = new Gson().fromJson(response,PlanDetailBean.class);

@@ -1,9 +1,7 @@
-package com.njdp.njdp_drivers.items.mywork.adapter;
+package com.njdp.njdp_drivers.items.myplan;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,7 +10,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +19,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,51 +34,47 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
-import com.google.gson.Gson;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.items.BNDGuideActivity;
-import com.njdp.njdp_drivers.items.item_query_requirement_1;
-import com.njdp.njdp_drivers.items.jikai.bean.WeatherBean;
-import com.njdp.njdp_drivers.items.mywork.bean.WorkBean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.ViewHolder> {
-    private List<WorkBean.ResultBean> list;
-    private Context context;
+import static com.njdp.njdp_drivers.items.item_query_requirement_1.activityList;
+
+/**
+ * Created by Rock on 2018/7/28.
+ */
+
+public class DetialAdapter_yiwancheng extends RecyclerView.Adapter<DetialAdapter_yiwancheng.ViewHolder> {
+    private List<PlanDetailBean.ResultBean> list;
     ViewGroup parent;
-    public static List<Activity> activityList = new LinkedList<Activity>();
+    String str;
     SessionManager sessionManager=new SessionManager();
     private String GPS_longitude="1.1";//GPS经度
     private String GPS_latitude="1.1";//GPS纬度
-    public WeiwanchengAdapter(Context context, List<WorkBean.ResultBean> list) {
-        this.context = context;
+    public DetialAdapter_yiwancheng(List<PlanDetailBean.ResultBean> list) {
         this.list = list;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DetialAdapter_yiwancheng.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
-        //给Adapter添加布局，bq把这个view传递给HoldView，让HoldView找到空间
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_item_weiwancheng_work, null);
-        final ViewHolder holder = new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item_detail_yiwancheng, null);
+        ViewHolder holder = new ViewHolder(view);
         gps_MachineLocation();
         initNavi();
+
         return holder;
     }
     ////////////////////////////////////从服务器获取农机经纬度///////////////////////////////////////
@@ -90,7 +82,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         String tag_string_req = "req_GPS";
         //服务器请求
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_findFlyComByUser, new WeiwanchengAdapter.locationSuccessListener(), new WeiwanchengAdapter.locationErrorListener()) {
+                AppConfig.URL_findFlyComByUser, new locationSuccessListener(), new locationErrorListener()) {
 
             @Override
             protected Map<String, String> getParams() {
@@ -151,52 +143,45 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
 
         }
     }
-    String phone;
-    String address;
-    String area;
-    String price;
-    String date;
-
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        //position为Adapter的位置，数据从list里面可以拿出来。
-        try {
-            address = "地址：" + list.get(position).getFarmlandsInfo().getFarmlandsProvince() + list.get(position).getFarmlandsInfo().getFarmlandsCity() + list.get(position).getFarmlandsInfo().getFarmlandsCounty() + list.get(position).getFarmlandsInfo().getFarmlandsVillage();
-        } catch (Exception e) {
-            address = "地址：[null]";
+    public void onBindViewHolder(DetialAdapter_yiwancheng.ViewHolder holder, final int position) {
+        String id = "作业地块"+(position+1);
+        String address = "\n地址："+list.get(position).getFarm_province()
+                +list.get(position).getFarm_city()
+                +list.get(position).getFarm_county()
+                +list.get(position).getFarm_town()
+                +list.get(position).getFarm_village();
+        String income = "\n收入："+list.get(position).getIncome();
+        String area = "\n面积："+list.get(position).getArea_num()+"亩";
+        final String phone = "\n电话："+list.get(position).getFarmer_phone();
+        String result = "\n是否住宿：";//+list.get(position).getReturnStatus());
+        switch (list.get(position).getReturnStatus()){
+            case "1":
+                result+="是";
+                break;
+            case "2":
+                result+="否";
+                break;
+            case "3":
+                result+="是";
+                break;
+            case "4":
+                result+="否";
+                break;
+            default:
+                result="";
+                break;
         }
-        try {
-            area = "\n面积：" + list.get(position).getFarmlandsInfo().getFarmlandsArea();
-        } catch (Exception e) {
-            area = "\n面积：[null]";
-        }
-        try {
-            price = "\n单价：" + list.get(position).getFarmlandsInfo().getFarmlandsUnitPrice();
-        } catch (Exception e) {
-            price = "地址：[null]";
-        }
-        try {
-            phone = "\n电话：" + list.get(position).getFarmlandsInfo().getPersonInfoFarmerMachine().getPersonPhone();
-        } catch (Exception e) {
-            phone = "\n电话：[null]";
-        }
-        try {
-            date = "\n日期：" + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsStartTime()) + "  至  " + stampToDate(list.get(position).getFarmlandsInfo().getFarmlandsEndTime());
-        } catch (Exception e) {
-            date = "\n日期：[null]";
-        }
+        String date = "\n日期："+list.get(position).getBeginTime()+" 至 "+list.get(position).getEndTime();
 
-        String str = address + area + price + phone + date;
-        holder.textView.setText(str);
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+
+        str = id+address+income+area+phone+result+date;
+        Log.i("info","str:"+str);
+        holder.tv.setText(str);
+
+        holder.bt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "当前点击的条目的地址为：" + list.get(position).getFarmlandsInfo().getFarmlandsVillage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        holder.bt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (ActivityCompat.checkSelfPermission(parent.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -212,219 +197,13 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                 parent.getContext().startActivity(intent);
             }
         });
-        holder.bt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //POST网络请求
-                String url=AppConfig.URL_Weather;
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        String weather = new String();
-                        Toast.makeText(parent.getContext(), response,Toast.LENGTH_LONG).show();
-                        //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
-                        WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
-
-                        for( int i = 0 ; i < weatherBean.getMessage().size() ; i++) {//内部不锁定，效率最高，但在多线程要考虑并发操作的问题。
-                            String s = weatherBean.getMessage().get(i).getDate() + "的天气情况：\n       【" + weatherBean.getMessage().get(i).getType()+"】  风力强度："+weatherBean.getMessage().get(i).getWindrage()+"级";
-                            weather += s+"\n";
-                        }
-
-                        showDialog(weather);
-                        Log.i("weather",weather);
-
-                    }
 
 
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(parent.getContext(), "上传失败",Toast.LENGTH_LONG).show();
-                    }
-                })
-                {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        long startTime = list.get(position).getFarmlandsInfo().getFarmlandsStartTime();
-                        long endTime = list.get(position).getFarmlandsInfo().getFarmlandsEndTime();
-                        String farmId = String.valueOf(list.get(position).getFarmlandsInfo().getId());
-                        String startT = stampToDate(startTime);
-                        String endT = addDay(startT);
-
-                        Map<String,String> map = new HashMap<String,String>();
-                        map.put("farmID",farmId);
-                        map.put("timeStart", startT);
-                        map.put("timeEnd", endT);
-                        Log.e("farmId",startT+":"+endT);
-                        return map;
-                    }
-                };
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("post");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
-
-
-
-                Double longitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLongitude());
-                Double latitude = Double.valueOf(list.get(position).getFarmlandsInfo().getFarmlandsLatitude());
-                //添加导航代码
-                GohereListener gohere =  new GohereListener(longitude,latitude);
-                gohere.routeplanToNavi();
-
-            }
-        });
-        holder.bt3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url;
-                int flyer_id = list.get(position).getFlyerId();
-                int farmland_id = list.get(position).getFarmlandsInfo().getId();
-                String opration = "完成";
-                url = AppConfig.URL_MYJOB_PART_CHECK;
-                url = url + "?flyer_id=" + flyer_id + "&farmland_id=" + farmland_id + "&opration=" + opration;
-                Log.i("delurl", url);
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(context, "确认完成", Toast.LENGTH_SHORT).show();
-                        delete(position);
-                    }
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                    }
-
-                });
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("get");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
-            }
-        });
-        holder.bt4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url;
-                int flyer_id = list.get(position).getFlyerId();
-                int farmland_id = list.get(position).getFarmlandsInfo().getId();
-                url = AppConfig.URL_MYJOB_PART_DELETE;
-                url = url + "?flyer_id=" + flyer_id + "&farmland_id=" + farmland_id;
-                Log.i("delurl", url);
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        delete(position);
-                        Toast.makeText(context, "删除完成", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                        //delete(position);
-                    }
-
-                });
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("get");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
-            }
-        });
-    }
-    private void showDialog(String weather){
-        /* @setIcon 设置对话框图标
-         * @setTitle 设置对话框标题
-         * @setMessage 设置对话框消息提示
-         * setXXX方法返回Dialog对象，因此可以链式设置属性
-         */
-        final AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(parent.getContext());
-        //normalDialog.setIcon(R.drawable.);
-        normalDialog.setTitle("天气状况提醒：");
-        normalDialog.setMessage(weather);
-        normalDialog.setPositiveButton("继续",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //导航
-
-
-                    }
-                });
-        normalDialog.setNegativeButton("取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //...To-do
-                    }
-                });
-        // 显示
-        normalDialog.show();
     }
 
-    @Override
-    public int getItemCount() {
-        return list != null ? list.size() : 0;
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
-        Button bt1;
-        Button bt2;
-        Button bt3;
-        Button bt4;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            //根据onCreateViewHolder的HoldView所添加的xml布局找到空间
-            textView = (TextView) itemView.findViewById(R.id.tv_adapter);
-            bt1 = (Button) itemView.findViewById(R.id.fw_bt1);
-            bt2 = (Button) itemView.findViewById(R.id.fw_bt2);
-            bt3 = (Button) itemView.findViewById(R.id.fw_bt3);
-            bt4 = (Button) itemView.findViewById(R.id.fw_bt4);
-        }
-    }
-
-
-    //下面两个方法提供给页面刷新和加载时调用
-    public void add(List<WorkBean.ResultBean> addMessageList) {
-        //增加数据
-        int position = list.size();
-        list.addAll(position, addMessageList);
-        notifyItemInserted(position);
-    }
-
-    public void refresh(List<WorkBean.ResultBean> newList) {
-        //刷新数据
-        list.clear();
-        //list.clear();
-        list.addAll(newList);
-        notifyDataSetChanged();
-    }
-
-    // 删除数据
-    public void delete(int index) {
-        Log.i("size", "即将删除的条目：" + String.valueOf(index));
-        list.remove(index);
-        notifyItemRemoved(index);
-        notifyItemRangeChanged(0, list.size());
-    }
-
-    public static String stampToDate(long lt){
-        String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
-        return res;
-    }
     /*
-点击去这里按钮进行导航监听类
-* */
+    点击去这里按钮进行导航监听类
+    * */
     public class GohereListener implements View.OnClickListener {
         private Double latitude;
         private Double logtitude;
@@ -460,7 +239,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
                  *isGPSNav - true表示真实GPS导航，false表示模拟导航
                  *listener - 开始导航回调监听器，在该监听器里一般是进入导航过程页面
                  * */
-                BaiduNaviManager.getInstance().launchNavigator((Activity) parent.getContext(), list, 2, true, new WeiwanchengAdapter.GohereRoutePlanListener(sNode));
+                BaiduNaviManager.getInstance().launchNavigator((Activity) parent.getContext(), list, 2, true, new GohereRoutePlanListener(sNode));
 
             }
         }
@@ -545,7 +324,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
 
             @Override
             public void initStart() {
-                //Toast.makeText(, "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+               //Toast.makeText(, "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -558,7 +337,7 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
 
             @Override
             public void initFailed() {
-                //Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+               //Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
 
             }
         }, null, ttsHandler, null);
@@ -654,23 +433,20 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         centreMarker.setTitle("设为中心点");
     }
     private BaiduMap mBaiduMap = null;
-
-    //实现日期加3天的方法
-    public static String addDay(String s) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar cd = Calendar.getInstance();
-            cd.setTime(sdf.parse(s));
-            cd.add(Calendar.DATE, 2);//增加一天
-            //cd.add(Calendar.MONTH, n);//增加一个月
-            return sdf.format(cd.getTime());
-        } catch (Exception e) {
-            return null;
-        }
+    @Override
+    public int getItemCount() {
+        return list!= null ? list.size() : 0;
     }
 
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tv;
+        Button bt;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            //根据onCreateViewHolder的HoldView所添加的xml布局找到空间
+            tv = (TextView) itemView.findViewById(R.id.detail_tv);
+            bt = (Button) itemView.findViewById(R.id.detail_bt);
+        }
+    }
 }
-
-
-
-
