@@ -84,11 +84,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-
+            android:textColor="#191970"
             android:text="查找"
+            android:layout_toLeftOf="@+id/back_com_button"
+            android:layout_toStartOf="@+id/back_com_button" />
+        <Button
+            android:id="@+id/back_com_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#191970"
+            android:text="回公司"
+            android:layout_alignBaseline="@+id/btn_search"
+            android:layout_alignBottom="@+id/btn_search"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
         <AutoCompleteTextView
             android:id="@+id/query_query_autoCompleteTextView_2"
             android:layout_width="wrap_content"
