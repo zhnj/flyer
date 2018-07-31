@@ -149,6 +149,9 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
     private String GPS_latitude="1.1";//GPS纬度
     private double centre_longitude;//地图中间经度
     private double centre_latitude;//地图中间维度
+    private String com_longitude="1.1";//无人机飞机公司地址
+    private String com_latitude="1.1";//
+
     private boolean text_gps_flag = false;//GPS定位是否成功
     private static int showDialog_flag=0;//是否显示正在载入的标志
     private Date first_date;
@@ -230,6 +233,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         view.findViewById(R.id.arrange_button).setOnClickListener(this);
         view.findViewById(R.id.jobDate).setOnClickListener(this);
         view.findViewById(R.id.btn_search).setOnClickListener(this);
+        view.findViewById(R.id.back_com_button).setOnClickListener(this);
+
         t_startDate=(TextView)view.findViewById(R.id.startDate);
         t_endDate=(TextView)view.findViewById(R.id.endDate);
         sp_type=(Spinner)view.findViewById(R.id.type);
@@ -480,6 +485,8 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                     JSONArray location = jObj.getJSONArray("result");
                     GPS_longitude = location.getJSONObject(0).getString("com_longitude");
                     GPS_latitude = location.getJSONObject(0).getString("com_latitude");
+                    com_longitude=GPS_longitude;//无人机飞机公司地址
+                    com_latitude=GPS_latitude;
 
                     autoQuery.setText(location.getJSONObject(0).getString("com_name"));
 
@@ -557,6 +564,12 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
                         Double.parseDouble(GPS_longitude));
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(llS);
                 mBaiduMap.animateMapStatus(u);
+                break;
+            case R.id.back_com_button:
+                LatLng ll = new LatLng(Double.parseDouble(com_latitude),
+                        Double.parseDouble(com_longitude));
+                MapStatusUpdate u1 = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u1);
                 break;
             default:
                 break;
