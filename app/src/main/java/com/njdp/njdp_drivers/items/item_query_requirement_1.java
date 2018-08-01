@@ -952,7 +952,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("token", token);
                     params.put("Search_range",sl_area);//需要按照实际范围变动
-                    params.put("crops_kind", "FSY");//作业状态
+                    params.put("crops_kind", "F");//作业状态
                     params.put("start_date", startTime);
                     params.put("end_date", endTime);
                     params.put("Machine_longitude", GPS_longitude);
@@ -1104,6 +1104,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
                     TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
                     String markinfo = "位置:"+fieldInfo.getVillage()+"\n"+
+                            "类型:"+commonUtil.transferCropKind(fieldInfo.getCrops_kind())+"\n"+
                             "电话:" + fieldInfo.getUser_name() + "\n" +
                             "面积:" + fieldInfo.getArea_num() + "\n" +
                             "单价:"+fieldInfo.getUnit_price()+"\n"+

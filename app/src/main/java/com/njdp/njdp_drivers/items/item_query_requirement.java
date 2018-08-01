@@ -595,7 +595,7 @@ public class item_query_requirement  extends Fragment implements View.OnClickLis
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("token", token);
                     params.put("Search_range", sl_area);//需要按照实际范围变动
-                    params.put("crops_kind", "FSY");//作业状态
+                    params.put("crops_kind", "F");//作业状态
                     params.put("start_date", startTime);
                     params.put("end_date", endTime);
                     params.put("Machine_longitude", GPS_longitude);

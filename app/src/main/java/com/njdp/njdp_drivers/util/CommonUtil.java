@@ -225,6 +225,22 @@ public class CommonUtil {
                 return "深松";
             case "CHA":
                 return "平地";
+
+            case "FWH":
+                return "植保小麦";
+            case "FCO":
+                return "植保玉米";
+            case "FRC":
+                return "植保水稻";
+            case "FGR":
+                return "植保谷物";
+            case "FFT":
+                return "植保果树";
+            case "FOT":
+                return "植保其它";
+
+
+
         }
         return "类型错误";
     }

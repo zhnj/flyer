@@ -708,6 +708,7 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
 
             TextView tv = (TextView) markerpopwindow.findViewById(R.id.markinfo);
             String markinfo = "位置:"+info.getVillage()+"\n"+
+                    "类型:"+commonUtil.transferCropKind(info.getCrops_kind())+"\n"+
                     "电话:" + info.getUser_name() + "\n" +
                     "面积:" + info.getArea_num() + "\n" +
                     "单价:"+info.getUnit_price()+"\n"+
