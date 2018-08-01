@@ -201,7 +201,7 @@ public class slidingMenu extends AppCompatActivity
             fragment = new item_intelligent_resolution();
             addOrShowFragment(fragment);
         } else if (id == R.id.item_3) {
-            fragment = new item_query_requirement();
+            fragment = new item_query_requirement_1();
             addOrShowFragment(fragment);
         }  else if (id == R.id.item_4) {
             fragment = new item_job_history();
