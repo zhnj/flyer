@@ -391,7 +391,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                 @Override
                                 public void onResponse(String response) {
                                     String weather = new String();
-                                    Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
                                     //弹出天气提醒,解析天气接口的数据，并调用showWeather方法
                                     WeatherBean weatherBean = new Gson().fromJson(response, WeatherBean.class);
 
@@ -494,7 +494,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                                     }
 
                                     showDialog(weather);
-                                    //Log.i("weather",weather);
+                                    Log.i("weather",weather);
 
 
                                 }
