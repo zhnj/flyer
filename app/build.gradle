@@ -5,7 +5,8 @@ android {
         config {
             keyAlias 'zhnj-driver'
             keyPassword 'android'
-            storeFile file('E:\\0-bdking\\Project\\AndroidStudioProjects\\FlyerApplication\\nj_flyer.jks')
+            //storeFile file('E:\\0-bdking\\Project\\AndroidStudioProjects\\FlyerApplication\\nj_flyer.jks')
+            storeFile file('G:\\nj_flyer.jks')
             storePassword 'android'
         }
     }

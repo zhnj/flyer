@@ -151,7 +151,7 @@ public class DetialAdapter_wei extends RecyclerView.Adapter<DetialAdapter_wei.Vi
                 +list.get(position).getFarm_county()
                 +list.get(position).getFarm_town()
                 +list.get(position).getFarm_village();
-        String income = "\n收入："+list.get(position).getIncome();
+        String income = "\n收入："+list.get(position).getIncome()+"元";
         String area = "\n面积："+list.get(position).getArea_num()+"亩";
         final String phone = "\n电话："+list.get(position).getFarmer_phone();
         String result = "\n是否住宿：";//+list.get(position).getReturnStatus());
