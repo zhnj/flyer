@@ -57,11 +57,23 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">22dp</item>
-        <item name="android:textColor">#191970</item>
+        <item name="android:textColor">#FFFFFF</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
+
+    //页面正文样式
+    <style name="content_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@color/whiteFont</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
 
     <!--智能调度界面按钮-->
     <style name="item_1_button">
