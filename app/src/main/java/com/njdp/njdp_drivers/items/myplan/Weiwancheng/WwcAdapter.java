@@ -49,8 +49,8 @@ public class WwcAdapter extends RecyclerView.Adapter<WwcAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         String planid = "方案"+(position+1);
-        String income = "\n估计收益："+list.get(position).getIncome();
-        String cost = "\n估计成本："+list.get(position).getCost();
+        String income = "\n估计收益："+list.get(position).getIncome()+"元";
+        String cost = "\n估计成本："+list.get(position).getCost()+"元";
         String time = "\n作业时段："+list.get(position).getBeginDate()+" 至 "+list.get(position).getEndDate();
         holder.tv.setText(planid+income+cost+time);
 
