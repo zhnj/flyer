@@ -11,16 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".login">
-    <RelativeLayout
-        style="@style/Login_Top"
-        android:id="@+id/login_top"
-        android:layout_marginTop="@dimen/margin20">
-        <TextView
-            style="@style/Top_Title"
-            android:text=""
-            android:textColor="@color/whiteFont"
-            android:id="@+id/login_top_title"/>
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/login_div"

@@ -272,6 +272,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                     tv5.setText("地址：" + fieldInfo.getCropLand_site());
                     TextView tv6 = (TextView) convertView.findViewById(R.id.cropLand_id);
                     tv6.setText("作业地点" + String.valueOf(childPosition + 1)+"：");
+
+
                 }else{
                     Log.e(TAG,"error：方案显示错误!");
                 }
