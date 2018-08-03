@@ -1109,7 +1109,9 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
                             "面积:" + fieldInfo.getArea_num() + "\n" +
                             "单价:"+fieldInfo.getUnit_price()+"\n"+
                             "开始时间:" + fieldInfo.getStart_time()+"\n"+
-                            "结束时间:"+fieldInfo.getEnd_time()+"\n\n"+weatherData;
+                            "结束时间:"+fieldInfo.getEnd_time();
+                    if(weatherData.equals("")==false)
+                        markinfo=markinfo+"\n\n"+weatherData;
                     Log.i("markinfo", markinfo);
                     tv.setText(markinfo);
 
@@ -1635,6 +1637,9 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         BNaviSettingManager.setVoiceMode(BNaviSettingManager.VoiceMode.Veteran);
         BNaviSettingManager.setPowerSaveMode(BNaviSettingManager.PowerSaveMode.DISABLE_MODE);
         BNaviSettingManager.setRealRoadCondition(BNaviSettingManager.RealRoadCondition.NAVI_ITS_ON);
+
+
+
     }
 
     /**
