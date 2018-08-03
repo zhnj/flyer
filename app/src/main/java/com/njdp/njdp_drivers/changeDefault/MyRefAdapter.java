@@ -1,7 +1,9 @@
 package com.njdp.njdp_drivers.changeDefault;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +30,7 @@ import com.njdp.njdp_drivers.items.jikai.bean.DroneBean;
 public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> {
     private List<DroneBean.ResultBean> list;
     private Context context;
-
+    ViewGroup parent;
     public MyRefAdapter(Context context, List<DroneBean.ResultBean> list) {
         this.context = context;
         this.list = list;
@@ -38,6 +40,7 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //给Adapter添加布局，bq把这个view传递给HoldView，让HoldView找到空间
+        this.parent = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drone_item, null);
         final ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -76,7 +79,7 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
 
                 Log.i("display","bianhao"+list.get(position).getMachineId()+" nengli"+list.get(position).getWorkingAbility()
                         +" beizhu"+list.get(position).getSchMachineRemark()+" xinghao"+list.get(position).getScheduleUavNorm().getId()
-                +" id"+list.get(position).getId());
+                        +" id"+list.get(position).getId());
                 context.startActivity(intent);
             }
         });
@@ -84,31 +87,58 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
             //删除
             @Override
             public void onClick(View v) {
-                String url;
-                int id = list.get(position).getId();
-                //int norm = list.get(position).getScheduleUavNorm().getId();
-                url = AppConfig.DRONE_DELETE;
-                url = url + "?id=" + id;
-                Log.i("delurl", url);
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        delete(position);
-                        Toast.makeText(context, "删除完成", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                        delete(position);
-                    }
 
-                });
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("get");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
+                final AlertDialog.Builder normalDialog = new AlertDialog.Builder(parent.getContext());
+                //normalDialog.setIcon(R.drawable.);
+                normalDialog.setTitle("删除确认：");
+                normalDialog.setMessage("您是否确定要删除此设备？");
+                normalDialog.setPositiveButton("继续",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //删除
+                                String url;
+                                int id = list.get(position).getId();
+                                //int norm = list.get(position).getScheduleUavNorm().getId();
+                                url = AppConfig.DRONE_DELETE;
+                                url = url + "?id=" + id;
+                                Log.i("delurl", url);
+                                //定义一个StringRequest
+                                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
+                                    @Override
+                                    public void onResponse(String response) {
+                                        delete(position);
+                                        Toast.makeText(context, "删除完成", Toast.LENGTH_SHORT).show();
+                                    }
+                                }, new Response.ErrorListener() {// 添加请求失败监听
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
+                                        delete(position);
+                                    }
+
+                                });
+                                // 设置请求的tag标签，便于在请求队列中寻找该请求
+                                request.setTag("get");
+                                // 添加到全局的请求队列
+                                AppController.getHttpQueues().add(request);
+
+
+
+
+                                //
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //...To-do
+                            }
+                        });
+                // 显示
+                normalDialog.show();
+
             }
         });
     }
