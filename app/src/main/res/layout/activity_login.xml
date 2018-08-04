@@ -19,7 +19,7 @@
         android:layout_above="@+id/login_bottom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="137dp">
+        android:layout_marginBottom="120dp">
 
         <EditText
             android:id="@+id/user_username"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_password"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin50"
+            android:layout_marginTop="@dimen/margin40"
             android:background="@drawable/btn_login" />
     </RelativeLayout>
     <RelativeLayout
