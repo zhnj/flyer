@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_login"
     android:fitsSystemWindows="true"
+    android:scaleType="centerCrop"
     tools:context="com.njdp.njdp_drivers.mainpages">
 
     <LinearLayout
