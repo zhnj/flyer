@@ -1,5 +1,7 @@
 package com.njdp.njdp_drivers.db;
 
+import android.webkit.JavascriptInterface;
+
 public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 二教实验室网线网络，本机服务器测试url
@@ -61,13 +63,13 @@ public class AppConfig {
     ///////////////////无人机修改
     public static String URL_searchFarmlands=URL_IP+"app/farmMachine/searchFarmlands";//周边可用农田
     //飞机服务公司信息
-    public static String URL_findFlyComByUser="http://211.68.183.50:8088/Mobile/UAV/findFlyComByUser";
+    public static String URL_findFlyComByUser=URL_IP_JAVA+"Mobile/UAV/findFlyComByUser";
     //天气数据
     public static String URL_WeatherData=URL_IP+"app/getWeather";
 
-    public static String URL_UAV_listCompanys="http://211.68.183.50:8088/Mobile/UAV/listCompanys";//所有无人机公司列表
+    public static String URL_UAV_listCompanys=URL_IP_JAVA+"Mobile/UAV/listCompanys";//所有无人机公司列表
 
-    public static String URL_PREFERE=URL_IP+"UAV-platform/mvc/mobile/myUav/addPreference";//添加偏好信息
+    public static String URL_PREFERE=URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/addPreference";//添加偏好信息
 
     public static String URL_GET_FAVORorADD=URL_IP_JAVA+"UAV-platform/mvc/mobile/myWork/addAndOver";//收藏地块
 
