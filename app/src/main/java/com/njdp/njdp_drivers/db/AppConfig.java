@@ -4,11 +4,16 @@ public class AppConfig {
 
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 二教实验室网线网络，本机服务器测试url
 
-    public static String URL_IP="http://211.68.183.50:88/";//测试服务器
+    //public static String URL_IP="http://211.68.183.50:88/";//测试服务器
+
+    public static String URL_IP="http://218.12.43.231:82/";//农业厅测试服务器
 
 //    public static String URL_IP="http://211.68.180.9:88/";//学校服务器地址
 
-    public static String URL_IP_JAVA="http://211.68.183.50:8088/";//学校服务器地址
+    //public static String URL_IP_JAVA="http://211.68.183.50:8088/";//学校服务器地址
+
+    public static String URL_IP_JAVA="http://218.12.43.231:7506/";//农业厅测试服务器地址
+
 
     public static String URL_LOGIN = URL_IP+"appLogin"; // 登录 url
 
