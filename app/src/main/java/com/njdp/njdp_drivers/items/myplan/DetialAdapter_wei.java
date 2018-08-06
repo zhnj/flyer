@@ -393,6 +393,11 @@ public class DetialAdapter_wei extends RecyclerView.Adapter<DetialAdapter_wei.Vi
         }
 
         @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+        }
+
+        @Override
         public void onMapStatusChange(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
         }

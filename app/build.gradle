@@ -18,6 +18,9 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -40,6 +43,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+
+    compile 'com.android.support:multidex:1.0.3'
+    compile project(':onsdk_all')
+    //    compile project(':baidunavi-base')
+    //    compile project(':baidunavi')
+    compile project(':NaviTts')
     compile 'com.android.support:percent:23.1.1'//引入百分比库
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -65,13 +74,8 @@ dependencies {
 //    compile 'com.squareup.okio:okio:1.7.0'
 //    compile 'com.zhy:okhttputils:2.4.1'
     compile files('libs/BaiduHUDSDK_2.0.jar')
-    compile files('libs/baidumapapi_base_v3_7_1.jar')
-    compile files('libs/baidumapapi_cloud_v3_7_1.jar')
-    compile files('libs/baidumapapi_map_v3_7_1.jar')
-    compile files('libs/baidumapapi_radar_v3_7_1.jar')
-    compile files('libs/baidumapapi_search_v3_7_1.jar')
-    compile files('libs/baidumapapi_util_v3_7_1.jar')
-    compile files('libs/BaiduNaviSDK_3.1.1.jar')
+
+   compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/lbsCoreSDK.jar')
     compile files('libs/locSDK_6.23.jar')
 

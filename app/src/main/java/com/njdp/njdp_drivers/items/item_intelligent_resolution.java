@@ -1359,6 +1359,11 @@ public class item_intelligent_resolution extends Fragment implements View.OnClic
         }
 
         @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+        }
+
+        @Override
         public void onMapStatusChange(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
         }
