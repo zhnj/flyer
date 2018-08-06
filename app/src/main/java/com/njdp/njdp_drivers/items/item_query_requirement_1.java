@@ -235,7 +235,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        View view=inflater.inflate(R.layout.activity_2_query_requirement_1,container,false);
+        View view=inflater.inflate(R.layout.activity_2_query_requirement_1,null,false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
         view.findViewById(R.id.my_location).setOnClickListener(this);

@@ -1,6 +1,8 @@
 package com.njdp.njdp_drivers.items.jikai;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -54,6 +58,9 @@ public class item_release_machine extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
+
+
+
             view = inflater.inflate(R.layout.drone_list, container, false);
             refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
             try {
