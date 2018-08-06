@@ -72,8 +72,15 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
     private Gson gson;
     private String token;
     private static int FLAG_UPLOADDEPLOY=11101010;
-    private String uploadDeploy_url;//上传选择方案服务器地址
+
+    private static int FLAG_FAVOURITEDEPLOY=11101010;
+
+    private String uploadDeploy_url;//查看方案服务器地址
+    private String favouriteDeploy_url;//收藏方案服务器地址
+
     private com.yolanda.nohttp.rest.Request<JSONObject> uploadDeploy_strReq;
+    private com.yolanda.nohttp.rest.Request<JSONObject> favouriteDeploy_strReq;
+
     private String plan_id;
     private SavedFieldInfoDao saveFieldInfoDao;
     private List<FieldInfo> deployFieldInfo=new ArrayList<FieldInfo>();//选择的调配方案对应的农田信息
@@ -96,6 +103,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
         gson=new Gson();
         token=sessionManager.getToken();
         uploadDeploy_url= AppConfig.URL_UPLOADDEPLOY;
+        favouriteDeploy_url=AppConfig.URL_FAVOURITEDEPLOY;
 
         saveFieldInfoDao=new SavedFieldInfoDao(getActivity());
         expandableListView = (ExpandableListView)view.findViewById(R.id.intelligent_deploy_expand);
@@ -155,7 +163,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
 
                 final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
                 LinearLayout text_layout=(LinearLayout)convertView.findViewById(R.id.text_Layout);
-                Button deploy_selecte=(Button)convertView.findViewById(R.id.deploy_selected);//选择方案按钮
+                TextView deploy_selecte=(Button)convertView.findViewById(R.id.deploy_selected);//查看方案按钮
+                TextView deploy_favourite=(Button)convertView.findViewById(R.id.deploy_favourite);//收藏方案按钮
                 class textLayoutListener implements View.OnClickListener//expand区域监听
                 {
                     @Override
@@ -245,8 +254,22 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                     }
 
                 }
+
+                class deployFavouriteListener implements View.OnClickListener//跳转到线路导航界面监听
+                {
+                    @Override
+                    public void onClick(View v) {
+
+                        favouriteDeploy();
+
+                    }
+
+                }
+
+
                 text_layout.setOnClickListener(new textLayoutListener());//点击expand区域监听
                 deploy_selecte.setOnClickListener(new deploySelecteListener());//上传数据，跳转到线路导航界面监听
+                deploy_favourite.setOnClickListener(new deployFavouriteListener());//收藏方案监听
 
                 return convertView;
 
@@ -403,8 +426,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
     private void uploadDeploy()
     {
         Map<String, String> params = new HashMap<String, String>();
-        //params.put("token", token);
-        params.put("user_id",sessionManager.getUserId());
+        params.put("token", token);
+        //params.put("user_id",sessionManager.getUserId());
         params.put("plan_id", plan_id);
         Log.e(TAG, "上传选择方案发送的数据：" + gson.toJson(params));
         uploadDeploy_strReq= NoHttp.createJsonObjectRequest(uploadDeploy_url, RequestMethod.POST);
@@ -417,7 +440,6 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
             requestQueue.add(FLAG_UPLOADDEPLOY, uploadDeploy_strReq, new uploadDeploy_request());
         }
     }
-
     //传选择方案访问服务器监听
     private class uploadDeploy_request implements OnResponseListener<JSONObject>
     {
@@ -451,6 +473,78 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "Upload Deploy Error："+getResources().getString(R.string.connect_service_err2)+ e.getMessage());
+                commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
+            }
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            Log.e(TAG, "Upload Deploy Error："+getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+            commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err3) + exception.getMessage());
+        }
+
+        @Override
+        public void onFinish(int what) {
+
+        }
+    }
+
+    //收藏方案
+    private void favouriteDeploy()
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        //params.put("token", token);
+        params.put("user_id",sessionManager.getUserId());
+        params.put("plan_id", plan_id);
+        Log.e(TAG, "选择方案发送的数据：" + gson.toJson(params));
+        favouriteDeploy_strReq= NoHttp.createJsonObjectRequest(favouriteDeploy_url, RequestMethod.POST);
+        favouriteDeploy_strReq.add(params);
+        RequestQueue requestQueue = NoHttp.newRequestQueue();
+        if (netUtil.checkNet(mainMenu) == false) {
+            commonUtil.error_hint_short("网络连接错误");
+            return;
+        } else {
+            requestQueue.add(FLAG_FAVOURITEDEPLOY, favouriteDeploy_strReq, new favouriteDeploy_request());
+        }
+    }
+
+    //收藏方案访问服务器监听
+    private class favouriteDeploy_request implements OnResponseListener<JSONObject>
+    {
+        @Override
+        public void onStart(int what) {
+
+        }
+
+        @Override
+        public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
+            try {
+                JSONObject jObj = response.get();
+                Log.e(TAG, "选择方案接收的数据: " + jObj.toString());
+                int status = jObj.getInt("status");
+
+                if (status == 1) {
+                    String errorMsg = jObj.getString("result");
+                    Log.e(TAG, getResources().getString(R.string.connect_service_key_err1)+ errorMsg);
+                    commonUtil.error_hint2_short(R.string.connect_service_key_err2);
+                    //清空数据，重新登录
+                    netUtil.clearSession(mainMenu);
+                    mainMenu.backLogin();
+                    SysCloseActivity.getInstance().exit();
+                } else if (status == 0) {
+                    String msg = jObj.getString("result");
+                    Log.e(TAG, msg + "收藏方案："+msg);
+                }else if(status == 2){
+                    String msg = jObj.getString("result");
+                    Log.e(TAG, msg + "收藏方案："+msg);
+                }
+                else{
+                    String msg = jObj.getString("result");
+                    Log.e(TAG, "Favourite Deploy Error："+getResources().getString(R.string.connect_service_err1)+ msg);
+                    commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err1) + msg);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Favourite Deploy Error："+getResources().getString(R.string.connect_service_err2)+ e.getMessage());
                 commonUtil.error_hint_short(getResources().getString(R.string.connect_service_err2) + e.getMessage());
             }
         }

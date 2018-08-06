@@ -23,12 +23,35 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/whiteFont"
             android:textSize="@dimen/font18"/>
+        <!--
         <Button
             android:id="@+id/deploy_selected"
             android:layout_marginRight="@dimen/margin10"
             android:background="@drawable/btn_choose"
             android:layout_width="@dimen/height60"
             android:layout_height="@dimen/height30"/>
+            -->
+        <TextView
+            android:id="@+id/deploy_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_check_box_white_18dp"
+            android:text="收藏"
+            android:textColor="@color/whiteFont"
+            android:textSize="@dimen/font18"
+            android:layout_toLeftOf="@+id/deploy_selected"
+            android:layout_toStartOf="@+id/deploy_selected"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginRight="10dp"  />
+        <TextView
+            android:id="@+id/deploy_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin5"
+            android:drawableLeft="@drawable/ic_navigation_white_18dp"
+            android:text="导航"
+            android:textColor="@color/whiteFont"
+            android:textSize="@dimen/font18" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/text_Layout"

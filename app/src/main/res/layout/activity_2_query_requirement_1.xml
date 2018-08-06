@@ -11,9 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/margin20"
         android:id="@+id/requirement_arrange_top"
         android:background="@drawable/main_title">
         <TextView
@@ -31,6 +29,8 @@
             android:background="@drawable/ic_menu_white_48dp"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
+
+
     <LinearLayout
         android:id="@+id/query_requirement_div"
         android:layout_width="match_parent"
@@ -71,50 +71,13 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/requirement_arrange_query"
-        android:layout_below="@+id/query_requirement_div"
-        android:background="@drawable/main_title">
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#191970"
-            android:text="查找"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/arrange_button"
-            android:layout_toStartOf="@+id/arrange_button" />
-        <Button
-            android:id="@+id/arrange_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="#191970"
-            android:text="回公司"
-            android:layout_alignBaseline="@+id/btn_search"
-            android:layout_alignBottom="@+id/btn_search"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-        <AutoCompleteTextView
-            android:id="@+id/query_query_autoCompleteTextView_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btn_search"
-                      android:text="text"
-            android:textSize="16dp"
-            android:textColor="#191970"
-            android:layout_toLeftOf="@+id/btn_search"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+
+
     <RelativeLayout
         android:id="@+id/requirement_arrange_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/requirement_arrange_query"
+        android:layout_below="@+id/query_requirement_div"
         android:layout_above="@+id/intelligent_arrange_bottom"
         >
         <com.baidu.mapapi.map.MapView
@@ -134,6 +97,56 @@
             android:layout_marginStart="21dp" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/requirement_arrange_query"
+        android:layout_below="@+id/query_requirement_div"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/poi_result_layout_background"
+
+       >
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:textSize="16dp"
+            android:textColor="#191970"
+            android:background="@drawable/btn_query"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/arrange_button"
+            android:layout_toStartOf="@+id/arrange_button" />
+        <Button
+            android:id="@+id/arrange_button"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:textSize="16dp"
+            android:textColor="#191970"
+            android:background="@drawable/back_com"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <AutoCompleteTextView
+            android:id="@+id/query_query_autoCompleteTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="text"
+            android:textSize="@dimen/font16"
+            android:textColor="#191970"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_toStartOf="@+id/btn_search" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/intelligent_arrange_bottom"
         android:layout_width="match_parent"
@@ -160,7 +173,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/area"
-
             android:textColor="#191970"
             />
 

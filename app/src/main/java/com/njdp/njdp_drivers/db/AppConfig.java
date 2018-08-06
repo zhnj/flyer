@@ -43,7 +43,9 @@ public class AppConfig {
 
     public static String URL_BASICDEPLOY= URL_IP+"app/uavDeploy/execDeploy";//智能调配uav
 
-    public static String URL_UPLOADDEPLOY= URL_IP_JAVA+"Mobile/UAV/deployChoice";//选择方案上传
+    public static String URL_UPLOADDEPLOY= URL_IP+"app/deployChoice";//选择方案上传
+
+    public static String URL_FAVOURITEDEPLOY= URL_IP_JAVA+"Mobile/UAV/deployChoice";//收藏方案
 
     public static String URL_SEARCHFIELD= URL_IP+"app/farmMachine/searchFarmlands";//农田查询
 
