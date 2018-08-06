@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.njdp.njdp_drivers"
     android:versionCode="6"
     android:versionName="3.1.1"
     >
-<uses-sdk
-    android:maxSdkVersion="14"
-    android:targetSdkVersion="22"
-    />
+    <uses-sdk tools:overrideLibrary="com.baidu.mapclient.navisdk"/>
     <!-- 联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -90,7 +88,8 @@
             android:name=".slidingMenu"
             android:label="@string/title_activity_sliding_menu"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name="com.njdp.njdp_drivers.util.DemoNaviSettingActivity">
+        </activity>
         <Fragment
             android:name=".items.item_release_machine"
             android:label="@string/title_activity_item_release_machine"

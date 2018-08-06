@@ -1,1 +1,1 @@
-include ':app',':AndroidBootstrap',':MultiImageSelector'
+include ':app',':AndroidBootstrap',':MultiImageSelector', ':onsdk_all', ':NaviTts'

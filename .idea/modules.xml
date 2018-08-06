@@ -4,8 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidBootstrap/AndroidBootstrap.iml" filepath="$PROJECT_DIR$/AndroidBootstrap/AndroidBootstrap.iml" />
       <module fileurl="file://$PROJECT_DIR$/MultiImageSelector/MultiImageSelector.iml" filepath="$PROJECT_DIR$/MultiImageSelector/MultiImageSelector.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NJ_Flyer.iml" filepath="$PROJECT_DIR$/NJ_Flyer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NaviTts/NaviTts.iml" filepath="$PROJECT_DIR$/NaviTts/NaviTts.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flyer.iml" filepath="$PROJECT_DIR$/flyer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/onsdk_all/onsdk_all.iml" filepath="$PROJECT_DIR$/onsdk_all/onsdk_all.iml" />
     </modules>
   </component>
 </project>

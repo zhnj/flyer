@@ -11,7 +11,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AndroidBootstrap" />
             <option value="$PROJECT_DIR$/MultiImageSelector" />
+            <option value="$PROJECT_DIR$/NaviTts" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/onsdk_all" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

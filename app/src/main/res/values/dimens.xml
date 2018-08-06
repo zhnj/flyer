@@ -54,4 +54,9 @@
     <dimen name="nsdk_rg_text_margin">16dp</dimen>
     <dimen name="nsdk_text_size_rg_main_info">30sp</dimen>
     <dimen name="nsdk_text_size_rg_second_info">24sp</dimen>
+
+    <dimen name="during_setting_btn_height">30dp</dimen>
+    <dimen name="during_setting_btn_bottom_line_margin">17dp</dimen>
+    <dimen name="during_setting_btn_title_bottom_margin">16dp</dimen>
+    <dimen name="during_setting_btn_title_top_margin">12dp</dimen>
 </resources>

@@ -4,6 +4,8 @@ import android.webkit.JavascriptInterface;
 
 public class AppConfig {
 
+
+
     public static String URL_TEST ="http://172.28.145.4:8888/db_xskq/test.php";// 二教实验室网线网络，本机服务器测试url
 
     //public static String URL_IP="http://211.68.183.50:88/";//测试服务器
@@ -61,6 +63,7 @@ public class AppConfig {
 
     public static String URL_FIXPASSWORD=URL_IP+"resetPassword";//修改密码
 
+    public static final String ROUTE_PLAN_NODE = "routePlanNode";//导航用的变量
 
     ///////////////////无人机修改
     public static String URL_searchFarmlands=URL_IP+"app/farmMachine/searchFarmlands";//周边可用农田

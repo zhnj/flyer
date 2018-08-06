@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -77,11 +78,15 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.baidu.navisdk.adapter.BNCommonSettingParam;
 import com.baidu.navisdk.adapter.BNOuterLogUtil;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.baidu.navisdk.adapter.BaiduNaviManagerFactory;
+import com.baidu.navisdk.adapter.IBNTTSManager;
+import com.baidu.navisdk.adapter.IBaiduNaviManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.njdp.njdp_drivers.R;
@@ -97,6 +102,7 @@ import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
+import com.njdp.njdp_drivers.util.NormalUtils;
 import com.squareup.timessquare.CalendarPickerView;
 import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.RequestMethod;
@@ -130,6 +136,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private CommonUtil commonUtil;
     private NetUtil netUtil;
     private ExpandableListView expandableListView;
+
     private ExpandableListAdapter adapter;
     private Button countInfo;
     private Button pop_countInfo;
@@ -159,6 +166,13 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
     private double centre_longitude;//地图中间经度
     private double centre_latitude;//地图中间维度
 
+
+    private static final String[] authBaseArr = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    private static final int authBaseRequestCode = 1;
     private Gson gson;
     private String url=AppConfig.URL_searchFarmlands;//服务器地址，获取
     private AutoCompleteTextView autoQuery;//用户输入查找中心点
@@ -1589,83 +1603,100 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
 
     //初始化导航配置
     String authinfo = null;
+    private boolean hasBasePhoneAuth() {
+        PackageManager pm = getActivity().getPackageManager();
+        for (String auth : authBaseArr) {
+            if (pm.checkPermission(auth, getActivity().getPackageName()) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void initNavi() {
-        BNOuterTTSPlayerCallback ttsCallback = null;
-        BaiduNaviManager.getInstance().init(getActivity(), mSDCardPath, APP_FOLDER_NAME, new BaiduNaviManager.NaviInitListener() {
-            @Override
-            public void onAuthResult(int i, String s) {
-                if (0 == i) {
-                    authinfo = "key校验成功!";
-                } else {
-                    authinfo = "key校验失败, " + s;
-                }
+        // 申请权限
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            if (!hasBasePhoneAuth()) {
+                this.requestPermissions(authBaseArr, authBaseRequestCode);
+                return;
+            }
+        }
 
-                getActivity().runOnUiThread(new Runnable() {
+        BaiduNaviManagerFactory.getBaiduNaviManager().init(getActivity(),
+                mSDCardPath, APP_FOLDER_NAME, new IBaiduNaviManager.INaviInitListener() {
 
                     @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), authinfo, Toast.LENGTH_LONG).show();
+                    public void onAuthResult(int status, String msg) {
+                        String result;
+                        if (0 == status) {
+                            result = "key校验成功!";
+                        } else {
+                            result = "key校验失败, " + msg;
+                        }
+                        Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void initStart() {
+                        Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void initSuccess() {
+                        Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
+
+                        // 初始化tts
+                        initTTS();
+                    }
+
+                    @Override
+                    public void initFailed() {
+                        Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-
-            @Override
-            public void initStart() {
-//                Toast.makeText(getActivity(), "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "百度导航引擎初始化开始");
-            }
-
-            @Override
-            public void initSuccess() {
-//                Toast.makeText(getActivity(), "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
-                initSetting();
-                Log.e(TAG, "百度导航引擎初始化成功");
-            }
-
-            @Override
-            public void initFailed() {
-//                Toast.makeText(getActivity(), "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "百度导航引擎初始化失败");
-            }
-        }, null, ttsHandler, null);
-    }
-
-    private void initSetting() {
-        BNaviSettingManager.setDayNightMode(BNaviSettingManager.DayNightMode.DAY_NIGHT_MODE_DAY);
-        BNaviSettingManager.setShowTotalRoadConditionBar(BNaviSettingManager.PreViewRoadCondition.ROAD_CONDITION_BAR_SHOW_ON);
-        BNaviSettingManager.setVoiceMode(BNaviSettingManager.VoiceMode.Veteran);
-        BNaviSettingManager.setPowerSaveMode(BNaviSettingManager.PowerSaveMode.DISABLE_MODE);
-        BNaviSettingManager.setRealRoadCondition(BNaviSettingManager.RealRoadCondition.NAVI_ITS_ON);
-
 
 
     }
 
+    public void initTTS()
+    {
+        BaiduNaviManagerFactory.getTTSManager().initTTS(getActivity(),
+                getSdcardDir(), APP_FOLDER_NAME, NormalUtils.getTTSAppID());
+
+        // 注册同步内置tts状态回调
+        BaiduNaviManagerFactory.getTTSManager().setOnTTSStateChangedListener(
+                new IBNTTSManager.IOnTTSPlayStateChangedListener() {
+                    @Override
+                    public void onPlayStart() {
+                        Log.e("BNSDKDemo", "ttsCallback.onPlayStart");
+                    }
+
+                    @Override
+                    public void onPlayEnd(String speechId) {
+                        Log.e("BNSDKDemo", "ttsCallback.onPlayEnd");
+                    }
+
+                    @Override
+                    public void onPlayError(int code, String message) {
+                        Log.e("BNSDKDemo", "ttsCallback.onPlayError");
+                    }
+                }
+        );
+
+        // 注册内置tts 异步状态消息
+        BaiduNaviManagerFactory.getTTSManager().setOnTTSStateChangedHandler(
+                new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        Log.e("BNSDKDemo", "ttsHandler.msg.what=" + msg.what);
+                    }
+                }
+        );
+    }
     /**
      * 内部TTS播报状态回传handler
      */
-    private Handler ttsHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            int type = msg.what;
-            switch (type) {
-                case BaiduNaviManager.TTSPlayMsgType.PLAY_START_MSG: {
-//                    Toast.makeText(getActivity(), "Handler : TTS play start", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Handler : TTS play start");
-                    //showToastMsg("Handler : TTS play start");
-                    break;
-                }
-                case BaiduNaviManager.TTSPlayMsgType.PLAY_END_MSG: {
-//                    Toast.makeText(getActivity(), "Handler : TTS play end", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG,"Handler : TTS play end");
-                    //showToastMsg("Handler : TTS play end");
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    };
+
 
     ////////////////////////////地图代码结束//////////////////////////
     //////////////////////////////////////////////////////////////
@@ -1675,7 +1706,10 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         public void onMapStatusChangeStart(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
         }
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
 
+        }
         @Override
         public void onMapStatusChange(MapStatus mapStatus) {
 //            updateMapState(mapStatus);

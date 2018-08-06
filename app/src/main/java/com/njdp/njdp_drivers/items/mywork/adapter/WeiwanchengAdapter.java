@@ -602,7 +602,10 @@ public class WeiwanchengAdapter extends RecyclerView.Adapter<WeiwanchengAdapter.
         public void onMapStatusChangeStart(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
         }
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
 
+        }
         @Override
         public void onMapStatusChange(MapStatus mapStatus) {
 //            updateMapState(mapStatus);

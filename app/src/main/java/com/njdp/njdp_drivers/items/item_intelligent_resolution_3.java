@@ -55,6 +55,8 @@ import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.IndoorRouteResult;
+import com.baidu.mapapi.search.route.MassTransitRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
@@ -654,6 +656,12 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
         public void onGetTransitRouteResult(TransitRouteResult result) {
             //获取公交换乘路径规划结果
         }
+
+        @Override
+        public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+        }
+
         public void onGetDrivingRouteResult(DrivingRouteResult result) {
             if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
 //                commonUtil.error_hint_short("抱歉，未找到结果");
@@ -679,6 +687,11 @@ public class item_intelligent_resolution_3 extends Fragment implements View.OnCl
                 overlay.addToMap();
                 overlay.zoomToSpan();
             }
+        }
+
+        @Override
+        public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
         }
 
         @Override

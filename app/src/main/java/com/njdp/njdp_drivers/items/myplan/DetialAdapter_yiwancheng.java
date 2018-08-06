@@ -381,7 +381,10 @@ public class DetialAdapter_yiwancheng extends RecyclerView.Adapter<DetialAdapter
         public void onMapStatusChangeStart(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
         }
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
 
+        }
         @Override
         public void onMapStatusChange(MapStatus mapStatus) {
 //            updateMapState(mapStatus);
