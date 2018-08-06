@@ -21,7 +21,8 @@ public class item_job_history extends Fragment implements View.OnClickListener {
     private slidingMenu mainMenu;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_3_job_history, container,false);
+        if(view == null)
+            view = inflater.inflate(R.layout.activity_3_job_history, null,false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
         mainMenu=(slidingMenu)getActivity();

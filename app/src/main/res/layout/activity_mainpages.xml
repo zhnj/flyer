@@ -6,9 +6,9 @@
     xmlns:circleImageView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_login"
     android:fitsSystemWindows="true"
-    android:scaleType="centerCrop"
+    android:background="@drawable/main_login"
+
     tools:context="com.njdp.njdp_drivers.mainpages">
 
     <LinearLayout
@@ -19,7 +19,7 @@
        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="3.2"
         />
 
        <LinearLayout
@@ -27,7 +27,7 @@
         android:layout_height="0dp"
            android:layout_marginLeft="20dp"
            android:layout_marginRight="20dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         >
            <ImageView
                android:id="@+id/imageButton_release"
@@ -67,7 +67,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             />
 
        <LinearLayout
@@ -75,7 +75,7 @@
         android:layout_height="0dp"
            android:layout_marginLeft="20dp"
            android:layout_marginRight="20dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         >
 
            <ImageView
@@ -111,7 +111,7 @@
        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3" />
+            android:layout_weight="3.2" />
 
     </LinearLayout>
 </RelativeLayout>
