@@ -1,0 +1,1140 @@
+[
+    {
+        "outputFile": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 10,
+                    "endColumn": 11,
+                    "endOffset": 394
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 10,
+                        "endColumn": 11,
+                        "endOffset": 394
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 399,
+                    "endLine": 18,
+                    "endColumn": 11,
+                    "endOffset": 671
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 399,
+                        "endLine": 18,
+                        "endColumn": 11,
+                        "endOffset": 671
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 676,
+                    "endLine": 25,
+                    "endColumn": 11,
+                    "endOffset": 909
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 676,
+                        "endLine": 25,
+                        "endColumn": 11,
+                        "endOffset": 909
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 914,
+                    "endLine": 31,
+                    "endColumn": 11,
+                    "endOffset": 1126
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 4,
+                        "startOffset": 914,
+                        "endLine": 31,
+                        "endColumn": 11,
+                        "endOffset": 1126
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 32,
+                    "startColumn": 4,
+                    "startOffset": 1131,
+                    "endColumn": 43,
+                    "endOffset": 1170
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 4,
+                        "startOffset": 1131,
+                        "endColumn": 43,
+                        "endOffset": 1170
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 33,
+                    "startColumn": 4,
+                    "startOffset": 1175,
+                    "endColumn": 51,
+                    "endOffset": 1222
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 4,
+                        "startOffset": 1175,
+                        "endColumn": 51,
+                        "endOffset": 1222
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 34,
+                    "startColumn": 4,
+                    "startOffset": 1227,
+                    "endLine": 728,
+                    "endColumn": 11,
+                    "endOffset": 34374
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 4,
+                        "startOffset": 1227,
+                        "endLine": 728,
+                        "endColumn": 11,
+                        "endOffset": 34374
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 729,
+                    "startColumn": 4,
+                    "startOffset": 34379,
+                    "endColumn": 45,
+                    "endOffset": 34420
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 729,
+                        "startColumn": 4,
+                        "startOffset": 34379,
+                        "endColumn": 45,
+                        "endOffset": 34420
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 730,
+                    "startColumn": 4,
+                    "startOffset": 34425,
+                    "endColumn": 50,
+                    "endOffset": 34471
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 730,
+                        "startColumn": 4,
+                        "startOffset": 34425,
+                        "endColumn": 50,
+                        "endOffset": 34471
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 731,
+                    "startColumn": 4,
+                    "startOffset": 34476,
+                    "endColumn": 47,
+                    "endOffset": 34519
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 731,
+                        "startColumn": 4,
+                        "startOffset": 34476,
+                        "endColumn": 47,
+                        "endOffset": 34519
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 732,
+                    "startColumn": 4,
+                    "startOffset": 34524,
+                    "endLine": 1069,
+                    "endColumn": 11,
+                    "endOffset": 51566
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 732,
+                        "startColumn": 4,
+                        "startOffset": 34524,
+                        "endLine": 1069,
+                        "endColumn": 11,
+                        "endOffset": 51566
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1070,
+                    "startColumn": 4,
+                    "startOffset": 51571,
+                    "endColumn": 56,
+                    "endOffset": 51623
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1070,
+                        "startColumn": 4,
+                        "startOffset": 51571,
+                        "endColumn": 56,
+                        "endOffset": 51623
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1071,
+                    "startColumn": 4,
+                    "startOffset": 51628,
+                    "endColumn": 54,
+                    "endOffset": 51678
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1071,
+                        "startColumn": 4,
+                        "startOffset": 51628,
+                        "endColumn": 54,
+                        "endOffset": 51678
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1072,
+                    "startColumn": 4,
+                    "startOffset": 51683,
+                    "endColumn": 57,
+                    "endOffset": 51736
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1072,
+                        "startColumn": 4,
+                        "startOffset": 51683,
+                        "endColumn": 57,
+                        "endOffset": 51736
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1073,
+                    "startColumn": 4,
+                    "startOffset": 51741,
+                    "endColumn": 66,
+                    "endOffset": 51803
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1073,
+                        "startColumn": 4,
+                        "startOffset": 51741,
+                        "endColumn": 66,
+                        "endOffset": 51803
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1074,
+                    "startColumn": 4,
+                    "startOffset": 51808,
+                    "endColumn": 64,
+                    "endOffset": 51868
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1074,
+                        "startColumn": 4,
+                        "startOffset": 51808,
+                        "endColumn": 64,
+                        "endOffset": 51868
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1075,
+                    "startColumn": 4,
+                    "startOffset": 51873,
+                    "endColumn": 64,
+                    "endOffset": 51933
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1075,
+                        "startColumn": 4,
+                        "startOffset": 51873,
+                        "endColumn": 64,
+                        "endOffset": 51933
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1076,
+                    "startColumn": 4,
+                    "startOffset": 51938,
+                    "endColumn": 57,
+                    "endOffset": 51991
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1076,
+                        "startColumn": 4,
+                        "startOffset": 51938,
+                        "endColumn": 57,
+                        "endOffset": 51991
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1077,
+                    "startColumn": 4,
+                    "startOffset": 51996,
+                    "endColumn": 57,
+                    "endOffset": 52049
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1077,
+                        "startColumn": 4,
+                        "startOffset": 51996,
+                        "endColumn": 57,
+                        "endOffset": 52049
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1078,
+                    "startColumn": 4,
+                    "startOffset": 52054,
+                    "endColumn": 63,
+                    "endOffset": 52113
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1078,
+                        "startColumn": 4,
+                        "startOffset": 52054,
+                        "endColumn": 63,
+                        "endOffset": 52113
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1079,
+                    "startColumn": 4,
+                    "startOffset": 52118,
+                    "endColumn": 48,
+                    "endOffset": 52162
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1079,
+                        "startColumn": 4,
+                        "startOffset": 52118,
+                        "endColumn": 48,
+                        "endOffset": 52162
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1080,
+                    "startColumn": 4,
+                    "startOffset": 52167,
+                    "endColumn": 53,
+                    "endOffset": 52216
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1080,
+                        "startColumn": 4,
+                        "startOffset": 52167,
+                        "endColumn": 53,
+                        "endOffset": 52216
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1081,
+                    "startColumn": 4,
+                    "startOffset": 52221,
+                    "endColumn": 54,
+                    "endOffset": 52271
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1081,
+                        "startColumn": 4,
+                        "startOffset": 52221,
+                        "endColumn": 54,
+                        "endOffset": 52271
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1082,
+                    "startColumn": 4,
+                    "startOffset": 52276,
+                    "endColumn": 56,
+                    "endOffset": 52328
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1082,
+                        "startColumn": 4,
+                        "startOffset": 52276,
+                        "endColumn": 56,
+                        "endOffset": 52328
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1083,
+                    "startColumn": 4,
+                    "startOffset": 52333,
+                    "endColumn": 57,
+                    "endOffset": 52386
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1083,
+                        "startColumn": 4,
+                        "startOffset": 52333,
+                        "endColumn": 57,
+                        "endOffset": 52386
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1084,
+                    "startColumn": 4,
+                    "startOffset": 52391,
+                    "endColumn": 66,
+                    "endOffset": 52453
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1084,
+                        "startColumn": 4,
+                        "startOffset": 52391,
+                        "endColumn": 66,
+                        "endOffset": 52453
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1093,
+                    "startColumn": 4,
+                    "startOffset": 54008,
+                    "endColumn": 68,
+                    "endOffset": 54072
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1093,
+                        "startColumn": 4,
+                        "startOffset": 54008,
+                        "endColumn": 68,
+                        "endOffset": 54072
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1094,
+                    "startColumn": 4,
+                    "startOffset": 54077,
+                    "endColumn": 65,
+                    "endOffset": 54138
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1094,
+                        "startColumn": 4,
+                        "startOffset": 54077,
+                        "endColumn": 65,
+                        "endOffset": 54138
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1095,
+                    "startColumn": 4,
+                    "startOffset": 54143,
+                    "endColumn": 65,
+                    "endOffset": 54204
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1095,
+                        "startColumn": 4,
+                        "startOffset": 54143,
+                        "endColumn": 65,
+                        "endOffset": 54204
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1096,
+                    "startColumn": 4,
+                    "startOffset": 54209,
+                    "endColumn": 68,
+                    "endOffset": 54273
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1096,
+                        "startColumn": 4,
+                        "startOffset": 54209,
+                        "endColumn": 68,
+                        "endOffset": 54273
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1097,
+                    "startColumn": 4,
+                    "startOffset": 54278,
+                    "endColumn": 70,
+                    "endOffset": 54344
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1097,
+                        "startColumn": 4,
+                        "startOffset": 54278,
+                        "endColumn": 70,
+                        "endOffset": 54344
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1098,
+                    "startColumn": 4,
+                    "startOffset": 54349,
+                    "endColumn": 61,
+                    "endOffset": 54406
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1098,
+                        "startColumn": 4,
+                        "startOffset": 54349,
+                        "endColumn": 61,
+                        "endOffset": 54406
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1099,
+                    "startColumn": 4,
+                    "startOffset": 54411,
+                    "endColumn": 63,
+                    "endOffset": 54470
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1099,
+                        "startColumn": 4,
+                        "startOffset": 54411,
+                        "endColumn": 63,
+                        "endOffset": 54470
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1100,
+                    "startColumn": 4,
+                    "startOffset": 54475,
+                    "endColumn": 68,
+                    "endOffset": 54539
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1100,
+                        "startColumn": 4,
+                        "startOffset": 54475,
+                        "endColumn": 68,
+                        "endOffset": 54539
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1101,
+                    "startColumn": 4,
+                    "startOffset": 54544,
+                    "endColumn": 62,
+                    "endOffset": 54602
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1101,
+                        "startColumn": 4,
+                        "startOffset": 54544,
+                        "endColumn": 62,
+                        "endOffset": 54602
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1102,
+                    "startColumn": 4,
+                    "startOffset": 54607,
+                    "endColumn": 65,
+                    "endOffset": 54668
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1102,
+                        "startColumn": 4,
+                        "startOffset": 54607,
+                        "endColumn": 65,
+                        "endOffset": 54668
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1103,
+                    "startColumn": 4,
+                    "startOffset": 54673,
+                    "endColumn": 62,
+                    "endOffset": 54731
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1103,
+                        "startColumn": 4,
+                        "startOffset": 54673,
+                        "endColumn": 62,
+                        "endOffset": 54731
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1104,
+                    "startColumn": 4,
+                    "startOffset": 54736,
+                    "endColumn": 58,
+                    "endOffset": 54790
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1104,
+                        "startColumn": 4,
+                        "startOffset": 54736,
+                        "endColumn": 58,
+                        "endOffset": 54790
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1105,
+                    "startColumn": 4,
+                    "startOffset": 54795,
+                    "endColumn": 55,
+                    "endOffset": 54846
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1105,
+                        "startColumn": 4,
+                        "startOffset": 54795,
+                        "endColumn": 55,
+                        "endOffset": 54846
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1106,
+                    "startColumn": 4,
+                    "startOffset": 54851,
+                    "endColumn": 59,
+                    "endOffset": 54906
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1106,
+                        "startColumn": 4,
+                        "startOffset": 54851,
+                        "endColumn": 59,
+                        "endOffset": 54906
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1107,
+                    "startColumn": 4,
+                    "startOffset": 54911,
+                    "endColumn": 58,
+                    "endOffset": 54965
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1107,
+                        "startColumn": 4,
+                        "startOffset": 54911,
+                        "endColumn": 58,
+                        "endOffset": 54965
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1108,
+                    "startColumn": 4,
+                    "startOffset": 54970,
+                    "endColumn": 53,
+                    "endOffset": 55019
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1108,
+                        "startColumn": 4,
+                        "startOffset": 54970,
+                        "endColumn": 53,
+                        "endOffset": 55019
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1109,
+                    "startColumn": 4,
+                    "startOffset": 55024,
+                    "endColumn": 55,
+                    "endOffset": 55075
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1109,
+                        "startColumn": 4,
+                        "startOffset": 55024,
+                        "endColumn": 55,
+                        "endOffset": 55075
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1110,
+                    "startColumn": 4,
+                    "startOffset": 55080,
+                    "endColumn": 57,
+                    "endOffset": 55133
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1110,
+                        "startColumn": 4,
+                        "startOffset": 55080,
+                        "endColumn": 57,
+                        "endOffset": 55133
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1111,
+                    "startColumn": 4,
+                    "startOffset": 55138,
+                    "endColumn": 55,
+                    "endOffset": 55189
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1111,
+                        "startColumn": 4,
+                        "startOffset": 55138,
+                        "endColumn": 55,
+                        "endOffset": 55189
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1112,
+                    "startColumn": 4,
+                    "startOffset": 55194,
+                    "endColumn": 59,
+                    "endOffset": 55249
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1112,
+                        "startColumn": 4,
+                        "startOffset": 55194,
+                        "endColumn": 59,
+                        "endOffset": 55249
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1113,
+                    "startColumn": 4,
+                    "startOffset": 55254,
+                    "endColumn": 57,
+                    "endOffset": 55307
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1113,
+                        "startColumn": 4,
+                        "startOffset": 55254,
+                        "endColumn": 57,
+                        "endOffset": 55307
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1114,
+                    "startColumn": 4,
+                    "startOffset": 55312,
+                    "endColumn": 53,
+                    "endOffset": 55361
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1114,
+                        "startColumn": 4,
+                        "startOffset": 55312,
+                        "endColumn": 53,
+                        "endOffset": 55361
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1115,
+                    "startColumn": 4,
+                    "startOffset": 55366,
+                    "endColumn": 58,
+                    "endOffset": 55420
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1115,
+                        "startColumn": 4,
+                        "startOffset": 55366,
+                        "endColumn": 58,
+                        "endOffset": 55420
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1116,
+                    "startColumn": 4,
+                    "startOffset": 55425,
+                    "endColumn": 55,
+                    "endOffset": 55476
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1116,
+                        "startColumn": 4,
+                        "startOffset": 55425,
+                        "endColumn": 55,
+                        "endOffset": 55476
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1117,
+                    "startColumn": 4,
+                    "startOffset": 55481,
+                    "endColumn": 55,
+                    "endOffset": 55532
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1117,
+                        "startColumn": 4,
+                        "startOffset": 55481,
+                        "endColumn": 55,
+                        "endOffset": 55532
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1118,
+                    "startColumn": 4,
+                    "startOffset": 55537,
+                    "endColumn": 59,
+                    "endOffset": 55592
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1118,
+                        "startColumn": 4,
+                        "startOffset": 55537,
+                        "endColumn": 59,
+                        "endOffset": 55592
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1119,
+                    "startColumn": 4,
+                    "startOffset": 55597,
+                    "endColumn": 57,
+                    "endOffset": 55650
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1119,
+                        "startColumn": 4,
+                        "startOffset": 55597,
+                        "endColumn": 57,
+                        "endOffset": 55650
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1120,
+                    "startColumn": 4,
+                    "startOffset": 55655,
+                    "endColumn": 53,
+                    "endOffset": 55704
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1120,
+                        "startColumn": 4,
+                        "startOffset": 55655,
+                        "endColumn": 53,
+                        "endOffset": 55704
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1121,
+                    "startColumn": 4,
+                    "startOffset": 55709,
+                    "endColumn": 57,
+                    "endOffset": 55762
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1121,
+                        "startColumn": 4,
+                        "startOffset": 55709,
+                        "endColumn": 57,
+                        "endOffset": 55762
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1122,
+                    "startColumn": 4,
+                    "startOffset": 55767,
+                    "endColumn": 60,
+                    "endOffset": 55823
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1122,
+                        "startColumn": 4,
+                        "startOffset": 55767,
+                        "endColumn": 60,
+                        "endOffset": 55823
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1123,
+                    "startColumn": 4,
+                    "startOffset": 55828,
+                    "endColumn": 55,
+                    "endOffset": 55879
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1123,
+                        "startColumn": 4,
+                        "startOffset": 55828,
+                        "endColumn": 55,
+                        "endOffset": 55879
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1124,
+                    "startColumn": 4,
+                    "startOffset": 55884,
+                    "endColumn": 53,
+                    "endOffset": 55933
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1124,
+                        "startColumn": 4,
+                        "startOffset": 55884,
+                        "endColumn": 53,
+                        "endOffset": 55933
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 1125,
+                    "startColumn": 4,
+                    "startOffset": 55938,
+                    "endColumn": 55,
+                    "endOffset": 55989
+                },
+                "from": {
+                    "file": "F:\\androidstudio\\flyer\\AndroidBootstrap\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 1125,
+                        "startColumn": 4,
+                        "startOffset": 55938,
+                        "endColumn": 55,
+                        "endOffset": 55989
+                    }
+                }
+            }
+        ]
+    }
+]
