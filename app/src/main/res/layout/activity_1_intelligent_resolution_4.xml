@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/whiteFont"
+            android:textColor="@color/Blue"
             android:textSize="@dimen/font14"
             android:layout_gravity="center_vertical"
             android:text="请选择要去的地点："/>

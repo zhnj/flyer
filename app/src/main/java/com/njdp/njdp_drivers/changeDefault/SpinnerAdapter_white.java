@@ -52,7 +52,7 @@ public class SpinnerAdapter_white extends ArrayAdapter<String> {
         TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
         tv.setText(mStringArray[position]);
         tv.setTextSize(16f);
-        tv.setTextColor(ContextCompat.getColor(mContext, R.color.whiteFont));
+        tv.setTextColor(ContextCompat.getColor(mContext, R.color.Blue));
 //        parent.setBackgroundColor(Color.TRANSPARENT);
         parent.setBackgroundResource(R.drawable.arrow_down);
         return convertView;
