@@ -215,7 +215,7 @@ public class item_intelligent_resolution_4 extends Fragment implements View.OnCl
         activityList.add(getActivity());
         BNOuterLogUtil.setLogSwitcher(true);
         if (initDirs()) {
-            initNavi();
+           // initNavi();
         }
         /*
         * 导航用结束

@@ -163,8 +163,8 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
 
                 final ImageView imv=(ImageView)convertView.findViewById(R.id.arrow_drop_down);
                 LinearLayout text_layout=(LinearLayout)convertView.findViewById(R.id.text_Layout);
-                TextView deploy_selecte=(Button)convertView.findViewById(R.id.deploy_selected);//查看方案按钮
-                TextView deploy_favourite=(Button)convertView.findViewById(R.id.deploy_favourite);//收藏方案按钮
+                TextView deploy_selecte=(TextView)convertView.findViewById(R.id.deploy_selected);//查看方案按钮
+                TextView deploy_favourite=(TextView)convertView.findViewById(R.id.deploy_favourite);//收藏方案按钮
                 class textLayoutListener implements View.OnClickListener//expand区域监听
                 {
                     @Override

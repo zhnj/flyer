@@ -53,7 +53,7 @@ public class MyRefAdapter extends RecyclerView.Adapter<MyRefAdapter.ViewHolder> 
         phone = "13018100000" + position;
         String str = "无人机编号：" + list.get(position).getMachineId()
                 + "\n无人机型号：" + list.get(position).getScheduleUavNorm().getBrandId()
-                + "\n作业能力：" + list.get(position).getWorkingAbility()
+                + "\n作业能力：" + list.get(position).getWorkingAbility()+"亩/分钟"
                 + "\n备注：" + list.get(position).getSchMachineRemark();
         holder.textView.setText(str);
 //        holder.bt1.setOnClickListener(new View.OnClickListener() {

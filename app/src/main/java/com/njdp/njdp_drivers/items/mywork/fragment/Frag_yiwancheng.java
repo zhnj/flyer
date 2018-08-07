@@ -109,7 +109,7 @@ public class Frag_yiwancheng extends Fragment {
                     adapter = new YiwanchengAdapter(getContext(),resultBeanList);
                     rv.setAdapter(adapter);
                 }else {
-                    Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {// 添加请求失败监听

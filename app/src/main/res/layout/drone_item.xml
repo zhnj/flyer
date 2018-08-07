@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
+    android:layout_height="wrap_content"
     android:padding="10dp">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="无人机条目"
         android:lineSpacingMultiplier="1.5"
@@ -15,7 +14,7 @@
         android:id="@+id/drone_tv"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -26,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#00f3f3f4"
             android:drawableLeft="@drawable/ic_settings_white_24dp"
             android:padding="8dp"
+            android:background="#0000"
             android:text="修改"/>
 
         <Button
@@ -36,23 +35,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:drawableLeft="@android:drawable/ic_menu_delete"
-            android:background="#00f3f3f4"
             android:padding="8dp"
-            android:text="删除" />
+            android:layout_marginLeft="4dp"
+            android:text="删除"
+            android:background="#0000"
+            android:drawableLeft="@android:drawable/ic_menu_delete" />
+
         <Button
-        android:id="@+id/drone_bt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#00f3f3f4"
-        android:drawableLeft="@android:drawable/ic_menu_call"
-        android:elevation="0dp"
-        android:visibility="invisible"
-        android:padding="8dp"
-        android:text="查看" />
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@drawable/ic_settings_white_24dp"
+            android:padding="8dp"
+            android:text="修改"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@drawable/ic_settings_white_24dp"
+            android:padding="8dp"
+            android:text="修改"
+            android:visibility="invisible" />
+
     </LinearLayout>
     <View
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#444"

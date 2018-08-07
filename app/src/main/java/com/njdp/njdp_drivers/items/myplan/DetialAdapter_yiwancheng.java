@@ -84,7 +84,7 @@ public class DetialAdapter_yiwancheng extends RecyclerView.Adapter<DetialAdapter
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item_detail_yiwancheng, null);
         ViewHolder holder = new ViewHolder(view);
         gps_MachineLocation();
-        initNavi();
+        //initNavi();
 
         return holder;
     }
@@ -165,28 +165,30 @@ public class DetialAdapter_yiwancheng extends RecyclerView.Adapter<DetialAdapter
         String income = "\n收入："+list.get(position).getIncome()+"元";
         String area = "\n面积："+list.get(position).getArea_num()+"亩";
         final String phone = "\n电话："+list.get(position).getFarmer_phone();
-        String result = "\n是否住宿：";//+list.get(position).getReturnStatus());
+        String result = "\n住宿建议：";//+list.get(position).getReturnStatus());
         switch (list.get(position).getReturnStatus()){
             case "1":
-                result+="是";
+                result+="当地住宿";
                 break;
             case "2":
-                result+="否";
+                result+="返程";
                 break;
             case "3":
-                result+="是";
+                result+="当地住宿";
                 break;
             case "4":
-                result+="否";
+                result+="返程";
                 break;
             default:
                 result="";
                 break;
         }
         String date = "\n日期："+list.get(position).getBeginTime()+" 至 "+list.get(position).getEndTime();
-
-
-        str = id+address+income+area+phone+result+date;
+        if (list.get(position).getModifyStatus().equals("1")){
+            date+="(已为您避开有雨天气)";
+        }
+        //str = id+address+income+area+phone+result+date;
+        str = id+address+income+area+result+date;
         Log.i("info","str:"+str);
         holder.tv.setText(str);
 

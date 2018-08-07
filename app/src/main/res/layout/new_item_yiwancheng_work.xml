@@ -23,27 +23,25 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/fw_bt1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:background="#00f3f3f4"
-            android:drawableLeft="@android:drawable/ic_menu_call"
-            android:elevation="0dp"
-            android:visibility="invisible"
-            android:padding="8dp"
-            android:text="拨号" />
-
-        <Button
-            android:id="@+id/fw_bt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#00f3f3f4"
-            android:visibility="invisible"
             android:drawableLeft="@android:drawable/ic_menu_send"
             android:padding="8dp"
-            android:text="导航" />
+            android:text="导航"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00f3f3f4"
+            android:drawableLeft="@android:drawable/ic_menu_send"
+            android:padding="8dp"
+            android:text="导航"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/fw_bt3"
@@ -53,8 +51,7 @@
             android:background="#00f3f3f4"
             android:drawableLeft="@android:drawable/ic_menu_myplaces"
             android:padding="8dp"
-            android:visibility="invisible"
-            android:text="确认" />
+            android:text="查看评价" />
 
         <Button
             android:id="@+id/fw_bt4"
@@ -64,8 +61,9 @@
             android:background="#00f3f3f4"
             android:drawableLeft="@android:drawable/ic_menu_delete"
             android:padding="8dp"
-            android:text="删除" />
+            android:text="删除地块" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

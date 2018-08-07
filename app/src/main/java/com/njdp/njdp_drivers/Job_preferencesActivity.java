@@ -49,6 +49,7 @@ public class Job_preferencesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 //设置沉浸模式
+        /*
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -61,7 +62,7 @@ public class Job_preferencesActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
         }
-
+*/
         setContentView(R.layout.activity_job_preferences);
         initData();
         text_uav_work_time = (EditText)findViewById(uavworktime);

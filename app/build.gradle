@@ -29,6 +29,7 @@ android {
         ndk {
             abiFilters "armeabi"
         }
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -50,9 +51,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:multidex:1.0.3'
+
     compile project(':onsdk_all')
     //    compile project(':baidunavi-base')
     //    compile project(':baidunavi')
@@ -85,7 +87,7 @@ dependencies {
 
    compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/lbsCoreSDK.jar')
-    compile files('libs/locSDK_6.23.jar')
+    //compile files('libs/locSDK_6.23.jar')
 
 
 }

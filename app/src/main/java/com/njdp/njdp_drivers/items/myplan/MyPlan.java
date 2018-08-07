@@ -34,6 +34,7 @@ public class MyPlan extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         //设置沉浸模式
+        /*
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -46,7 +47,7 @@ public class MyPlan extends AppCompatActivity implements View.OnClickListener {
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
         }
-
+*/
         setContentView(R.layout.new_activity_layout_plan);
 
         findViewById(R.id.getback).setOnClickListener(this);

@@ -1,8 +1,10 @@
 package com.njdp.njdp_drivers.items.mywork.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,15 +79,8 @@ public class YiwanchengAdapter extends RecyclerView.Adapter<YiwanchengAdapter.Vi
                 Toast.makeText(context, "当前点击的条目的地址为：" + list.get(position).getFarmlandsInfo().getFarmlandsVillage(), Toast.LENGTH_SHORT).show();
             }
         });
-        holder.bt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //startActivity(intent);
-            }
-        });
-        holder.bt2.setOnClickListener(new View.OnClickListener() {
+
+        holder.bt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url;
@@ -100,36 +95,27 @@ public class YiwanchengAdapter extends RecyclerView.Adapter<YiwanchengAdapter.Vi
                     @Override
                     public void onResponse(String response) {
                         CommentBean cb = new Gson().fromJson(response,CommentBean.class);
-                        Toast.makeText(context, farmland_id+":"+cb.getFarmlandsPingjia(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {// 添加请求失败监听
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "连接失败,检查网络", Toast.LENGTH_LONG).show();
-                    }
+                        //Toast.makeText(context, farmland_id+":"+cb.getFarmlandsPingjia(), Toast.LENGTH_SHORT).show();
 
-                });
-                // 设置请求的tag标签，便于在请求队列中寻找该请求
-                request.setTag("get");
-                // 添加到全局的请求队列
-                AppController.getHttpQueues().add(request);
-            }
-        });
-        holder.bt3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url;
-                int flyer_id = list.get(position).getFlyerId();
-                int farmland_id = list.get(position).getFarmlandsInfo().getId();
-                String opration = "完成";
-                url = AppConfig.URL_MYJOB_PART_CHECK;
-                url = url + "?flyer_id=" + flyer_id + "&farmland_id=" + farmland_id + "&opration=" + opration;
-                Log.i("delurl", url);
-                //定义一个StringRequest
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(context, "确认完成", Toast.LENGTH_SHORT).show();
+                        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(context);
+                        //normalDialog.setIcon(R.drawable.);
+                        normalDialog.setTitle("评价信息：");
+                        normalDialog.setMessage(cb.getFarmlandsPingjia()==null?"暂无评价信息":cb.getFarmlandsPingjia());
+                        normalDialog.setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //删除
+
+                                        //
+                                    }
+                                });
+                        // 显示
+                        normalDialog.show();
+
+
+
+
                     }
                 }, new Response.ErrorListener() {// 添加请求失败监听
                     @Override
@@ -183,8 +169,6 @@ public class YiwanchengAdapter extends RecyclerView.Adapter<YiwanchengAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        Button bt1;
-        Button bt2;
         Button bt3;
         Button bt4;
 
@@ -192,8 +176,6 @@ public class YiwanchengAdapter extends RecyclerView.Adapter<YiwanchengAdapter.Vi
             super(itemView);
             //根据onCreateViewHolder的HoldView所添加的xml布局找到空间
             textView = (TextView) itemView.findViewById(R.id.tv_adapter);
-            bt1 = (Button) itemView.findViewById(R.id.fw_bt1);
-            bt2 = (Button) itemView.findViewById(R.id.fw_bt2);
             bt3 = (Button) itemView.findViewById(R.id.fw_bt3);
             bt4 = (Button) itemView.findViewById(R.id.fw_bt4);
         }

@@ -707,7 +707,7 @@ public class item_query_requirement_1 extends Fragment  implements View.OnClickL
         activityList.add(getActivity());
         BNOuterLogUtil.setLogSwitcher(true);
         if (initDirs()) {
-            initNavi();
+            //initNavi();
         }
         /*
         * 导航用结束

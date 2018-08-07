@@ -3,39 +3,50 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_bg"
-    android:paddingTop="@dimen/padding20"
     android:weightSum="1">
     <RelativeLayout
+        android:id="@+id/release_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:id="@+id/job_preferences_top"
+        android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/main_title">
+
         <TextView
             style="@style/Pages_Title"
-            android:text="无人机编辑"
-            />
+            android:text="无人机编辑" />
+
+        <ImageButton
+            android:id="@+id/getBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chevron_left_white_48dp" />
+
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_menu_white_48dp" />
     </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="20dp"
-        android:padding="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="无人机编号："
-
-            android:gravity="right"
-            android:textColor="#000000"
-            android:textSize="18dp"/>
+            style="@style/content_text"/>
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/drone_et_id"
-            android:layout_weight="4"
+            android:layout_weight="2.5"
             android:textSize="18dp"
             android:textColor="#191970"
             android:textCursorDrawable="@drawable/login_cursor"
@@ -47,58 +58,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="8dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="right"
-            android:text="作业能力："
-            android:textColor="#191970"
-            android:textSize="18dp" />
+            android:layout_weight="0.75"
+            android:text="作业能力(亩/分钟)："
+            style="@style/content_text" />
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
+            android:layout_weight="1"
             android:background="@drawable/login_edit_changecolor"
             android:inputType="number"
             android:id="@+id/drone_et_ability"
             android:textColor="#191970"
-            android:textCursorDrawable="@drawable/login_cursor"
-            android:textSize="18dp" />
+            android:textCursorDrawable="@drawable/login_cursor" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="亩/分钟"
-            android:textColor="#191970"
-            android:textSize="18dp" />
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="备注："
-
-            android:gravity="right"
-            android:textColor="#191970"
+            style="@style/content_text"
             android:textSize="18dp"/>
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/drone_et_remark"
-            android:layout_weight="4"
+            android:layout_weight="4.8"
             android:textSize="18dp"
             android:textColor="#191970"
             android:textCursorDrawable="@drawable/login_cursor"
@@ -111,8 +112,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:padding="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -121,10 +123,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="无人机型号："
-            android:gravity="right"
             android:layout_weight="2"
-            android:textColor="#191970"
-            android:textSize="18dp"/>
+            style="@style/content_text"/>
 
         <Spinner
             android:layout_weight="4"
@@ -139,6 +139,7 @@
     </LinearLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:background="#8fff"
             style="@style/AppTheme.PopupOverlay"
             android:id="@+id/drone_editor_tv_display"

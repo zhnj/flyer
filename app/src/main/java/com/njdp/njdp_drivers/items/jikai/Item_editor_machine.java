@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,7 +37,7 @@ import com.njdp.njdp_drivers.items.jikai.bean.DroneBean;
 /*
 * 我的无人机修改页面
 * */
-public class Item_editor_machine extends AppCompatActivity {
+public class Item_editor_machine extends AppCompatActivity implements View.OnClickListener {
     private String type;
     private TextView textView;
     //首先还是先声明这个Spinner控件
@@ -55,19 +56,19 @@ public class Item_editor_machine extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //设置沉浸模式
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.setNavigationBarColor(Color.TRANSPARENT);
-        }
+//        //设置沉浸模式
+//        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.TRANSPARENT);
+//            window.setNavigationBarColor(Color.TRANSPARENT);
+//        }
 
         setContentView(R.layout.drone_editor);
 
@@ -76,6 +77,7 @@ public class Item_editor_machine extends AppCompatActivity {
         ability = (EditText) findViewById(R.id.drone_et_ability);
         spinner = (Spinner) findViewById(R.id.drone_spinner);
         textView = (TextView) findViewById(R.id.drone_editor_tv_display);
+        findViewById(R.id.getBack).setOnClickListener(this);
 
         isNull();
         initData();
@@ -202,6 +204,18 @@ public class Item_editor_machine extends AppCompatActivity {
             id.setText(bianhao);
             remark.setText(beizhu);
             ability.setText(nengli);
+        }
+    }
+
+    public void onClick(View v)
+    {
+        switch (v.getId()) {
+            case R.id.getBack:
+                finish();
+                break;
+            case R.id.menu:
+                //menu.openDrawer(Gravity.LEFT);
+                break;
         }
     }
 }

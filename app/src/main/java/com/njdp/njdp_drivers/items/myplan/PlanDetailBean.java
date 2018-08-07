@@ -80,7 +80,16 @@ public class PlanDetailBean {
         private String latitude;
         private String longitude;
         private String returnStatus;
+        private String modifyStatus;
         private String unit_price;
+
+        public String getModifyStatus() {
+            return modifyStatus;
+        }
+
+        public void setModifyStatus(String modifyStatus) {
+            this.modifyStatus = modifyStatus;
+        }
 
         public String getArea_num() {
             return area_num;

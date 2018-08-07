@@ -493,6 +493,7 @@ public class item_intelligent_resolution_1 extends Fragment implements View.OnCl
                 } else {
 
                     String errorMsg = jObj.getString("error_msg");
+
                     Log.e(TAG, "Json error:json返回的数据有错误：" + errorMsg);
                     commonUtil.error_hint_short(errorMsg);
                 }
