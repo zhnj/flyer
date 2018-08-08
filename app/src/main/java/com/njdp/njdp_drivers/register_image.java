@@ -98,6 +98,7 @@ public class register_image extends AppCompatActivity {
 
 
         //设置沉浸模式
+        /*
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -110,7 +111,7 @@ public class register_image extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
         }
-
+*/
 
         setContentView(R.layout.activity_register_image);
 

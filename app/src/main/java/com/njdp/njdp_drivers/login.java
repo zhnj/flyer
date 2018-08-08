@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 //import com.android.volley.Response;
 //import com.android.volley.VolleyError;
 //import com.android.volley.toolbox.StringRequest;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.njdp.njdp_drivers.db.AppConfig;
@@ -175,7 +176,8 @@ public class login extends Activity {
 
     // register_user 跳转到注册界面
     public void register_user(View v){
-        Intent intent = new Intent(this, register.class);
+       Intent intent = new Intent(this, register.class);
+        // Intent intent = new Intent(this, register_2.class);
         startActivity(intent);
     }
 

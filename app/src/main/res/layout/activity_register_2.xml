@@ -50,11 +50,11 @@
         android:layout_below="@+id/register_top">
         <EditText
             style="@style/Register_style"
-            android:id="@+id/user_name"
+            android:id="@+id/com_name"
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
             android:drawableLeft="@drawable/ic_person_outline_white_24dp"
-            android:hint="姓名"
+            android:hint="公司名称"
             android:inputType="textPhonetic"
             />
         <View
@@ -62,10 +62,46 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/user_name"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_person_outline_white_24dp"
+            android:hint="法人"
+            android:inputType="textPhonetic"
+            />
         <View
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"/>
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/uav_num"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_person_outline_white_24dp"
+            android:hint="无人机数量"
+            android:inputType="number"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/company_num"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:drawableLeft="@drawable/ic_person_outline_white_24dp"
+            android:hint="员工人数"
+            android:inputType="number"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
         <EditText
             style="@style/Register_style"
             android:id="@+id/user_qq"
@@ -93,13 +129,28 @@
             style="@style/Register_HorizontalLine_style"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
-        <TextView
+        <EditText
             style="@style/Register_style"
             android:background="@drawable/login_edit_changecolor"
             android:drawableLeft="@drawable/ic_pin_drop_grey600_24dp"
             android:id="@+id/user_site"
             android:textSize="@dimen/font18"
-            android:text="点击选择省市县地址"
+            android:hint="公司地址"
+            />
+        <View
+            style="@style/Register_HorizontalLine_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+        <EditText
+            style="@style/Register_style"
+            android:id="@+id/company_indro"
+            android:textCursorDrawable="@drawable/login_cursor"
+            android:background="@drawable/login_edit_changecolor"
+            android:hint="公司简介"
+            android:drawableLeft="@drawable/ic_person_outline_white_24dp"
+            android:inputType="textPhonetic"
+            android:minLines="2"
+            />
             />
         <View
             style="@style/Register_HorizontalLine_style"

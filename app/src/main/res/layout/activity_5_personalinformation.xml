@@ -23,7 +23,7 @@
 
         <TextView
             style="@style/Pages_Title"
-            android:text="我的信息"
+            android:text="信息维护"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
@@ -57,15 +57,11 @@
             circleImageView:civ_border_width="2dp"
             circleImageView:civ_border_color="#ffffff"/>
     </LinearLayout>
-
-
     <ScrollView
-
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fadingEdge="vertical"
         android:scrollbars="vertical">
-
         <LinearLayout
             android:id="@+id/register_div"
             style="@style/Register_Div"
@@ -74,170 +70,78 @@
             android:layout_marginTop="3dp"
             android:orientation="vertical">
 
+
+            <View style="@style/personalinformation_line" />
             <LinearLayout
                 android:id="@+id/driver_name"
                 style="@style/personalinformation_linearlayout">
-
                 <TextView
                     style="@style/personalinformation_left"
-                    android:text="姓名" />
-
+                    android:text="公司名称" />
                 <TextView
                     android:id="@+id/input_driver_name"
                     style="@style/personalinformation_right"
                     android:text="周二" />
             </LinearLayout>
-
             <View style="@style/personalinformation_line" />
-
             <!--性别  -->
             <LinearLayout
                 android:id="@+id/driver_sex"
                 style="@style/personalinformation_linearlayout">
-
                 <TextView
                     style="@style/personalinformation_left"
-                    android:text="性别" />
-
+                    android:text="员工总数" />
                 <TextView
                     android:id="@+id/input_driver_sex"
                     style="@style/personalinformation_right"
-                    android:text="男" />
+                    android:text="10" />
 
-                <!-- <RadioGroup
-                     android:id="@+id/radioGroup"
-                     android:gravity="center"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:orientation="horizontal"
-                     style="@style/personalinformation_right">
-
-                     <RadioButton
-                         android:id="@+id/btnMan"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="男"
-                         android:checked="true"
-                         android:layout_marginLeft="15dp" />
-                     <RadioButton
-                         android:id="@+id/btnWoman"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="女"
-                         android:layout_marginLeft="10dp" />
-                 </RadioGroup>
-                 -->
             </LinearLayout>
 
             <View style="@style/personalinformation_line" />
-
-
             <!--农机编号 -->
-
             <LinearLayout
-                android:visibility="invisible"
+                style="@style/personalinformation_linearlayout"
                 android:id="@+id/driver_machine_id"
-                android:layout_width="wrap_content"
-                android:layout_height="1sp"
-                >
-
+                 >
                 <TextView
                     style="@style/personalinformation_left"
-                    android:text="农机编号" />
-
+                    android:text="无人机数量" />
                 <TextView
                     android:id="@+id/input_driver_licence_plate"
                     style="@style/personalinformation_right"
-                    android:text="1301000301" />
-
+                    android:text="10" />
             </LinearLayout>
 
             <View style="@style/personalinformation_line"
-                android:visibility="invisible"
-                />
 
+                />
             <!--身份证号 -->
             <LinearLayout
-
                 android:id="@+id/driver_personsfzh"
                 style="@style/personalinformation_linearlayout">
-
                 <TextView
                     style="@style/personalinformation_left"
                     android:text="身份证号" />
-
                 <TextView
                     android:id="@+id/input_person_sfzh"
                     style="@style/personalinformation_right"
                     android:text="130102198710050448" />
-
             </LinearLayout>
-
             <View style="@style/personalinformation_line" />
-
             <LinearLayout
-
                 android:id="@+id/driver_telephone"
                 style="@style/personalinformation_linearlayout">
-
                 <TextView
                     style="@style/personalinformation_left"
                     android:text="手机号" />
-
                 <TextView
                     android:id="@+id/input_driver_telephone"
                     style="@style/personalinformation_right"
                     android:text="15888956866" />
-
             </LinearLayout>
 
             <View style="@style/personalinformation_line" />
-
-            <!--所属飞服公司 -->
-            <LinearLayout
-
-                android:id="@+id/driver_personcomid"
-                style="@style/personalinformation_linearlayout">
-
-                <TextView
-                    style="@style/personalinformation_left"
-                    android:text="飞服公司" />
-
-                <Spinner
-
-                    android:id="@+id/sp_person_comid"
-
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-
-                    />
-            </LinearLayout>
-
-            <View style="@style/personalinformation_line" />
-            <!--耕地面积 -->
-            <LinearLayout
-
-                android:id="@+id/driver_farmlandarea"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:visibility="invisible">
-
-                <TextView
-                    style="@style/personalinformation_left"
-                    android:text="耕地面积" />
-
-                <TextView
-                    android:id="@+id/input_farmland_area"
-                    style="@style/personalinformation_center"
-                    android:text="亩" />
-
-            </LinearLayout>
-
-            <View
-                style="@style/personalinformation_line"
-                android:visibility="invisible" />
 
             <LinearLayout
 
@@ -276,12 +180,12 @@
             <LinearLayout
 
                 android:id="@+id/driver_region"
-                android:visibility="invisible"
+
                 style="@style/personalinformation_linearlayout">
 
                 <TextView
                     style="@style/personalinformation_left"
-                    android:text="地区" />
+                    android:text="公司地址" />
 
                 <TextView
                     android:id="@+id/input_driver_region"

@@ -314,6 +314,7 @@ public class register extends Activity {
 //        driver_bundle.putString("address", text_user_machine_id.getText().toString());
         intent.putExtra("driver_register", driver_bundle);
         startActivity(intent);
+        finish();
     }
 
 //    //验证码响应服务器成功

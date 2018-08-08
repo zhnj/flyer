@@ -278,7 +278,7 @@ public class register_1 extends Activity implements View.OnClickListener{
         params.put("phone", telephone);
         params.put("sfzh", sfzh);
         params.put("password", password);
-       // params.put("code", verify_code);
+        params.put("code", AppConfig.VerifyCode);
         register_strReq= NoHttp.createJsonObjectRequest(register_url, RequestMethod.POST);
         register_strReq.add(params);
         RequestQueue requestQueue = NoHttp.newRequestQueue();
@@ -307,7 +307,9 @@ public class register_1 extends Activity implements View.OnClickListener{
                 if (status==0) {
                     token=jObj.getString("result");
                     session.setLogin(true,token);
-                    driver.setId(1);
+                    String userid=jObj.getString("user_id");
+                    session.setID(userid);
+                    driver.setId(Integer.parseInt(userid));
                     //driver.setMachine_id(machine_id);
                     driver.setSfzh(sfzh);
                     driver.setPassword(password);

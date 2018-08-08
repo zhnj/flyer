@@ -13,13 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.njdp.njdp_drivers.R;
 import com.njdp.njdp_drivers.changeDefault.SysCloseActivity;
 import com.njdp.njdp_drivers.db.AppConfig;
@@ -38,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bean.Driver;
+import bean.UAVCompany;
 
 import static com.njdp.njdp_drivers.util.NetUtil.TAG;
 
@@ -57,6 +67,28 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
     private DriverDao driverDao;
     private Driver driver;
 
+    GeoCoder mSearch;
+    GeoCodeResult geoCodeResult1;
+    OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+        @Override
+        public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+            if (geoCodeResult == null || geoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                Toast.makeText(mainMenu,"不能根据地址获取经纬度信息，请准确输入地址！",Toast.LENGTH_LONG).show();
+                return;
+            }
+            //获取地理编码结果
+            geoCodeResult1=geoCodeResult;
+            Log.e("位置位置",String.valueOf(geoCodeResult1.getLocation().latitude));
+        }
+
+        @Override
+        public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+            if (reverseGeoCodeResult == null || reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                //没有找到检索结果
+            }
+            //获取反向地理编码结果
+         }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +114,10 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                 if ((s.length() > 0) && !TextUtils.isEmpty(edt_fix_input.getText())) {
                     btn_fix_save.setClickable(true);
                     btn_fix_save.setEnabled(true);
+                    if(mainMenu.fix_info_flag==7)
+                    {
+                        mSearch.geocode(new GeoCodeOption().city("北京").address(s.toString()));
+                    }
                 } else {
                     btn_fix_save.setClickable(false);
                     btn_fix_save.setEnabled(false);
@@ -122,7 +158,12 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
             case 6:
                 fixValidation.addValidation(edt_fix_input, "(^\\d{15}$)|(^\\d{17}([0-9]|X)$)", getResources().getString(R.string.err_sfzh));
                 break;
-
+            case 7:
+                //点击选择地址
+                //text_user_address.setOnClickListener(new select_site_clickListener());
+                mSearch= GeoCoder.newInstance();
+                mSearch.setOnGetGeoCodeResultListener(listener);
+                break;
         }
         return view;
     }
@@ -136,36 +177,48 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                 try {
                     fix_params.clear();
                 }catch (Exception e){}
-                fix_params.put("token", token);
+                UAVCompany com = new UAVCompany();
+                com.setFm_id(sessionManager.getUserId());
+                Gson gson2=new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
+
+               // fix_params.put("fm_id",sessionManager.getUserId());
                 switch (mainMenu.fix_info_flag)
                 {
                     case 1:
-                        fix_params.put("person_name", mainMenu.fix_info);
-                        Log.e(TAG,"name:"+fix_params.get("person_name"));
+                        com.setCom_name(mainMenu.fix_info);
                         break;
                     case 3:
-                        fix_params.put("person_weixin", mainMenu.fix_info);
-                        Log.e(TAG, "weixin:" +fix_params.get("person_weixin"));
+
+                        com.setPersion_weixin(mainMenu.fix_info);
                         break;
                     case 4:
-                        fix_params.put("person_qq", mainMenu.fix_info);
-                        Log.e(TAG, "qq:" + fix_params.get("person_qq"));
+                       // fix_params.put("person_qq", mainMenu.fix_info);
+                       com.setPerson_qq(mainMenu.fix_info);
                         break;
                     case 5:
-                        fix_params.put("person_Sex", mainMenu.fix_info);
-                        Log.e(TAG, "sex:" + fix_params.get("person_Sex"));
+                        //fix_params.put("staff_num", mainMenu.fix_info);
+                       com.setStaff_num(mainMenu.fix_info);
                         break;
                     case 6:
-                        fix_params.put("person_sfzh", mainMenu.fix_info);
-                        Log.e(TAG, "sfzh:" + fix_params.get("person_sfzh"));
+                        //fix_params.put("person_sfzh", mainMenu.fix_info);
+                        com.setPerson_sfzh( mainMenu.fix_info);
                         break;
                     case 7:
-                        fix_params.put("person_comid", mainMenu.fix_info);
-                        Log.e(TAG, "personcomid:" + fix_params.get("person_comid"));
+                        //fix_params.put("com_addr", mainMenu.fix_info);
+                        //fix_params.put("com_latitude",String.valueOf(geoCodeResult1.getLocation().latitude));
+                        //fix_params.put("com_longitude","(String.valueOf(geoCodeResult1.getLocation().longitude)");
+
+                       com.setCom_addr( mainMenu.fix_info);
+                        com.setCom_latitude(String.valueOf(geoCodeResult1.getLocation().latitude));
+                        com.setCom_longitude(String.valueOf(geoCodeResult1.getLocation().longitude));
                         break;
 
                 }
-                check_fix_info();
+                //check_fix_info();
+                String obj2=gson2.toJson(com);
+                fix_params.put("comJson", obj2);
+                Log.e(TAG,"公司名称:"+fix_params.get("comJson"));
+                uploadInfo();
                 break;
             case R.id.fix_getback:
                 mainMenu.getSupportFragmentManager().popBackStack();
@@ -196,7 +249,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
         } else {
             //服务器请求
             StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_FIXPERSONINFO, new fixSuccessListener(), mainMenu.mErrorListener) {
+                    AppConfig.URL_UAV_MODIFY_COM, new fixSuccessListener(), mainMenu.mErrorListener) {
 
                 @Override
                 protected Map<String, String> getParams() {
@@ -222,7 +275,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
 
                 if (status==1) {
 
-                    String errorMsg = jObj.getString("result");
+                    String errorMsg = jObj.getString("msg");
                     Log.e(TAG, "Json error：response错误:" + errorMsg);
                     commonUtil.error_hint_short("密钥失效，请重新登录");
                     //清空数据，重新登录
@@ -231,7 +284,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                     SysCloseActivity.getInstance().exit();
                 } else if(status==0){
 
-                    String errorMsg=jObj.getString("result");
+                    String errorMsg=jObj.getString("msg");
                     Log.e(TAG, "修改结果：" + errorMsg);
                     mainMenu.change_info_flag=true;
                     driverDao=new DriverDao(mainMenu);
@@ -254,7 +307,7 @@ public class item_personalinformation_1_fix_info extends Fragment implements Vie
                             driver.setSfzh(mainMenu.fix_info);
                             break;
                         case 7:
-                            driver.setPersoncomid(mainMenu.fix_info);
+                            //driver.setPersoncomid(mainMenu.fix_info);
                             break;
 
                     }

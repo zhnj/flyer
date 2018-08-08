@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.Map;
 
 import bean.Driver;
+import bean.UAVCompany;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import static com.njdp.njdp_drivers.util.NetUtil.TAG;
@@ -111,7 +112,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     //新添加
     private TextView t_sex;
     private TextView t_personsfzh;
-    private Spinner t_personcomid=null;
+    private TextView t_personcomid=null;
     private String[] uavInfo;
 
     private DriverDao driverDao;
@@ -142,6 +143,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private static final int CROP_PHOTO_CODE = 002;
     private ArrayList<String> defaultDataArray;
     private Uri imageUri;
+    UAVCompany company;
     //////////////////////////////////////照片裁剪//////////////////////////////////////////////////
 
     @Override
@@ -152,7 +154,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 false);
         view.findViewById(R.id.getback).setOnClickListener(this);
         view.findViewById(R.id.menu).setOnClickListener(this);
-        view.findViewById(R.id.driver_name).setOnClickListener(this);
+        view.findViewById(R.id.driver_name).setOnClickListener(this);//公司名称
         view.findViewById(R.id.driver_machine_id).setOnClickListener(this);
         view.findViewById(R.id.driver_telephone).setOnClickListener(this);
         view.findViewById(R.id.driver_weixin).setOnClickListener(this);
@@ -163,7 +165,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         view.findViewById(R.id.driver_sex).setOnClickListener(this);
         //view.findViewById(R.id.driver_personsfzh).setOnClickListener(this);
-        view.findViewById(R.id.driver_personcomid).setOnClickListener(this);
+       // view.findViewById(R.id.driver_personcomid).setOnClickListener(this);
 
 
         this.l_name=(LinearLayout)view.findViewById(R.id.driver_name);
@@ -175,7 +177,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         this.l_sex=(LinearLayout)view.findViewById(R.id.driver_sex);
         this.l_personsfzh=(LinearLayout)view.findViewById(R.id.driver_personsfzh);
-        this.l_personcomid=(LinearLayout)view.findViewById(R.id.driver_personcomid);
+        //this.l_personcomid=(LinearLayout)view.findViewById(R.id.driver_personcomid);
 
 
         this.title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView) view.findViewById(R.id.information_div_title_image);
@@ -189,44 +191,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         this.t_sex=(TextView) view.findViewById(R.id.input_driver_sex);
         this.t_personsfzh=(TextView) view.findViewById(R.id.input_person_sfzh);
-        this.t_personcomid= (Spinner) view.findViewById(R.id.sp_person_comid);
+       // this.t_personcomid= (TextView) view.findViewById(R.id.sp_person_comid);
 
 
-        //给spinner添加事件
-        t_personcomid.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                final int pos = i;
-                driver.setPersoncomid(uavInfo[pos].split("-")[0]);
-                String tag_string_req = "req_fix_info";
-                if (netUtil.checkNet(mainMenu) == false) {
-                    mainMenu.hideDialog();
-                    commonUtil.error_hint_short("网络连接错误");
-                    return;
-                } else {
-                    //服务器请求
-                    StringRequest strReq = new StringRequest(Request.Method.POST,
-                            AppConfig.URL_FIXPERSONINFO, new fixUploadSuccessListener(), mainMenu.mErrorListener) {
-
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("token", token);
-                            params.put("person_comid", uavInfo[pos].split("-")[0]);
-                            return netUtil.checkParams(params);
-                        }
-                    };
-
-                    // Adding request to request queue
-                    AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }});
 
         mainMenu=(slidingMenu)getActivity();
         menu=mainMenu.drawer;
@@ -240,68 +207,19 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         commonUtil=new CommonUtil(mainMenu);
         netUtil=new NetUtil(mainMenu);
         gson=new Gson();
-        getInfo_url=AppConfig.URL_QUERYPERSONINFO;
-        fixInfo_url=AppConfig.URL_FIXPERSONINFO;
-//        imageLoader=AppController.getInstance().getImageLoader();
-//        imageListener=ImageLoader.getImageListener(title_Image, R.drawable.turnplate_center,R.drawable.turnplate_center);
-
         try {
             driver = driverDao.getDriver(1);
         }catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG,e.toString());
         }
-        if(driver.getTelephone()!=null) {
-            try {
-                showDriverInfo(driver);
-                path=null;
-                path = driver.getImage_url();
-                if (path != null)
-                {
-                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    title_Image.setImageBitmap(commonUtil.zoomBitmap(bitmap,300,300));
-                }else {
-                    getUserInfo();
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
-                Log.e(TAG,e.toString());
-            }
-        }else {
-            getUserInfo();
-        }
+
         getUserInfo();
-        getUAVInfor();////从服务器获取飞机服务公司信息
+        //getUAVInfor();////从服务器获取飞机服务公司信息
         setTextFix();//修改后，显示修改后的信息
-
-
         return view;
     }
 
-    //从服务器获取飞机服务公司信息
-    public void getUAVInfor(){
-
-        String tag_string_req = "req_uav_com_info";
-        if (netUtil.checkNet(mainMenu) == false) {
-            mainMenu.hideDialog();
-            commonUtil.error_hint_short("网络连接错误");
-            return;
-        } else {
-            //服务器请求
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    AppConfig.URL_UAV_listCompanys, new fixSuccessListener(), mainMenu.mErrorListener) {
-
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    return netUtil.checkParams(params);
-                }
-            };
-
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        }
-    }
 
     private class fixUploadSuccessListener implements  Response.Listener<String>//信息修改成功响应
     {
@@ -322,14 +240,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                     mainMenu.backLogin();
                     SysCloseActivity.getInstance().exit();
                 } else if(status==0){
-
                     String errorMsg=jObj.getString("result");
                     Log.e(TAG, "修改结果：" + errorMsg);
-
-
-
                 } else {
-
                     String errorMsg = jObj.getString("result");
                     Log.e(TAG, "1 Json error：response错误:" + errorMsg);
                     commonUtil.error_hint_short("保存失败,请重试");
@@ -340,71 +253,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             }
         }
     }
-    class fixSuccessListener implements Response.Listener<String>//信息修改成功响应
-    {
-        @Override
-        public void onResponse(String response) {
-            try {
-                Log.e("UAV company fix_back", response);
-                JSONObject jObj = new JSONObject(response);
-                int status = jObj.getInt("status");
 
-                if (status == 1) {
-
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("密钥失效，请重新登录");
-                    //清空数据，重新登录
-                    netUtil.clearSession(mainMenu);
-                    mainMenu.backLogin();
-                    SysCloseActivity.getInstance().exit();
-                } else if (status == 0) {
-
-
-                    JSONArray arr = jObj.getJSONArray("result");
-                    uavInfo = new String[arr.length()];
-                    for(int i=0;i<arr.length();i++)
-                    {
-                        uavInfo[i]=arr.getJSONObject(i).getString("id")+"-"+arr.getJSONObject(i).getString("com_name");
-                    }
-                    SpinnerAdapter adapter = new SpinnerAdapter(mainMenu,android.R.layout.simple_list_item_1,uavInfo);
-                    t_personcomid.setAdapter(adapter);
-                    for(int i =0;i<uavInfo.length;i++) {
-                        if(uavInfo[i].split("-")[0].equals(driver.getPersoncomid()))
-                            t_personcomid.setSelection(i);
-                    }
-
-                } else {
-
-                    String errorMsg = jObj.getString("result");
-                    Log.e(TAG, "1 Json error：response错误:" + errorMsg);
-                    commonUtil.error_hint_short("保存失败,请重试");
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "2 Json error：response错误" + e.getMessage());
-                commonUtil.error_hint_short("保存失败,请重试");
-            }
-        }
-    }
-
-    class SpinnerAdapter extends ArrayAdapter<String>{
-
-        public SpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull String[] objects) {
-            super(context, resource, objects);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = mainMenu.getLayoutInflater();
-            View view =inflater.inflate(R.layout.activity_personinfo_uav_companylist_layout,null);
-            TextView textView = (TextView)view.findViewById(R.id.uav_company_list);
-            textView.setText(uavInfo[position]);
-            return  textView;
-        }
-    }
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.getback:
                 mainMenu.finish();
@@ -416,10 +266,10 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 selectImage();
                 break;
             case R.id.driver_name:
-                mainMenu.fix_info_title="修改姓名";
+                mainMenu.fix_info_title="修改公司名称";
                 mainMenu.fix_info_flag=1;
-                mainMenu.t_fix_title="修改姓名";
-                mainMenu.t_fix_hint="请输入姓名";
+                mainMenu.t_fix_title="修改公司名称";
+                mainMenu.t_fix_hint="请输入公司名称";
                 mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
                 break;
             case R.id.driver_machine_id:;
@@ -442,6 +292,11 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                 mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
                 break;
             case R.id.driver_region:
+                mainMenu.fix_info_title="修改公司地址";
+                mainMenu.fix_info_flag=7;
+                mainMenu.t_fix_title="修改公司地址";
+                mainMenu.t_fix_hint="请输入公司地址";
+                mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
                 break;
 //            case R.id.login_out:
 //                Log.e(TAG, "退出登录");
@@ -452,12 +307,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
             case R.id.settings:
                 mainMenu.addBackFragment(new item_personalinformation_setting());
                 break;
-            //新添加
+            //新添加//员工总数
             case R.id.driver_sex:
-                mainMenu.fix_info_title="修改性别";
+                mainMenu.fix_info_title="修改员工总数";
                 mainMenu.fix_info_flag=5;
-                mainMenu.t_fix_title="修改性别";
-                mainMenu.t_fix_hint="请输入性别";
+                mainMenu.t_fix_title="修改员工总数";
+                mainMenu.t_fix_hint="请输入员工总数";
                 mainMenu.addBackFragment(new item_personalinformation_1_fix_info());
                 break;
             case R.id.driver_personsfzh:
@@ -610,18 +465,18 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
 
     }
 
-    private void showDriverData(Driver driver)//显示用户基本信息和头像
+    private void showDriverData(UAVCompany driver)//显示用户基本信息和头像
     {
-        driverDao.update(driver);
-        t_name.setText(driver.getName());
-        t_machine_id.setText(driver.getMachine_id());
-        t_telephone.setText(driver.getTelephone());
-        t_weixin.setText(driver.getWechart());
-        t_qq.setText(driver.getQQ());
-        t_region.setText(driver.getSite_0());
+        //driverDao.update(driver);
+        t_name.setText(driver.getCom_name());//公司名称
+        t_machine_id.setText(driver.getUav_num());//无人机数量
+        t_telephone.setText(driver.getPerson_phone());
+        t_weixin.setText(driver.getPersion_weixin());
+        t_qq.setText(driver.getPerson_qq());
+        t_region.setText(driver.getCom_addr());
         //新添加
-        t_sex.setText(driver.getSex());
-        t_personsfzh.setText(driver.getSfzh());
+        t_sex.setText(driver.getStaff_num());//员工总数
+        t_personsfzh.setText(driver.getPerson_sfzh());
 
 
 
@@ -700,11 +555,12 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         }
     }
 
-    private void getUserInfo()//获取用户基本信息
+    private void getUserInfo()//获取用户基本信息--无人机公司
     {
         pDialog.setMessage("正在载入数据 ...");
-        getInfo_strReq= NoHttp.createJsonObjectRequest(getInfo_url, RequestMethod.POST);
-        getInfo_strReq.add("token", token);
+        getInfo_strReq= NoHttp.createJsonObjectRequest(AppConfig.URL_findFlyComByUser, RequestMethod.POST);
+        //getInfo_strReq.add("token", token);
+        getInfo_strReq.add("fm_id", sessionManager.getUserId());
         RequestQueue requestQueue = NoHttp.newRequestQueue();
         if (netUtil.checkNet(mainMenu) == false) {
             commonUtil.error_hint_short("网络连接错误");
@@ -724,25 +580,37 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         @Override
         public void onSucceed(int what, com.yolanda.nohttp.rest.Response<JSONObject> response) {
 
+            //{"fm_id":"9",
+            // "person_qq":"888888",
+            // "person_weixin":"zhihuinongji1",
+            // "com_name":"天鹏航空2",
+            // "com_addr":"保定市高新区大学科技园",
+            // "staff_num":"66",
+            // "com_memo":"全商用服务、航模、无人机科普技能教育培训、无人机驾驶专业技术教育培训",
+            // "com_longitude":"115.4709990134",
+            // "com_latitude":"38.9233110455",
+            // "person_sfzh":"99812345678DX",
+            // "uav_num",10}
+
             try {
                 JSONObject jObj=response.get();
                 Log.e(TAG, "获取用户基本信息-接收的数据：" + jObj.toString());
                 int status = jObj.getInt("status");
                 if (status==0) {
-                    JSONObject s_driver = jObj.getJSONObject("result");
+                    JSONArray location = jObj.getJSONArray("result");
+                    JSONObject  s_driver=location.getJSONObject(0);
+                    company = new UAVCompany();
                     netImageUrl=s_driver.getString("person_photo");
-                    driver.setName(s_driver.getString("person_name"));
-                    driver.setTelephone(s_driver.getString("person_phone"));
-                    driver.setWechart(s_driver.getString("person_weixin"));
-                    driver.setQQ(s_driver.getString("person_qq"));
-                    //新添加
-                    driver.setSex(s_driver.getString("person_Sex"));
-                    driver.setSfzh(s_driver.getString("person_sfzh"));
-                    driver.setPersoncomid(s_driver.getString("person_comid"));//飞机服务公司
+                    company.setCom_name(s_driver.getString("com_name"));
+                    company.setPerson_sfzh(s_driver.getString("person_sfzh"));
+                    company.setCom_addr(s_driver.getString("com_addr"));
+                    company.setStaff_num(s_driver.getString("staff_num"));
+                    company.setPersion_weixin(s_driver.getString("person_weixin"));
+                   company.setUav_num(s_driver.getString("uav_num"));
+                    company.setPerson_qq(s_driver.getString("person_qq"));
+                    company.setPerson_phone(s_driver.getString("person_phone"));
 
-                    driver.setSite(commonUtil.transferSite(s_driver.getString("person_address")));
-                    driver.setId(1);
-                    showDriverData(driver);//显示个人信息
+                    showDriverData(company);//显示个人信息
                     path=null;
                     path=commonUtil.imageTempFile();
                     driver.setImage_url(path);//设置头像本地存储路径
