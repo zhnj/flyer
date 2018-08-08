@@ -103,6 +103,7 @@ public class Frag_yiwancheng extends Fragment {
                 rv = (RecyclerView) view.findViewById(R.id.recyclerView);
                 layoutManager = new LinearLayoutManager(getActivity());
                 rv.setLayoutManager(layoutManager);
+                try {
                 workBean = gson.fromJson(response, WorkBean.class);
                 if(workBean.isStates()){
                     resultBeanList = workBean.getResult();
@@ -110,6 +111,8 @@ public class Frag_yiwancheng extends Fragment {
                     rv.setAdapter(adapter);
                 }else {
                     //Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
+                } }catch (Exception e){
+
                 }
             }
         }, new Response.ErrorListener() {// 添加请求失败监听
@@ -134,6 +137,7 @@ public class Frag_yiwancheng extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
             @Override
             public void onResponse(String response) {
+                try {
                 workBean = gson.fromJson(response, WorkBean.class);
                 if(workBean.isStates()){
                     resultBeanList = workBean.getResult();
@@ -152,6 +156,9 @@ public class Frag_yiwancheng extends Fragment {
                     }else{
                         refreshLayout.finishLoadMore(/*,false*/);//不传时间则立即停止刷新    传入false表示加载失败
                     }
+                } }catch (Exception e){
+                    refreshLayout.finishRefresh(/*,false*/);
+                    //不传时间则立即停止刷新    传入false表示刷新失败
                 }
             }
         }, new Response.ErrorListener() {// 添加请求失败监听

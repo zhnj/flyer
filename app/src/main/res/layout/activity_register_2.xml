@@ -72,6 +72,7 @@
             android:textCursorDrawable="@drawable/login_cursor"
             android:background="@drawable/login_edit_changecolor"
             android:hint="QQ号"
+
             android:drawableLeft="@drawable/ic_qq"
             android:inputType="textPhonetic"
             />

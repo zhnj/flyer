@@ -22,7 +22,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/debug" />
     <exclude-output />
@@ -104,41 +104,38 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="NaviTts-unspecified" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.6.2" level="project" />
-    <orderEntry type="library" exported="" name="protobuf-java-2.3.0-micro" level="project" />
-    <orderEntry type="library" exported="" name="ormlite-android-4.49-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="EventBus" level="project" />
-    <orderEntry type="library" exported="" name="volley-library-1.0.19" level="project" />
-    <orderEntry type="library" exported="" name="onsdk_all-unspecified" level="project" />
-    <orderEntry type="library" exported="" name="javapoet-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="percent-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="awesome-validation-1.1" level="project" />
-    <orderEntry type="library" exported="" name="BaiduLBS_Android" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="nohttp-1.0.4" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="galaxy_lite" level="project" />
-    <orderEntry type="library" exported="" name="guava-18.0" level="project" />
-    <orderEntry type="library" exported="" name="httpmime-4.1.2" level="project" />
-    <orderEntry type="library" exported="" name="ormlite-core-4.49-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="lbsCoreSDK" level="project" />
-    <orderEntry type="library" exported="" name="android-times-square-1.6.5" level="project" />
-    <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="SmartRefreshLayout-1.1.0-alpha-11" level="project" />
-    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="org.apache.http.legacy" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
-    <orderEntry type="library" exported="" name="BaiduHUDSDK_2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-25.1.1" level="project" />
-    <orderEntry type="library" exported="" name="intellij_annotations" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava:18.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\lbsCoreSDK.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: new:onsdk_all" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:recyclerview-v7-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\BaiduHUDSDK_2.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.scwang.smartrefresh:SmartRefreshLayout-1.1.0-alpha-11" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\BaiduLBS_Android.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\EventBus.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-annotations:25.1.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\intellij_annotations.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.yolanda.nohttp:nohttp-1.0.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\volley-library-1.0.19.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:percent-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:design-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\galaxy_lite.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\ormlite-android-4.49-SNAPSHOT.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\httpmime-4.1.2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\org.apache.http.legacy.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\ormlite-core-4.49-SNAPSHOT.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.basgeekball:awesome-validation-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: junit:junit:4.12@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:appcompat-v7-23.1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\javapoet-1.9.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: com.android.support:multidex-instrumentation-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\gson-2.6.2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup:android-times-square-1.6.5" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: new:NaviTts" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\0-bdking\Project\AndroidStudioProjects\FlyerApplication\new\app\libs\protobuf-java-2.3.0-micro.jar:unspecified@jar" level="project" />
     <orderEntry type="module" module-name="MultiImageSelector" exported="" />
     <orderEntry type="module" module-name="AndroidBootstrap" exported="" />
-    <orderEntry type="library" exported="" name="android-android-23" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
   </component>
 </module>

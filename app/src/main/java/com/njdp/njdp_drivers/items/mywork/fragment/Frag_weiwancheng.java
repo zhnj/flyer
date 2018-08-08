@@ -95,7 +95,7 @@ public class Frag_weiwancheng extends Fragment {
         curr = 1;//当前页数为1
         url = AppConfig.URL_MYJOB_PART;
         url = url + "?pageNo=" + curr + "&limit=3&flyer_id="+flyer_id+"&work_state=1";
-        Log.i("url",url);
+        Log.i("url","1我的地块 初始化url"+url);
         //定义一个StringRequest
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {// 添加请求成功监听
             @Override
@@ -105,15 +105,18 @@ public class Frag_weiwancheng extends Fragment {
                 rv.setLayoutManager(layoutManager);
                 try {
                     workBean = gson.fromJson(response, WorkBean.class);
+                    Log.i("url","2我的地块 response"+response);
                     if(workBean.isStates()){
                         resultBeanList = workBean.getResult();
                         adapter = new WeiwanchengAdapter(getContext(),resultBeanList);
                         rv.setAdapter(adapter);
+                        Log.i("url","3我的地块 adapter加载完成");
                     }else {
                         Toast.makeText(getContext(),workBean.getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
-
+                    refreshLayout.finishRefresh(/*,false*/);
+                    //不传时间则立即停止刷新    传入false表示刷新失败
                 }
 
             }
