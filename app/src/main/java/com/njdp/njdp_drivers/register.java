@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -210,6 +211,14 @@ public class register extends Activity {
     //获取验证码
     private void get_VerifyCode(){
         pDialog.setMessage("正在提交注册申请，请等待......");
+
+        //随机生成六位数字
+        String randomNum=String.valueOf((int)((Math.random()*9+1)*100000));
+        AppConfig.VerifyCode=randomNum;
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(telephone,"验证码","短信验证码为："+randomNum+"。",null,null);
+        register_next();
+        /*
         verifyCode_strReq= NoHttp.createJsonObjectRequest(verifyCode_url, RequestMethod.POST);
         verifyCode_strReq.add("phone", telephone);
         Log.e(TAG,"获取验证码-发送的数据："+telephone);
@@ -221,6 +230,8 @@ public class register extends Activity {
         } else {
             requestQueue.add(FLAG_VERIFYCODE, verifyCode_strReq, new verifyCode_request());
         }
+        */
+
     }
 
     //获取验证码访问服务器监听

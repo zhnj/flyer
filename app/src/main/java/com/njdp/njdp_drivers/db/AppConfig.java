@@ -105,4 +105,8 @@ public class AppConfig {
     public static String URL_UAV_Preference= URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/findPreference";//查询偏好的接口
 
     public static String URL_UAV_ADD_OR_EDIT_Preference= URL_IP_JAVA+"UAV-platform/mvc/mobile/myUav/addPreference";//查询偏好的接口
+
+    //手机验证码，公共变量
+    public static String VerifyCode;
+
 }

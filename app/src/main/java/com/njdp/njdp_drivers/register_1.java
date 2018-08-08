@@ -188,6 +188,7 @@ public class register_1 extends Activity implements View.OnClickListener{
             }
         });
 
+        //验证码判断
         text_code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -203,8 +204,15 @@ public class register_1 extends Activity implements View.OnClickListener{
             public void afterTextChanged(Editable s) {
                 if ((s.length() > 0) && !TextUtils.isEmpty(text_sfzh.getText())
                         && !TextUtils.isEmpty(text_password.getText())) {
-                    btn_register_next.setClickable(true);
-                    btn_register_next.setEnabled(true);
+                    if(s.toString().equals(AppConfig.VerifyCode)==false)
+                    {
+                        Toast.makeText(register_1.this,"验证码错误，请重新输入或获取！",Toast.LENGTH_LONG).show();
+
+                    }
+                    else {
+                        btn_register_next.setClickable(true);
+                        btn_register_next.setEnabled(true);
+                    }
                 } else {
                     btn_register_next.setEnabled(false);
                     btn_register_next.setClickable(false);
@@ -270,7 +278,7 @@ public class register_1 extends Activity implements View.OnClickListener{
         params.put("phone", telephone);
         params.put("sfzh", sfzh);
         params.put("password", password);
-        params.put("code", verify_code);
+       // params.put("code", verify_code);
         register_strReq= NoHttp.createJsonObjectRequest(register_url, RequestMethod.POST);
         register_strReq.add(params);
         RequestQueue requestQueue = NoHttp.newRequestQueue();

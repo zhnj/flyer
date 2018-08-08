@@ -46,7 +46,8 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <!--发短信的权限-->
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <application
         android:name=".db.AppController"
         android:allowBackup="true"
