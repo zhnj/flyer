@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/NaviTts/NaviTts.iml" filepath="$PROJECT_DIR$/NaviTts/NaviTts.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/flyer.iml" filepath="$PROJECT_DIR$/flyer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/new.iml" filepath="$PROJECT_DIR$/new.iml" />
       <module fileurl="file://$PROJECT_DIR$/onsdk_all/onsdk_all.iml" filepath="$PROJECT_DIR$/onsdk_all/onsdk_all.iml" />
     </modules>
   </component>

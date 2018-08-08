@@ -18,6 +18,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -33,6 +34,7 @@ import com.njdp.njdp_drivers.db.AppController;
 import com.njdp.njdp_drivers.db.FieldInfoDao;
 import com.njdp.njdp_drivers.db.SavedFieldInfoDao;
 import com.njdp.njdp_drivers.db.SessionManager;
+import com.njdp.njdp_drivers.items.jikai.Item_editor_machine;
 import com.njdp.njdp_drivers.login;
 import com.njdp.njdp_drivers.slidingMenu;
 import com.njdp.njdp_drivers.util.CommonUtil;
@@ -259,7 +261,7 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 {
                     @Override
                     public void onClick(View v) {
-
+                        plan_id=mainMenu.basicDeployRess.get(groupPosition).getId();
                         favouriteDeploy();
 
                     }
@@ -534,9 +536,11 @@ public class item_intelligent_resolution_2 extends Fragment implements View.OnCl
                 } else if (status == 0) {
                     String msg = jObj.getString("result");
                     Log.e(TAG, msg + "收藏方案："+msg);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                 }else if(status == 2){
                     String msg = jObj.getString("result");
                     Log.e(TAG, msg + "收藏方案："+msg);
+                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                 }
                 else{
                     String msg = jObj.getString("result");
