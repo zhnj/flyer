@@ -8,7 +8,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg"
     android:fitsSystemWindows="true"
-    android:paddingTop="@dimen/padding20"
+
     tools:context="com.njdp.njdp_drivers.register_2">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:background="@drawable/main_title">
         <TextView
             style="@style/Pages_Title"
-            android:text="机手注册"
+            android:text="用户注册"
             />
         <ImageButton
             android:visibility="gone"

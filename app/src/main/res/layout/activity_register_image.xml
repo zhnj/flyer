@@ -17,7 +17,7 @@
         android:background="@drawable/main_title">
         <TextView
             style="@style/Pages_Title"
-            android:text="机手注册"
+            android:text="用户注册"
             />
         <ImageButton
             android:id="@+id/getback"

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/intelligent_arrange_top"
-        android:layout_marginTop="@dimen/margin20"
+
         android:background="@drawable/main_title">
         <TextView
             style="@style/Pages_Title"
