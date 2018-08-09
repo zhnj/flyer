@@ -37,6 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.njdp.njdp_drivers.db.AppConfig;
 import com.njdp.njdp_drivers.db.AppController;
+import com.njdp.njdp_drivers.db.DriverDao;
 import com.njdp.njdp_drivers.db.SessionManager;
 import com.njdp.njdp_drivers.util.CommonUtil;
 import com.njdp.njdp_drivers.util.NetUtil;
@@ -108,6 +109,8 @@ public class register_2 extends Activity implements View.OnClickListener{
 
 
     };
+
+    String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +130,9 @@ public class register_2 extends Activity implements View.OnClickListener{
         }
 
         setContentView(R.layout.activity_register_2);
+
+        Intent intent=this.getIntent();
+        phone=intent.getStringExtra("phone");
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -304,6 +310,9 @@ public class register_2 extends Activity implements View.OnClickListener{
         com.setCom_name(text_com_name.getText().toString());
         com.setStaff_num(text_company_num.getText().toString());
         com.setCom_memo(text_company_indro.getText().toString());
+        com.setCom_charge(text_user_name.getText().toString());
+
+        com.setPerson_phone(phone);
         if(geoCodeResult1!=null) {
             com.setCom_latitude(String.valueOf(geoCodeResult1.getLocation().latitude));
             com.setCom_longitude(String.valueOf(geoCodeResult1.getLocation().longitude));

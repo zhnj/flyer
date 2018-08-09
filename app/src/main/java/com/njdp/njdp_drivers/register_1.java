@@ -312,9 +312,11 @@ public class register_1 extends Activity implements View.OnClickListener{
                     driver.setId(Integer.parseInt(userid));
                     //driver.setMachine_id(machine_id);
                     driver.setSfzh(sfzh);
+                    driver.setTelephone(telephone);
                     driver.setPassword(password);
                     driverDao.add(driver);
                     Intent intent = new Intent(register_1.this, register_2.class);
+                    intent.putExtra("phone",telephone);
                     startActivity(intent);
                     finish();
                 } else {

@@ -84,6 +84,18 @@
                     android:text="周二" />
             </LinearLayout>
             <View style="@style/personalinformation_line" />
+            <LinearLayout
+                android:id="@+id/manager_name"
+                style="@style/personalinformation_linearlayout">
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="法人" />
+                <TextView
+                    android:id="@+id/input_manager_name"
+                    style="@style/personalinformation_right"
+                    android:text="周二" />
+            </LinearLayout>
+            <View style="@style/personalinformation_line" />
             <!--性别  -->
             <LinearLayout
                 android:id="@+id/driver_sex"
@@ -192,7 +204,21 @@
                     style="@style/personalinformation_right"
                     android:text="河北省保定市徐水县" />
             </LinearLayout>
+            <LinearLayout
 
+                android:id="@+id/driver_region_indro"
+
+                style="@style/personalinformation_linearlayout">
+
+                <TextView
+                    style="@style/personalinformation_left"
+                    android:text="公司简介" />
+
+                <TextView
+                    android:id="@+id/input_con_indro"
+                    style="@style/personalinformation_right"
+                    android:text="无人机公司" />
+            </LinearLayout>
             <!--<LinearLayout
                 style="@style/Register_Div"
                 android:id="@+id/register_div"

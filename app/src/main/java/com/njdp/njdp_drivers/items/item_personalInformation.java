@@ -99,6 +99,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     private LinearLayout l_sex;
     private LinearLayout l_personsfzh;
     private LinearLayout l_personcomid;
+    private LinearLayout l_manager_name;
     //private LinearLayout l_populationnum;
     //private LinearLayout l_farmlandarea;
 
@@ -112,6 +113,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
     //新添加
     private TextView t_sex;
     private TextView t_personsfzh;
+    private TextView input_manager_name;
+    private  TextView input_con_indro;
     private TextView t_personcomid=null;
     private String[] uavInfo;
 
@@ -164,6 +167,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         view.findViewById(R.id.settings).setOnClickListener(this);
         //新添加
         view.findViewById(R.id.driver_sex).setOnClickListener(this);
+        view.findViewById(R.id.manager_name).setOnClickListener(this);
         //view.findViewById(R.id.driver_personsfzh).setOnClickListener(this);
        // view.findViewById(R.id.driver_personcomid).setOnClickListener(this);
 
@@ -177,8 +181,9 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         this.l_sex=(LinearLayout)view.findViewById(R.id.driver_sex);
         this.l_personsfzh=(LinearLayout)view.findViewById(R.id.driver_personsfzh);
+        this.l_manager_name=(LinearLayout)view.findViewById(R.id.manager_name);
         //this.l_personcomid=(LinearLayout)view.findViewById(R.id.driver_personcomid);
-
+        this.input_con_indro=(TextView) view.findViewById(R.id.input_con_indro);
 
         this.title_Image=(com.njdp.njdp_drivers.CircleMenu.CircleImageView) view.findViewById(R.id.information_div_title_image);
         this.t_name=(TextView) view.findViewById(R.id.input_driver_name);
@@ -191,6 +196,7 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         this.t_sex=(TextView) view.findViewById(R.id.input_driver_sex);
         this.t_personsfzh=(TextView) view.findViewById(R.id.input_person_sfzh);
+        this.input_manager_name=(TextView)view.findViewById(R.id.input_manager_name);
        // this.t_personcomid= (TextView) view.findViewById(R.id.sp_person_comid);
 
 
@@ -477,8 +483,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
         //新添加
         t_sex.setText(driver.getStaff_num());//员工总数
         t_personsfzh.setText(driver.getPerson_sfzh());
-
-
+        input_con_indro.setText(driver.getCom_memo());
+        input_manager_name.setText(driver.getCom_charge());
 
     }
 
@@ -609,7 +615,8 @@ public class item_personalInformation extends Fragment implements View.OnClickLi
                    company.setUav_num(s_driver.getString("uav_num"));
                     company.setPerson_qq(s_driver.getString("person_qq"));
                     company.setPerson_phone(s_driver.getString("person_phone"));
-
+                    company.setCom_charge(s_driver.getString("com_charge"));
+                    company.setCom_memo(s_driver.getString("com_memo"));
                     showDriverData(company);//显示个人信息
                     path=null;
                     path=commonUtil.imageTempFile();
