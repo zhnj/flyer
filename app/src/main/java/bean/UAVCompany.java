@@ -18,6 +18,15 @@ public class UAVCompany {
     String persion_weixin;//微信
     String person_sfzh;//组织机构代码
     String uav_num;  //无人机数量
+    String com_tel;
+
+    public String getCom_tel() {
+        return com_tel;
+    }
+
+    public void setCom_tel(String com_tel) {
+        this.com_tel = com_tel;
+    }
 
     public String getFm_id() {
         return fm_id;

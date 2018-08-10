@@ -312,7 +312,7 @@ public class register_2 extends Activity implements View.OnClickListener{
         com.setCom_memo(text_company_indro.getText().toString());
         com.setCom_charge(text_user_name.getText().toString());
 
-        com.setPerson_phone(phone);
+        com.setCom_tel(phone);
         if(geoCodeResult1!=null) {
             com.setCom_latitude(String.valueOf(geoCodeResult1.getLocation().latitude));
             com.setCom_longitude(String.valueOf(geoCodeResult1.getLocation().longitude));
